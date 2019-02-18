@@ -105,20 +105,25 @@ def overview_query(request):
     attrack_ua=attack_event.objects.values_list('user_agent').annotate(Count('user_agent'))
     attrack_ua_dic={}
     for x in attrack_ua[:10]:
-        attrack_ua_dic[str(x[0]) ]=x[1]
+        if len(x[0])>20:
+
+            #temp=x[0][:10]+'...'+x[0][-10:]
+            temp=x[0]
+        attrack_ua_dic[str(temp) ]=x[1]
     attrack_ua_dic=sorted(attrack_ua_dic.items(),key=lambda item:item[1], reverse=True)
     # for x in attrack_ua_dic:
     #     print (x)
 
 
     attrack_source=attack_event.objects.values_list('attack_source').annotate(Count('attack_source'))
+    #近十天的数据字典
     attrack_source_dic={}
     for x in attrack_source[:10]:
         attrack_source_dic[str( x[0])]=x[1]
 
     attrack_source_dic=sorted(attrack_source_dic.items(),key=lambda item:item[1], reverse=True)
-    for x in attrack_source_dic:
-        print (x)
+    # for x in attrack_source_dic:
+    #     print (x)
 
 
     #天数
@@ -143,11 +148,44 @@ def overview_query(request):
 
 
 
-
+    #攻击类型及次数
     attack_type={}
+    result=event_knowledge.objects.all()
+
+    for x in result:
+        attack_type[str(x.event_id)]=x.event_name
+
+    #获得各种类型一共攻击了多少次
+    attrack_times=attack_event.objects.values_list('event_id').annotate(Count('event_id'))
+
+    attack_type1={}
+    for x in attrack_times:
+        if x[0]==0:
+            continue
+        name = attack_type[str(x[0])]
+        attack_type1[name]=x[1]
+    attack_type1=sorted(attack_type1.items(),key=lambda item:item[1], reverse=True)
+
+    #最近警告内容
+
+    recent_warning_list=[]
+    result= attack_event.objects.all()
+
+    for x in result[:5]:
+        if x.event_id==0:
+            continue
+        x.event_time=x.event_time.strftime("%Y-%m-%d %H:%M:%S")
+        x.event_id=attack_type[str(x.event_id)]
+        temp=model_to_dict(x)
+        recent_warning_list.append(temp)
+
+    recent_warning={"data":recent_warning_list}
+
 
     data['attrack_ua_dic']=attrack_ua_dic
     data['attrack_source_dic']=attrack_source_dic
     data['attrack_time_dic']=attrack_time_dic_list
+    data['attrack_type_times']=attack_type1
+    data['attrack_recent_warning']=recent_warning
     data=json.dumps(data)
     return HttpResponse(data,content_type='application/json')

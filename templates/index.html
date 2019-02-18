@@ -489,18 +489,18 @@
 			#overviewDiv{
 
             }
-            #attrack_source_dic_div{
-                width:100%;
-                height: 500px;
-            }
-            #attrack_time_dic_div{
-                width:100%;
-                height: 500px;
-            }
-            #attrack_ua_dic_div{
-                width:100%;
-                height: 800px;
-            }
+            {##attrack_source_dic_div{#}
+            {#    width:100%;#}
+            {#    height: 500px;#}
+            {#}#}
+            {##attrack_time_dic_div{#}
+            {#    width:100%;#}
+            {#    height: 500px;#}
+            {#}#}
+            {##attrack_ua_dic_div{#}
+            {#    width:100%;#}
+            {#    height: 800px;#}
+            {#}#}
 		</style>
 	</head>
 
@@ -593,9 +593,37 @@
 				<div class="my-3 my-md-5 setup" style="margin-bottom: -50px;">
 					<div class="container" id="div_container">
                         <div  id="overviewDiv" class="overviewDiv">
-                            <div id="attrack_source_dic_div"></div>
-                            <div id="attrack_ua_dic_div"></div><br>
-                            <div id="attrack_time_dic_div"></div>
+                            <div class="row">
+
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <div id="attack_type_dic_div" style="width: 100%;height: 300px"></div>
+
+                                </div>
+                                <div class="col-4">
+                                    <div id="attrack_source_dic_div" style="width: 100%;height: 100%"></div>
+                                </div>
+                                <div class="col-4">
+                                    <div id="attrack_ua_dic_div" style="width: 100%;height: 300px"></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div id="attrack_time_dic_div" style="width: 100%;height: 500px"></div>
+                                </div>
+                                <div class="col-6">
+                                   <div id="attrack_recent_warning_dic_div">
+
+                                   </div>
+
+                                </div>
+
+                            </div>
+
+
+
+
                         </div>
                         <div class="attackDiv"></div>
                         <div class="agentDiv"></div>
@@ -922,9 +950,15 @@
                     console.log(data_list['attrack_source_dic']);
                     console.log(data_list['attrack_time_dic']);
                     console.log(data_list['attrack_ua_dic']);
-                    attack_source_charts(data_list);
-                    attrack_ua_charts(data_list['attrack_ua_dic'])
-                        attrack_time_charts(data_list['attrack_time_dic'])
+                    console.log(data_list['attrack_type_times']);
+                    console.log(data_list['attrack_recent_warning']);
+
+
+                    attack_source_charts(data_list['attrack_source_dic']);
+                    attrack_ua_charts(data_list['attrack_ua_dic']);
+                    attrack_time_charts(data_list['attrack_time_dic']);
+                    attrack_type_times(data_list['attrack_type_times']);
+                    attrack_recent_warning(data_list['attrack_recent_warning']['data']);
 
                     }
                 });
@@ -932,6 +966,108 @@
 
 
                 $(".overviewDiv").show().siblings().hide();
+            }
+            function attrack_recent_warning(data) {
+                let recent_div=$("#attrack_recent_warning_dic_div");
+                recent_div.text("");
+
+                let html='';
+
+                let table='';
+
+                for (x in data)
+                {
+
+                    table+='<tr>';
+                    table+='<td>';
+                    table+=data[x]['event_time'];
+                    table+='</td>';
+                    table+='<td>';
+                    table+=data[x]['attack_type'];
+                    table+='</td>';
+                    table+='<td>';
+                    table+=data[x]['event_id'];
+                    table+='</td>';
+                    table+='<td>';
+                    table+=data[x]['plugin_message'];
+                    table+='</td>';
+                    table+='</tr>';
+
+                }
+
+
+                html=`
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>时间</th>
+                          <th>关注点</th>
+                          <th>关注内容</th>
+                          <th>描述</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      `+table+`
+                      </tbody>
+                    </table>
+                `;
+                recent_div.append(html);
+            }
+
+            function attrack_type_times(data) {
+
+                let data_list_type=[];
+                let data_list_type_dic=[];
+
+
+                let mycharts_source=echarts.init(document.getElementById('attack_type_dic_div'));
+                data=data.reverse();
+                for (x in data) {
+
+                    data_list_type.push(data[x][0]);
+                    data_list_type_dic.push(data[x][1]);
+                    //data_list_ua_dic.push({'name':data[x][0],'value':data[x][1]})
+                }
+
+
+                option = {
+                    title: {
+                        text: '攻击类型',
+                        subtext: '次数'
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis: {
+                        type: 'value',
+                        boundaryGap: [0, 0.01]
+                    },
+                    yAxis: {
+                        type: 'category',
+                        data: data_list_type
+                    },
+                    series: [
+                        {
+                            name: '次数',
+                            type: 'bar',
+                            data: data_list_type_dic
+                        }
+                    ]
+                };
+
+                mycharts_source.setOption(option)
+
+
+
             }
 
             function attrack_time_charts(data) {
@@ -992,48 +1128,67 @@
             }
             function attrack_ua_charts(data) {
 
-
+                data=data.reverse();
                 let data_list_ua=[];
                 let data_list_ua_dic=[];
 
-
                 let mycharts_source=echarts.init(document.getElementById('attrack_ua_dic_div'));
+                let name;
+                let tooltip;
                 for (x in data) {
 
-                    data_list_ua.push(data[x][0]);
-                    data_list_ua_dic.push({'name':data[x][0],'value':data[x][1]})
+
+                    name="";
+                    tooltip={};
+                    if(data[x][0].length>20)
+                    {
+                        name=data[x][0].substr(0,10);
+                        name+="...";
+                        name+=data[x][0].substr(-10,10);
+                        data_list_ua.push(name);
+                        let value=data[x][0]+" : "+data[x][1];
+                        //let value=data[x][1];
+                        tooltip={"formatter":value};
+                        data_list_ua_dic.push({"name":name,"value":data[x][1],"tooltip":tooltip});
+                        //data_list_ua_dic.push({'name':data[x][0],'value':data[x][1]})
+
+                    }
+
                 }
-
-
                 option = {
-                    title : {
-                        text: '攻击来源',
-                        subtext: 'ip',
-                        x:'center'
+                    title: {
+                        text: 'user_agent',
+                        subtext: '次数'
                     },
-                    tooltip : {
-                        trigger: 'item',
-                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        },formatter: function (params) {
+
+                            let val=params[0]['data']['tooltip']['formatter']
+                            return val;
+                        }
                     },
-                    legend: {
-                        orient: 'vertical',
-                        left: 'right',
-                        //data: data_list_ua
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
                     },
-                    series : [
+                    xAxis: {
+                        type: 'value',
+                        boundaryGap: [0, 0.01]
+                    },
+                    yAxis: {
+                        type: 'category',
+                        data: data_list_ua
+                    },
+                    series: [
                         {
-                            name: '访问来源',
-                            type: 'pie',
-                            radius : '55%',
-                            center: ['50%', '60%'],
-                            data:data_list_ua_dic,
-                            itemStyle: {
-                                emphasis: {
-                                    shadowBlur: 10,
-                                    shadowOffsetX: 0,
-                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                }
-                            }
+                            name: '次数',
+                            type: 'bar',
+                            data: data_list_ua_dic
                         }
                     ]
                 };
@@ -1042,45 +1197,47 @@
 
 
             }
-            function attack_source_charts(data_list) {
+            function attack_source_charts(data) {
                 let mycharts_source=echarts.init(document.getElementById('attrack_source_dic_div'));
                 let data_list_source=[];
                 let data_list_source_dic=[];
-                for (x in data_list['attrack_source_dic']) {
-                    data_list_source.push(data_list['attrack_source_dic'][x][0])
-                    data_list_source_dic.push({'name':data_list['attrack_source_dic'][x][0],'value':data_list['attrack_source_dic'][x][1]});
+                data=data.reverse();
+                for (x in data) {
+                    data_list_source.push(data[x][0]);
+                    data_list_source_dic.push(data[x][1]);
+                    //data_list_source_dic.push({'name':data_list['attrack_source_dic'][x][0],'value':data_list['attrack_source_dic'][x][1]});
                 }
 
-
                 option = {
-                    title : {
-                        text: 'user_agent',
-                        subtext: 'user_agent',
-                        x:'center'
+                    title: {
+                        text: 'ip 攻击',
+                        subtext: '次数'
                     },
-                    tooltip : {
-                        trigger: 'item',
-                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
                     },
-                    legend: {
-                        orient: 'vertical',
-                        left: 'right',
-                        //data: data_list_source
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
                     },
-                    series : [
+                    xAxis: {
+                        type: 'value',
+                        boundaryGap: [0, 0.01]
+                    },
+                    yAxis: {
+                        type: 'category',
+                        data: data_list_source
+                    },
+                    series: [
                         {
-                            name: '访问来源',
-                            type: 'pie',
-                            radius : '55%',
-                            center: ['50%', '60%'],
-                            data:data_list_source_dic,
-                            itemStyle: {
-                                emphasis: {
-                                    shadowBlur: 10,
-                                    shadowOffsetX: 0,
-                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                }
-                            }
+                            name: '次数',
+                            type: 'bar',
+                            data: data_list_source_dic
                         }
                     ]
                 };
