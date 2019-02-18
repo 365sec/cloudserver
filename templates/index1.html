@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+    <script src="/static/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/static/js/base64.js"></script>
+    <link href="/static/css/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/css/gfonts/main.css" rel="stylesheet">
+    <link href="/static/css/plugins/charts-c3/plugin.css" rel="stylesheet">
+    {#    <style type="text/css">.vue-loading[data-v-55c8f413]{margin:auto}</style>#}
+
+    {#    <link rel=icon href=./favicon.ico type=image/x-icon>#}
+    {#    <link rel="shortcut icon" type=image/x-icon href=./favicon.ico>#}
+    <title>管理后台</title>
+
+    <link href=/static/css/app.f0ed56399b7c53536fe0a115734a4d50.css rel=stylesheet>
+    <link href=/static/css/gfonts/6xKydSBYKcSV-LCoeQqfX1RYOo3i54rwmRdr.ttf rel=stylesheet>
+    <link href=/static/css/gfonts/6xK3dSBYKcSV-LCoeQqfX1RYOo3qNq7g.ttf rel=stylesheet>
+    <script type="text/javascript" src="/static/js/manifest.2ae2e69a05c33dfc65f8.js"></script>
+    <script type="text/javascript" src="/static/js/vendor.4b92a4793e5e56db432c.js"></script>
+    <script type="text/javascript" src="/static/js/app.f73cd6dc69f535a33ae7.js"></script>
+    <style>
+        .active {
+            color: red;
+        }
+
+        .detail-td a{
+            width: 50px;
+            overflow: hidden;
+            word-break: break-all;
+        }
+
+        .detail-td{
+            overflow: hidden;
+            width: 50px;
+        }
+
+        .modal-open .modal {
+            overflow-x: hidden;
+            overflow-y: hidden;
+            width: 50%;
+            margin: 20px auto;
+        }
+        .modal-body{
+            height: 700px;
+            overflow-y: auto;
+        }
+#model-body td{
+    word-break: keep-all;
+}
+        .event-detail p, td {
+            word-break: break-word;
+        }
+    </style>
+</head>
+<body class="">
+<div id=app></div>
+
+
+<div id="main" class="page">
+    <div style="min-height: calc(100vh - 67px);">
+        <div>
+            <div class="header py-4">
+                <div class="container">
+                    <div class="d-flex">
+                        <div class="dropdown"><a href="javascript:" data-toggle="dropdown"
+                                                 class="nav-link pr-0 leading-none" style="padding-left: 0px;"><span
+                                class="avatar"
+                                style="background-image: url(&quot;/static/images/lang/php.png&quot;);"></span> <span
+                                class="ml-2 d-none d-lg-block"><span class="text-muted" style="margin-left: -2px;">
+                当前应用
+                <i class="fa fa-caret-down"></i></span> <small class="text-default d-block mt-1">
+                PHP 示例应用
+              </small></span></a>
+                            <div class="dropdown-menu dropdown-menu-left dropdown-menu-arrow"><a href="javascript:"
+                                                                                                 class="dropdown-item"><i
+                                    class="dropdown-icon fe fe-lock"></i>
+                                PHP 示例应用 ( 1bba7050291352b1a277078ba1c2871a20f8d4fe )
+                            </a>
+                                <div class="dropdown-divider"></div>
+                                <a href="#" class="dropdown-item"><i class="dropdown-icon fe fe-settings"></i>
+                                    应用管理
+                                </a></div>
+                        </div>
+                        <div class="d-flex order-lg-2 ml-auto">
+                            <div class="nav-item d-none d-md-flex"><a href="javascript:"
+                                                                      class="btn btn-sm btn-outline-primary">
+                                添加主机
+                            </a></div>
+                            <div class="dropdown"><a href="javascript:" data-toggle="dropdown"
+                                                     class="nav-link pr-0 leading-none"><span
+                                    class="ml-2 d-none d-lg-block"><span class="text-default">
+                  openrasp <i class="fa fa-caret-down"></i></span> <small class="text-muted d-block mt-1">
+                  管理员权限
+                </small></span></a>
+                                <div x-placement="bottom-end"
+                                     class="dropdown-menu dropdown-menu-right dropdown-menu-arrow"><a href="javascript:"
+                                                                                                      class="dropdown-item"><i
+                                        class="dropdown-icon fe fe-log-out"></i> 退出登录
+                                </a></div>
+                            </div>
+                        </div>
+                        <a href="#" data-toggle="collapse" data-target="#headerMenuCollapse"
+                           class="header-toggler d-lg-none ml-3 ml-lg-0"><span class="header-toggler-icon"></span></a>
+                    </div>
+                </div>
+            </div>
+            <div id="headerMenuCollapse" class="header collapse d-lg-flex p-0">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg order-lg-first">
+                            <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
+                                <li class="nav-item"><a href="#/dashboard/1bba7050291352b1a277078ba1c2871a20f8d4fe"
+                                                        class="nav-link"><i class="fe fe-home"></i>
+                                    安全总览
+                                </a></li>
+                                <li class="nav-item"><a href="javascript:void(0)" class="nav-link" data-value="attack"><i class="fe fe-bell"></i>攻击事件</a></li>
+                                <li class="nav-item dropdown"><a href="#" class="nav-link"><i class="fe fe-check-square"></i>安全基线</a></li>
+                                <li class="nav-item"><a href="javascript:void(0)" class="nav-link" data-value="agent"><i class="fe fe-cloud"></i>探针管理</a></li>
+                                <li class="nav-item"><a href="#" class="nav-link"><i class="fe fe-zap"></i>插件管理</a></li>
+                                <li class="nav-item"><a href="javascript:void(0)" class="nav-link" data-value="download"><i class="fe fe-download"></i>探针下载</a></li>
+                                <li class="nav-item"><a href="#" class="nav-link"><i class="fe fe-user-check"></i>操作审计</a></li>
+                                <li class="nav-item dropdown"><a href="#" class="nav-link router-link-active"><i class="fe fe-settings"></i>系统设置</a></li>
+                                <!--li class="nav-item"><a href="https://rasp.baidu.com/doc" target="_blank" class="nav-link"><i class="fe fe-file-text"></i>帮助文档</a></li-->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--div id="addHostModal" tabindex="-1" role="dialog" class="modal no-fade">
+                <div role="document" class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header"><h5 class="modal-title">
+                            添加主机
+                        </h5>
+                            <button type="button" data-dismiss="modal" aria-label="Close" class="close"></button>
+                        </div>
+                        <div class="modal-body" style="padding-top: 0px;">
+                            <ul id="myTab" role="tablist" class="nav nav-tabs">
+                                <li class="nav-item"><a data-toggle="tab" href="#java-tab" class="nav-link active">
+                                    Java 服务器
+                                </a></li>
+                                <li class="nav-item"><a data-toggle="tab" href="#php-tab" class="nav-link">
+                                    PHP 服务器
+                                </a></li>
+                            </ul>
+                            <br>
+                            <div id="myTabContent" class="tab-content">
+                                <div id="java-tab" class="tab-pane fade show active"><h4>1. 下载 Java Agent 安装包</h4>
+                                    <pre style="white-space: inherit;">wget http://172.16.39.12:8080/packages/rasp-java.tar.gz<br>tar -xvf rasp-java.tar.gz<br>cd rasp-*/</pre>
+                                    <h4>2. 执行 RaspInstall 进行安装</h4>
+                                    <pre style="white-space: inherit;">java -jar RaspInstall.jar -install /path/to/tomcat -appid 1bba7050291352b1a277078ba1c2871a20f8d4fe -appsecret tT3p50JRQY-S5eTXWOHoCq3L6NMCdB14BG7K3Q2Ajnw -backendurl </pre>
+                                    <h4>3. 重启 Tomcat/JBoss/SpringBoot 应用服务器</h4>
+                                    <pre style="white-space: inherit;">/path/to/tomcat/bin/shutdown.sh<br>/path/to/tomcat/bin/startup.sh</pre>
+                                </div>
+                                <div id="php-tab" class="tab-pane fade"><h4>1. 下载 PHP 安装包</h4>
+                                    <pre style="white-space: inherit;">wget http://172.16.39.12:8080/packages/rasp-php.tar.gz</pre>
+                                    <h4>2. 执行 install.php 进行安装</h4>
+                                    <pre style="white-space: inherit;">php install.php -d /opt/rasp --app-id 1bba7050291352b1a277078ba1c2871a20f8d4fe --app-secret tT3p50JRQY-S5eTXWOHoCq3L6NMCdB14BG7K3Q2Ajnw --backend-url </pre>
+                                    <h4>3. 重启 PHP-FPM 或者 Apache 服务器</h4>
+                                    <pre style="white-space: inherit;">service php-fpm restart</pre>
+                                    <p>-或者-</p>
+                                    <pre style="white-space: inherit;">apachectl -k restart</pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button href="https://rasp.baidu.com/doc/install/software.html" target="_blank"
+                                    class="btn btn-secondary mr-auto">
+                                了解更多
+                            </button>
+                            <button data-dismiss="modal" class="btn btn-primary">
+                                关闭
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div-->
+        </div>
+
+        <div class="my-3 my-md-5" style="min-height: 100%; margin-bottom: -50px;">
+            <div class="container" id="div_container">
+
+                <div class="search-result-pagination" id="page_list_div">
+                    <ul class="pagination" id="page_list">
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 模态框（Modal） -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        <h4 class="modal-title" id="myModalLabel"></h4>
+                    </div>
+                    <div id="model-body" class="modal-body"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+{#                        <button type="button" class="btn btn-primary">提交更改</button>#}
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+        <footer class="footer" style="height: 67px;">
+            <div class="container">
+                <div class="row align-items-center flex-row-reverse">
+                    <div class="col-auto ml-lg-auto">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <ul class="list-inline list-inline-dots mb-0">
+                                    <li class="list-inline-item"><a href="https://rasp.baidu.com/"
+                                                                    target="_blank">官方网站</a>
+                                    </li>
+                                    <li class="list-inline-item"><a href="https://rasp.baidu.com/#section-books"
+                                                                    target="_blank">最佳实践</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-auto"><a href="https://github.com/baidu/openrasp"
+                                                     class="btn btn-outline-primary btn-sm">源代码</a></div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-auto mt-3 mt-lg-0 text-center">
+                        Copyright © 2018 <a href="https://rasp.baidu.com" target="_blank">Baidu Inc</a>，本页面基于 <a
+                            href="https://github.com/tabler/tabler" target="_blank">Tabler</a> 开源模板开发
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+</div>
+
+<script>
+    function agent_click(page) {
+        console.log(page);
+        //let page=1;
+        if (page == null || page < 1) {
+            page = 1;
+        }
+        $(this).addClass("active router-link-active").siblings().removeClass("active router-link-active");
+        $.ajax({
+            url: "agent/query/",
+            type: 'POST',
+            data: {"page": page},
+            //dataType: "json",
+            success: function (data_list) {
+                data = data_list['agents'];
+                let now_page = data_list['page'];
+                let max_size = data_list['max_size'];
+                // data = data.replace(/}{/g, "}****{").split("****");
+                let div_container = $("#div_container");
+                div_container.text("");
+                let html = '<div><h1 class="page-title" >探针管理</h1>';
+                html += '<div class="card">';
+                html += '<div class="card-body">';
+                html += '<table class="table table-bordered">';
+                html += '<thead>';
+                html += '<tr>';
+                html += '<th>agent id</th>';
+                html += '<th>探针类型</th>';
+                html += '<th>注册IP</th>';
+                html += '<th>操作系统</th>';
+                html += '<th>主机名</th>';
+                html += '<th>agent 版本</th>';
+                html += '<th>开发语言</th>';
+                html += '<th>服务器类型</th>';
+                html += '<th>服务器版本</th>';
+                html += '<th>是否在线</th>';
+                html += '<th>是否禁用该探针</th>';
+                html += '</tr>';
+                html += '</thead>';
+                html += '<tbody>';
+                for (x in data) {
+                    html += '<tr>';
+                    data[x] = JSON.parse(data[x]);
+                    html += '<td>' + data[x]['agent_id'] + '</td>';
+                    html += '<td>' + data[x]['sensor_type_id'] + '</td>';
+                    html += '<td>' + data[x]['register_ip'] + '</td>';
+                    html += '<td>' + data[x]['os'] + '</td>';
+                    html += '<td>' + data[x]['host_name'] + '</td>';
+                    html += '<td>' + data[x]['version'] + '</td>';
+                    html += '<td>' + data[x]['language'] + '</td>';
+                    html += '<td>' + data[x]['server_type'] + '</td>';
+                    html += '<td>' + data[x]['server_version'] + '</td>';
+                    html += '<td>' + data[x]['online'] + '</td>';
+                    html += '<td>' + data[x]['disabled'] + '</td>';
+                    html += '</tr>';
+                }
+                html += '</tbody>';
+                html += '</table>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+
+                html += '<ul role="menubar" aria-disabled="false" aria-label="Pagination" class="pagination b-pagination pagination-md justify-content-center">';
+
+                html += '<a href="javascript:void(0);" onclick="agent_click(' + (now_page - 1) + ')">上一页</a>';
+                html += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
+                html += '<a href="javascript:void(0);">' + now_page + "/" + max_size + '</a>';
+                html += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
+                html += '<a href="javascript:void(0);" onclick="agent_click(' + (now_page + 1) + ')">下一页</a>';
+                html += '</ul>';
+                div_container.append(html);
+            }
+        })
+    }
+
+    $(document).on("click", ".nav.nav-tabs li>a", function () {
+        $(this).addClass("active router-link-active").parent().siblings().children().removeClass("active router-link-active");
+        let value = $(this).attr("data-value");
+        console.log(value);
+        switch (value) {
+            case "agent":
+                agent_click(1);
+                break;
+            case "attack":
+                attack_click(1);
+                break;
+            case "download":
+                download_click(1);
+                break;
+            default:
+        }
+    });
+    function download_click(attack_page) {
+        let div_container = $("#div_container");
+        div_container.text("");
+
+        let html="";
+        html+='<div>';
+        html+='<h5>请选择探针类型</h5><br>';
+        html+='<div>';
+        html+='<a href="javascript:void(0)" onclick="java_click()"><img width="120px" height="80px" src="/static/img/java.jpg"></a>';
+        html+='&nbsp';
+        html+='&nbsp';
+        html+='&nbsp';
+        html+='<a href="javascript:void(0)" onclick="iis_click()"><img width="120px" height="80px" src="/static/img/IIS.png"></a>';
+        html+='<br>';
+        html+='</div">';
+        html+='<div id="lang_select">';
+
+        html+='</div">';
+        html+='</div">';
+        div_container.append(html);
+    }
+    function java_click() {
+        $.ajax({
+            url: "agentClick",
+            type: 'POST',
+            data: {"agent": "java"},
+            //dataType: "json",
+            success: function (data_list) {
+                console.log(data_list);
+                let lang_select= $("#lang_select");
+                lang_select.text("");
+                let html="<h3>安装java探针</h3>";
+                html+="<h4>开始安装之前，检查你的环境，确保以下条件：</h4>";
+                html+="<p>1. 检查 Collector 端所在系统、Agent 端所在系统时间是否为墙钟时间。<br>";
+                html+="2. 检查 Collector 端所在系统、Agent 端所在系统、Ai 后端服务之间网络环境可以相互连接。<br>";
+                html+="3. 检查 Collector 端所在系统的 19876 是否被占用。<br>";
+                html+="4. 确认 Agent 端所在环境在我们的支持列表中。</p>";
+
+                html+="<h4>1、下载探针</h4>";
+                html+="提供的探针版本<br>";
+                html+='下载：<a href="'+data_list['download_url']+'" class="btn btn-success">Java Agent</a><br>';
+                html+='wget：<p>'+data_list['wget']+'</p>';
+
+                html+="<h4>2、获取授权编号</h4>";
+                html+="您的授权编号<br>";
+                html+='<p id="guid">'+data_list['guid']+'</p>';
+                html+='<p >您的 Java agent 的 License Key 已成功生成，请将此 License Key 写入到配置文件中。</p>';
+
+                html+="<h4>3、安装探针</h4>";
+                html+="<p>步骤1</p>";
+                html+="<p>步骤2</p>";
+                html+="<p>步骤3</p>";
+                lang_select.append(html);
+
+            }});
+
+
+
+    }
+    function iis_click() {
+        let lang_select= $("#lang_select");
+        lang_select.text("");
+        let html="<h3>安装iis探针</h3>";
+        html+="<h4>开始安装之前，检查你的环境，确保以下条件：</h4>";
+        html+="<p>1. 检查 Collector 端所在系统、Agent 端所在系统时间是否为墙钟时间。<br>";
+        html+="2. 检查 Collector 端所在系统、Agent 端所在系统、Ai 后端服务之间网络环境可以相互连接。<br>";
+        html+="3. 检查 Collector 端所在系统的 19876 是否被占用。<br>";
+        html+="4. 确认 Agent 端所在环境在我们的支持列表中。</p>";
+
+        html+="<h4>1、下载探针</h4>";
+        html+="提供的探针版本<br>";
+        html+='下载：<a href="download/?filepath=static/favicon.ico" class="btn btn-success" style="color: white" >IIS   Agent</a><br>';
+       // html+='下载：<a href="#"  > <input class="btn btn-success" type="button" value ="IIS   Agent"></a><br>';
+        html+='wget：<p>https://xxxxxxxxxxx</p>';
+
+        html+="<h4>2、获取授权编号</h4>";
+        html+="您的授权编号<br>";
+        html+='<p id="guid">XXXXXXXXXXXXXXXXX</p>';
+        html+='<p >您的 IIS agent 的 License Key 已成功生成，请将此 License Key 写入到配置文件中。</p>';
+
+        html+="<h4>3、安装探针</h4>";
+        html+="<p>步骤1</p>";
+        html+="<p>步骤2</p>";
+        html+="<p>步骤3</p>";
+
+        lang_select.append(html);
+    }
+    function attack_click(attack_page) {
+
+        console.log(attack_page);
+        //let page=1;
+        if (attack_page == null || attack_page < 1) {
+            attack_page = 1;
+        }
+
+        $.ajax({
+            url: "attack/query/",
+            type: 'POST',
+            data: {"page": attack_page},
+            dataType: "json",
+            success: function (data_list) {
+                console.log(data_list);
+                let data=data_list['stack'];
+                 console.log(data);
+                let now_page=data_list['page'];
+                 let max_size=data_list['max_size'];
+                 // data = data.replace(/}{/g, "}****{").split("****");
+                 let div_container = $("#div_container");
+                 div_container.text("");
+                    let html='<div><h1 class="page-title" >攻击事件</h1>';
+                      html+='<div class="card">';
+                      html+='<div class="card-body">';
+                      html+='<table class="table table-bordered">';
+                      html+='<thead>';
+                      html+='<tr>';
+                      html+='<th>agent_id</th>';
+                      html+='<th>攻击时间</th>';
+                      html+='<th>攻击类型</th>';
+                      html+='<th>URL</th>';
+                      html+='<th>报警消息</th>';
+                      html+='<th>攻击来源</th>';
+                      html+='<th>拦截状态</th>';
+                      html+='<th>服务器类型</th>';
+                      html+='<th>操作</th>';
+
+                      html+='</tr>';
+                      html+='</thead>';
+                      html+='<tbody>';
+                      for (x in data) {
+                          console.log(data[x]);
+                          html+='<tr>';
+
+                          html+='<td >'+data[x]['agent_id']+'</td>';
+                          html+='<td>'+data[x]['event_time']+'</td>';
+                          html+='<td>'+data[x]['attack_type']+'</td>';
+                          html+='<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="'+data[x]['url']+'">'+data[x]['url']+'</td>';
+                          html+='<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="'+data[x]['plugin_message']+'">'+data[x]['plugin_message']+'</td>';
+                          html+='<td>'+data[x]['attack_source']+'</td>';
+                          html+='<td>'+data[x]['intercept_state']+'</td>';
+                          html+='<td>'+data[x]['server_type']+'</td>';
+                          //html+='<td><a class="modal-a" href="#myModal" data-toggle="modal" data-target="#myModal"  >详情</a> </td>';
+                          {#html+='<td><a class="detail-a" href="javascript:void(0)" data-name='+data[x]+' onclick="details_Click()"  >详情</a> </td>';#}
+                          let b=new Base64();
+                          let str=b.encode(JSON.stringify(data[x]));
+                          html+='<td class="detail-td"><a class="detail-a" href="javascript:void(0)" data-name="'+str +'"   >详情</a> </td>';
+                          html+='</tr>';
+                      }
+                      html+='</tbody>';
+                      html+='</table>';
+                      html+='</div>';
+                      html+='</div>';
+                      html+='</div>';
+
+                      html+='<ul role="menubar" aria-disabled="false" aria-label="Pagination" class="pagination b-pagination pagination-md justify-content-center">';
+
+                      html+='<a href="javascript:void(0);" onclick="attack_click('+(now_page-1)+')">上一页</a>';
+                      html+='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
+                      html+='<a href="javascript:void(0);">'+now_page+"/"+max_size+'</a>';
+                      html+='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
+                      html+='<a href="javascript:void(0);" onclick="attack_click('+(now_page+1)+')">下一页</a>';
+                      html+='</ul>';
+                      div_container.append(html);
+            }
+        })
+
+    }
+
+    $(document).on("click",".detail-a",function () {
+
+        let data1=$(this).attr("data-name");
+       // console.log(data)
+        let b= new Base64();
+        let data=JSON.parse(b.decode(data1)) ;
+        console.log(data);
+        $("#myModalLabel").text("");
+
+        let html='<div><h1 class="page-title" >攻击事件</h1>';
+        html+='<div class="card">';
+        html+='<div class="card-body">';
+        html+='<table class="table table-bordered">';
+        html+='<thead>';
+        html+='<tr>';
+        html+='<th>名称</th>';
+        html+='<th>值</th>';
+        html+='</tr>';
+        html+='</thead>';
+        html+='<tbody>';
+        html+='<tr><td>event_issue_id</td><td>'+data['event_issue_id']+'</td></tr>';
+        html+='<tr><td>agent_id</td><td>'+data['agent_id']+'</td></tr>';
+        html+='<tr><td>事件类型</td><td>'+data['event_type']+'</td></tr>';
+        html+='<tr><td>事件发生时间</td><td>'+data['event_time']+'</td></tr>';
+        html+='<tr><td>服务器名称</td><td>'+data['server_hostname']+'</td></tr>';
+        html+='<tr><td>event_id</td><td>'+data['event_id']+'</td></tr>';
+        html+='<tr><td>攻击类型</td><td>'+data['attack_type']+'</td></tr>';
+        html+='<tr><td>攻击参数</td><td>'+data['attack_params']+'</td></tr>';
+        html+='<tr><td>调用栈</td><td>'+data['stack_trace']+'</td></tr>';
+        html+='<tr><td>插件名称</td><td>'+data['plugin_name']+'</td></tr>';
+        html+='<tr><td>插件消息</td><td>'+data['plugin_message']+'</td></tr>';
+        html+='<tr><td>插件置信度</td><td>'+data['plugin_confidence']+'</td></tr>';
+        html+='<tr><td>是否拦截 block或log</td><td>'+data['intercept_state']+'</td></tr>';
+        html+='<tr><td>请求id</td><td>'+data['request_id']+'</td></tr>';
+        html+='<tr><td>攻击来源IP</td><td>'+data['attack_source']+'</td></tr>';
+        html+='<tr><td>被攻击目标域名</td><td>'+data['target']+'</td></tr>';
+        html+='<tr><td>被攻击目标IP</td><td>'+data['server_ip']+'</td></tr>';
+        html+='<tr><td>被攻击目标服务器类型</td><td>'+data['server_type']+'</td></tr>';
+        html+='<tr><td>被攻击目标服务器版本</td><td>'+data['server_version']+'</td></tr>';
+        html+='<tr><td>被攻击URL</td><td>'+data['url']+'</td></tr>';
+        html+='<tr><td>请求体</td><td>'+data['body']+'</td></tr>';
+        html+='<tr><td>被攻击PATH路径</td><td>'+data['path']+'</td></tr>';
+        html+='<tr><td>User-Agent</td><td>'+data['user_agent']+'</td></tr>';
+        html+='<tr><td>Referer</td><td>'+data['referer']+'</td></tr>';
+        html+='<tr><td>风险等级</td><td>'+data['threat_level']+'</td></tr>';
+        html+='<tr><td>请求方法</td><td>'+data['method']+'</td></tr>';
+        html+='<tr><td>系统用户名</td><td>'+data['system_user']+'</td></tr>';
+        html+='<tr><td>进程路径</td><td>'+data['process_path']+'</td></tr>';
+
+
+        html+='</tbody>';
+        html+='</table>';
+        html+='</div>';
+        html+='</div>';
+        html+='</div>';
+
+        $("#model-body").text("").append(html);
+        $("#myModal").modal("show");
+
+    });
+    
+
+</script>
+<script>
+    {#$(document).on("click", ".modal-a", function () {#}
+    {##}
+    {#    $("#myModal").modal("show");#}
+   {% comment %} });{% endcomment %}
+
+</script>
+
+{##}
+{#<script>#}
+{#    $.ajax({#}
+{#        url: "agent/query/",#}
+{#        type: 'GET',#}
+{#        // dataType: "json",#}
+{#        success: function (data) {#}
+{#            // console.log("sadasd");#}
+{#            // data=JSON.stringify(data);#}
+{#            // alert(data);#}
+{#            data = data.replace(/}{/g, "}****{").split("****");#}
+{##}
+{#            for (x in data) {#}
+{##}
+{#                console.log(data[x])#}
+{#            }#}
+{##}
+{#            //console.log(data);#}
+{#            // $("#div_data").text(JSON.stringify(data))#}
+{#        }#}
+{#    })#}
+{##}
+{#</script>#}
+</body>
+</html>
