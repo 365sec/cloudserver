@@ -34,6 +34,7 @@ def agent_query(request):
     max_size=(agents.objects.count()+page_size-1)/page_size
     if page>max_size:
         page=max_size
+
     agents_list=[]
     for x in result[(page-1)*page_size:(page)*page_size]:
         y=model_to_dict(x)
@@ -42,6 +43,7 @@ def agent_query(request):
         y['online'] = '在线' if y['online'] else '离线'
         y['disabled'] = '是' if y['disabled'] else '否'
 
+
         for k, v in y.items():
             if not y[k]:
                 y[k] = ''
@@ -49,11 +51,13 @@ def agent_query(request):
         y=json.dumps(y)
 
         agents_list.append(y)
+
     data={
         "agents":agents_list,
         "max_size":max_size,
         "page":page,
     }
+
     return HttpResponse(json.dumps(data),content_type='application/json')
 
 def stack_trace_query(request):
@@ -122,8 +126,8 @@ def overview_query(request):
         attrack_source_dic[str( x[0])]=x[1]
 
     attrack_source_dic=sorted(attrack_source_dic.items(),key=lambda item:item[1], reverse=True)
-    # for x in attrack_source_dic:
-    #     print (x)
+    for x in attrack_source_dic:
+        print (x)
 
 
     #天数
@@ -169,7 +173,7 @@ def overview_query(request):
     #最近警告内容
 
     recent_warning_list=[]
-    result= attack_event.objects.all()
+    result= attack_event.objects.all().order_by('-event_time')
 
     for x in result[:5]:
         if x.event_id==0:

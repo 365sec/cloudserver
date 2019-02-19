@@ -810,7 +810,7 @@
 					<div class="container">
 						<div class="row align-items-center flex-row-reverse">
 							<div class="col-auto ml-lg-auto">
-								<div class="row align-items-center">
+								<!--div class="row align-items-center">
 									<div class="col-auto">
 										<ul class="list-inline list-inline-dots mb-0">
 											<li class="list-inline-item">
@@ -824,7 +824,7 @@
 									<div class="col-auto">
 										<a href="https://github.com/baidu/openrasp" class="btn btn-outline-primary btn-sm">源代码</a>
 									</div>
-								</div>
+								</div-->
 							</div>
 							<div class="col-12 col-lg-auto mt-3 mt-lg-0 text-center">
 								Copyright © 2019
@@ -869,6 +869,7 @@
 						html += '<th>agent id</th>';
 						html += '<th>探针类型</th>';
 						html += '<th>注册IP</th>';
+						html += '<th>远程IP</th>';
 						html += '<th>操作系统</th>';
 						html += '<th>主机名</th>';
 						html += '<th>agent 版本</th>';
@@ -886,6 +887,7 @@
 							html += '<td>' + data[x]['agent_id'] + '</td>';
 							html += '<td>' + data[x]['sensor_type_id'] + '</td>';
 							html += '<td>' + data[x]['register_ip'] + '</td>';
+							html += '<td>' + data[x]['remote_ip'] + '</td>';
 							html += '<td>' + data[x]['os'] + '</td>';
 							html += '<td>' + data[x]['host_name'] + '</td>';
 							html += '<td>' + data[x]['version'] + '</td>';
@@ -983,10 +985,10 @@
                     table+=data[x]['event_time'];
                     table+='</td>';
                     table+='<td>';
-                    table+=data[x]['attack_type'];
+                    table+=data[x]['event_id'];
                     table+='</td>';
                     table+='<td>';
-                    table+=data[x]['event_id'];
+                    table+=data[x]['attack_source'];
                     table+='</td>';
                     table+='<td>';
                     table+=data[x]['plugin_message'];
@@ -1001,8 +1003,8 @@
                       <thead>
                         <tr>
                           <th>时间</th>
-                          <th>关注点</th>
-                          <th>关注内容</th>
+                          <th>事件类型</th>
+                          <th>攻击IP</th>
                           <th>描述</th>
                         </tr>
                       </thead>
@@ -1132,6 +1134,7 @@
                 let data_list_ua=[];
                 let data_list_ua_dic=[];
 
+
                 let mycharts_source=echarts.init(document.getElementById('attrack_ua_dic_div'));
                 let name;
                 let tooltip;
@@ -1184,7 +1187,7 @@
                         type: 'category',
                         data: data_list_ua
                     },
-                    series: [
+                    series : [
                         {
                             name: '次数',
                             type: 'bar',
@@ -1207,6 +1210,7 @@
                     data_list_source_dic.push(data[x][1]);
                     //data_list_source_dic.push({'name':data_list['attrack_source_dic'][x][0],'value':data_list['attrack_source_dic'][x][1]});
                 }
+
 
                 option = {
                     title: {
