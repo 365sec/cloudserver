@@ -25,7 +25,7 @@ urlpatterns = [
     # url(r'^admin/', admin.site.urls),
    # url(r'^hello/', views.hello),
     url(r'^agent/query/', views.agent_query),
-    url(r'^attack/query/', views.stack_trace_query),
+    url(r'^attack/query/', views.sttack_trace_query),
     url(r'^download', view.agent_download),
     url(r'^agentClick', view.agent_click),
     url(r'^overviewQuery', views.overview_query),

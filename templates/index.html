@@ -2,1001 +2,600 @@
 <!-- saved from url=(0024)http://127.0.0.1:8000/#/ -->
 <html lang="en">
 
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <script src="/static/js/jquery.min.js?v=2.1.4"></script>
-        <script src="/static/js/base64.js"></script>
-        <script src="/static/js/echarts.common.min.js"></script>
-        <link href="/static/css/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
-{#        <link href="/static/css/gfonts/main.css" rel="stylesheet">#}
-        <link href="/static/css/plugins/charts-c3/plugin.css" rel="stylesheet">
-        {#    <style type="text/css">.vue-loading[data-v-55c8f413]{margin:auto}</style>#}
-
-        {#    <link rel=icon href=./favicon.ico type=image/x-icon>#}
-        {#    <link rel="shortcut icon" type=image/x-icon href=./favicon.ico>#}
-        <title>国瑞信安网站防护平台</title>
-
-        <link href=/static/css/app.f0ed56399b7c53536fe0a115734a4d50.css rel=stylesheet>
-        <link href=/static/css/app-b16f1d665ca03251b414.css rel=stylesheet>
-        <link href=/static/css/gfonts/6xKydSBYKcSV-LCoeQqfX1RYOo3i54rwmRdr.ttf rel=stylesheet>
-        <link href=/static/css/gfonts/6xK3dSBYKcSV-LCoeQqfX1RYOo3qNq7g.ttf rel=stylesheet>
-        <script type="text/javascript" src="/static/js/manifest.2ae2e69a05c33dfc65f8.js"></script>
-        <script type="text/javascript" src="/static/js/vendor.4b92a4793e5e56db432c.js"></script>
-        <script type="text/javascript" src="/static/js/app.f73cd6dc69f535a33ae7.js"></script>
-		<style type="text/css">
-			.vue-loading[data-v-55c8f413] {
-				margin: auto
-			}
-		</style>
-		<style>
-			.mt-md-5,
-			.my-md-5 {
-				margin-top: 0rem !important;
-			}
-
-			a {
-				color: #458df9;
-			}
-
-			a,
-			a:active {
-				text-decoration: none;
-			}
-
-			h1,
-			h2,
-			h3,
-			h4,
-			h5,
-			h6,
-			p {
-				margin-top: 0;
-				margin-bottom: .5rem;
-			}
-
-			h5 {
-				margin-bottom: 0;
-			}
-
-			b {
-				font-weight: bolder;
-			}
-
-			.active {
-				color: red;
-			}
-
-			.detail-td a {
-				width: 50px;
-				overflow: hidden;
-				word-break: break-all;
-			}
-
-			.detail-td {
-				overflow: hidden;
-				width: 50px;
-			}
-
-			.modal-open .modal {
-				overflow-x: hidden;
-				overflow-y: hidden;
-				width: 50%;
-				margin: 20px auto;
-			}
-
-			.modal-body {
-				height: 700px;
-				overflow-y: auto;
-			}
-
-			#model-body td {
-				word-break: keep-all;
-			}
-
-			.event-detail p,
-			td {
-				word-break: break-word;
-			}
-
-			.setup .lang-selector {
-				border: 1px solid #dedede;
-				border-radius: 10px;
-				margin: 0 15px 25px 20px;
-				width: 120px;
-				height: 120px;
-				display: inline-block;
-				background: #fff;
-			}
-
-			.setup .lang-selector img {
-				width: 100px;
-				margin-top: 6px;
-				margin-left: 7px
-			}
-
-			.setup .lang-selector:hover {
-				box-shadow: 0 1px 15px 3px #dedede
-			}
-
-			.setup .active {
-				background: #f1f1f1
-			}
-
-			.setup .box {
-				padding: 5px 10px;
-				font-size: 14px;
-				color: #333;
-				margin-left: 10px
-			}
-
-			.setup .box .btn {
-				margin-left: 15px
-			}
-
-			.setup code {
-				display: inline-block;
-				border: 1px solid #dedede;
-				background-color: #f7f7f8;
-				border-radius: 3px;
-				background-clip: padding-box;
-				box-sizing: border-box;
-				color: #458df9;
-				font-size: 14px;
-				line-height: 20px;
-				min-height: 30px;
-				padding: 7px 13px 7px 10px;
-				margin-left: 10px
-			}
-
-			.setup code .span1 {
-				color: #e48d3d
-			}
-
-			.setup code .span2 {
-				color: #72a84a
-			}
-
-			.setup code .span3 {
-				color: #000
-			}
-
-			.setup .code-copy {
-				position: relative;
-				padding: 6px 35px 6px 10px
-			}
-
-			.setup .code-copy .copy-button {
-				position: absolute;
-				right: 8px;
-				top: 6px;
-				display: inline-block
-			}
-
-			.setup .code-copy .iconfont {
-				font-size: 14px;
-				color: #0f74ff;
-				cursor: pointer
-			}
-
-			.setup .code-copy .iconfont:hover {
-				color: #3687f7
-			}
-
-			.setup .code-copy .copied {
-				position: absolute;
-				left: 30px;
-				top: 2px;
-				font-size: 12px;
-				width: 3em
-			}
-
-			.setup fieldset {
-				padding: 0 20px;
-				margin-bottom: 18px;
-			}
-
-			.setup fieldset legend {
-				border-top: 1px solid #f1f1f1;
-				width: 100%;
-				font-size: 14px;
-				padding: 0px;
-				margin-bottom: 15px
-			}
-
-			.setup fieldset legend span {
-				font-size: 14px;
-				border: 2px solid #999;
-				width: 30px;
-				border-radius: 50%;
-				height: 30px;
-				display: inline-block;
-				text-align: center;
-				line-height: 27px;
-				font-weight: 700;
-				margin-right: 10px
-			}
-
-			.setup fieldset .nav-tabs {
-				border-bottom: 1px solid #dedede
-			}
-
-			.setup fieldset .nav-tabs .tabs-item {
-				margin-left: 5px;
-				background: #fff;
-				border-top-left-radius: 3px;
-				border-top-right-radius: 3px
-			}
-
-			.setup fieldset .nav-tabs .tabs-item a {
-				color: #f7f7f8!important
-			}
-
-			.setup fieldset .nav-tabs .active {
-				border: 1px solid #dedede;
-				color: #757575;
-				margin-bottom: -1px;
-				border-bottom: none
-			}
-
-			.setup fieldset .form-section {
-				margin-left: 20px
-			}
-
-			.setup fieldset .form-section .named {
-				margin-bottom: 10px
-			}
-
-			.setup fieldset .form-section .named .input-text {
-				width: 20em;
-				float: left;
-				margin-right: 10px
-			}
-
-			.setup fieldset .form-section .named .msg-error {
-				margin-left: 10px;
-				color: #fc0;
-				font-size: 14px
-			}
-
-			.setup fieldset .form-section .named .saving {
-				font-size: 14px;
-				color: #56bc76;
-				line-height: 33px
-			}
-
-			.setup fieldset .form-section .note-attention {
-				font-size: 14px;
-				color: hsla(0, 0%, 46%, .498039215686275)
-			}
-
-			.setup fieldset .form-section p {
-				margin-left: 23px;
-				margin-bottom: 8px;
-				font-size: 14px
-			}
-
-			.setup fieldset .form-section .p1 {
-				margin-left: 18px
-			}
-
-			.setup fieldset .form-section .ul-title {
-				font-weight: 700;
-				margin-top: 15px
-			}
-
-			.setup fieldset .form-section .form-ul {
-				margin: 15px 0
-			}
-
-			.setup fieldset .form-section .form-ul li h5 {
-				margin-bottom: 9px
-			}
-
-			.setup fieldset .form-section .form-ul li p {
-				margin-bottom: 9px;
-				line-height: 24px
-			}
-
-			.setup fieldset .form-section code {
-				margin-bottom: 10px
-			}
-
-			.setup fieldset .form-section img {
-				max-width: 100%;
-				margin-bottom: 10px
-			}
-
-			.setup .help-part h5 {
-				margin: 20px 0 10px
-			}
-
-			.setup .help-part ul li {
-				line-height: 24px
-			}
-
-			.setup .javaa {
-				margin-left: 20px;
-				padding: 10px;
-				font-size: 14px;
-				background-color: #f4fdff;
-				border: 1px solid #cfebf1;
-				margin-bottom: 35px
-			}
-
-			.setup .javaa .p1 {
-				margin-bottom: 10px
-			}
-
-			.setup .javaa .title {
-				font-family: 微软雅黑 Bold, 微软雅黑 Regular, 微软雅黑;
-				color: #797979
-			}
-
-			.setup .padding-20 {
-				font-size: 16px;
-				color: #757575;
-				line-height: 22px;
-				font-weight: 400;
-			}
-
-			.setup .bottom1 {
-				margin-bottom: 250px
-			}
-
-			.setup .code2 {
-				margin-left: 23px!important
-			}
-
-			.setup .code3 {
-				margin-left: 30px!important;
-				background-color: #fff!important
-			}
-
-			.setup .p2 {
-				margin-top: 15px
-			}
-
-			.setup .div2 {
-				background-color: #f7f7f8;
-				margin: 15px 20px;
-				padding: 15px 20px 15px 0
-			}
-
-			.setup .div2 .code3 {
-				margin-left: 43px!important
-			}
-
-			.setup .div3 {
-				margin-bottom: 12px
-			}
-
-			.setup .div4 {
-				margin-left: 10px
-			}
-
-			.setup .div4 .p4 {
-				margin-left: 45px!important
-			}
-
-			.setup .div5 {
-				margin-left: 5px
-			}
-
-			.setup .div6 {
-				width: 60%!important;
-				margin-top: 10px
-			}
-
-			.setup .p5 {
-				margin-left: 15px!important
-			}
-
-			.setup .p6 {
-				margin-left: 45px
-			}
-
-			.setup .form2 {
-				margin-left: 10px!important
-			}
-
-			.setup .form2 .form-section p {
-				margin-left: 12px!important
-			}
-
-			.setup .form3 {
-				margin-top: 10px;
-				margin-left: 5px!important
-			}
-
-			.setup .agentsImg {
-				height: 100%;
-				width: 100%;
-				display: block
-			}
-
-			.setup .new-user {
-				background: #f1f1f1;
-				border: 1px solid #eaeaea;
-				margin: 10px 0;
-				padding: 10px;
-				height: 98px
-			}
-
-			.setup .QR-code {
-				position: relative
-			}
-
-			.setup .QR-code img {
-				position: absolute;
-				right: 30px;
-				bottom: 20px;
-				display: none
-			}
-
-			.setup .QR-code:hover img {
-				display: block
-			}
-
-			.setup .agentsjava {
-				background: url(/static/img/java.jpg) 50% 50% no-repeat;
-				background-size: contain;
-			}
-
-			.setup .agentsdotnet {
-				background: url(/static/img/IIS.png) 50% 50% no-repeat;
-				background-size: 90%;
-			}
-
-			.btn-primary {
-				color: #fff;
-				border-color: #458df9;
-				background-color: #458df9;
-			}
-
-            #div_container>div{
-                display: none;
-            }
-            #div_container>div.active{
-                display: block;
-            }
-
-            .my-3.my-md-5.setup{
-               overflow-y: scroll;
-    /* height: calc(100% - 200px); */
-    position: absolute;
-    top: 91px;
-    left: 0;
-    right: 0;
-    bottom: 40px;
-    margin-bottom: 0px!important;
-    padding-bottom: 10px;
-    box-sizing: border-box;
-            }
-            #div_container{
-                height: 100%;
-            }
-            .footer{
-                height: 67px;
-                position: fixed;
-                left: 0;
-                right: 0;
-                bottom: 0;
-            }
-
-            #div_container>div:nth-child(1){
-                display: block;
-            }
-			#overviewDiv{
-
-            }
-            {##attrack_source_dic_div{#}
-            {#    width:100%;#}
-            {#    height: 500px;#}
-            {#}#}
-            {##attrack_time_dic_div{#}
-            {#    width:100%;#}
-            {#    height: 500px;#}
-            {#}#}
-            {##attrack_ua_dic_div{#}
-            {#    width:100%;#}
-            {#    height: 800px;#}
-            {#}#}
-		</style>
-	</head>
-
-	<body class="">
-		<div id="app"></div>
-
-		<div id="main" class="page">
-			<div style="min-height: calc(100vh - 67px);position: relative;">
-				<div>
-					<div class="header py-4">
-						<div class="container">
-							<div class="d-flex">
-								<!--div class="dropdown">
-									<a href="javascript:" data-toggle="dropdown" class="nav-link pr-0 leading-none" style="padding-left: 0px;">
-										<span class="ml-2 d-none d-lg-block"><span class="text-muted" style="margin-left: -2px;">
-                当前应用
-                <i class="fa fa-caret-down"></i></span> <small class="text-default d-block mt-1">
-                PHP 示例应用
-              </small></span>
-									</a>
-									<div class="dropdown-menu dropdown-menu-left dropdown-menu-arrow">
-										<a href="javascript:" class="dropdown-item"><i class="dropdown-icon fe fe-lock"></i> PHP 示例应用 ( 1bba7050291352b1a277078ba1c2871a20f8d4fe )
-										</a>
-										<div class="dropdown-divider"></div>
-										<a href="http://127.0.0.1:8000/#" class="dropdown-item"><i class="dropdown-icon fe fe-settings"></i> 应用管理
-										</a>
-									</div>
-								</div-->
-								<div class="d-flex order-lg-2 ml-auto">
-{#									<div class="nav-item d-none d-md-flex">#}
-{#										<a href="javascript:" class="btn btn-sm btn-outline-primary">#}
-{#											添加主机#}
-{#										</a>#}
-{#									</div>#}
-									<div class="dropdown">
-										<a href="javascript:" data-toggle="dropdown" class="nav-link pr-0 leading-none"><span class="ml-2 d-none d-lg-block"><span class="text-default">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="/static/js/jquery-3.2.1.min.js"></script>
+    <script src="/static/js/base64.js"></script>
+
+    <script src="/static/js/echarts.common.min.js"></script>
+    <link href="/static/css/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    {#        <link href="/static/css/gfonts/main.css" rel="stylesheet">#}
+    <link href="/static/css/plugins/charts-c3/plugin.css" rel="stylesheet">
+    {#    <style type="text/css">.vue-loading[data-v-55c8f413]{margin:auto}</style>#}
+
+    {#    <link rel=icon href=./favicon.ico type=image/x-icon>#}
+    {#    <link rel="shortcut icon" type=image/x-icon href=./favicon.ico>#}
+    <title>国瑞信安网站防护平台</title>
+
+    <link href=/static/css/app.f0ed56399b7c53536fe0a115734a4d50.css rel=stylesheet>
+    <link href=/static/css/app-b16f1d665ca03251b414.css rel=stylesheet>
+    <link href=/static/css/gfonts/6xKydSBYKcSV-LCoeQqfX1RYOo3i54rwmRdr.ttf rel=stylesheet>
+    <link href=/static/css/gfonts/6xK3dSBYKcSV-LCoeQqfX1RYOo3qNq7g.ttf rel=stylesheet>
+    <link href=/static/css/main.css rel=stylesheet>
+    <script type="text/javascript" src="/static/js/manifest.2ae2e69a05c33dfc65f8.js"></script>
+    <script type="text/javascript" src="/static/js/vendor.4b92a4793e5e56db432c.js"></script>
+    <script type="text/javascript" src="/static/js/app.f73cd6dc69f535a33ae7.js"></script>
+
+
+    <link href=/static/css/daterangepicker.css rel=stylesheet>
+    <script src="/static/js/time/bootstrap.js"></script>
+    <script src="/static/js/time/moment.js"></script>
+    <script src="/static/js/time/daterangepicker.js"></script>
+    <style type="text/css">
+        .vue-loading[data-v-55c8f413] {
+            margin: auto
+        }
+    </style>
+    <style>
+        .mt-md-5,
+        .my-md-5 {
+            margin-top: 0rem !important;
+        }
+
+    </style>
+
+</head>
+
+<body class="">
+<div id="app"></div>
+
+<div id="main" class="page">
+    <div style="min-height: calc(100vh - 67px);position: relative;">
+        <div>
+            <div class="header py-4">
+                <div class="container">
+                    <div class="d-flex">
+                        <!--div class="dropdown">
+                            <a href="javascript:" data-toggle="dropdown" class="nav-link pr-0 leading-none" style="padding-left: 0px;">
+                                <span class="ml-2 d-none d-lg-block"><span class="text-muted" style="margin-left: -2px;">
+        当前应用
+        <i class="fa fa-caret-down"></i></span> <small class="text-default d-block mt-1">
+        PHP 示例应用
+      </small></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-left dropdown-menu-arrow">
+                                <a href="javascript:" class="dropdown-item"><i class="dropdown-icon fe fe-lock"></i> PHP 示例应用 ( 1bba7050291352b1a277078ba1c2871a20f8d4fe )
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a href="http://127.0.0.1:8000/#" class="dropdown-item"><i class="dropdown-icon fe fe-settings"></i> 应用管理
+                                </a>
+                            </div>
+                        </div-->
+                        <div class="d-flex order-lg-2 ml-auto">
+                            {#									<div class="nav-item d-none d-md-flex">#}
+                            {#										<a href="javascript:" class="btn btn-sm btn-outline-primary">#}
+                            {#											添加主机#}
+                            {#										</a>#}
+                            {#									</div>#}
+                            <div class="dropdown">
+                                <a href="javascript:" data-toggle="dropdown" class="nav-link pr-0 leading-none"><span
+                                        class="ml-2 d-none d-lg-block"><span class="text-default">
                   openrasp <i class="fa fa-caret-down"></i></span> <small class="text-muted d-block mt-1">
                   管理员权限
                 </small></span>
-										</a>
-										<div x-placement="bottom-end" class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-											<a href="javascript:" class="dropdown-item"><i class="dropdown-icon fe fe-log-out"></i> 退出登录
-											</a>
-										</div>
-									</div>
-								</div>
-								<a href="http://127.0.0.1:8000/#" data-toggle="collapse" data-target="#headerMenuCollapse" class="header-toggler d-lg-none ml-3 ml-lg-0"><span class="header-toggler-icon"></span></a>
-							</div>
-						</div>
-					</div>
-					<div id="headerMenuCollapse" class="header collapse d-lg-flex p-0">
-						<div class="container">
-							<div class="row align-items-center">
-								<div class="col-lg order-lg-first">
-									<ul class="nav nav-tabs border-0 flex-column flex-lg-row">
-										<li class="nav-item">
-											<a href="javascript:void(0)" class="nav-link" data-value="overview"><i class="fe fe-home"></i> 安全总览
-											</a>
-										</li>
-										<li class="nav-item">
-											<a href="javascript:void(0)" class="nav-link" data-value="attack"><i class="fe fe-bell"></i>攻击事件</a>
-										</li>
-{#										<li class="nav-item dropdown">#}
-{#											<a href="http://127.0.0.1:8000/#" class="nav-link"><i class="fe fe-check-square"></i>安全基线</a>#}
-{#										</li>#}
-										<li class="nav-item">
-											<a href="javascript:void(0)" class="nav-link" data-value="agent"><i class="fe fe-cloud"></i>探针管理</a>
-										</li>
-{#										<li class="nav-item">#}
-{#											<a href="http://127.0.0.1:8000/#" class="nav-link"><i class="fe fe-zap"></i>插件管理</a>#}
-{#										</li>#}
-										<li class="nav-item">
-											<a href="javascript:void(0)" class="nav-link" data-value="download"><i class="fe fe-download"></i>探针下载</a>
-										</li>
-{#										<li class="nav-item">#}
-{#											<a href="http://127.0.0.1:8000/#" class="nav-link"><i class="fe fe-user-check"></i>操作审计</a>#}
-{#										</li>#}
-{#										<li class="nav-item dropdown">#}
-{#											<a href="http://127.0.0.1:8000/#" class="nav-link"><i class="fe fe-settings"></i>系统设置</a>#}
-{#										</li>#}
-										<!--li class="nav-item"><a href="https://rasp.baidu.com/doc" target="_blank" class="nav-link"><i class="fe fe-file-text"></i>帮助文档</a></li-->
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>
-
-				</div>
-
-				<div class="my-3 my-md-5 setup" style="margin-bottom: -50px;">
-					<div class="container" id="div_container">
-                        <div  id="overviewDiv" class="overviewDiv">
-                            <div class="row">
-
-                            </div>
-                            <div class="row">
-                                <div class="col-4">
-                                    <div id="attack_type_dic_div" style="width: 100%;height: 300px"></div>
-
-                                </div>
-                                <div class="col-4">
-                                    <div id="attrack_source_dic_div" style="width: 100%;height: 100%"></div>
-                                </div>
-                                <div class="col-4">
-                                    <div id="attrack_ua_dic_div" style="width: 100%;height: 300px"></div>
+                                </a>
+                                <div x-placement="bottom-end"
+                                     class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                    <a href="javascript:" class="dropdown-item"><i
+                                            class="dropdown-icon fe fe-log-out"></i> 退出登录
+                                    </a>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <div id="attrack_time_dic_div" style="width: 100%;height: 500px"></div>
-                                </div>
-                                <div class="col-6">
-                                   <div id="attrack_recent_warning_dic_div">
+                        </div>
+                        <a href="http://127.0.0.1:8000/#" data-toggle="collapse" data-target="#headerMenuCollapse"
+                           class="header-toggler d-lg-none ml-3 ml-lg-0"><span class="header-toggler-icon"></span></a>
+                    </div>
+                </div>
+            </div>
+            <div id="headerMenuCollapse" class="header collapse d-lg-flex p-0">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg order-lg-first">
+                            <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
+                                <li class="nav-item">
+                                    <a href="javascript:void(0)" class="nav-link active" data-value="overview"><i
+                                            class="fe fe-home"></i> 安全总览
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="javascript:void(0)" class="nav-link" data-value="attack"><i
+                                            class="fe fe-bell"></i>攻击事件</a>
+                                </li>
+                                {#										<li class="nav-item dropdown">#}
+                                {#											<a href="http://127.0.0.1:8000/#" class="nav-link"><i class="fe fe-check-square"></i>安全基线</a>#}
+                                {#										</li>#}
+                                <li class="nav-item">
+                                    <a href="javascript:void(0)" class="nav-link" data-value="agent"><i
+                                            class="fe fe-cloud"></i>探针管理</a>
+                                </li>
+                                {#										<li class="nav-item">#}
+                                {#											<a href="http://127.0.0.1:8000/#" class="nav-link"><i class="fe fe-zap"></i>插件管理</a>#}
+                                {#										</li>#}
+                                <li class="nav-item">
+                                    <a href="javascript:void(0)" class="nav-link" data-value="download"><i
+                                            class="fe fe-download"></i>探针下载</a>
+                                </li>
+                                {#										<li class="nav-item">#}
+                                {#											<a href="http://127.0.0.1:8000/#" class="nav-link"><i class="fe fe-user-check"></i>操作审计</a>#}
+                                {#										</li>#}
+                                {#										<li class="nav-item dropdown">#}
+                                {#											<a href="http://127.0.0.1:8000/#" class="nav-link"><i class="fe fe-settings"></i>系统设置</a>#}
+                                {#										</li>#}
+                                <!--li class="nav-item"><a href="https://rasp.baidu.com/doc" target="_blank" class="nav-link"><i class="fe fe-file-text"></i>帮助文档</a></li-->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                                   </div>
+        </div>
 
-                                </div>
-
-                            </div>
-
-
-
+        <div class="my-3 my-md-5 setup" style="margin-bottom: -50px;">
+            <div class="container" id="div_container">
+                <div id="overviewDiv" class="overviewDiv">
+                    <div class="row">
+                        <div class="col-4">
+                            <div id="attack_type_dic_div"></div>
 
                         </div>
-                        <div class="attackDiv"></div>
-                        <div class="agentDiv"></div>
-						<div class="tanzhen">
-							<h5 class="padding-20">请选择探针类型</h5>
-							<div>
-								<div class="lang-selector">
-									<a href="javascript:void(0)" onclick="java_click()" class="agentsImg agentsjava"></a>
-								</div>
-								<div class="lang-selector">
-									<a href="javascript:void(0)" onclick="iis_click()" class="agentsImg agentsdotnet"></a>
-								</div>
+                        <div class="col-4">
+                            <div id="attrack_source_dic_div"></div>
+                        </div>
+                        <div class="col-4">
+                            <div id="attrack_ua_dic_div"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div id="attrack_time_dic_div"></div>
+                        </div>
+                        <div class="col-6">
+                            <div id="attrack_recent_warning_dic_div">
+                                <!--<h4>最近告警内容</h4>-->
+                            </div>
 
-							</div>
-							<div>
-                                <!--    java探针     -->
-								<div class="bottom1 javaDiv">
-									<h3 class="padding-20">安装&nbsp; <b>JAVA</b> &nbsp;探针</h3>
-									<div class="javaa">
-										<p class="p1"><span class="title"><b>开始安装之前，检查你的环境，确保以下条件：</b></span></p>
-										<p><span>1. 检查Agent_Server端所在系统与Agent端所在系统之间网络环境可以相互连接。<!-- /react-text --></span></p>
-										<p><span>2. 检查Agent端所在环境是否在我们的支持列表中。<!-- /react-text --></span></p>
-									</div>
-									<fieldset>
-										<legend><span>1</span> 获取授权编号
-										</legend>
-										<div class="form-section">
+                        </div>
 
-                                            <!--code class="code-copy code2" >
-                                            <span class="clipboard">
-                                                <span class="copy-btn" data-clipboard-target="#license">
-                                                    <a data-tip="复制" class="icon copy-button" href="javascript:;"></a>
-                                                </span>
-                                            </span>
-                                            </code-->
-											<p class="note">
-                                                您的授权编号(Agent ID)已成功生成，请将agent_id: <span style="color:#F00" id="java_guid"></span>以及agent_server地址<span style="color:#F00" id="agent_server_addr1">172.16.39.22</span>写入到rasp.properties中。
-                                            </p>
-										</div>
-									</fieldset>
-									<fieldset>
-										<legend><span>2</span> 下载探针
-										</legend>
-										<div class="form-section">
-											<p>提供的探针版本</p>
-											<div class="tab-nav">
-												<div class="widget-content">
-													<div class="pure-g">
-														<div class="pure-u-1-2 div6">
-															<div class="box">
-																下载：
-																<a id="java_a_download_url" href="#" class="btn btn-primary" style="color: white">JAVA Agent</a>
-															</div>
+                    </div>
 
-															<div class="box"><span>wget: </span><code class="code-copy"><div id="java_wget_download_url">12132</div>
-																<span class="clipboard"><span class="hide" id="JAVA_v2url_linux">https://xxxxxxxxxxx</span><span class="copy-btn" data-clipboard-target="#JAVA_v2url_linux"><a data-tip="复制" class="icon copy-button" href="javascript:;"></a></span></span></code></div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</fieldset>
-									<fieldset>
-										<legend><span>3</span> 安装探针
-										</legend>
-										<div class="form-section">
-											<div class="div3">
-												<p>
-													1.运行探针
-												</p>
-												<div class="div5">
-													<p>
-														<!-- react-text: 171 -->&nbsp;&nbsp; 切换到安装包所在目录，解压安装包到应用服务器目录下，如下：
-														<span class="note-attention"></span></p><code class="code3">
-                                                    <span class="span1">java</span><!-- react-text: 176 -->  <!-- /react-text -->
-                                                    <span class="span2">-jar RaspInstall.jar -install &lt;path/to/server_home&gt;</span></code></div>
-											</div>
-											<p>
-												2.重启 Tomcat/JBoss/Jetty/SpringBoot 应用服务器
-											</p>
 
-										</div>
-									</fieldset>
+                </div>
+                <div class="attackDiv">
+                    <h1 class="page-title">攻击事件</h1>
+                    <div id="time" class="col-md-2 col-md-offset-2 demo">
+                        <div class="btnGroup">
 
-								</div>
+                        </div>
+                        <div>
+                            <input type="text" id="attack_time" placeholder="日期选择" class="form-control">
+                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                        </div>
 
-                                <!--    iis探针     -->
-                                <div class="bottom1 IISDiv"><h3 class="padding-20">安装&nbsp; <b>IIS</b> &nbsp;探针</h3>
-                                    <div class="javaa">
-                                        <p class="p1"><span class="title"><b>开始安装之前，检查你的环境，确保以下条件：</b></span></p>
-                                        <p><span>1. 检查Agent_Server端所在系统与Agent端所在系统之间网络环境可以相互连接。<!-- /react-text --></span></p>
-                                        <p><span>2. 检查Agent端所在环境是否在我们的支持列表中目前只支持IIS 7.0~10.0之间的版本。<!-- /react-text --></span></p>
-                                    </div>
-                                    <fieldset>
-                                        <legend><span>1</span> 获取授权编号
-                                        </legend>
-                                        <div class="form-section">
-                                            <!--code class="code-copy code2">
-                                                <div id="iis_guid">
-                                                </div><span class="clipboard">
-                                                <span class="hide" id="license"></span>
-                                                <span class="copy-btn" data-clipboard-target="#license">
-                                                    <a data-tip="复制" class="icon copy-button" href="javascript:;"></a>
-                                                </span>
-                                                </span>
-                                            </code-->
-                                            <p class="note">
-                                                您的授权编号(Agent ID)已成功生成，请将agent_id: <span style="color:#F00" id="iis_guid"></span>以及agent_server地址<span style="color:#F00" id="agent_server_addr2">172.16.39.22</span>写入到appsensor.ini中。
-                                            </p>
-                                        </div>
-                                    </fieldset>
-                                    <fieldset>
-                                        <legend><span>2</span> 下载探针
-                                        </legend>
-                                        <div class="form-section">
-                                            <p>提供的探针版本</p>
-                                            <div class="tab-nav">
-                                                <div class="widget-content">
-                                                    <div class="pure-g">
-                                                        <div class="pure-u-1-2 div6">
-                                                            <div class="box">
-                                                                下载：
-                                                                <a id="iis_a_download_url" href="#" class="btn btn-primary" style="color: white">IIS Agent</a>
-                                                            </div>
-                                                            <div class="box"><span>wget: </span><code class="code-copy"><div id="iis_wget_download_url">#</div>
-                                                                <span class="clipboard"><span class="hide" id="JAVA_v2url_linux">https://xxxxxxxxxxx</span><span class="copy-btn" data-clipboard-target="#JAVA_v2url_linux"><a data-tip="复制" class="icon copy-button" href="javascript:;"></a></span></span></code></div>
-                                                        </div>
+                    </div>
+                </div>
+                <div class="agentDiv"></div>
+                <div class="tanzhen">
+                    <h5 class="padding-20">请选择探针类型</h5>
+                    <div>
+                        <div class="lang-selector">
+                            <a href="javascript:void(0)" onclick="java_click()" class="agentsImg agentsjava"></a>
+                        </div>
+                        <div class="lang-selector">
+                            <a href="javascript:void(0)" onclick="iis_click()" class="agentsImg agentsdotnet"></a>
+                        </div>
+
+                    </div>
+                    <div>
+                        <!--    java探针     -->
+                        <div class="bottom1 javaDiv">
+                            <h3 class="padding-20">安装&nbsp; <b>JAVA</b> &nbsp;探针</h3>
+                            <div class="javaa">
+                                <p class="p1"><span class="title"><b>开始安装之前，检查你的环境，确保以下条件：</b></span></p>
+                                <p><span>1. 检查Agent_Server端所在系统与Agent端所在系统之间网络环境可以相互连接。<!-- /react-text --></span></p>
+                                <p><span>2. 检查Agent端所在环境是否在我们的支持列表中。<!-- /react-text --></span></p>
+                            </div>
+                            <fieldset>
+                                <legend><span>1</span> 获取授权编号
+                                </legend>
+                                <div class="form-section">
+
+                                    <!--code class="code-copy code2" >
+                                    <span class="clipboard">
+                                        <span class="copy-btn" data-clipboard-target="#license">
+                                            <a data-tip="复制" class="icon copy-button" href="javascript:;"></a>
+                                        </span>
+                                    </span>
+                                    </code-->
+                                    <p class="note">
+                                        您的授权编号(Agent ID)已成功生成，请将agent_id: <span style="color:#F00"
+                                                                                id="java_guid"></span>以及agent_server地址<span
+                                            style="color:#F00" id="agent_server_addr1">172.16.39.22</span>写入到rasp.properties中。
+                                    </p>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <legend><span>2</span> 下载探针
+                                </legend>
+                                <div class="form-section">
+                                    <p>提供的探针版本</p>
+                                    <div class="tab-nav">
+                                        <div class="widget-content">
+                                            <div class="pure-g">
+                                                <div class="pure-u-1-2 div6">
+                                                    <div class="box">
+                                                        下载：
+                                                        <a id="java_a_download_url" href="#" class="btn btn-primary"
+                                                           style="color: white">JAVA Agent</a>
                                                     </div>
+
+                                                    <div class="box"><span>wget: </span><code class="code-copy">
+                                                        <div id="java_wget_download_url">12132</div>
+                                                        <span class="clipboard"><span class="hide"
+                                                                                      id="JAVA_v2url_linux">https://xxxxxxxxxxx</span><span
+                                                                class="copy-btn"
+                                                                data-clipboard-target="#JAVA_v2url_linux"><a
+                                                                data-tip="复制" class="icon copy-button"
+                                                                href="javascript:;"></a></span></span></code></div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </fieldset>
-                                    <fieldset>
-                                        <legend><span>3</span> 安装探针
-                                        </legend>
-                                        <div class="form-section">
-                                            <div class="div3">
-                                                <p>
-                                                    1.安装vc环境
-                                                </p>
-                                                <div class="div5">
-                                                    <p>
-                                                        <!-- react-text: 171 -->&nbsp;&nbsp; 切换到安装包所在目录，安装vc_redist.x86.exe及vc_redist.x64.exe
-                                            </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <legend><span>3</span> 安装探针
+                                </legend>
+                                <div class="form-section">
+                                    <div class="div3">
+                                        <p>
+                                            1.运行探针
+                                        </p>
+                                        <div class="div5">
                                             <p>
-                                                2.安装IIS探针
-                                            </p>
-                                            <div class="div5">
-                                                <p>
-                                               &nbsp;
-                                                    以管理员权限执行install.bat脚本。
-                                                </p>
-                                                <!--code class="code3"><span class="span1">java</span-->
-                                                 <!-- /react-text --><!-- span class="span2">-jar oneapm.jar install</span></code -->
-                                            </div>
+                                                <!-- react-text: 171 -->&nbsp;&nbsp; 切换到安装包所在目录，解压安装包到应用服务器目录下，如下：
+                                                <span class="note-attention"></span></p><code class="code3">
+                                            <span class="span1">java</span><!-- react-text: 176 -->
+                                            <!-- /react-text -->
+                                            <span class="span2">-jar RaspInstall.jar -install &lt;path/to/server_home&gt;</span></code>
                                         </div>
-                                    </fieldset>
+                                    </div>
+                                    <p>
+                                        2.重启 Tomcat/JBoss/Jetty/SpringBoot 应用服务器
+                                    </p>
 
                                 </div>
-							</div>
-						</div>
-					</div>
-				</div>
+                            </fieldset>
 
-				<!-- 模态框（Modal） -->
-				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-								<h4 class="modal-title" id="myModalLabel"></h4>
-							</div>
-							<div id="model-body" class="modal-body"></div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        </div>
 
-							</div>
-						</div>
-						<!-- /.modal-content -->
-					</div>
-					<!-- /.modal -->
-				</div>
-				<footer class="footer" style="height: 67px;">
-					<div class="container">
-						<div class="row align-items-center flex-row-reverse">
-							<div class="col-auto ml-lg-auto">
-								<div class="row align-items-center">
-									<div class="col-auto">
-										<ul class="list-inline list-inline-dots mb-0">
-											<li class="list-inline-item">
-												<a href="https://rasp.baidu.com/" target="_blank">官方网站</a>
-											</li>
-											<li class="list-inline-item">
-												<a href="https://rasp.baidu.com/#section-books" target="_blank">最佳实践</a>
-											</li>
-										</ul>
-									</div>
-									<div class="col-auto">
-										<a href="https://github.com/baidu/openrasp" class="btn btn-outline-primary btn-sm">源代码</a>
-									</div>
-								</div>
-							</div>
-							<div class="col-12 col-lg-auto mt-3 mt-lg-0 text-center">
-								Copyright © 2019
-								<a href="http://www.365sec.com/" target="_blank">365sec Inc</a><!--，本页面基于
+                        <!--    iis探针     -->
+                        <div class="bottom1 IISDiv"><h3 class="padding-20">安装&nbsp; <b>IIS</b> &nbsp;探针</h3>
+                            <div class="javaa">
+                                <p class="p1"><span class="title"><b>开始安装之前，检查你的环境，确保以下条件：</b></span></p>
+                                <p><span>1. 检查Agent_Server端所在系统与Agent端所在系统之间网络环境可以相互连接。<!-- /react-text --></span></p>
+                                <p><span>2. 检查Agent端所在环境是否在我们的支持列表中目前只支持IIS 7.0~10.0之间的版本。<!-- /react-text --></span>
+                                </p>
+                            </div>
+                            <fieldset>
+                                <legend><span>1</span> 获取授权编号
+                                </legend>
+                                <div class="form-section">
+                                    <!--code class="code-copy code2">
+                                        <div id="iis_guid">
+                                        </div><span class="clipboard">
+                                        <span class="hide" id="license"></span>
+                                        <span class="copy-btn" data-clipboard-target="#license">
+                                            <a data-tip="复制" class="icon copy-button" href="javascript:;"></a>
+                                        </span>
+                                        </span>
+                                    </code-->
+                                    <p class="note">
+                                        您的授权编号(Agent ID)已成功生成，请将agent_id: <span style="color:#F00" id="iis_guid"></span>以及agent_server地址<span
+                                            style="color:#F00" id="agent_server_addr2">172.16.39.22</span>写入到appsensor.ini中。
+                                    </p>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <legend><span>2</span> 下载探针
+                                </legend>
+                                <div class="form-section">
+                                    <p>提供的探针版本</p>
+                                    <div class="tab-nav">
+                                        <div class="widget-content">
+                                            <div class="pure-g">
+                                                <div class="pure-u-1-2 div6">
+                                                    <div class="box">
+                                                        下载：
+                                                        <a id="iis_a_download_url" href="#" class="btn btn-primary"
+                                                           style="color: white">IIS Agent</a>
+                                                    </div>
+                                                    <div class="box"><span>wget: </span><code class="code-copy">
+                                                        <div id="iis_wget_download_url">#</div>
+                                                        <span class="clipboard"><span class="hide"
+                                                                                      id="JAVA_v2url_linux">https://xxxxxxxxxxx</span><span
+                                                                class="copy-btn"
+                                                                data-clipboard-target="#JAVA_v2url_linux"><a
+                                                                data-tip="复制" class="icon copy-button"
+                                                                href="javascript:;"></a></span></span></code></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <legend><span>3</span> 安装探针
+                                </legend>
+                                <div class="form-section">
+                                    <div class="div3">
+                                        <p>
+                                            1.安装vc环境
+                                        </p>
+                                        <div class="div5">
+                                            <p>
+                                                <!-- react-text: 171 -->&nbsp;&nbsp;
+                                                切换到安装包所在目录，安装vc_redist.x86.exe及vc_redist.x64.exe
+                                        </div>
+                                        <p>
+                                            2.安装IIS探针
+                                        </p>
+                                        <div class="div5">
+                                            <p>
+                                                &nbsp;
+                                                以管理员权限执行install.bat脚本。
+                                            </p>
+                                            <!--code class="code3"><span class="span1">java</span-->
+                                            <!-- /react-text -->
+                                            <!-- span class="span2">-jar oneapm.jar install</span></code -->
+                                        </div>
+                                    </div>
+                            </fieldset>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 模态框（Modal） -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        <h4 class="modal-title" id="myModalLabel">攻击事件</h4>
+                    </div>
+                    <div id="model-body" class="modal-body"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal -->
+        </div>
+        <footer class="footer">
+            <div class="container">
+                <div class="row align-items-center flex-row-reverse">
+                    <div class="col-auto ml-lg-auto">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <ul class="list-inline list-inline-dots mb-0">
+                                    <li class="list-inline-item">
+                                        <a href="https://rasp.baidu.com/" target="_blank">官方网站</a>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <a href="https://rasp.baidu.com/#section-books" target="_blank">最佳实践</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-auto">
+                                <a href="https://github.com/baidu/openrasp"
+                                   class="btn btn-outline-primary btn-sm">源代码</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-auto mt-3 mt-lg-0 text-center">
+                        Copyright © 2019
+                        <a href="http://www.365sec.com/" target="_blank">365sec Inc</a><!--，本页面基于
 								<a href="https://github.com/tabler/tabler" target="_blank">Tabler</a> 开源模板开发-->
-							</div>
-						</div>
-					</div>
-				</footer>
-			</div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
 
-		</div>
+</div>
 
-		<script>
-			function agent_click(page) {
-				console.log(page);
-				//let page=1;
-				if(page == null || page < 1) {
-					page = 1;
-				}
-				$(this).addClass("active router-link-active").siblings().removeClass("active router-link-active");
-				$.ajax({
-					url: "agent/query/",
-					type: 'POST',
-					data: {
-						"page": page
-					},
-					//dataType: "json",
-					success: function(data_list) {
-						data = data_list['agents'];
-						let now_page = data_list['page'];
-						let max_size = data_list['max_size'];
-						// data = data.replace(/}{/g, "}****{").split("****");
-						let div_container = $(".agentDiv");
-						div_container.text("");
-						let html = '<div><h1 class="page-title" >探针管理</h1>';
-						html += '<div class="card">';
-						html += '<div class="card-body">';
-						html += '<table class="table table-bordered">';
-						html += '<thead>';
-						html += '<tr>';
-						html += '<th>agent id</th>';
-						html += '<th>探针类型</th>';
-						html += '<th>注册IP</th>';
-						html += '<th>操作系统</th>';
-						html += '<th>主机名</th>';
-						html += '<th>agent 版本</th>';
-						html += '<th>开发语言</th>';
-						html += '<th>服务器类型</th>';
-						html += '<th>服务器版本</th>';
-						html += '<th>是否在线</th>';
-						html += '<th>是否禁用该探针</th>';
-						html += '</tr>';
-						html += '</thead>';
-						html += '<tbody>';
-						for(x in data) {
-							html += '<tr>';
-							data[x] = JSON.parse(data[x]);
-							html += '<td>' + data[x]['agent_id'] + '</td>';
-							html += '<td>' + data[x]['sensor_type_id'] + '</td>';
-							html += '<td>' + data[x]['register_ip'] + '</td>';
-							html += '<td>' + data[x]['os'] + '</td>';
-							html += '<td>' + data[x]['host_name'] + '</td>';
-							html += '<td>' + data[x]['version'] + '</td>';
-							html += '<td>' + data[x]['language'] + '</td>';
-							html += '<td>' + data[x]['server_type'] + '</td>';
-							html += '<td>' + data[x]['server_version'] + '</td>';
-							html += '<td>' + data[x]['online'] + '</td>';
-							html += '<td>' + data[x]['disabled'] + '</td>';
-							html += '</tr>';
-						}
-						html += '</tbody>';
-						html += '</table>';
-						html += '</div>';
-						html += '</div>';
-						html += '</div>';
+<script>
+    // $().readOnly()
 
-						html += '<ul role="menubar" aria-disabled="false" aria-label="Pagination" class="pagination b-pagination pagination-md justify-content-center">';
+    /* $("select#status").change(function(){
+         console.log($(this).val());
+     });*/
+    window.onload = overview_click;
 
-						html += '<a href="javascript:void(0);" onclick="agent_click(' + (now_page - 1) + ')">上一页</a>';
-						html += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
-						html += '<a href="javascript:void(0);">' + now_page + "/" + max_size + '</a>';
-						html += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
-						html += '<a href="javascript:void(0);" onclick="agent_click(' + (now_page + 1) + ')">下一页</a>';
-						html += '</ul>';
-						div_container.append(html);
-					}
-				});
-                $(".agentDiv").show().siblings().hide();
-			}
-
-			$(document).on("click", ".nav.nav-tabs li>a", function() {
-				$(this).addClass("active router-link-active").parent().siblings().children().removeClass("active router-link-active");
-				let value = $(this).attr("data-value");
-				console.log(value);
-				switch(value) {
-					case "agent":
-						agent_click(1);
-						break;
-					case "attack":
-						attack_click(1);
-						break;
-					case "download":
-						download_click(1);
-						break;
-                    case "overview":
-                        overview_click();
-                        break;
-					default:
-				}
-			});
-
-            function overview_click() {
-
-                $.ajax({
-                    url: "overviewQuery",
-                    type: 'POST',
-                    data: {
-                        "page": "asdsad"
-                    },
-                    //dataType: "json",
-                    success: function(data_list) {
-                    console.log(data_list['attrack_source_dic']);
-                    console.log(data_list['attrack_time_dic']);
-                    console.log(data_list['attrack_ua_dic']);
-                    console.log(data_list['attrack_type_times']);
-                    console.log(data_list['attrack_recent_warning']);
-
-
-                    attack_source_charts(data_list['attrack_source_dic']);
-                    attrack_ua_charts(data_list['attrack_ua_dic']);
-                    attrack_time_charts(data_list['attrack_time_dic']);
-                    attrack_type_times(data_list['attrack_type_times']);
-                    attrack_recent_warning(data_list['attrack_recent_warning']['data']);
-
-                    }
-                });
-
-
-
-                $(".overviewDiv").show().siblings().hide();
-            }
-            function attrack_recent_warning(data) {
-                let recent_div=$("#attrack_recent_warning_dic_div");
-                recent_div.text("");
-
-                let html='';
-
-                let table='';
-
-                for (x in data)
-                {
-
-                    table+='<tr>';
-                    table+='<td>';
-                    table+=data[x]['event_time'];
-                    table+='</td>';
-                    table+='<td>';
-                    table+=data[x]['attack_type'];
-                    table+='</td>';
-                    table+='<td>';
-                    table+=data[x]['event_id'];
-                    table+='</td>';
-                    table+='<td>';
-                    table+=data[x]['plugin_message'];
-                    table+='</td>';
-                    table+='</tr>';
-
+    //overview_click();
+    function agent_click(page) {
+        {#console.log(page);#}
+        //let page=1;
+        if (page == null || page < 1) {
+            page = 1;
+        }
+        $(this).addClass("active router-link-active").siblings().removeClass("active router-link-active");
+        $.ajax({
+            url: "agent/query/",
+            type: 'POST',
+            data: {
+                "page": page
+            },
+            //dataType: "json",
+            success: function (data_list) {
+                data = data_list['agents'];
+                let now_page = data_list['page'];
+                let max_size = data_list['max_size'];
+                // data = data.replace(/}{/g, "}****{").split("****");
+                let div_container = $(".agentDiv");
+                div_container.text("");
+                let html = '<div><h1 class="page-title" >探针管理</h1>';
+                html += '<div class="card">';
+                html += '<div class="card-body">';
+                html += '<table class="table table-bordered">';
+                html += '<thead>';
+                html += '<tr>';
+                html += '<th>agent id</th>';
+                html += '<th>探针类型</th>';
+                html += '<th>注册IP</th>';
+                html += '<th>操作系统</th>';
+                html += '<th>主机名</th>';
+                html += '<th>agent 版本</th>';
+                html += '<th>开发语言</th>';
+                html += '<th>服务器类型</th>';
+                html += '<th>服务器版本</th>';
+                html += '<th>是否在线</th>';
+                html += '<th>是否禁用该探针</th>';
+                html += '</tr>';
+                html += '</thead>';
+                html += '<tbody>';
+                for (x in data) {
+                    html += '<tr>';
+                    data[x] = JSON.parse(data[x]);
+                    html += '<td>' + data[x]['agent_id'] + '</td>';
+                    html += '<td>' + data[x]['sensor_type_id'] + '</td>';
+                    html += '<td>' + data[x]['register_ip'] + '</td>';
+                    html += '<td>' + data[x]['os'] + '</td>';
+                    html += '<td>' + data[x]['host_name'] + '</td>';
+                    html += '<td>' + data[x]['version'] + '</td>';
+                    html += '<td>' + data[x]['language'] + '</td>';
+                    html += '<td>' + data[x]['server_type'] + '</td>';
+                    html += '<td>' + data[x]['server_version'] + '</td>';
+                    html += '<td>' + data[x]['online'] + '</td>';
+                    html += '<td>' + data[x]['disabled'] + '</td>';
+                    html += '</tr>';
                 }
+                html += '</tbody>';
+                html += '</table>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+
+                html += '<ul role="menubar" aria-disabled="false" aria-label="Pagination" class="pagination b-pagination pagination-md justify-content-center">';
+
+                html += '<a href="javascript:void(0);" onclick="agent_click(' + (now_page - 1) + ')">上一页</a>';
+                html += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
+                html += '<a href="javascript:void(0);">' + now_page + "/" + max_size + '</a>';
+                html += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
+                html += '<a href="javascript:void(0);" onclick="agent_click(' + (now_page + 1) + ')">下一页</a>';
+                //html += '<input id = "agent_jump" value="'+now_page+'" />';
+                //  html += '<a href="javascript:void(0);" onclick="agent_jump()">跳转</a>';
+                html += '</ul>';
+                div_container.append(html);
+            }
+        });
+        $(".agentDiv").show().siblings().hide();
+    }
+
+    function agent_jump() {
+        let jump_page = $("#agent_jump").val();
+        agent_click(jump_page)
+    }
+
+    $(document).on("click", ".nav.nav-tabs li>a", function () {
+        $(this).addClass("active router-link-active").parent().siblings().children().removeClass("active router-link-active");
+        let value = $(this).attr("data-value");
+        console.log(value);
+        switch (value) {
+            case "agent":
+                agent_click(1);
+                break;
+            case "attack":
+                attack_click(1);
+                break;
+            case "download":
+                download_click(1);
+                break;
+            case "overview":
+                overview_click();
+                break;
+            default:
+        }
+    });
 
 
-                html=`
+    function overview_click() {
+        /*
+         * 安全总览事件被点击
+         *
+         */
+        $.ajax({
+            url: "overviewQuery",
+            type: 'POST',
+            data: {
+                "page": "asdsad"
+            },
+            //dataType: "json",
+            success: function (data_list) {
+                //  console.log(data_list['attrack_source_dic']);
+                // console.log(data_list['attrack_time_dic']);
+                //  console.log(data_list['attrack_ua_dic']);
+                //  console.log(data_list['attrack_type_times']);
+                //  console.log(data_list['attrack_recent_warning']);
+
+
+                attack_source_charts(data_list['attrack_source_dic']);
+                attrack_ua_charts(data_list['attrack_ua_dic']);
+                attrack_time_charts(data_list['attrack_time_dic']);
+                attrack_type_times(data_list['attrack_type_times']);
+                attrack_recent_warning(data_list['attrack_recent_warning']['data']);
+            }
+        });
+        $(".overviewDiv").show().siblings().hide();
+    }
+
+    function attrack_recent_warning(data) {
+        /*
+        * 近期攻击警告
+        * */
+
+        let recent_div = $("#attrack_recent_warning_dic_div");
+        recent_div.text("");
+
+        let html = '';
+
+        let table = '';
+
+        for (x in data) {
+
+            table += '<tr>';
+            table += '<td>';
+            table += data[x]['event_time'];
+            table += '</td>';
+            table += '<td>';
+            table += data[x]['attack_type'];
+            table += '</td>';
+            table += '<td>';
+            table += data[x]['event_id'];
+            table += '</td>';
+            table += '<td>';
+            table += data[x]['plugin_message'];
+            table += '</td>';
+            table += '</tr>';
+
+        }
+
+        html = `<div class="tableDiv">最近告警内容</div>
                     <table class="table">
                       <thead>
                         <tr>
@@ -1007,454 +606,696 @@
                         </tr>
                       </thead>
                       <tbody>
-                      `+table+`
+                      ` + table + `
                       </tbody>
                     </table>
                 `;
-                recent_div.append(html);
-            }
+        recent_div.append(html);
+    }
 
-            function attrack_type_times(data) {
+    function attrack_type_times(data) {
 
-                let data_list_type=[];
-                let data_list_type_dic=[];
+        /*
+        * 攻击类型 次数*/
+        let data_list_type = [];
+        let data_list_type_dic = [];
 
 
-                let mycharts_source=echarts.init(document.getElementById('attack_type_dic_div'));
-                data=data.reverse();
-                for (x in data) {
+        let mycharts_source = echarts.init(document.getElementById('attack_type_dic_div'));
+        data = data.reverse();
+        for (x in data) {
 
-                    data_list_type.push(data[x][0]);
-                    data_list_type_dic.push(data[x][1]);
-                    //data_list_ua_dic.push({'name':data[x][0],'value':data[x][1]})
+            data_list_type.push(data[x][0]);
+            data_list_type_dic.push(data[x][1]);
+            //data_list_ua_dic.push({'name':data[x][0],'value':data[x][1]})
+        }
+
+        option = {
+            title: {
+                text: '攻击类型排行',
+                textStyle: {
+                    color: "rgba(0,0,0,.7)"
                 }
-
-
-                option = {
-                    title: {
-                        text: '攻击类型',
-                        subtext: '次数'
-                    },
-                    tooltip: {
-                        trigger: 'axis',
-                        axisPointer: {
-                            type: 'shadow'
-                        }
-                    },
-                    grid: {
-                        left: '3%',
-                        right: '4%',
-                        bottom: '3%',
-                        containLabel: true
-                    },
-                    xAxis: {
-                        type: 'value',
-                        boundaryGap: [0, 0.01]
-                    },
-                    yAxis: {
-                        type: 'category',
-                        data: data_list_type
-                    },
-                    series: [
-                        {
-                            name: '次数',
-                            type: 'bar',
-                            data: data_list_type_dic
-                        }
-                    ]
-                };
-
-                mycharts_source.setOption(option)
-
-
-
-            }
-
-            function attrack_time_charts(data) {
-
-                data.reverse();
-                let mycharts_source=echarts.init(document.getElementById('attrack_time_dic_div'));
-
-                var dateList = data.map(function (item) {
-                    return item[0];
-                });
-                var valueList = data.map(function (item) {
-                    return item[1];
-                });
-
-                option = {
-                    // Make gradient line here
-                    visualMap: [{
-                        show: false,
-                        type: 'continuous',
-                        seriesIndex: 0,
-                        min: 0,
-                        max: 400
-                    }, {
-                        show: false,
-                        type: 'continuous',
-                        seriesIndex: 1,
-                        dimension: 0,
-                        min: 0,
-                        max: dateList.length - 1
-                    }],
-
-                    title: [{
-                        left: 'center',
-                        text: 'Gradient along the y axis'
-                    }],
-                    tooltip: {
-                        trigger: 'axis'
-                    },
-                    xAxis: [{
-                        data: dateList
-                    }],
-                    yAxis: [{
-                        splitLine: {show: false}
-                    }],
-                    grid: [{
-                        bottom: '60%'
-                    }, {
-                        top: '60%'
-                    }],
-                    series: [{
-                        type: 'line',
-                        showSymbol: false,
-                        data: valueList
-                    }]
-                };
-
-                mycharts_source.setOption(option)
-            }
-            function attrack_ua_charts(data) {
-
-                data=data.reverse();
-                let data_list_ua=[];
-                let data_list_ua_dic=[];
-
-                let mycharts_source=echarts.init(document.getElementById('attrack_ua_dic_div'));
-                let name;
-                let tooltip;
-                for (x in data) {
-
-
-                    name="";
-                    tooltip={};
-                    if(data[x][0].length>20)
-                    {
-                        name=data[x][0].substr(0,10);
-                        name+="...";
-                        name+=data[x][0].substr(-10,10);
-                        data_list_ua.push(name);
-                        let value=data[x][0]+" : "+data[x][1];
-                        //let value=data[x][1];
-                        tooltip={"formatter":value};
-                        data_list_ua_dic.push({"name":name,"value":data[x][1],"tooltip":tooltip});
-                        //data_list_ua_dic.push({'name':data[x][0],'value':data[x][1]})
-
-                    }
-
+            },
+            color: "#458df9",
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
                 }
-                option = {
-                    title: {
-                        text: 'user_agent',
-                        subtext: '次数'
-                    },
-                    tooltip: {
-                        trigger: 'axis',
-                        axisPointer: {
-                            type: 'shadow'
-                        },formatter: function (params) {
-
-                            let val=params[0]['data']['tooltip']['formatter']
-                            return val;
-                        }
-                    },
-                    grid: {
-                        left: '3%',
-                        right: '4%',
-                        bottom: '3%',
-                        containLabel: true
-                    },
-                    xAxis: {
-                        type: 'value',
-                        boundaryGap: [0, 0.01]
-                    },
-                    yAxis: {
-                        type: 'category',
-                        data: data_list_ua
-                    },
-                    series: [
-                        {
-                            name: '次数',
-                            type: 'bar',
-                            data: data_list_ua_dic
-                        }
-                    ]
-                };
-
-                mycharts_source.setOption(option)
-
-
-            }
-            function attack_source_charts(data) {
-                let mycharts_source=echarts.init(document.getElementById('attrack_source_dic_div'));
-                let data_list_source=[];
-                let data_list_source_dic=[];
-                data=data.reverse();
-                for (x in data) {
-                    data_list_source.push(data[x][0]);
-                    data_list_source_dic.push(data[x][1]);
-                    //data_list_source_dic.push({'name':data_list['attrack_source_dic'][x][0],'value':data_list['attrack_source_dic'][x][1]});
+            },
+            grid: {
+                left: '5%',
+                top: '12%',
+                right: '8%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'value',
+                splitLine: {
+                    show: false
+                },
+                axisLine: {
+                    show: false
+                },
+                axisLabel: {
+                    show: false
+                },
+                axisTick: {
+                    show: false
+                },
+            },
+            yAxis: {
+                type: 'category',
+                data: data_list_type,
+                axisTick: {
+                    show: false
+                }, splitLine: {
+                    show: false
+                }, axisLine: {
+                    show: false
+                },
+            },
+            series: [
+                {
+                    name: '次数',
+                    type: 'bar',
+                    data: data_list_type_dic
                 }
+            ]
+        };
 
-                option = {
-                    title: {
-                        text: 'ip 攻击',
-                        subtext: '次数'
-                    },
-                    tooltip: {
-                        trigger: 'axis',
-                        axisPointer: {
-                            type: 'shadow'
-                        }
-                    },
-                    grid: {
-                        left: '3%',
-                        right: '4%',
-                        bottom: '3%',
-                        containLabel: true
-                    },
-                    xAxis: {
-                        type: 'value',
-                        boundaryGap: [0, 0.01]
-                    },
-                    yAxis: {
-                        type: 'category',
-                        data: data_list_source
-                    },
-                    series: [
-                        {
-                            name: '次数',
-                            type: 'bar',
-                            data: data_list_source_dic
-                        }
-                    ]
-                };
-                mycharts_source.setOption(option)
+        mycharts_source.setOption(option)
+
+
+    }
+
+    function attrack_time_charts(data) {
+        /*
+        * 近期攻击时间  每个时间被攻击的次数*/
+        data.reverse();
+        let mycharts_source = echarts.init(document.getElementById('attrack_time_dic_div'));
+
+        var dateList = data.map(function (item) {
+            return item[0];
+        });
+        var valueList = data.map(function (item) {
+            return item[1];
+        });
+
+        option = {
+            // Make gradient line here
+            visualMap: [{
+                show: false,
+                type: 'continuous',
+                seriesIndex: 0,
+                min: 0,
+                max: 400
+            }, {
+                show: false,
+                type: 'continuous',
+                seriesIndex: 1,
+                dimension: 0,
+                min: 0,
+                max: dateList.length - 1
+            }],
+            title: [{
+                text: '外部威胁趋势',
+                textStyle: {
+                    color: "rgba(0,0,0,.7)"
+                }
+            }],
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['事件'],
+                right: 10
+            },
+            color: ['#1890FF', "#2FC25B", "#FACC14", "#223273", "#8543E0", "#13C2C2", "#3436C7", "#F04864"],
+            xAxis: [{
+                data: dateList,
+            }],
+            yAxis: [{
+                axisLine: {
+                    show: false
+                },
+                axisTick: {
+                    show: false
+                },
+            }],
+            grid: {
+                left: '5%',
+                top: '15%',
+                right: '3%',
+                bottom: '3%',
+                containLabel: true
+            },
+            series: [{
+                type: 'line',
+                showSymbol: false,
+                name: "事件",
+                data: valueList
+            }]
+        };
+
+        mycharts_source.setOption(option)
+    }
+
+    function attrack_ua_charts(data) {
+
+        data = data.reverse();
+        let data_list_ua = [];
+        let data_list_ua_dic = [];
+
+        let mycharts_source = echarts.init(document.getElementById('attrack_ua_dic_div'));
+        let name;
+        let tooltip;
+        for (x in data) {
+
+
+            name = "";
+            tooltip = {};
+            if (data[x][0].length > 20) {
+                name = data[x][0].substr(0, 10);
+                name += "...";
+                name += data[x][0].substr(-10, 10);
+                data_list_ua.push(name);
+                let value = data[x][0] + " : " + data[x][1];
+                //let value=data[x][1];
+                tooltip = {"formatter": value};
+                data_list_ua_dic.push({"name": name, "value": data[x][1], "tooltip": tooltip});
+                //data_list_ua_dic.push({'name':data[x][0],'value':data[x][1]})
+
             }
 
-			function download_click(attack_page) {
-				{#let div_container = $("#div_container");#}
+        }
 
-               // $(".tanzhen").show().siblings().hide();
-                $(".tanzhen").show().siblings().hide();
-                $(".javaDiv").hide();
-                $(".IISDiv").hide();
-                let html=``;
-			}
+        option = {
+            title: {
+                text: 'User-Agent排行',
+                textStyle: {
+                    color: "rgba(0,0,0,.7)"
+                }
+            },
+            color: "#458df9",
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }, formatter: function (params) {
 
-			function java_click() {
-				$.ajax({
-					url: "agentClick",
-					type: 'POST',
-					data: {
-						"agent": "java"
-					},
-					//dataType: "json",
-					success: function(data_list) {
-					    $(".tanzhen .javaDiv").show().siblings().hide();
-						console.log(data_list);
-						$("#agent_server_addr1").text(data_list['agent_server']);
-                        $("#java_guid").text(data_list['guid']);
-						$("#java_a_download_url").attr("href",data_list['download_url']);
-						$("#java_wget_download_url").text(data_list['wget']);
-					}
-				});
+                    let val = params[0]['data']['tooltip']['formatter']
+                    return val;
+                }
+            },
+            grid: {
+                left: '5%',
+                top: '12%',
+                right: '8%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'value',
+                splitLine: {
+                    show: false
+                },
+                axisLine: {
+                    show: false
+                },
+                axisLabel: {
+                    show: false
+                },
+                axisTick: {
+                    show: false
+                },
+            },
+            yAxis: {
+                type: 'category',
+                data: data_list_ua,
+                axisTick: {
+                    show: false
+                }, splitLine: {
+                    show: false
+                }, axisLine: {
+                    show: false
+                },
+            },
+            series: [
+                {
+                    name: '次数',
+                    type: 'bar',
+                    data: data_list_ua_dic
+                }
+            ]
+        };
 
-			}
-
-			function iis_click() {
-
-                $.ajax({
-                    url: "agentClick",
-                    type: 'POST',
-                    data: {
-                        "agent": "iis"
-                    },
-                    success: function(data_list) {
-                        $(".tanzhen .IISDiv").show().siblings().hide();
-                        console.log(data_list);
-                        $("#agent_server_addr2").text(data_list['agent_server']);
-                        $("#iis_guid").text(data_list['guid']);
-                        $("#iis_a_download_url").attr("href",data_list['download_url']);
-                        $("#iis_wget_download_url").text(data_list['wget']);
-                    }
-                });
-
-			}
-
-			function attack_click(attack_page) {
-
-				console.log(attack_page);
-				//let page=1;
-				if(attack_page == null || attack_page < 1) {
-					attack_page = 1;
-				}
-
-				$.ajax({
-					url: "attack/query/",
-					type: 'POST',
-					data: {
-						"page": attack_page
-					},
-					dataType: "json",
-					success: function(data_list) {
-						console.log(data_list);
-						let data = data_list['stack'];
-						console.log(data);
-						let now_page = data_list['page'];
-						let max_size = data_list['max_size'];
-						// data = data.replace(/}{/g, "}****{").split("****");
-						let div_container = $(".attackDiv");
-						div_container.text("");
-						let html = '<div><h1 class="page-title" >攻击事件</h1>';
-						html += '<div class="card">';
-
-						html += '<div class="card-body">';
-						html += '<table class="table table-bordered">';
-						html += '<thead>';
-						html += '<tr>';
-						html += '<th>agent_id</th>';
-						html += '<th>攻击时间</th>';
-						html += '<th>攻击类型</th>';
-						html += '<th>URL</th>';
-						html += '<th>报警消息</th>';
-						html += '<th style="min-width: 100px;">攻击来源</th>';
-						html += '<th>拦截状态</th>';
-						html += '<th>服务器类型</th>';
-						html += '<th>操作</th>';
-
-						html += '</tr>';
-						html += '</thead>';
-						html += '<tbody>';
-						for(x in data) {
-							console.log(data[x]);
-							html += '<tr>';
-
-							html += '<td >' + data[x]['agent_id'] + '</td>';
-							html += '<td>' + data[x]['event_time'] + '</td>';
-							html += '<td>' + data[x]['attack_type'] + '</td>';
-							html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['url'] + '">' + data[x]['url'] + '</td>';
-							html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['plugin_message'] + '">' + data[x]['plugin_message'] + '</td>';
-							html += '<td>' + data[x]['attack_source'] + '</td>';
-							html += '<td>' + data[x]['intercept_state'] + '</td>';
-							html += '<td>' + data[x]['server_type'] + '</td>';
-							//html+='<td><a class="modal-a" href="#myModal" data-toggle="modal" data-target="#myModal"  >详情</a> </td>';
-
-							let b = new Base64();
-							let str = b.encode(JSON.stringify(data[x]));
-							html += '<td class="detail-td"><a class="detail-a" href="javascript:void(0)" data-name="' + str + '"   >详情</a> </td>';
-							html += '</tr>';
-						}
-						html += '</tbody>';
-						html += '</table>';
-						html += '</div>';
-						html += '</div>';
-						html += '</div>';
-
-						html += '<ul role="menubar" aria-disabled="false" aria-label="Pagination" class="pagination b-pagination pagination-md justify-content-center">';
-
-						html += '<a href="javascript:void(0);" onclick="attack_click(' + (now_page - 1) + ')">上一页</a>';
-						html += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
-						html += '<a href="javascript:void(0);">' + now_page + "/" + max_size + '</a>';
-						html += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
-						html += '<a href="javascript:void(0);" onclick="attack_click(' + (now_page + 1) + ')">下一页</a>';
-						html += '</ul>';
-						div_container.append(html);
-					}
-				});
-
-				$(".attackDiv").show().siblings().hide();
-
-			}
-
-			$(document).on("click", ".detail-a", function() {
-
-				let data1 = $(this).attr("data-name");
-				// console.log(data)
-				let b = new Base64();
-				let data = JSON.parse(b.decode(data1));
-				console.log(data);
-				$("#myModalLabel").text("");
-
-				let html = '<div><h1 class="page-title" >攻击事件</h1>';
-				html += '<div class="card">';
-				html += '<div class="card-body">';
-				html += '<table class="table table-bordered">';
-				html += '<thead>';
-				html += '<tr>';
-				html += '<th>名称</th>';
-				html += '<th>值</th>';
-				html += '</tr>';
-				html += '</thead>';
-				html += '<tbody>';
-				html += '<tr><td>event_issue_id</td><td>' + data['event_issue_id'] + '</td></tr>';
-				html += '<tr><td>agent_id</td><td>' + data['agent_id'] + '</td></tr>';
-				html += '<tr><td>事件类型</td><td>' + data['event_type'] + '</td></tr>';
-				html += '<tr><td>事件发生时间</td><td>' + data['event_time'] + '</td></tr>';
-				html += '<tr><td>服务器名称</td><td>' + data['server_hostname'] + '</td></tr>';
-				html += '<tr><td>event_id</td><td>' + data['event_id'] + '</td></tr>';
-				html += '<tr><td>攻击类型</td><td>' + data['attack_type'] + '</td></tr>';
-				html += '<tr><td>攻击参数</td><td>' + data['attack_params'] + '</td></tr>';
-				html += '<tr><td>调用栈</td><td>' + data['stack_trace'] + '</td></tr>';
-				html += '<tr><td>插件名称</td><td>' + data['plugin_name'] + '</td></tr>';
-				html += '<tr><td>插件消息</td><td>' + data['plugin_message'] + '</td></tr>';
-				html += '<tr><td>插件置信度</td><td>' + data['plugin_confidence'] + '</td></tr>';
-				html += '<tr><td>是否拦截 block或log</td><td>' + data['intercept_state'] + '</td></tr>';
-				html += '<tr><td>请求id</td><td>' + data['request_id'] + '</td></tr>';
-				html += '<tr><td>攻击来源IP</td><td>' + data['attack_source'] + '</td></tr>';
-				html += '<tr><td>被攻击目标域名</td><td>' + data['target'] + '</td></tr>';
-				html += '<tr><td>被攻击目标IP</td><td>' + data['server_ip'] + '</td></tr>';
-				html += '<tr><td>被攻击目标服务器类型</td><td>' + data['server_type'] + '</td></tr>';
-				html += '<tr><td>被攻击目标服务器版本</td><td>' + data['server_version'] + '</td></tr>';
-				html += '<tr><td>被攻击URL</td><td>' + data['url'] + '</td></tr>';
-				html += '<tr><td>请求体</td><td>' + data['body'] + '</td></tr>';
-				html += '<tr><td>被攻击PATH路径</td><td>' + data['path'] + '</td></tr>';
-				html += '<tr><td>User-Agent</td><td>' + data['user_agent'] + '</td></tr>';
-				html += '<tr><td>Referer</td><td>' + data['referer'] + '</td></tr>';
-				html += '<tr><td>风险等级</td><td>' + data['threat_level'] + '</td></tr>';
-				html += '<tr><td>请求方法</td><td>' + data['method'] + '</td></tr>';
-				html += '<tr><td>系统用户名</td><td>' + data['system_user'] + '</td></tr>';
-				html += '<tr><td>进程路径</td><td>' + data['process_path'] + '</td></tr>';
-
-				html += '</tbody>';
-				html += '</table>';
-				html += '</div>';
-				html += '</div>';
-				html += '</div>';
-
-				$("#model-body").text("").append(html);
-				$("#myModal").modal("show");
-
-			});
+        mycharts_source.setOption(option)
 
 
-			{#$(document).on("click","#div_container div",function () {#}
-			{#    console.log(5);#}
-            {#    console.log($(this));#}
-            {#    console.log(2)#}
-            {#    $(this).addClass("active").siblings().removeClass("active");#}
-                {#$(this).show();#}
-            {#})#}
+    }
 
-		</script>
+    function attack_source_charts(data) {
+        /*
+        * ip攻击源*/
 
-		<div class="__transltor">
-			<div class="__transltor_button" style="left: 709px; top: 346px;"></div>
-			<!---->
-			<!---->
-		</div>
-	</body>
+        let mycharts_source = echarts.init(document.getElementById('attrack_source_dic_div'));
+        let data_list_source = [];
+        let data_list_source_dic = [];
+        data = data.reverse();
+        for (x in data) {
+            data_list_source.push(data[x][0]);
+            data_list_source_dic.push(data[x][1]);
+            //data_list_source_dic.push({'name':data_list['attrack_source_dic'][x][0],'value':data_list['attrack_source_dic'][x][1]});
+        }
+
+        option = {
+            title: {
+                text: '攻击IP排行',
+                textStyle: {
+                    color: "rgba(0,0,0,.7)"
+                }
+            },
+            color: "#458df9",
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            grid: {
+                left: '5%',
+                top: '12%',
+                right: '8%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'value',
+                splitLine: {
+                    show: false
+                },
+                axisLine: {
+                    show: false
+                },
+                axisLabel: {
+                    show: false
+                },
+                axisTick: {
+                    show: false
+                },
+            },
+            yAxis: {
+                type: 'category',
+                data: data_list_source,
+                axisTick: {
+                    show: false
+                }, splitLine: {
+                    show: false
+                }, axisLine: {
+                    show: false
+                },
+            },
+            series: [
+                {
+                    name: '次数',
+                    type: 'bar',
+                    data: data_list_source_dic
+                }
+            ]
+        };
+
+
+        // option = {
+        //     title: {
+        //         text: '攻击IP排行',
+        //         subtext: ''
+        //     },
+        //     tooltip: {
+        //         trigger: 'axis',
+        //         axisPointer: {
+        //             type: 'shadow'
+        //         }
+        //     },
+        //     grid: {
+        //         left: '3%',
+        //         right: '4%',
+        //         bottom: '3%',
+        //         containLabel: true
+        //     },
+        //     xAxis: {
+        //         type: 'value',
+        //         boundaryGap: [0, 0.01]
+        //     },
+        //     yAxis: {
+        //         type: 'category',
+        //         data: data_list_source
+        //     },
+        //     series: [
+        //         {
+        //             name: '次数',
+        //             type: 'bar',
+        //             data: data_list_source_dic
+        //         }
+        //     ]
+        // };
+        mycharts_source.setOption(option)
+    }
+
+    function download_click(attack_page) {
+        /*
+        * 下载事件*/
+
+        {#let div_container = $("#div_container");#}
+
+        // $(".tanzhen").show().siblings().hide();
+        $(".tanzhen").show().siblings().hide();
+        $(".javaDiv").hide();
+        $(".IISDiv").hide();
+        let html = ``;
+    }
+
+    function java_click() {
+        $.ajax({
+            url: "agentClick",
+            type: 'POST',
+            data: {
+                "agent": "java"
+            },
+            //dataType: "json",
+            success: function (data_list) {
+                $(".tanzhen .javaDiv").show().siblings().hide();
+                console.log(data_list);
+                $("#agent_server_addr1").text(data_list['agent_server']);
+                $("#java_guid").text(data_list['guid']);
+                $("#java_a_download_url").attr("href", data_list['download_url']);
+                $("#java_wget_download_url").text(data_list['wget']);
+            }
+        });
+
+    }
+
+    function iis_click() {
+
+        $.ajax({
+            url: "agentClick",
+            type: 'POST',
+            data: {
+                "agent": "iis"
+            },
+            success: function (data_list) {
+                $(".tanzhen .IISDiv").show().siblings().hide();
+                console.log(data_list);
+                $("#agent_server_addr2").text(data_list['agent_server']);
+                $("#iis_guid").text(data_list['guid']);
+                $("#iis_a_download_url").attr("href", data_list['download_url']);
+                $("#iis_wget_download_url").text(data_list['wget']);
+            }
+        });
+
+    }
+
+    function attack_click(attack_page) {
+
+        console.log(attack_page);
+        //let page=1;
+        let data = {};
+        let attack_time = $("#attack_time").val();
+        let attack_type = $("#attack_type").val();
+        let attack_msg = $("#attack_msg").val();
+        if (attack_time === undefined) {
+            attack_time = ""
+        }
+        if (attack_type === undefined) {
+            attack_type = ""
+        }
+        if (attack_msg === undefined) {
+            attack_msg = ""
+        }
+
+
+        data['attack_time'] = attack_time;
+        data['attack_type'] = attack_type;
+        data['attack_msg'] = attack_msg;
+        data['page'] = attack_page;
+        if (attack_page == null || attack_page < 1) {
+            attack_page = 1;
+        }
+        let div_container1 = $(".attackDiv");
+        let div_container2 = $(".btnGroup");
+        div_container2.append("<div id='table_select_div'></div>");
+        div_container1.append("<div id='table_div'></div>");
+
+        $.ajax({
+            url: "attack/query/",
+            type: 'POST',
+            data: data,
+            async: false,
+            dataType: "json",
+            success: function (data_list) {
+                console.log(data_list);
+                let data = data_list['stack'];
+                let now_page = data_list['page'];
+                let max_size = data_list['max_size'];
+                let attack_type_list = data_list['attack_type']
+                // data = data.replace(/}{/g, "}****{").split("****");
+
+                //let select_div=$("#table_select_div");
+                let select_div = $("#table_select_div");
+                let html_select = "";
+
+                html_select = '<div>';
+                html_select += '<div id="attack_search">';
+                html_select += '<div class="input-icon ml-2 w-50" >';
+                //html+='攻击时间 <input type="text"  id="attack_time" value="'+attack_time+'" class="form-control" />';
+                /* html_select+=`<div >
+                                 <div class="col-md-4 col-md-offset-2 demo">
+                                     <input type="text" id="" placeholder="日期选择" value="${attack_time}" class="form-control">
+                                     <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                                 </div>
+                              </div>`;
+                     */
+                html_select += '</div>';
+                //html_select+='攻击类型';
+
+                html_select += `<input style="display:none" id="attack_type" value="${attack_type}"/>`;
+                html_select += '<select id="attack_type_select">';
+                html_select += '<option value="" >' + "攻击类型" + '</option>';
+                for (x in attack_type_list) {
+                    html_select += '<option value="' + attack_type_list[x] + '" >' + attack_type_list[x] + '</option>'
+                }
+                html_select += '</select>';
+                html_select += '<input id="attack_msg" placeholder="报警消息" value="' + attack_msg + '" />';
+                //html_select+='<a href="javascript:void(0);" onclick="attack_click(1)" >查询<a/>';
+                html_select += '<button  class="btn" onclick="attack_click(1)" >查询</button>';
+                html_select += '<button  class="btn" onclick="reset()" >重置</button>';
+                //html_select+='<a href="javascript:void(0);" onclick="reset()" >重置<a/>';
+                html_select += '</div>';
+                html_select += '</div>';
+                select_div.html(html_select);
+                $("#attack_time").val(attack_time);
+
+
+                let div_container = $("#table_div");
+                div_container.text("");
+
+                let html = "<div>";
+                html += '<div  class="card">';
+
+
+                html += '<div class="card-body">';
+                html += '<table class="table table-bordered">';
+                html += '<thead>';
+                html += '<tr>';
+                html += '<th>agent_id</th>';
+                html += '<th>攻击时间</th>';
+                html += '<th>攻击类型</th>';
+                html += '<th>URL</th>';
+                html += '<th>报警消息</th>';
+                html += '<th style="min-width: 100px;">攻击来源</th>';
+                html += '<th>拦截状态</th>';
+                html += '<th>服务器类型</th>';
+                html += '<th>操作</th>';
+                html += '</tr>';
+                html += '</thead>';
+                html += '<tbody>';
+                for (x in data) {
+                    {#console.log(data[x]);#}
+                    html += '<tr>';
+
+                    html += '<td >' + data[x]['agent_id'] + '</td>';
+                    html += '<td>' + data[x]['event_time'] + '</td>';
+                    html += '<td>' + data[x]['attack_type'] + '</td>';
+                    html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['url'] + '">' + data[x]['url'] + '</td>';
+                    html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['plugin_message'] + '">' + data[x]['plugin_message'] + '</td>';
+                    html += '<td>' + data[x]['attack_source'] + '</td>';
+                    html += '<td>' + data[x]['intercept_state'] + '</td>';
+                    html += '<td>' + data[x]['server_type'] + '</td>';
+                    //html+='<td><a class="modal-a" href="#myModal" data-toggle="modal" data-target="#myModal"  >详情</a> </td>';
+
+                    let b = new Base64();
+                    let str = b.encode(JSON.stringify(data[x]));
+                    html += '<td class="detail-td"><a class="detail-a" href="javascript:void(0)" data-name="' + str + '"   >详情</a> </td>';
+                    html += '</tr>';
+                }
+                html += '</tbody>';
+                html += '</table>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+
+                html += '<ul role="menubar" aria-disabled="false" aria-label="Pagination" class="pagination b-pagination pagination-md justify-content-center">';
+
+                html += '<a href="javascript:void(0);" onclick="attack_click(' + (now_page - 1) + ')">上一页</a>';
+                html += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
+                html += '<a href="javascript:void(0);">' + now_page + "/" + max_size + '</a>';
+                html += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
+                html += '<a href="javascript:void(0);" onclick="attack_click(' + (now_page + 1) + ')">下一页</a>';
+                html += '<input id="attack_jump" value="' + now_page + '" />';
+
+                html += '<a href="javascript:void(0);" onclick="attack_jump()">跳转</a>';
+
+                html += '</ul>';
+                div_container.append(html);
+                $("#attack_type_select").val(attack_type);
+            }
+        });
+
+        let attach_search = $("#attack_search");
+
+        {# let html='';#}
+        {#html+='攻击时间 <input id="attack_time" vlaue="'+attack_time+'" />';#}
+        {#html+='攻击类型 <input id="attack_type" />';#}
+        {#html+='报警消息 <input id="attack_msg" />';#}
+        {#html+='<a href="javascript:void(0);" onclick="attack_click(1)" >查询<a/>';#}
+        {#attach_search.html(html);#}
+        $(".attackDiv").show().siblings().hide();
+    }
+
+    function reset() {
+
+        $("#attack_time").val("");
+        $("#attack_jump").val("");
+        $("#attack_search").val("");
+        $("#attack_type").val("");
+        attack_click("1");
+    }
+
+    function attack_jump() {
+        let jump_page = $("#attack_jump").val();
+        attack_click(jump_page);
+    }
+
+
+    $(document).on("change", "select#attack_type_select", function () {
+        {#console.log($(this).val());#}
+        $("#attack_type").val($(this).val())
+    });
+
+    $(document).on("click", ".detail-a", function () {
+
+        let data1 = $(this).attr("data-name");
+        // console.log(data)
+        let b = new Base64();
+        let data = JSON.parse(b.decode(data1));
+        {#console.log(data);#}
+        {#$("#myModalLabel").text("");#}
+
+        let html = '<div>';
+        html += '<div class="card">';
+        html += '<div class="card-body">';
+        html += '<table class="table table-bordered">';
+        html += '<thead>';
+        html += '<tr>';
+        html += '<th>名称</th>';
+        html += '<th>值</th>';
+        html += '</tr>';
+        html += '</thead>';
+        html += '<tbody>';
+        html += '<tr><td>event_issue_id</td><td>' + data['event_issue_id'] + '</td></tr>';
+        html += '<tr><td>agent_id</td><td>' + data['agent_id'] + '</td></tr>';
+        html += '<tr><td>事件类型</td><td>' + data['event_type'] + '</td></tr>';
+        html += '<tr><td>事件发生时间</td><td>' + data['event_time'] + '</td></tr>';
+        html += '<tr><td>服务器名称</td><td>' + data['server_hostname'] + '</td></tr>';
+        html += '<tr><td>event_id</td><td>' + data['event_id'] + '</td></tr>';
+        html += '<tr><td>攻击类型</td><td>' + data['attack_type'] + '</td></tr>';
+        html += '<tr><td>攻击参数</td><td>' + data['attack_params'] + '</td></tr>';
+        html += '<tr><td>调用栈</td><td>' + data['stack_trace'] + '</td></tr>';
+        html += '<tr><td>插件名称</td><td>' + data['plugin_name'] + '</td></tr>';
+        html += '<tr><td>插件消息</td><td>' + data['plugin_message'] + '</td></tr>';
+        html += '<tr><td>插件置信度</td><td>' + data['plugin_confidence'] + '</td></tr>';
+        html += '<tr><td>是否拦截 block或log</td><td>' + data['intercept_state'] + '</td></tr>';
+        html += '<tr><td>请求id</td><td>' + data['request_id'] + '</td></tr>';
+        html += '<tr><td>攻击来源IP</td><td>' + data['attack_source'] + '</td></tr>';
+        html += '<tr><td>被攻击目标域名</td><td>' + data['target'] + '</td></tr>';
+        html += '<tr><td>被攻击目标IP</td><td>' + data['server_ip'] + '</td></tr>';
+        html += '<tr><td>被攻击目标服务器类型</td><td>' + data['server_type'] + '</td></tr>';
+        html += '<tr><td>被攻击目标服务器版本</td><td>' + data['server_version'] + '</td></tr>';
+        html += '<tr><td>被攻击URL</td><td>' + data['url'] + '</td></tr>';
+        html += '<tr><td>请求体</td><td>' + data['body'] + '</td></tr>';
+        html += '<tr><td>被攻击PATH路径</td><td>' + data['path'] + '</td></tr>';
+        html += '<tr><td>User-Agent</td><td>' + data['user_agent'] + '</td></tr>';
+        html += '<tr><td>Referer</td><td>' + data['referer'] + '</td></tr>';
+        html += '<tr><td>风险等级</td><td>' + data['threat_level'] + '</td></tr>';
+        html += '<tr><td>请求方法</td><td>' + data['method'] + '</td></tr>';
+        html += '<tr><td>系统用户名</td><td>' + data['system_user'] + '</td></tr>';
+        html += '<tr><td>进程路径</td><td>' + data['process_path'] + '</td></tr>';
+
+        html += '</tbody>';
+        html += '</table>';
+        html += '</div>';
+        html += '</div>';
+        html += '</div>';
+
+        $("#model-body").text("").append(html);
+        $("#myModal").modal("show");
+
+    });
+
+
+</script>
+
+
+<div class="__transltor">
+    <div class="__transltor_button" style="left: 709px; top: 346px;"></div>
+    <!---->
+    <!---->
+</div>
+
+<script type="text/javascript">
+    var beginTimeStore = '';
+    var endTimeStore = '';
+    $('#attack_time').daterangepicker({
+        "timePicker": true,
+        "timePicker24Hour": true,
+        "linkedCalendars": false,
+        "autoUpdateInput": false,
+        "locale": {
+            format: 'YYYY-MM-DD',
+            separator: ' ~ ',
+            applyLabel: "应用",
+            cancelLabel: "取消",
+            resetLabel: "重置",
+        }
+    }, function (start, end, label) {
+        beginTimeStore = start;
+        endTimeStore = end;
+        console.log(this.startDate.format(this.locale.format));
+        console.log(this.endDate.format(this.locale.format));
+        if (!this.startDate) {
+            this.element.val('');
+        } else {
+            this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
+        }
+    });
+
+
+    $(".row .col-4 > div").css({"width": $(".row .col-4 > div").width(), "height": $(".row .col-4 > div").height()});
+    $("#attrack_time_dic_div").css({"width": $("#attrack_time_dic_div").width(), "height": "316px"});
+
+</script>
+</body>
 
 </html>
