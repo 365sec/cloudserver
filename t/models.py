@@ -17,6 +17,7 @@ class agents(models.Model):
     server_type=models.CharField(max_length=255,db_column='server_type',blank=False)
     server_version=models.CharField(max_length=255,db_column='server_version',blank=False)
     register_ip=models.CharField(max_length=255,db_column='register_ip',blank=False)
+    remote_ip = models.CharField(max_length=255, db_column='remote_ip', blank=False)
     online=models.IntegerField(db_column='online',blank=False)
     disabled=models.IntegerField(db_column='disabled',blank=False)
 
