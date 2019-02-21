@@ -561,3 +561,11 @@ td {
     height: 36px;
     padding: 0px 10px;
 }
+
+#attrack_recent_warning_dic_div tr td>div{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 220px;
+    height: 38px;
+}

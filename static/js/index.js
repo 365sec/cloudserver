@@ -166,9 +166,9 @@ function attrack_recent_warning(data) {
         table += '<td>';
         table += data[x]['event_id'];
         table += '</td>';
-        table += '<td>';
+        table += '<td title="'+data[x]['plugin_message']+'"><div>';
         table += data[x]['plugin_message'];
-        table += '</td>';
+        table += '</div></td>';
         table += '</tr>';
 
     }
