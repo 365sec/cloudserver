@@ -25,8 +25,8 @@ p {
 
 select, input {
     width: 200px;
-    height: 30px;
-    line-height: 30px;
+    height: 34px;
+    line-height: 34px;
     margin: 0 5px;
     border: 1px solid #dedede;
     padding: 7px .75rem;
@@ -481,7 +481,7 @@ td {
 }
 
 #attrack_time_dic_div {
-    height: 316px;
+    height: 276px;
     width: 100%;
 }
 
@@ -507,7 +507,7 @@ td {
     max-width: 100%;
     box-sizing: border-box;
     margin-bottom: 10px;
-    height: 29px;
+    height: 34px;
     padding: 0;
 }
 
@@ -520,7 +520,7 @@ td {
 
 #time > div:last-child i {
     position: absolute;
-    top: 6px;
+    top: 10px;
     right: 10px;
 }
 
@@ -532,8 +532,8 @@ td {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-    height: 30px;
-    line-height: 30px;
+    height: 34px;
+    line-height: 34px;
 }
 
 .pagination.b-pagination.pagination-md.justify-content-center a {
@@ -552,7 +552,13 @@ td {
 
 .table td, .table th {
     height: 38px;
-    /*line-height: 2;*/
+    line-height: 38px;
+    padding: 0px 5px;
+    box-sizing: border-box;
+    text-overflow: ellipsis;
+    max-width: 50px;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .table thead th {
@@ -562,10 +568,29 @@ td {
     padding: 0px 10px;
 }
 
-#attrack_recent_warning_dic_div tr td>div{
+#attrack_recent_warning_dic_div tr td > div {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 220px;
     height: 38px;
+}
+
+
+#attrack_recent_warning_dic_div table thead tr th:first-child {
+    width: 50px;
+    min-width: 150px;
+}
+
+#attrack_recent_warning_dic_div table thead tr th:nth-child(2) {
+    width: 50px;
+}
+
+#attrack_recent_warning_dic_div table thead tr th:nth-child(3) {
+    width: 70px;
+    min-width: 120px;
+}
+
+.btn {
+    height: 34px;
 }
