@@ -447,10 +447,10 @@ td {
 .my-3.my-md-5.setup {
     overflow-y: scroll;
     position: absolute;
-    top: 91px;
+    top: 85px;
     left: 0;
     right: 0;
-    bottom: 16px;
+    bottom: 35px;
     margin-bottom: 0px !important;
     padding-bottom: 10px;
     box-sizing: border-box;
@@ -546,7 +546,7 @@ td {
 }
 
 .pagination.b-pagination.pagination-md.justify-content-center input {
-    width: 30px;
+    width: 50px;
     margin: 0 20px;
 }
 

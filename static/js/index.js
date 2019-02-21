@@ -161,7 +161,7 @@ function attrack_recent_warning(data) {
         table += data[x]['event_time'];
         table += '</td>';
         table += '<td>';
-        table += data[x]['attack_type'];
+        table += data[x]['attack_source'];
         table += '</td>';
         table += '<td>';
         table += data[x]['event_id'];
@@ -178,8 +178,8 @@ function attrack_recent_warning(data) {
                       <thead>
                         <tr>
                           <th>时间</th>
-                          <th>关注点</th>
-                          <th>关注内容</th>
+                          <th>攻击IP</th>
+                          <th>攻击事件</th>
                           <th>描述</th>
                         </tr>
                       </thead>

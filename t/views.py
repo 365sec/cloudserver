@@ -224,7 +224,11 @@ def overview_query(request):
             continue
         x.event_time=x.event_time.strftime("%Y-%m-%d %H:%M:%S")
         x.event_id=attack_type[str(x.event_id)]
+        x.plugin_message = x.plugin_message.replace('<', '&lt').replace('>', '&gt')
+        x.plugin_message = x.plugin_message.replace('"', '&quot;')
+        print x
         temp=model_to_dict(x)
+
         recent_warning_list.append(temp)
 
     recent_warning={"data":recent_warning_list}
