@@ -63,7 +63,7 @@ b {
 .modal-open .modal {
     overflow-x: hidden;
     overflow-y: hidden;
-    width: 50%;
+    width: 70%;
     margin: 20px auto;
 }
 
@@ -550,14 +550,14 @@ td {
     margin: 0 20px;
 }
 
-.table td, .table th {
+#attrack_recent_warning_dic_div .table td, .table th {
     height: 38px;
     line-height: 38px;
     padding: 0px 5px;
     box-sizing: border-box;
-    text-overflow: ellipsis;
-    max-width: 50px;
-    white-space: nowrap;
+    /*text-overflow: ellipsis;*/
+    /*max-width: 50px;*/
+    /*white-space: nowrap;*/
     overflow: hidden;
 }
 
@@ -593,4 +593,9 @@ td {
 
 .btn {
     height: 34px;
+}
+
+
+#table_div .table.table-bordered tr td:first-child, #table_div .table.table-bordered tr td:nth-child(2), #table_div .table.table-bordered tr td:nth-child(3) {
+    min-width: 100px;
 }
