@@ -61,7 +61,7 @@ def agent_query(request):
 def sttack_trace_query(request):
     # 当前页码数
 
-    #print (request.POST)
+    print (request.POST)
 
     page=request.POST.get("page")
     page=int(page)
@@ -91,6 +91,11 @@ def sttack_trace_query(request):
         start_time=attack_time.split(" ~ ")[0]
         end_time=attack_time.split(" ~ ")[1]
         result=result.filter(event_time__range=[start_time,end_time])
+    #关于攻击等级的过滤
+    attack_level=request.POST.get("attack_level")
+    if attack_level!="" and attack_level!=None:
+        attack_level=int(attack_level)
+        result= result.filter(threat_level=attack_level)
 
     max_lenth=result.count()
     # 每页显示多少个数据
@@ -122,7 +127,8 @@ def sttack_trace_query(request):
         "stack":stack_list,
        "max_size":max_size,
         "page":page,
-        "attack_type":event_div_arr
+        "attack_type":event_div_arr,
+        "attack_level":attack_level,
     }
 
     data=json.dumps(data)

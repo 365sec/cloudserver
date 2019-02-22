@@ -563,6 +563,7 @@ function attack_click(attack_page) {
     let attack_time = $("#attack_time").val();
     let attack_type = $("#attack_type").val();
     let attack_msg = $("#attack_msg").val();
+    let attack_level = $("#attack_level").val();
     if (attack_time === undefined) {
         attack_time = ""
     }
@@ -572,11 +573,15 @@ function attack_click(attack_page) {
     if (attack_msg === undefined) {
         attack_msg = ""
     }
+    if (attack_level === undefined) {
+        attack_level=""
+    }
 
 
     data['attack_time'] = attack_time;
     data['attack_type'] = attack_type;
     data['attack_msg'] = attack_msg;
+    data ['attack_level']=attack_level;
     data['page'] = attack_page;
     if (attack_page == null || attack_page < 1) {
         attack_page = 1;
@@ -597,7 +602,8 @@ function attack_click(attack_page) {
             let data = data_list['stack'];
             let now_page = data_list['page'];
             let max_size = data_list['max_size'];
-            let attack_type_list = data_list['attack_type']
+            let attack_type_list = data_list['attack_type'];
+            let attack_level=data_list['attack_level'];
             // data = data.replace(/}{/g, "}****{").split("****");
 
             //let select_div=$("#table_select_div");
@@ -607,18 +613,9 @@ function attack_click(attack_page) {
             html_select = '<div>';
             html_select += '<div id="attack_search">';
             html_select += '<div class="input-icon ml-2 w-50" >';
-            //html+='攻击时间 <input type="text"  id="attack_time" value="'+attack_time+'" class="form-control" />';
-            /* html_select+=`<div >
-                             <div class="col-md-4 col-md-offset-2 demo">
-                                 <input type="text" id="" placeholder="日期选择" value="${attack_time}" class="form-control">
-                                 <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                             </div>
-                          </div>`;
-                 */
             html_select += '</div>';
-            //html_select+='攻击类型';
-
             html_select += `<input style="display:none" id="attack_type" value="${attack_type}"/>`;
+            html_select += `<input style="display:none" id="attack_level" value="${attack_level}"/>`;
             html_select += '<select id="attack_type_select">';
             html_select += '<option value="" >' + "攻击类型" + '</option>';
             for (x in attack_type_list) {
@@ -626,6 +623,17 @@ function attack_click(attack_page) {
             }
             html_select += '</select>';
             html_select += '<input id="attack_msg" placeholder="报警消息" value="' + attack_msg + '" />';
+
+            html_select += '<select id="attack_level_select">';
+            html_select += '<option value="" >' + "危险等级" + '</option>';
+                html_select += '<option value="0" >严重</option>';
+                html_select += '<option value="1" >高危</option>';
+                html_select += '<option value="2" >中危</option>';
+                html_select += '<option value="3" >低息</option>';
+            html_select += '</select>';
+
+
+
             //html_select+='<a href="javascript:void(0);" onclick="attack_click(1)" >查询<a/>';
             html_select += '<button  class="btn" onclick="attack_click(1)" >查询</button>';
             html_select += '<button  class="btn" onclick="reset()" >重置</button>';
@@ -698,6 +706,7 @@ function attack_click(attack_page) {
             html += '</ul>';
             div_container.append(html);
             $("#attack_type_select").val(attack_type);
+            $("#attack_level_select").val(attack_level);
         }
     });
 
@@ -713,6 +722,7 @@ function reset() {
     $("#attack_jump").val("");
     $("#attack_search").val("");
     $("#attack_type").val("");
+    $("#attack_level").val("");
     attack_click("1");
 }
 
@@ -723,6 +733,10 @@ function attack_jump() {
 $(document).on("change", "select#attack_type_select", function () {
 
     $("#attack_type").val($(this).val())
+});
+$(document).on("change", "select#attack_level_select", function () {
+
+    $("#attack_level").val($(this).val())
 });
 
 $(document).on("click", ".detail-a", function () {
