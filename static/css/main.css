@@ -599,3 +599,83 @@ td {
 #table_div .table.table-bordered tr td:first-child, #table_div .table.table-bordered tr td:nth-child(2), #table_div .table.table-bordered tr td:nth-child(3) {
     min-width: 100px;
 }
+
+/*新增弹框*/
+.close:not(:disabled):not(.disabled):focus, .close:not(:disabled):not(.disabled):hover {
+    outline: 0;
+}
+
+.modal-body #myTab a {
+    display: inline-block;
+    padding: 10px 15px;
+    font-size: 14px;
+}
+
+.nav-tabs {
+    line-height: normal;
+    padding: 0 10px;
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+    color: #555;
+    cursor: default;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+}
+
+.nav-tabs > li {
+    margin-bottom: -1px;
+}
+
+.tab-content, .tabs-content {
+    background-color: transparent;
+}
+
+#myTabContent div.active {
+    color: #757575;
+    font-size: 14px;
+    padding: 10px 15px;
+    box-sizing: border-box;
+}
+
+#myTabContent div button.active {
+    color: #458df9;
+    border: 1px solid #458df9;
+}
+
+.form > div {
+    margin-bottom: 10px;
+}
+
+.form > div p {
+    display: inline-block;
+}
+
+a:not([href]):not([tabindex]), a:not([href]):not([tabindex]):focus, a:not([href]):not([tabindex]):hover {
+    color: #458df9;
+    text-decoration: none;
+}
+
+.form {
+    margin-bottom: 20px;
+}
+
+.custom-switch-indicator {
+    height: 1.75rem;
+    width: 2.75rem;
+
+}
+
+.custom-switch-indicator:before {
+    height: calc(1.75rem - 4px);
+    width: calc(1.75rem - 4px);
+
+}
+
+.custom-switch {
+    display: block;
+    margin: 20px 0px;
+}

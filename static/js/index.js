@@ -38,6 +38,7 @@ function agent_click(page) {
             html += '<th>服务器版本</th>';
             html += '<th>是否在线</th>';
             html += '<th>是否禁用该探针</th>';
+             html += '<th>设置</th>';
             html += '</tr>';
             html += '</thead>';
             html += '<tbody>';
@@ -55,6 +56,7 @@ function agent_click(page) {
                 html += '<td>' + data[x]['server_version'] + '</td>';
                 html += '<td>' + data[x]['online'] + '</td>';
                 html += '<td>' + data[x]['disabled'] + '</td>';
+                  html += '<td><a class="" data-toggle="modal" data-target="#setting">配置</a></td>';
                 html += '</tr>';
             }
             html += '</tbody>';
