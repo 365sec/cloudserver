@@ -69,7 +69,6 @@ b {
 
 .modal-body {
     height: 700px;
-    overflow-y: auto;
 }
 
 #model-body td {
@@ -632,6 +631,8 @@ td {
 
 .tab-content, .tabs-content {
     background-color: transparent;
+    height: calc(100% - 100px);
+    overflow-y: scroll;
 }
 
 #myTabContent div.active {
@@ -642,7 +643,7 @@ td {
 }
 
 #myTabContent div button.active {
-    color: #458df9;
+    color: rgba(0, 0, 0, .7);
     border: 1px solid #458df9;
 }
 
@@ -652,6 +653,9 @@ td {
 
 .form > div p {
     display: inline-block;
+    margin-bottom: 0;
+    line-height: 34px;
+    margin-left: 10px;
 }
 
 a:not([href]):not([tabindex]), a:not([href]):not([tabindex]):focus, a:not([href]):not([tabindex]):hover {
@@ -678,4 +682,8 @@ a:not([href]):not([tabindex]), a:not([href]):not([tabindex]):focus, a:not([href]
 .custom-switch {
     display: block;
     margin: 20px 0px;
+}
+
+.btn-group .btn {
+    color: #a59b9b;
 }
