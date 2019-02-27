@@ -280,7 +280,11 @@ def plugins_update(request):
     plugn.algorithm_config=algo
     plugn.httpProtectConfig=http
     plugn.globalConfig=glob
+    timeArray=time.localtime()
+    otherStyleTime=time.strftime("%Y%m%d-%H%M%S",timeArray)
+
+    plugn.plugin_version=otherStyleTime
     plugn.save()
 
-    data={}
+    data={"aaa":132}
     return HttpResponse(data,content_type='application/json')

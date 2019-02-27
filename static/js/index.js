@@ -875,7 +875,7 @@ function httpProtec_config_show(httpProtec_config,id) {
             p= "<p><b>"+dic[x]+"</b></p>" ;
             last_p=dic[x];
         }
-        console.log(x);
+
         let x_id= x;
         //
         let btn_html="";
@@ -1096,15 +1096,13 @@ function agent_manage_submit(id) {
         url : "plugins_update",
         data : {"id":id,"algo":algo,"http":http,"glob":glob},
        // timeout:1000,
-        success:function(dates){
-
-        },
-        error: function() {
+        success:function(data){
+            console.log(data);
 
         }
     });
 
-
+    $("#setting").modal("hide");
 
 }
 
