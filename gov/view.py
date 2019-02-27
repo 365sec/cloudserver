@@ -44,6 +44,7 @@ def agent_click(request):
     return HttpResponse(json.dumps(data),content_type='application/json')
 
 def agent_download(request):
+    print ("agent_download")
     if request.method == 'GET':
         FilePath = request.GET['filepath']
         FileName = str(FilePath).split('/')[-1]

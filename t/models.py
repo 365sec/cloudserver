@@ -61,3 +61,12 @@ class event_knowledge(models.Model):
     event_name=models.CharField(max_length=500,db_column="event_name",blank=False)
     event_description=models.IntegerField(db_column="event_description",blank=True)
     event_advice=models.TextField(db_column="event_advice",blank=True)
+
+class plugins(models.Model):
+    agent_id=models.CharField(db_column="agent_id",max_length=255,primary_key=True,)
+    plugin_version=models.CharField(db_column="plugin_version",blank=False,max_length=255)
+    plugin_name=models.CharField(db_column="plugin_name",max_length=255,blank=True)
+    globalConfig=models.TextField(db_column="globalConfig",blank=True)
+    httpProtectConfig=models.TextField(db_column="httpProtectConfig",blank=True)
+    algorithm_config=models.TextField(db_column="algorithm_config",blank=True)
+    plugin_template=models.TextField(db_column="plugin_template",blank=True)

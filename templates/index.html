@@ -22,7 +22,6 @@
     <link href=/static/css/gfonts/6xKydSBYKcSV-LCoeQqfX1RYOo3i54rwmRdr.ttf rel=stylesheet>
     <link href=/static/css/gfonts/6xK3dSBYKcSV-LCoeQqfX1RYOo3qNq7g.ttf rel=stylesheet>
     <link href=/static/css/main.css rel=stylesheet>
-
     <script type="text/javascript" src="/static/js/manifest.2ae2e69a05c33dfc65f8.js"></script>
     <script type="text/javascript" src="/static/js/vendor.4b92a4793e5e56db432c.js"></script>
     <script type="text/javascript" src="/static/js/app.f73cd6dc69f535a33ae7.js"></script>
@@ -185,10 +184,7 @@
 
                     </div>
                 </div>
-                <div class="agentDiv">
-
-
-                </div>
+                <div class="agentDiv"></div>
                 <div class="tanzhen">
                     <h5 class="padding-20">请选择探针类型</h5>
                     <div>
@@ -379,7 +375,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                        <h4 class="modal-title" id="myModalLabel">攻击事件</h4>
+                        <h4 class="modal-title" id="myModalLabel"></h4>
                     </div>
                     <div id="model-body" class="modal-body"></div>
                     <div class="modal-footer">
@@ -432,125 +428,61 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                 </button>
                 <h4 class="modal-title" id="myModalLabel">
-                    模态框（Modal）标题
+                    agent配置
                 </h4>
             </div>
             <div class="modal-body">
                 <ul id="myTab" class="nav nav-tabs">
-                    <li class="active">
-                        <a href="#home" data-toggle="tab">
-                            菜鸟教程
+                    <li class="active"><a href="#algorithm_config" data-toggle="tab">RASP防御策略</a></li>
+                    <li >
+                        <a href="#httpProtec_config" data-toggle="tab">
+                            WAF防御策略
                         </a>
                     </li>
-                    <li><a href="#ios" data-toggle="tab">iOS</a></li>
-                    <li><a href="#jmeter" data-toggle="tab">jmeter</a></li>
+
+                    <li><a href="#globalConfig" data-toggle="tab">全局配置</a></li>
                 </ul>
                 <div id="myTabContent" class="tab-content">
-                    <div class="tab-pane fade in active" id="home">
-                        <div class="form">
-                            <p><b>命令执行</b></p>
-                            <div>
-                                <div class="btn-group" role="group" aria-label="...">
-                                    <button type="button" class="btn btn-default">Left</button>
-                                    <button type="button" class="btn btn-default">Middle</button>
-                                    <button type="button" class="btn btn-default">Right</button>
-                                </div>
-                                <p>算法1 - 通过反射执行命令，比如反序列化、加密的PHP后门</p>
+                    <div class="tab-pane fade in active" id="httpProtec_config" >
+                        <div>
+                            <textarea style="min-height: 300px;min-width: 600px  ;display: none"  id="input_httpProtec_config"> </textarea> <br>
+                        </div>
+                        <div  id="httpProtec_config_body">
 
-                            </div>
-                            <div>
-                                <div class="btn-group" role="group" aria-label="...">
-                                    <button type="button" class="btn btn-default">Left</button>
-                                    <button type="button" class="btn btn-default">Middle</button>
-                                    <button type="button" class="btn btn-default">Right</button>
-                                </div>
-                            </div>
                         </div>
 
-                        <div class="form">
-                            <p><b>命令执行</b></p>
-                            <div>
-                                <div class="btn-group" role="group" aria-label="...">
-                                    <button type="button" class="btn btn-default">Left</button>
-                                    <button type="button" class="btn btn-default">Middle</button>
-                                    <button type="button" class="btn btn-default">Right</button>
-                                </div>
-                                <p>算法1 - 通过反射执行命令，比如反序列化、加密的PHP后门</p>
 
-                            </div>
-                            <div>
-                                <div class="btn-group" role="group" aria-label="...">
-                                    <button type="button" class="btn btn-default">Left</button>
-                                    <button type="button" class="btn btn-default">Middle</button>
-                                    <button type="button" class="btn btn-default">Right</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form">
-                            <p><b>命令执行</b></p>
-                            <div>
-                                <div class="btn-group" role="group" aria-label="...">
-                                    <button type="button" class="btn btn-default">Left</button>
-                                    <button type="button" class="btn btn-default">Middle</button>
-                                    <button type="button" class="btn btn-default">Right</button>
-                                </div>
-                                <p>算法1 - 通过反射执行命令，比如反序列化、加密的PHP后门</p>
-
-                            </div>
-                            <div>
-                                <div class="btn-group" role="group" aria-label="...">
-                                    <button type="button" class="btn btn-default">Left</button>
-                                    <button type="button" class="btn btn-default">Middle</button>
-                                    <button type="button" class="btn btn-default">Right</button>
-                                </div>
-                            </div>
-                        </div>
                     </div>
-                    <div class="tab-pane fade" id="ios">
-                        <div class="form">
-                            <p><b>命令执行</b></p>
-                            <div>
-                                <div class="btn-group" role="group" aria-label="...">
-                                    <button type="button" class="btn btn-default">Left</button>
-                                    <button type="button" class="btn btn-default">Middle</button>
-                                    <button type="button" class="btn btn-default">Right</button>
-                                </div>
-                                <p>算法1 - 通过反射执行命令，比如反序列化、加密的PHP后门</p>
+                    <div class="tab-pane fade" id="algorithm_config">
+                        <div>
+                            <textarea style="min-height: 300px;min-width: 600px ;display: none"  id="input_algorithm_config"> </textarea> <br>
 
-                            </div>
-                            <div>
-                                <div class="btn-group" role="group" aria-label="...">
-                                    <button type="button" class="btn btn-default">Left</button>
-                                    <button type="button" class="btn btn-default">Middle</button>
-                                    <button type="button" class="btn btn-default">Right</button>
-                                </div>
-                            </div>
                         </div>
-                    </div>
-                    <div class="tab-pane fade" id="jmeter">
-                        <div class="form">
-                            <p><b>快速设置</b></p>
-                            <label class="custom-switch"><input type="checkbox" name="custom-switch-checkbox"
-                                                                class="custom-switch-input"> <span
-                                    class="custom-switch-indicator"></span> <span class="custom-switch-description">
-            将所有算法设置为「记录日志」模式
-          </span></label>
+                        <div id="algorithm_config_body" >
 
-                            <label class="custom-switch"><input type="checkbox" name="custom-switch-checkbox"
-                                                                class="custom-switch-input"> <span
-                                    class="custom-switch-indicator"></span> <span class="custom-switch-description">
-            是否关闭网站
-          </span></label>
                         </div>
+
+
                     </div>
+                    <div class="tab-pane fade" id="globalConfig">
+                        <div>
+                            <textarea style="min-height: 300px;min-width: 600px  ;display: none"  id="input_global_config"> </textarea> <br>
+                        </div>
+                        <div id="globalConfig_body">
+
+                        </div>
+
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭
                 </button>
-                <button type="button" class="btn btn-primary">
-                    提交更改
-                </button>
+                <div id="agent_manage_submit">
+{#                    <button type="button" class="btn btn-primary">#}
+{#                        提交更改#}
+{#                    </button>#}
+                </div>
+
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
@@ -564,9 +496,9 @@
      });*/
     window.onload = overview_click;
 
-    setInterval(function () {
-        overviewFlash()
-    }, 3000);
+   {#setInterval(function () {#}
+   {#     overviewFlash()#}
+   {# },3000);#}
 
     //overview_click();
 
@@ -616,7 +548,7 @@
 <script>
     $(document).on("click", "#myTab li", function () {
         $(this).addClass("active").siblings().removeClass("active")
-    })
+    });
 
     $(document).on("click", ".btn-group button", function () {
         $(this).addClass("active").siblings().removeClass("active");

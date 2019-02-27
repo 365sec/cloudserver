@@ -18,6 +18,7 @@ from pymysql.constants.FIELD_TYPE import JSON
 from t.models import agents
 from t.models import attack_event
 from t.models import event_knowledge
+from t.models import plugins
 
 SENSOR_TYPE = {'10001':'Java Rasp探针','10002':'PHP Rasp探针', '20001':'IIS探针'}
 INTERCEPT_STATUS = {'block':'拦截', 'log':'记录'}
@@ -232,7 +233,7 @@ def overview_query(request):
         x.event_id=attack_type[str(x.event_id)]
         x.plugin_message = x.plugin_message.replace('<', '&lt').replace('>', '&gt')
         x.plugin_message = x.plugin_message.replace('"', '&quot;')
-        print x
+        #print x
         temp=model_to_dict(x)
 
         recent_warning_list.append(temp)
@@ -247,4 +248,39 @@ def overview_query(request):
     data['attrack_recent_warning']=recent_warning
     data=json.dumps(data)
     end1=time.clock()
+    return HttpResponse(data,content_type='application/json')
+
+
+def plugins_manage(request):
+    print (request.POST)
+    print ("plugins_manage")
+    id=request.POST.get("id")
+    print (id)
+
+    result=plugins.objects.all().filter(agent_id=id)
+    data1={}
+    for x in result:
+        data1=model_to_dict(x)
+    data=data1
+    data=json.dumps(data)
+    return HttpResponse(data,content_type='application/json')
+
+def plugins_update(request):
+
+
+
+
+
+    id=request.POST.get('id')
+    algo=request.POST.get('algo')
+    http=request.POST.get('http')
+    glob=request.POST.get('glob')
+
+    plugn=plugins.objects.get(agent_id=id)
+    plugn.algorithm_config=algo
+    plugn.httpProtectConfig=http
+    plugn.globalConfig=glob
+    plugn.save()
+
+    data={}
     return HttpResponse(data,content_type='application/json')
