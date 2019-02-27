@@ -434,7 +434,7 @@
             <div class="modal-body">
                 <ul id="myTab" class="nav nav-tabs">
                     <li class="active"><a href="#algorithm_config" data-toggle="tab">RASP防御策略</a></li>
-                    <li >
+                    <li>
                         <a href="#httpProtec_config" data-toggle="tab">
                             WAF防御策略
                         </a>
@@ -443,22 +443,24 @@
                     <li><a href="#globalConfig" data-toggle="tab">全局配置</a></li>
                 </ul>
                 <div id="myTabContent" class="tab-content">
-                    <div class="tab-pane fade in active" id="httpProtec_config" >
+                    <div class="tab-pane fade in active" id="algorithm_config">
                         <div>
-                            <textarea style="min-height: 300px;min-width: 600px  ;display: none"  id="input_httpProtec_config"> </textarea> <br>
+                            <textarea style="min-height: 300px;min-width: 600px  ;display: none"
+                                      id="input_algorithm_config"> </textarea> <br>
                         </div>
-                        <div  id="httpProtec_config_body">
+                        <div id="algorithm_config_body">
 
                         </div>
 
 
                     </div>
-                    <div class="tab-pane fade" id="algorithm_config">
+                    <div class="tab-pane fade" id="httpProtec_config">
                         <div>
-                            <textarea style="min-height: 300px;min-width: 600px ;display: none"  id="input_algorithm_config"> </textarea> <br>
+                            <textarea style="min-height: 300px;min-width: 600px ;display: none"
+                                      id="input_httpProtec_config"> </textarea> <br>
 
                         </div>
-                        <div id="algorithm_config_body" >
+                        <div id="httpProtec_config_body">
 
                         </div>
 
@@ -466,93 +468,97 @@
                     </div>
                     <div class="tab-pane fade" id="globalConfig">
                         <div>
-                            <textarea style="min-height: 300px;min-width: 600px  ;display: none"  id="input_global_config"> </textarea> <br>
+                            <textarea style="min-height: 300px;min-width: 600px  ;display: none"
+                                      id="input_global_config"> </textarea> <br>
                         </div>
                         <div id="globalConfig_body">
 
                         </div>
 
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
-                </button>
-                <div id="agent_manage_submit">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                    <div id="agent_manage_submit">
+
+                    </div>
 
                 </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
 
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal -->
-</div>
+    <script>
+        // $().readOnly()
 
-<script>
-    // $().readOnly()
+        /* $("select#status").change(function(){
+             console.log($(this).val());
+         });*/
+        window.onload = overview_click;
 
-    /* $("select#status").change(function(){
-         console.log($(this).val());
-     });*/
-    window.onload = overview_click;
+        {#setInterval(function () {#}
+        {#     overviewFlash()#}
+        {# },3000);#}
 
-   {#setInterval(function () {#}
-   {#     overviewFlash()#}
-   {# },3000);#}
-
-    //overview_click();
+        //overview_click();
 
 
-</script>
+    </script>
 
 
-<div class="__transltor">
-    <div class="__transltor_button" style="left: 709px; top: 346px;"></div>
-    <!---->
-    <!---->
-</div>
+    <div class="__transltor">
+        <div class="__transltor_button" style="left: 709px; top: 346px;"></div>
+        <!---->
+        <!---->
+    </div>
 
-<script type="text/javascript">
-    var beginTimeStore = '';
-    var endTimeStore = '';
-    $('#attack_time').daterangepicker({
-        "timePicker": true,
-        "timePicker24Hour": true,
-        "linkedCalendars": false,
-        "autoUpdateInput": false,
-        "locale": {
-            format: 'YYYY-MM-DD',
-            separator: ' ~ ',
-            applyLabel: "应用",
-            cancelLabel: "取消",
-            resetLabel: "重置",
-        }
-    }, function (start, end, label) {
-        beginTimeStore = start;
-        endTimeStore = end;
-        console.log(this.startDate.format(this.locale.format));
-        console.log(this.endDate.format(this.locale.format));
-        if (!this.startDate) {
-            this.element.val('');
-        } else {
-            this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
-        }
-    });
+    <script type="text/javascript">
+        var beginTimeStore = '';
+        var endTimeStore = '';
+        $('#attack_time').daterangepicker({
+            "timePicker": true,
+            "timePicker24Hour": true,
+            "linkedCalendars": false,
+            "autoUpdateInput": false,
+            "locale": {
+                format: 'YYYY-MM-DD',
+                separator: ' ~ ',
+                applyLabel: "应用",
+                cancelLabel: "取消",
+                resetLabel: "重置",
+            }
+        }, function (start, end, label) {
+            beginTimeStore = start;
+            endTimeStore = end;
+            console.log(this.startDate.format(this.locale.format));
+            console.log(this.endDate.format(this.locale.format));
+            if (!this.startDate) {
+                this.element.val('');
+            } else {
+                this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
+            }
+        });
 
 
-    $(".row .col-4 > div").css({"width": $(".row .col-4 > div").width(), "height": $(".row .col-4 > div").height()});
-    $("#attrack_time_dic_div").css({"width": $("#attrack_time_dic_div").width(), "height": "276px"});
+        $(".row .col-4 > div").css({
+            "width": $(".row .col-4 > div").width(),
+            "height": $(".row .col-4 > div").height()
+        });
+        $("#attrack_time_dic_div").css({"width": $("#attrack_time_dic_div").width(), "height": "276px"});
 
-</script>
-{#弹框新样式#}
-<script>
-    $(document).on("click", "#myTab li", function () {
-        $(this).addClass("active").siblings().removeClass("active")
-    });
+    </script>
+    {#弹框新样式#}
+    <script>
+        $(document).on("click", "#myTab li", function () {
+            $(this).addClass("active").siblings().removeClass("active")
+        });
 
-    $(document).on("click", ".btn-group button", function () {
-        $(this).addClass("active").siblings().removeClass("active");
-    })
+        $(document).on("click", ".btn-group button", function () {
+            $(this).addClass("active").siblings().removeClass("active");
+        })
 
-</script>
+    </script>
 </body>
 
 </html>
