@@ -69,6 +69,8 @@ b {
 
 .modal-body {
     height: 700px;
+    padding: 10px;
+    padding-bottom: 0;
 }
 
 #model-body td {
@@ -631,8 +633,9 @@ td {
 
 .tab-content, .tabs-content {
     background-color: transparent;
-    height: calc(100% - 100px);
+    height: calc(100% - 95px);
     overflow-y: scroll;
+    margin-bottom: 0;
 }
 
 #myTabContent div.active {
@@ -686,4 +689,10 @@ a:not([href]):not([tabindex]), a:not([href]):not([tabindex]):focus, a:not([href]
 
 .btn-group .btn {
     color: #a59b9b;
+}
+
+
+#myModal #model-body > div {
+    height: 100%;
+    overflow: scroll;
 }
