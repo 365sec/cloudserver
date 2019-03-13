@@ -1107,7 +1107,6 @@ function attack_click(attack_page) {
             html_select += '<span class="btnvalue">危险等级: </span>';
             html_select += '<select id="attack_level_select">';
             html_select += '<option value="" >' + "--请选择危险等级--" + '</option>';
-            html_select += '<option value="" >' + "--请选择危险等级--" + '</option>';
             html_select += '<option value="0" >严重</option>';
             html_select += '<option value="1" >高危</option>';
             html_select += '<option value="2" >中危</option>';
