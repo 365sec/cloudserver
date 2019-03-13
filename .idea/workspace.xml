@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b9bb054f-8858-45e0-b063-969730af8088" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/main.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -55,16 +54,16 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="267">
+            <state relative-caret-position="14560">
               <caret line="455" column="26" lean-forward="true" selection-start-line="455" selection-start-column="26" selection-end-line="455" selection-end-column="26" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/css/main.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="268">
+            <state relative-caret-position="-711">
               <caret line="636" column="23" lean-forward="true" selection-start-line="636" selection-start-column="23" selection-end-line="636" selection-end-column="23" />
             </state>
           </provider>
@@ -73,7 +72,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/js/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="19320">
+            <state relative-caret-position="26880">
               <caret line="840" selection-start-line="840" selection-end-line="840" />
             </state>
           </provider>
@@ -82,7 +81,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/js/time/bootstrap.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="138">
+            <state relative-caret-position="320">
               <caret line="10" column="15" selection-start-line="10" selection-start-column="15" selection-end-line="10" selection-end-column="15" />
             </state>
           </provider>
@@ -91,7 +90,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/js/time/daterangepicker.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="437">
+            <state relative-caret-position="608">
               <caret line="19" column="22" selection-start-line="19" selection-start-column="22" selection-end-line="19" selection-end-column="22" />
             </state>
           </provider>
@@ -100,16 +99,16 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gov/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
+            <state relative-caret-position="544">
               <caret line="17" selection-start-line="17" selection-end-line="17" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/t/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1656">
+            <state relative-caret-position="123">
               <caret line="91" column="46" selection-start-line="91" selection-start-column="46" selection-end-line="91" selection-end-column="46" />
               <folding>
                 <element signature="e#24#63#0" expanded="true" />
@@ -207,8 +206,9 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="229" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="341" />
+    <option name="y" value="164" />
     <option name="width" value="1440" />
     <option name="height" value="795" />
   </component>
@@ -234,7 +234,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -245,53 +244,13 @@
             <path>
               <item name="cloudserver" type="b2602c69:ProjectViewProjectNode" />
               <item name="cloudserver" type="462c0819:PsiDirectoryNode" />
-              <item name="gov" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cloudserver" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cloudserver" type="462c0819:PsiDirectoryNode" />
               <item name="static" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cloudserver" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cloudserver" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="css" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cloudserver" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cloudserver" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="css" type="462c0819:PsiDirectoryNode" />
-              <item name="plugins" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cloudserver" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cloudserver" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="css" type="462c0819:PsiDirectoryNode" />
-              <item name="bootstrap.css" type="620a8d5e:NestingTreeNode" />
-            </path>
-            <path>
-              <item name="cloudserver" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cloudserver" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cloudserver" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cloudserver" type="462c0819:PsiDirectoryNode" />
-              <item name="t" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cloudserver" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cloudserver" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -308,16 +267,16 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="F:\PythonProject\cloudserver\static\js\time" />
-      <recent name="F:\PythonProject\gov" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="F:\PythonProject\cloudserver\templates" />
       <recent name="F:\PythonProject\cloudserver\static\css" />
       <recent name="F:\PythonProject\cloudserver\static\js\time" />
       <recent name="F:\PythonProject\cloudserver\static\js" />
       <recent name="F:\PythonProject\gov\static\css\gfonts" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="F:\PythonProject\cloudserver\static\js\time" />
+      <recent name="F:\PythonProject\gov" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -424,7 +383,6 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Django server.gov" />
       <item itemvalue="Python.tests" />
       <item itemvalue="Python.views" />
       <item itemvalue="Python.manage" />
@@ -522,10 +480,9 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="63" y="-8" width="1865" height="1096" extended-state="6" />
-    <editor active="true" />
+    <frame x="341" y="164" width="1440" height="795" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.38360655" visible="true" weight="0.1900277" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.38360655" visible="true" weight="0.25677603" />
       <window_info id="Structure" order="1" sideWeight="0.61639345" side_tool="true" weight="0.28624734" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -538,7 +495,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49695292" weight="0.26923078" />
       <window_info anchor="bottom" id="Database Changes" order="9" sideWeight="0.49946696" weight="0.32725322" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5030471" side_tool="true" visible="true" weight="0.22661123" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5030471" side_tool="true" visible="true" weight="0.31770045" />
       <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49946696" weight="0.4474249" />
       <window_info anchor="bottom" id="Python Console" order="12" sideWeight="0.49946696" weight="0.472103" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -754,53 +711,53 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
+        <state relative-caret-position="14560">
           <caret line="455" column="26" lean-forward="true" selection-start-line="455" selection-start-column="26" selection-end-line="455" selection-end-column="26" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/static/js/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19320">
+        <state relative-caret-position="26880">
           <caret line="840" selection-start-line="840" selection-end-line="840" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/static/js/time/bootstrap.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="138">
+        <state relative-caret-position="320">
           <caret line="10" column="15" selection-start-line="10" selection-start-column="15" selection-end-line="10" selection-end-column="15" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/static/js/time/daterangepicker.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
+        <state relative-caret-position="608">
           <caret line="19" column="22" selection-start-line="19" selection-start-column="22" selection-end-line="19" selection-end-column="22" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/gov/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
+        <state relative-caret-position="544">
           <caret line="17" selection-start-line="17" selection-end-line="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/t/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1656">
-          <caret line="91" column="46" selection-start-line="91" selection-start-column="46" selection-end-line="91" selection-end-column="46" />
-          <folding>
-            <element signature="e#24#63#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/static/css/main.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="268">
+        <state relative-caret-position="-711">
           <caret line="636" column="23" lean-forward="true" selection-start-line="636" selection-start-column="23" selection-end-line="636" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/t/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="123">
+          <caret line="91" column="46" selection-start-line="91" selection-start-column="46" selection-end-line="91" selection-end-column="46" />
+          <folding>
+            <element signature="e#24#63#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

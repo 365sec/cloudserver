@@ -115,7 +115,7 @@ def sttack_trace_query(request):
         y['threat_level'] = THREAT_LEVEL.get(y['threat_level'], '')
         try:
             y['attack_type']=event_knowledge.objects.get(event_id=y['event_id']).event_name
-        except Exception, e:
+        except Exception as e:
             y['attack_type'] = ''
         y['plugin_message'] = y['plugin_message'].replace('<', '&lt').replace('>', '&gt')
         y['url'] = y['url'].replace('<', '&lt').replace('>', '&gt')
