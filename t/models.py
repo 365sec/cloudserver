@@ -20,6 +20,7 @@ class agents(models.Model):
     remote_ip = models.CharField(max_length=255, db_column='remote_ip', blank=False)
     online=models.IntegerField(db_column='online',blank=False)
     disabled=models.IntegerField(db_column='disabled',blank=False)
+    remark = models.CharField(max_length=1000, db_column='remark', blank=False)
 
 class attack_event(models.Model):
 

@@ -29,12 +29,9 @@ urlpatterns = [
     url(r'^download$', view.agent_download),
     url(r'^agentClick$', view.agent_click),
     url(r'^overviewQuery$', views.overview_query),
-
     url(r'^plugins$', views.plugins_manage),
     url(r'^plugins_update$', views.plugins_update),
-
-
-
+    url(r'^add_host$', views.add_host),
     url(r'', view.index),
 ]
 # urlpatterns = [
