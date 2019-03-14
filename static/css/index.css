@@ -203,14 +203,23 @@ margin-right:32px;
     font-size: 16px;
     font-weight: bold;
 }
+#remarkid{
+    position: absolute;
+    top: 70px;
+    left: 30px;
+    right: 20px;
+    bottom: 80px;
+    font-size: 14px;
+}
 #remarkmsg{
     border: 1px solid #e7eaec;
     border-radius: 4px;
     position: absolute;
-    top: 70px;
+    top: 95px;
     left: 20px;
     right: 20px;
     bottom: 80px;
+    padding:10px;
 }
 .layout-btn{
     width: 100%;

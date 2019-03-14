@@ -107,7 +107,7 @@
                     <div class="top-info-wrap">
                         <ul class="top-info-list clearfix">
                         <li>欢迎：admin</li>
-                        <li><a title="退出" href="/greenplat/logout"><i class="iconfont" title="退出登录">&#xeb13;</i></a></li>
+                        <li><a title="退出" href="/logout"><i class="iconfont" title="退出登录">&#xeb13;</i></a></li>
 
                         </ul>
                     </div>
@@ -592,10 +592,11 @@
 						<div class="layout-title">备注信息：</div>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                         <form action="post">
+                            <div id="remarkid">ID： 2132355</div>
                             <div contenteditable="true" id="remarkmsg"></div>
                             <div class = 'layout-btn'>
-                            <button class="btn" onclick="formSubmit()">保存</button>
-                            <div class="btn"  id="layout-close" onclick="javascript:void(0)">关闭</div>
+                            <div class="btn layout-close" onclick="formSubmit()">保存</div>
+                            <div class="btn layout-close" onclick="javascript:void(0)">关闭</div>
                             </div>
                         </form>
 					</div>
@@ -646,7 +647,7 @@
                     <!--event.stopPropagation(); //阻止事件向上冒泡-->
                 <!--}-->
             <!--});-->
-            $(document).on('click',"#layout-close, .layout .close",function (e) {
+            $(document).on('click',".layout .close,.layout .layout-close",function (e) {
                     actionIn(".layout", 'action_scale_out', .3, "");
                     $(".shade").css({
                         visibility: "hidden"
