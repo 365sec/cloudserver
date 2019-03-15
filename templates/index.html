@@ -140,15 +140,14 @@
                                 <div class="title">
                                     <span class="special">全球分布</span>
                                 </div>
-                                 <div style=" height: 100%;">
-                                     <div class="map-tab">
-                                         <button type="button" id ="map-tab-globa" class="map-tabbtn" onclick="changetoGlo">全球
-                                     </button>
-                                         <button type="button" id ="map-tab-china" class="map-tabbtn" onclick = "changetoChina()">中国
-                                     </button>
+                                 <div style="height: 100%">
+                                     <div style="padding: 10px">
+                                         <button type="button" class="map-tab current" id="map-tab-China">中国地图</button><!--
+                                         --><button type="button" class="map-tab" id="map-tab-world">世界地图</button>
+
                                      </div>
-                                     <div id="chart_map" class="chart-con"></div>
-                                     </div>
+                                    <div id="chart_map" class="chart-con"></div>
+                                 </div>
                             </div>
                             <div class="content" style="height: 40%;">
                                 <div class="title">
@@ -600,7 +599,7 @@
 						<div class="layout-title">备注信息：</div>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                         <form action="post">
-                            <div id="remarkid">Agent ID  <span style="color:#F00" id="agent-id">{{ agent_id }}</span></div><br />
+                            <div id="remarkid">ID： 2132355</div>
                             <div contenteditable="true" id="remarkmsg"></div>
                             <div class = 'layout-btn'>
                             <div class="btn layout-close" onclick="formSubmit()">保存</div>
@@ -611,6 +610,29 @@
 				</div>
 </body>
 <script>
+    <!--首页地图切换-->
+        $(document).on('click','#map-tab-world',function(){
+			var myChart = echarts.init(document.getElementById('chart_map'));
+			map_flag = 0;
+			myChart.setOption({
+				geo:{
+					map: 'world'
+				}
+			});
+		});
+		$(document).on('click','#map-tab-China',function(){
+			var myChart = echarts.init(document.getElementById('chart_map'));
+			map_flag = 1;
+			myChart.setOption({
+				geo:{
+					map: 'china'
+				}
+			});
+		});
+		<!--首页地图切换-->
+
+
+
         function formReset(){
             document.getElementById("remarkmsg").reset()
         }
@@ -624,7 +646,6 @@
 			boo = 0; /*不支持动画*/
 		};
 
-		//弹框动画
 		function actionIn(obj, actionName, time, speed) {
 		    $(obj).css({
 				visibility: "visible"
@@ -634,28 +655,24 @@
 				"animation-fill-mode": "forwards"
 			});
 		};
+		//初始化echarts盒子宽高
 		function chartDiv_init(obj){
 		    $(obj).css('width',$(obj).width());
             $(obj).css('height',$(obj).height());
 		}
         $(function(){
+            tabs($(".map-tab"));
+           //初始化echarts盒子宽高
             chartDiv_init('attack_type_dic_div');
             chartDiv_init('chart_map');
             chartDiv_init('attrack_source_dic_div');
             chartDiv_init('attrack_time_dic_div');
             chartDiv_init('attrack_recent_warning_dic_div');
             chartDiv_init('attrack_threat_level_dic_div');
-   		    <!--$(document).on('click',".shade",function (e) {-->
 
-                <!--if($(e.target).closest('.layout').length <= 0){-->
-                    <!--actionIn(".layout", 'action_scale_out', .3, "");-->
-                    <!--$(".shade").css({-->
-                        <!--visibility: "hidden"-->
-                    <!--});-->
-                    <!--event.stopPropagation(); //阻止事件向上冒泡-->
-                <!--}-->
-            <!--});-->
-            $(document).on('click',".layout .close,.layout .layout-close",function (e) {
+
+            //关闭弹窗
+        $(document).on('click',".layout .close,.layout .layout-close",function (e) {
                     actionIn(".layout", 'action_scale_out', .3, "");
                     $(".shade").css({
                         visibility: "hidden"
@@ -663,6 +680,7 @@
                     event.stopPropagation(); //阻止事件向上冒泡
 
             });
+            //打开弹窗
         $(document).on("click", ".agentDiv .card .btngroup .btn", function() {
    			actionIn(".layout", 'action_scale', .3, "");
    			$(".shade").css({
@@ -671,6 +689,13 @@
    			event.stopPropagation(); //阻止事件向上冒泡
    			});
    		});
+        var tabs = function(tab){
+            tab.click(function(){
+                var indx = tab.index(this);
+                tab.removeClass('current');
+                $(this).addClass('current');
+            })
+        }
 
 </script>
 </html>

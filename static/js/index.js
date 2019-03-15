@@ -418,9 +418,13 @@ function attack_threat_level_charts(data) {
 
     mycharts_source.setOption(option)
 }
-
+var map_flag = 1;
 function chart_map(attack_source_data) {
     var myChart = echarts.init(document.getElementById('chart_map'));
+    if  (map_flag == 1)
+        geo_map = "china"
+    else
+        geo_map = "world"
 
     var convertData = function (data) {
         var res = [];
@@ -474,7 +478,7 @@ function chart_map(attack_source_data) {
             }
         },
         geo: {
-            map: 'china',
+            map: geo_map,
             zoom: 1.2,
             label: {
                 emphasis: {

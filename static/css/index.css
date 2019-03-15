@@ -120,7 +120,7 @@ margin-right:32px;
 }
 .row  .chart-con{
     width: 100%;
-    height: calc(100% - 34px)!important;
+    height: calc(100% - 46px)!important;
 }
 
 .page-title{
@@ -266,3 +266,17 @@ margin-right:32px;
 #table_div div .pagination,.card .pagination{
     padding-top: 10px;
 }
+
+.map-tab{
+    height: 32px;
+    background-color: rgba(24, 144, 255, 1);
+    font-size: 14px;
+    font-weight: normal;
+    color: #fff;
+    border:none;
+    padding: 0 10px;
+}
+.current{
+    background-color: #0044cc;
+    color: #fff;
+    }
