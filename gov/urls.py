@@ -32,7 +32,7 @@ urlpatterns = [
     url(r'^plugins$', views.plugins_manage),
     url(r'^plugins_update$', views.plugins_update),
     url(r'^add_host$', views.add_host),
-    url(r'', view.index),
+    url(r'', views.index),
 ]
 # urlpatterns = [
 #     path('admin/', admin.site.urls),

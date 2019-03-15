@@ -43,10 +43,15 @@ def readConfig(filename):
     except Exception, e:
         print e
 
+def index(request):
+    global AGENT_ID
+    context          = {}
+    context['hello'] = 'Hello World  666!'
+    context['agent_id'] = AGENT_ID
+    return render(request, 'index.html', context)
+
 def add_host(request):
-    print 'add_host'
-    remark_message = request.POST.get('remark')
-    print remark_message
+    remark_message = request.POST.get('remarkmsg')
     try:
         with transaction.atomic():
             agent = agents()
@@ -76,7 +81,8 @@ def add_host(request):
         return HttpResponse(json.dumps(data), content_type='application/json')
     data = {
         "code": 0,
-        "message": 'sucessful.'
+        "message": 'sucessful.',
+        'agent_id': AGENT_ID
     }
     return HttpResponse(json.dumps(data), content_type='application/json')
 
@@ -106,7 +112,6 @@ def agent_query(request):
         for k, v in y.items():
             if not y[k]:
                 y[k] = ''
-        print y
         y=json.dumps(y)
 
         agents_list.append(y)
@@ -120,11 +125,8 @@ def agent_query(request):
 def sttack_trace_query(request):
     # 当前页码数
 
-    print (request.POST)
-
     page=request.POST.get("page")
     page=int(page)
-
 
     result= attack_event.objects.all().order_by('-event_time')
     #关于攻击类型的过滤
@@ -220,25 +222,33 @@ def overview_query(request):
 
     #统计attack_source
     attrack_source=attack.values_list('attack_source').annotate(Count('attack_source'))
-
     attrack_source=sorted(attrack_source,key=lambda item:item[1], reverse=True)
     #统计前10条记录
     attrack_source_dic={}
-    for x in attrack_source[:10]:
+    for x in attrack_source[:12]:
         attrack_source_dic[str( x[0])]=x[1]
     attrack_source_dic=sorted(attrack_source_dic.items(),key=lambda item:item[1], reverse=True)
 
     #获取经纬度
 
-    test_data = [('22.34.32.32', 100),('22.122.32.32', 100),('102.34.32.32', 10),('58.215.142.4', 10),('175.99.68.91', 500),('47.90.19.65', 1000)]
-    gi = geoip2.database.Reader('geoip/GeoLite2-City.mmdb')
+    #test_data1 = [('22.34.32.32', 100),('22.122.32.32', 100),('102.34.32.32', 10),('58.215.142.4', 10),('175.99.68.91', 500),('47.90.19.65', 1000)]
+    gi = geoip2.database.Reader('geoip/GeoLite2-City.mmdb', locales=['zh-CN'])
     attack_source_map = {}
+
     for item in attrack_source:
+        response = None
         try:
             response = gi.city(item[0])
-            attack_source_map[item[0]] = [response.location.longitude, response.location.latitude, item[1]]
+
         except Exception, e:
-            pass
+            continue
+
+        try:
+            key = item[0] + '\r\n' + response.subdivisions.most_specific.name + ' ' + response.city.name
+            attack_source_map[key] = [response.location.longitude, response.location.latitude, item[1]]
+        except Exception, e:
+            attack_source_map[item[0]] = [response.location.longitude, response.location.latitude, item[1]]
+
 
     #统计前num天的攻击次数，攻击趋势分析
     num=30
@@ -263,7 +273,7 @@ def overview_query(request):
     for x in result:
         attack_type[str(x.event_id)]=x.event_name
 
-    num = 10
+    num = 12
     attrack_times=attack.filter(~Q(event_id__in = [0, 999])).values_list('event_id').annotate(Count('event_id'))
     attrack_times1=sorted(attrack_times,key=lambda item:item[1], reverse=True)
     attack_type1={}

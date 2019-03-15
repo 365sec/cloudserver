@@ -475,7 +475,7 @@ function chart_map(attack_source_data) {
             }
         },
         geo: {
-            map: 'china',
+            map: 'world',
             zoom: 1.2,
             label: {
                 emphasis: {
@@ -1178,19 +1178,19 @@ function agent_manage_submit(id) {
 }
 
 function formSubmit(){
-    console.log('formSubmit');
-
     $.ajax({
         type: "post",
         //async : false, //同步请求
         url: "add_host",
-        data: {"remark": $("#remarkmsg").val()},
+        data: {"remarkmsg": $("#remarkmsg").html()},
         // timeout:1000,
         success: function (data) {
             if(!data['code']) {
-                alert('sucess');
+                $("#agent-id").html(data['agent_id'])
+            }else{
+                alert('添加主机失败。');
             }
         }
     });
-    document.getElementById("myForm").submit();
+    //document.getElementById("myForm").submit();
 }

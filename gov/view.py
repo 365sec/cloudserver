@@ -5,18 +5,12 @@ from django.http import HttpResponse, response, StreamingHttpResponse
 from django.shortcuts import render
 from settings import *
 from t.models import agents
-
-def index(request):
-    context          = {}
-    context['hello'] = 'Hello World  666!'
-
-    return render(request, 'index.html', context)
+from django.http import FileResponse
 
 def agent_click(request):
-    java_agent_download_url = "http://" + CLOUD_SERVER + "/download/?filepath=static/package/java_agent_1.0.zip"
-    iis_agent_download_url = "http://" + CLOUD_SERVER + "/download/?filepath=static/iis_agent_1.10.zip"
+    java_agent_download_url = "http://" + CLOUD_SERVER + "/download?filepath=static/package/" + DOWNLOAD_LIST['java_agent']
+    iis_agent_download_url = "http://" + CLOUD_SERVER + "/download?filepath=static/package/" + DOWNLOAD_LIST['iis_agent']
     req_data=request.POST
-    print (req_data['agent'])
     data={}
     data["wget"]=""
     data["guid"]=""
@@ -39,9 +33,16 @@ def agent_download(request):
     if request.method == 'GET':
         FilePath = request.GET['filepath']
         FileName = str(FilePath).split('/')[-1]
+        '''
         response = StreamingHttpResponse(file_iterator(FilePath))
         response['Content-Type'] = 'application/octet-stream'
         response['Content-Disposition'] = 'attachment;filename=%s' % FileName
+        '''
+        file = open(FilePath, 'rb')
+        response = FileResponse(file)
+        response['Content-Type'] = 'application/octet-stream'
+        response['Content-Disposition'] = 'attachment;filename=%s' % FileName
+
         return response
         # print FilePath
     else:

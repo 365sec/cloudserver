@@ -133,8 +133,14 @@ USE_TZ = False
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'static')
+
 ]
 ALLOWED_HOSTS = ['*']
 
 AGENT_SERVER = '172.16.39.12:29002'
 CLOUD_SERVER = '172.16.39.65:8081'
+
+DOWNLOAD_LIST = {
+    'java_agent':'java_agent_1.0.zip',
+    'iis_agent':'iis_agent_1.12.zip'
+}
