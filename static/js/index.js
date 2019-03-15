@@ -129,7 +129,6 @@ function overview_click() {
 }
 
 function overviewFlash() {
-
     $.ajax({
         url: "overviewQuery",
         type: 'POST',
@@ -475,7 +474,7 @@ function chart_map(attack_source_data) {
             }
         },
         geo: {
-            map: 'world',
+            map: 'china',
             zoom: 1.2,
             label: {
                 emphasis: {
@@ -1178,19 +1177,19 @@ function agent_manage_submit(id) {
 }
 
 function formSubmit(){
+    console.log('formSubmit');
+
     $.ajax({
         type: "post",
         //async : false, //同步请求
         url: "add_host",
-        data: {"remarkmsg": $("#remarkmsg").html()},
+        data: {"remark": $("#remarkmsg").val()},
         // timeout:1000,
         success: function (data) {
             if(!data['code']) {
-                $("#agent-id").html(data['agent_id'])
-            }else{
-                alert('添加主机失败。');
+                alert('sucess');
             }
         }
     });
-    //document.getElementById("myForm").submit();
+    document.getElementById("myForm").submit();
 }
