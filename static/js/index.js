@@ -860,6 +860,7 @@ $(document).on("click", ".detail-a", function () {
     html += '<tr><td>攻击来源IP</td><td>' + data['attack_source'] + '</td></tr>';
     html += '<tr><td>被攻击目标域名</td><td>' + data['target'] + '</td></tr>';
     html += '<tr><td>被攻击目标IP</td><td>' + data['server_ip'] + '</td></tr>';
+    html += '<tr><td>被攻击目标端口</td><td>' + data['target_port'] + '</td></tr>';
     html += '<tr><td>被攻击目标服务器类型</td><td>' + data['server_type'] + '</td></tr>';
     html += '<tr><td>被攻击目标服务器版本</td><td>' + data['server_version'] + '</td></tr>';
     html += '<tr><td>被攻击URL</td><td>' + data['url'] + '</td></tr>';
@@ -1181,19 +1182,19 @@ function agent_manage_submit(id) {
 }
 
 function formSubmit(){
-    console.log('formSubmit');
-
     $.ajax({
         type: "post",
         //async : false, //同步请求
         url: "add_host",
-        data: {"remark": $("#remarkmsg").val()},
+        data: {"remarkmsg": $("#remarkmsg").html()},
         // timeout:1000,
         success: function (data) {
             if(!data['code']) {
-                alert('sucess');
+                $("#agent-id").html(data['agent_id'])
+            }else{
+                alert('添加主机失败。');
             }
         }
     });
-    document.getElementById("myForm").submit();
+    //document.getElementById("myForm").submit();
 }

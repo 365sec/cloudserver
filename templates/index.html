@@ -165,7 +165,7 @@
                             </div>
                             <div class="content" style="height: 40%;">
                                 <div class="title">
-                                    <span class="special">威胁指数</span>
+                                    <span class="special">危险等级分布</span>
                                 </div>
                                 <div id="attrack_threat_level_dic_div" class="chart-con"></div>
                             </div>
@@ -445,8 +445,7 @@
                     </div>
                     <div class="col-12 col-lg-auto mt-3 mt-lg-0 text-center">
                         Copyright © 2019
-                        <a href="http://www.365sec.com/" target="_blank">365sec Inc</a><!--，本页面基于
-								<a href="https://github.com/tabler/tabler" target="_blank">Tabler</a> 开源模板开发-->
+                        <a href="http://www.365sec.com/" target="_blank">江苏国瑞信安科技有限公司</a>
                     </div>
                 </div>
             </div>
@@ -599,7 +598,7 @@
 						<div class="layout-title">备注信息：</div>
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                         <form action="post">
-                            <div id="remarkid">ID： 2132355</div>
+                            <div id="remarkid">Agent ID  <span style="color:#F00" id="agent-id">{{ agent_id }}</span></div><br />
                             <div contenteditable="true" id="remarkmsg"></div>
                             <div class = 'layout-btn'>
                             <div class="btn layout-close" onclick="formSubmit()">保存</div>

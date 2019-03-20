@@ -42,6 +42,7 @@ class attack_event(models.Model):
     request_id=models.CharField(max_length=100,db_column='request_id',blank=False)
     attack_source=models.CharField(max_length=100,db_column='attack_source',blank=False)
     target=models.CharField(max_length=1000,db_column='target',blank=False)
+    target_port=models.IntegerField(db_column='target_port',blank=False)
     server_ip=models.CharField(max_length=100,db_column='server_ip',blank=False)
     server_type=models.CharField(max_length=100,db_column='server_type',blank=False)
     server_version=models.CharField(max_length=100,db_column='server_version',blank=False)
