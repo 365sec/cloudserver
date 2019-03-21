@@ -1,0 +1,124 @@
+html,
+body{
+  padding: 0;
+  margin: 0;
+}
+body{
+	background:url(../images/bg.jpg) no-repeat;
+	background-size:100% 100%;
+	height: 100vh;
+}
+.container{
+  display:table;
+  height:100%;
+}
+
+.row{
+  display: table-cell;
+  vertical-align: middle;
+}
+.content{
+    margin-top: -8%;
+	display: flex;
+    flex-direction: column;
+	align-items: center;
+}
+.login-title{
+	  font-weight: 700;
+    font-style: normal;
+    font-size: 36px;
+    color: #FFFFFF;
+    line-height: 80px;
+
+}
+.login-work{
+	width: 136px;
+	height: 46px;
+	color: #1890FF;
+	line-height: 46px;
+	font-size: 16px;
+	border-bottom: 2px solid #1890FF;
+	margin-bottom: 12px;
+}
+.loginform{
+	display: flex;
+	flex-direction: column;
+	align-items:center;
+}
+.login-tip{
+	width: 368px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	font-size: 14px;
+	color: #fff;
+	margin: 12px 0;
+	align-items: baseline;
+}
+.rememberbtn{
+	appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+ display: none;
+}
+.login-tip .rememberbtn{
+	margin-right: 12px;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    border: 1px solid #fff;
+    position: relative;
+    top: 3px;
+}
+.login-tip .rememberbtn:after {
+      opacity: 1;
+      content: '';
+      position: absolute;
+      width: 5px;
+      height: 13px;
+      background: transparent;
+      right: 5px;
+      border: 1px solid #fff;
+      border-top: none;
+      border-left: none;
+      -webkit-transform: rotate(35deg);
+      -moz-transform: rotate(35deg);
+      -o-transform: rotate(35deg);
+      -ms-transform: rotate(35deg);
+      transform: rotate(35deg);
+      opacity: 0;
+    }
+
+.login-tip .rememberbtn:checked::after{
+		opacity: 1;
+}
+.login-tip a{
+	color: #fff;
+}
+.login-tip a:hover{
+	color: #1890FF;
+	text-decoration: none;
+}
+.textinput{
+	width: 368px;
+	height: 40px;
+	margin: 12px 0;
+	padding:0 32px;
+	background-color: #fff;
+	border: 0;
+	border-radius: 4px;
+	font-size: 16px;
+	color: rgba(0, 0, 0, 0.25);
+	border: 1px solid #d9d9d9;
+}
+.submitinput{
+	width: 368px;
+	height: 40px;
+	margin: 12px 0;
+	background-color: #1890ff;
+	border: 0;
+	border-radius: 4px;
+	font-size: 16px;
+	color: #fff;
+	box-shadow: 0,0,3,13,#1350b9;
+}
