@@ -124,32 +124,91 @@ function overview_click() {
      *
      */
     overviewFlash();
+
     $(".overviewDiv").show().siblings().hide();
     $(".container1").css('background-color','#fff');
 }
 
-function overviewFlash() {
+function overviewFlash()
+{
+    query_threat_level();
+    query_attack_source();
+    query_attack_times();
+    query_attack_type();
+    query_attack_warn();
+}
+//overviewQuery
+function query_threat_level() {
     $.ajax({
-        url: "overviewQuery",
+        url: "query_threat_level",
         type: 'POST',
         data: {
             "page": "asdsad"
         },
         //dataType: "json",
         success: function (data_list) {
-            // console.log(data_list['attrack_source_dic']);
-            // // console.log(data_list['attrack_time_dic']);
-            console.log(data_list['attrack_ua_dic']);
-            //  // console.log(data_list['attrack_type_times']);
-            //  // console.log(data_list['attrack_recent_warning']);
-
             attack_threat_level_charts(data_list['threat_level_dict']);
+        }
+    });
+
+}
+
+function query_attack_source() {
+    $.ajax({
+        url: "query_attack_source",
+        type: 'POST',
+        data: {
+            "page": "asdsad"
+        },
+        //dataType: "json",
+        success: function (data_list) {
             attack_source_charts(data_list['attrack_source_dic']);
-            //attrack_ua_charts(data_list['attrack_ua_dic']);
+             chart_map(data_list['attack_source_map']);
+        }
+    });
+
+}
+
+function query_attack_times() {
+    $.ajax({
+        url: "query_attack_times",
+        type: 'POST',
+        data: {
+            "page": "asdsad"
+        },
+        //dataType: "json",
+        success: function (data_list) {
             attrack_time_charts(data_list['attrack_time_dic']);
+        }
+    });
+
+}
+
+function query_attack_type() {
+    $.ajax({
+        url: "query_attack_type",
+        type: 'POST',
+        data: {
+            "page": "asdsad"
+        },
+        //dataType: "json",
+        success: function (data_list) {
             attrack_type_times(data_list['attrack_type_times']);
+        }
+    });
+
+}
+
+function query_attack_warn() {
+    $.ajax({
+        url: "query_attack_warn",
+        type: 'POST',
+        data: {
+            "page": "asdsad"
+        },
+        //dataType: "json",
+        success: function (data_list) {
             attrack_recent_warning(data_list['attrack_recent_warning']['data']);
-            chart_map(data_list['attack_source_map']);
         }
     });
 
@@ -680,7 +739,7 @@ function attack_click(attack_page) {
         url: "attack/query/",
         type: 'POST',
         data: data,
-        async: false,
+        //async: false,
         dataType: "json",
         success: function (data_list) {
             let data = data_list['stack'];
