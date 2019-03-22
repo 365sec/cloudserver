@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<title>网络自适应防御平台</title>
+		<title>网站自适应防御平台</title>
 		<script src="/static/js/jquery.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="/static/css/login.css"/>
 		<link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css"/>
@@ -13,19 +13,20 @@
 			<div class="row">
 				<div class="content">
 					<img src="/static/images/logo.png" style="width: 217px;"/>
-					<div class="login-title">网络自适应防御平台</div>
+					<div class="login-title">网站自适应防御平台</div>
 					<div class="login-work">登录</div>
-					<form action="" method="post" class="loginform" >
-						<input class="textinput" type="text" name="username" id="username" value="帐户" />
-						<input class="textinput" type="text" name="userpasswor" id="userpasswor" value="密码" />
-						<div class="login-tip">
+					<form action="" method="POST" class="loginform" >
+                        {% csrf_token %}
+						<input class="textinput" type="text" name="username" id="username" value="" />
+						<input class="textinput" type="password" name="password" id="userpasswor" value="" />
+						<!--div class="login-tip">
 							<span class="rememberme">
 								<input class="rememberbtn" type="checkbox" name="vehicle" value="">自动登录
 							</span>
 							
 							<a href="#" class="forgetme">忘记密码？</a>
-						</div>
-						<input class="submitinput" type="submit" value="登陆"/>
+						</div-->
+						<input class="submitinput" type="submit" value="登录"/>
 					</form>
 				</div>
 			</div>

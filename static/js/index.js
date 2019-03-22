@@ -774,7 +774,7 @@ function attack_click(attack_page) {
             html_select += '<option value="2" >中危</option>';
             html_select += '<option value="3" >低息</option>';
             html_select += '</select>';
-            html_select += '<span class="btnvalue">报警消息: </span>';
+            html_select += '<span class="btnvalue">关键词: </span>';
             html_select += '<input id="attack_msg" value="' + attack_msg + '" />';
 
 
@@ -802,9 +802,9 @@ function attack_click(attack_page) {
             html += '<th>agent_id</th>';
             html += '<th>攻击时间</th>';
             html += '<th>攻击类型</th>';
+            html += '<th style="min-width: 100px;">攻击来源</th>';
             html += '<th>URL</th>';
             html += '<th>报警消息</th>';
-            html += '<th style="min-width: 100px;">攻击来源</th>';
             html += '<th>拦截状态</th>';
             html += '<th>服务器类型</th>';
             html += '<th>操作</th>';
@@ -818,9 +818,9 @@ function attack_click(attack_page) {
                 html += '<td >' + data[x]['agent_id'] + '</td>';
                 html += '<td>' + data[x]['event_time'] + '</td>';
                 html += '<td>' + data[x]['attack_type'] + '</td>';
+                html += '<td>' + data[x]['attack_source'] + '</td>';
                 html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['url'] + '">' + data[x]['url'] + '</td>';
                 html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['plugin_message'] + '">' + data[x]['plugin_message'] + '</td>';
-                html += '<td>' + data[x]['attack_source'] + '</td>';
                 html += '<td>' + data[x]['intercept_state'] + '</td>';
                 html += '<td>' + data[x]['server_type'] + '</td>';
                 //html+='<td><a class="modal-a" href="#myModal" data-toggle="modal" data-target="#myModal"  >详情</a> </td>';

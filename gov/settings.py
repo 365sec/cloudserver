@@ -1,3 +1,4 @@
+#coding:utf-8
 """
 Django settings for gov project.
 
@@ -85,17 +86,9 @@ DATABASES = {
         'PASSWORD':'12345',
         'HOST':'172.16.39.65',
         'PORT':'3306'
-        # 'USER':'root',
-        # 'PASSWORD':'123456',
-        # 'HOST':'127.0.0.1',
-        # 'PORT':'3306'
 
     }
 }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -112,9 +105,20 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.file'
+SESSION_FILE_PATH = None
+SESSION_COOKIE_NAME="session_id"  # Session的cookie保存在浏览器上时的key，即：sessionid＝随机字符串
+SESSION_COOKIE_PATH="/"  # Session的cookie保存的路径
+SESSION_COOKIE_DOMAIN = None  # Session的cookie保存的域名
+SESSION_COOKIE_SECURE = False  # 是否Https传输cookie
+SESSION_COOKIE_HTTPONLY = True  # 是否Session的cookie只支持http传输
+SESSION_COOKIE_AGE = 60*30  # Session的cookie失效日期（2周） 默认1209600秒
+SESSION_EXPIRE_AT_BROWSER_CLOSE =True  # 是否关闭浏览器使得Session过期
 
-# Internationalization
-# https://docs.djangoproject.com/en/2.1/topics/i18n/
+SESSION_SAVE_EVERY_REQUEST = True
+#如果你设置了session的过期时间 30分钟后，这个参数是False30分钟过后，session准时失效
+#如果设置 True，在30分钟期间有请求服务端，就不会过期！（为什么逛一晚上淘宝，也不会登出，但是不浏览器不刷新了就会自动登出）
+
 
 LANGUAGE_CODE = 'en-us'
 

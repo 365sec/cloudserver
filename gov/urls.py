@@ -22,8 +22,6 @@ from . import view
 
 urlpatterns = [
 
-    # url(r'^admin/', admin.site.urls),
-   # url(r'^hello/', views.hello),
     url(r'^agent/query/$', views.agent_query),
     url(r'^attack/query/$', views.attack_event_query),
     url(r'^download$', view.agent_download),
@@ -36,9 +34,8 @@ urlpatterns = [
     url(r'^plugins$', views.plugins_manage),
     url(r'^plugins_update$', views.plugins_update),
     url(r'^add_host$', views.add_host),
-    url(r'^login', views.login),
+    url(r'^login$', views.login),
+    url(r'^logout$', views.loginout),
+    url(r'^index$', views.index),
     url(r'', views.index),
 ]
-# urlpatterns = [
-#     path('admin/', admin.site.urls),
-# ]

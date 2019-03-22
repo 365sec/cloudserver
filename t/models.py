@@ -21,6 +21,7 @@ class agents(models.Model):
     online=models.IntegerField(db_column='online',blank=False)
     disabled=models.IntegerField(db_column='disabled',blank=False)
     remark = models.CharField(max_length=1000, db_column='remark', blank=False)
+    owner = models.CharField(max_length=255, db_column='owner', blank=False)
 
 class attack_event(models.Model):
 
@@ -72,3 +73,10 @@ class plugins(models.Model):
     httpProtectConfig=models.TextField(db_column="httpProtectConfig",blank=True)
     algorithm_config=models.TextField(db_column="algorithm_config",blank=True)
     plugin_template=models.TextField(db_column="plugin_template",blank=True)
+
+class users(models.Model):
+    username = models.CharField(db_column="username", max_length=255,primary_key=True)
+    password = models.CharField(db_column="password", max_length=255, blank=True)
+    phone = models.CharField(db_column="phone", max_length=255, blank=True)
+    email = models.CharField(db_column="email", max_length=255, blank=True)
+    superuser = models.CharField(db_column="superuser", max_length=1, blank=True)

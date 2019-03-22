@@ -2517,7 +2517,7 @@ webpackJsonp([1], {
                         this.$refs.addHost.showModal()
                     }, doLogout: function () {
                         return this.request.post("v1/user/logout", {}).then(function (t) {
-                            c.a.set("RASP_AUTH_ID", null), location.href = "/#/login"
+                            c.a.set("RASP_AUTH_ID", null), location.href = ""
                         })
                     }
                 })
