@@ -45,9 +45,7 @@ b {
     font-weight: bolder;
 }
 
-.active {
-    color: red;
-}
+
 
 .detail-td a {
     width: 50px;
@@ -653,7 +651,10 @@ td {
     padding-top: 10px;
     border-bottom: 1px solid #dee2e6;
 }
-
+.table-bordered td>img{
+    margin-bottom: 3px;
+    margin-right: 5px;
+}
 #table_div .table.table-bordered tr td:first-child, #table_div .table.table-bordered tr td:nth-child(2), #table_div .table.table-bordered tr td:nth-child(3) {
     min-width: 100px;
 }
@@ -663,7 +664,7 @@ td {
     outline: 0;
 }
 
-.modal-body #myTab a {
+.modal-body a {
     display: inline-block;
     padding: 10px 15px;
     font-size: 14px;
@@ -683,6 +684,11 @@ td {
     border: 1px solid #ddd;
     border-bottom-color: transparent;
 }
+.nav-tabs > li > a, .nav-tabs > li> a:focus, .nav-tabs > li > a:hover {
+    color: #777;
+    cursor: default;
+    text-decoration: none;
+}
 
 .nav-tabs > li {
     margin-bottom: -1px;
@@ -690,13 +696,13 @@ td {
 
 .tab-content, .tabs-content {
     background-color: transparent;
-    height: calc(100% - 95px);
+    height: calc(100% - 42px);
     overflow-y: scroll;
     margin-bottom: 0;
+    color: #757575;
 }
 
 #myTabContent div.active {
-    color: #757575;
     font-size: 14px;
     padding: 10px 15px;
     box-sizing: border-box;
@@ -748,8 +754,3 @@ a:not([href]):not([tabindex]), a:not([href]):not([tabindex]):focus, a:not([href]
     color: #a59b9b;
 }
 
-
-#myModal #model-body > div {
-    height: 100%;
-    overflow: scroll;
-}

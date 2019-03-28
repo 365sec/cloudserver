@@ -1,13 +1,13 @@
 @font-face {
   font-family: 'iconfont';  /* project id 1075499 */
-  src: url('//at.alicdn.com/t/font_1075499_ix604x12x5.eot');
-  src: url('//at.alicdn.com/t/font_1075499_ix604x12x5.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_1075499_ix604x12x5.woff2') format('woff2'),
-  url('//at.alicdn.com/t/font_1075499_ix604x12x5.woff') format('woff'),
-  url('//at.alicdn.com/t/font_1075499_ix604x12x5.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_1075499_ix604x12x5.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_1075499_euurlg04gx.eot');
+  src: url('//at.alicdn.com/t/font_1075499_euurlg04gx.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_1075499_euurlg04gx.woff2') format('woff2'),
+  url('//at.alicdn.com/t/font_1075499_euurlg04gx.woff') format('woff'),
+  url('//at.alicdn.com/t/font_1075499_euurlg04gx.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_1075499_euurlg04gx.svg#iconfont') format('svg');
 }
-.iconfont{
+.iconfont1{
     font-family:"iconfont" !important;
     font-size:16px;font-style:normal;
     -webkit-font-smoothing: antialiased;
@@ -280,3 +280,363 @@ margin-right:32px;
     background-color: #0044cc;
     color: #fff;
     }
+
+   /* 详情报告*/
+table,
+tr,
+td {
+    margin: 0;
+    padding: 0;
+}
+code {
+    padding-left:0px;
+    font-size: 12px;
+    color: #777;
+}
+#modal_content .u-modal-dialog {
+    position: relative;
+    width: 1132px;
+    margin-top: -20px;
+    margin-left: -60%;
+}
+
+ .table-title-1 td {
+    padding-left: 10px;
+}
+
+ .table-content-td-plain {
+    padding: 10px 0px;
+    font-size: 12px;
+    border-radius: 5px;
+    border: 1px dotted #40c9b8;
+    background-color: #e5f8f6;
+    color: #777;
+    min-width: 200px;
+    min-height: 60px;
+    margin: 0px auto;
+}
+
+ .table-content-td-plain-b {
+    padding: 10px 0px;
+    font-size: 12px;
+    border-radius: 5px;
+    border: 1px dotted #fdad42;
+    background-color: #fff5e8;
+    color: #777;
+    vertical-align: top;
+    /*margin-top: 10px;*/
+}
+ .table-content-2 td.td-Bg-center img {
+    margin-top: -85px;
+}
+
+ .p-title {
+    text-indent: 0px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #00a5e3;
+    padding-left: 40px;
+    position: relative;
+    padding-left: 20px;
+    margin-top: 20px;
+    margin-bottom: 6px;
+}
+
+.triangle-down {
+    position: relative;
+    bottom: 5px;
+    background: #E5F8F6;
+    margin: 0 auto;
+    width: 10px;
+    height: 10px;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    border-right: 1px dotted #40C9B8;
+    border-bottom: 1px dotted #40C9B8;
+}
+
+.triangle-top {
+    position: relative;
+    top: 5px;
+    background: #FFF5E8;
+    margin: 0 auto;
+    width: 10px;
+    height: 10px;
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+    border-right: 1px dotted #fc9c19;
+    border-bottom: 1px dotted #fc9c19;
+}
+
+ .legend-table01 .legend-table01-td1 {
+    width: 50%;
+    padding: 0 5%;
+    min-height: 100px;
+    vertical-align: bottom;
+    text-align: center;
+}
+
+.text-legend-text .td-01 {
+    text-align: right;
+    width: 25%;
+    padding: 0px;
+    vertical-align: top;
+}
+
+.text-legend-text .td-02 {
+    width: 5%;
+    padding: 0px;
+    vertical-align: top;
+}
+
+.text-legend-text .td-03 {
+    text-align: left;
+    width: 65%;
+}
+
+.text-legend-text .td-03 p {
+    padding: 0px;
+    text-align: left;
+    word-wrap:break-word;
+    word-break:break-all ;
+}
+.legend-table02 td {
+    vertical-align: top;
+}
+
+.text-legend-text {
+    width: 100%;
+}
+.table-content-td-plain .tooltip-inner{
+    word-wrap:break-word;
+    word-break:break-all ;
+    max-width: none;
+     overflow: hidden;
+}
+.table-content-td-plain-b .tooltip-inner{
+    word-wrap:break-word;
+    word-break:break-all ;
+    max-width: none;
+     overflow: hidden;
+}
+
+.u-css-btn:hover{
+background-color: #04b8a2;
+border-color: #04b8a2;
+color: #fff;
+}
+.u-css-btn[disabled]:hover{
+background-color: #fff;
+color: #333;
+border-color: #ccc;
+}
+.pannel_background {
+    height: 80px;
+    width: 75%;
+    padding-left: 7.5%;
+    background: url(/static/images/center-bgimg.png) no-repeat;
+    background-size: 100%;
+}
+.tab-content > .tab-pane {
+    padding-top: 16px;
+}
+
+#ioc_body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;}
+
+.legend-low{
+    width: 34%;
+    padding: 0 2%;
+}
+
+/*攻击追溯*/
+#header_breadcrumb{
+padding-bottom:18px;
+margin-bottom:-12px;
+}
+.well{
+background-color:#fff;
+box-shadow:0 1px 1px rgba(0, 0, 0, .05);
+-webkit-box-shadow:0 1px 1px rgba(0, 0, 0, .05);
+border: 1px solid #ddd;
+word-wrap: break-word;
+}
+.event_detail_content .label{
+font-weight: normal;
+padding:.1em .3em .2em;
+margin:0 .5em;
+line-height:21px;
+}
+.text-muted{
+color:#a6a6a6;
+}
+.custom_checkbox_holder{
+text-align:center;
+width:45px;
+}
+.checkbox.checkbox-inline{
+margin-left:5px;
+}
+/*
+th, td, tr{
+text-align:center;
+}*/
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
+font-weight:normal;
+}
+.table > thead > tr > th{
+border-bottom:none;
+border-right:none;
+border-left:none;
+}
+#right_content_main h5{
+font-weight:bold;
+}
+#event_detail_attack_detail_table th, #event_detail_attack_detail_table td, #event_detail_attack_detail_table tr{
+text-align:left;
+border:none;
+line-height:26px;
+}
+#event_detail_attack_detail_table > thead > tr > th, #event_detail_attack_detail_table > tbody > tr > th, #event_detail_attack_detail_table > tfoot > tr > th, #event_detail_attack_detail_table > thead > tr > td, #event_detail_attack_detail_table > tbody > tr > td, #event_detail_attack_detail_table > tfoot > tr > td{
+font-weight:normal;
+}
+
+#event_detail_attack_detail_table{
+width:90%;
+margin:16px 0;
+margin-left:50px;
+position:relative;
+background: none;
+}
+.event_detail_attack_detail_table_span{
+cursor:pointer;
+}
+#event_detail_attack_detail_table tr{
+margin-bottom:12px;
+}
+#event_detail_attack_detail_table td{
+word-break:break-all;
+word-wrap: break-word;
+vertical-align:middle;
+max-width:500px;
+}
+.event_detail_attack_detail_table_span{
+cursor:pointer;
+}
+.event_detail_attack_detail_table_split{
+position:absolute;
+top:0;
+left:20px;
+width:2px;
+background:#888;
+height:100%;
+}
+.event_detail_attack_detail_table_circle{
+position:relative;
+left:16px;
+width:10px;
+height:10px;
+border-radius:5px;
+background:#888;
+}
+.event_detail_attack_detail_table_circle.red{
+top:0px;
+left:15px;
+width:12px;
+height:12px;
+background:#fff;
+border:3px solid #ff3333;
+border-radius:6px;
+}
+.event_detail_attack_detail_table_circle.green{
+top:18px;
+left:15px;
+width:12px;
+height:12px;
+background:#fff;
+border:3px solid #5cb85c;
+border-radius:6px;
+}
+.event_detail_attack_detail_table_circle.blue{
+top:18px;
+left:15px;
+width:12px;
+height:12px;
+background:#fff;
+border:3px solid #5bc0de;
+border-radius:6px;
+}
+.event_detail_attack_detail_table_circle.yellow{
+top:18px;
+left:15px;
+width:12px;
+height:12px;
+background:#fff;
+border:3px solid #f0ad4e;
+border-radius:6px;
+}
+
+.ellipsis{
+　　white-space: nowrap;
+　　overflow: hidden;
+　　text-overflow: ellipsis;
+}
+.event_detail_content .span_gray {
+	font-weight: bold;
+}
+.event_detail_content .label-danger {
+    background-color: #FD7773;
+}
+.event_log_detail{
+	cursor:pointer;
+	color:#04b8a2;
+}
+.event_log_detail:hover{
+	color:#04b8a2;
+	text-decoration: underline;
+}
+.ioc_event_log_detail{
+	cursor:pointer;
+	color:#04b8a2;
+}
+.ioc_event_log_detail:hover{
+	color:#04b8a2;
+	text-decoration: underline;
+}
+.attack_start{
+font-weight:bold;
+}
+.attack_end{
+font-weight:bold;
+}
+
+#event_detail_attack_detail_table .tooltip-inner{
+word-break: break-all;
+max-width: none;
+}
+.middle_div{
+		width:100%;
+		}
+ /* #behavior_retrospect_detail {}
+
+ #behavior_retrospect_detail_table > thead > tr > th,
+ #behavior_retrospect_detail_table > tbody > tr > th,
+ #behavior_retrospect_detail_table > tfoot > tr > th,
+ #behavior_retrospect_detail_table > thead > tr > td,
+ #behavior_retrospect_detail_table > tbody > tr > td,
+ #behavior_retrospect_detail_table > tfoot > tr > td {
+    border-top: none;
+    text-align: left;
+    font-size: 15px;
+ } */
+ #event_detail_attack_detail_table .url{
+ background:#F7F7F7;
+ }
+ #ioc .url{
+ background:#F7F7F7;
+ cursor:pointer;
+ }
+/*攻击追溯*/

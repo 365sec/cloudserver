@@ -58,7 +58,13 @@ function agent_click(page) {
                 html += '<td>' + data[x]['language'] + '</td>';
                 html += '<td>' + data[x]['server_type'] + '</td>';
                 html += '<td>' + data[x]['server_version'] + '</td>';
-                html += '<td>' + data[x]['online'] + '</td>';
+                if(data[x]['online'] == '在线'){
+                    html += '<td><img src = "/static/images/online.svg">' + data[x]['online'] + '</td>';
+                }else{
+                    html += '<td><img src = "/static/images/offline.svg">' + data[x]['online'] + '</td>';
+                }
+
+
                 //html += '<td>' + data[x]['disabled'] + '</td>';
                 html += '<td>' + data[x]['remark'] + '</td>';
                 // html += '<td><a class="" data-toggle="modal" data-target="#setting">配置</a></td>';
@@ -885,14 +891,11 @@ $(document).on("change", "select#attack_level_select", function () {
 
 
 $(document).on("click", ".detail-a", function () {
-
     let data1 = $(this).attr("data-name");
     // // console.log(data)
     let b = new Base64();
     let data = JSON.parse(b.decode(data1));
-
-    let html = '<div>';
-    html += '<div class="card">';
+    var html = '<div class="card">';
     html += '<div class="card-body">';
     html += '<table class="table table-bordered">';
     html += '<thead>';
@@ -931,15 +934,15 @@ $(document).on("click", ".detail-a", function () {
     html += '<tr><td>请求方法</td><td>' + data['method'] + '</td></tr>';
     html += '<tr><td>系统用户名</td><td>' + data['system_user'] + '</td></tr>';
     html += '<tr><td>进程路径</td><td>' + data['process_path'] + '</td></tr>';
-
     html += '</tbody>';
     html += '</table>';
     html += '</div>';
-    html += '</div>';
-    html += '</div>';
+    html += '<div>';
 
-    $("#model-body").text("").append(html);
-    $("#myModalLabel").text("攻击事件");
+
+
+    $("#detailed_report_body").text("").append(html);
+    $(".myModalLabel").text("攻击事件");
     $("#myModal").modal("show");
 
 });
