@@ -59,9 +59,9 @@ function agent_click(page) {
                 html += '<td>' + data[x]['server_type'] + '</td>';
                 html += '<td>' + data[x]['server_version'] + '</td>';
                 if(data[x]['online'] == '在线'){
-                    html += '<td><img src = "/static/images/online.svg">' + data[x]['online'] + '</td>';
+                    html += '<td><img src = "/static/images/online.png">' + data[x]['online'] + '</td>';
                 }else{
-                    html += '<td><img src = "/static/images/offline.svg">' + data[x]['online'] + '</td>';
+                    html += '<td><img src = "/static/images/offline.png">' + data[x]['online'] + '</td>';
                 }
 
 
