@@ -38,7 +38,6 @@
     <script src="/static/js/map/world.js"></script>
     <!--<script src="/static/js/map/echarts.min.js"></script>-->
     <script src="/static/js/index.js"></script>
-    <script src="/static/js/scrollappear.js"></script>
     <style type="text/css">
         .vue-loading[data-v-55c8f413] {
             margin: auto
@@ -412,7 +411,9 @@
                                             <!-- span class="span2">-jar oneapm.jar install</span></code -->
                                         </div>
                                     </div>
+                                </div>
                             </fieldset>
+
 
                         </div>
                     </div>
@@ -436,7 +437,6 @@
     </div>
 </div>
 
-
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
              aria-hidden="true">
             <div class="modal-dialog">
@@ -455,394 +455,17 @@
                 </ul>
                 <div class="tab-content myTabContent">
                     <div class="tab-pane fade in active" id="detailed_report">
-                        <div class="ioc_body stage2">
-                            <table class="legend-table01" style="width: 70%;">
-                                <tbody>
-                                <tr>
-                                    <td class="legend-table01-td1">
-                                        <!--第一个模态框-->
-                                        <div class="table-content-td-plain" >
-                                            <table class="text-legend-text">
-                                                <tbody>
-                                                <tr>
-                                                    <td class="td-01">请求URL</td>
-                                                    <td class="td-02">:</td>
-                                                    <td class="td-03">
-                                                        <p>http://218.2.97.66:9001/webscan/homepage/getCurrentDayNetFlow</p>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="td-01">请求方法</td>
-                                                    <td class="td-02">:</td>
-                                                    <td class="td-03">
-                                                        <p>GET</p>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="td-01">请求体</td>
-                                                    <td class="td-02">:</td>
-                                                    <td class="td-03">
-                                                        <p id="httpQueryString" data-toggle="tooltip" data-html="true" data-delay="200" data-original-title="" data-trigger="manual"></p>
+                        <div id="ioc_body">
 
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                            </table>
-                                        </div>
-                                        <!--三角-->
-                                        <div class="triangle-down" style="left: 7px;"></div>
-                                        <!--第一个模态框结束-->
-                                    </td>
-                                    <td class="legend-table01-td1">
-                                        <!--第2个模态框-->
-                                            <div class="table-content-td-plain">
-                                                    <table class="text-legend-text">
-                                                    <tbody>
-                                                    <tr>
-                                                        <td class="td-01">操作类型</td>
-                                                        <td class="td-02">:</td>
-                                                        <td class="td-03">
-                                                            <p></p>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="td-01">操作扩展</td>
-                                                        <td class="td-02">:</td>
-                                                        <td class="td-03">
-                                                            <p>com.mysql.jdbc.ResultSetImpl.next(ResultSetImpl.java)</p>
-                                                        </td>
-                                                    </tr>
-                                                    </tbody>
-                                                    </table>
-                                            </div>
-                                            <!--三角-->
-                                            <div class="triangle-down" ></div>
-                                        <!--第2个模态框结束-->
-                                    </td>
-                                </tr>
-                            </tbody>
-                            </table>
-                            <div class="u-legend pannel_background stagebg2">
-                                    <span class="log-alarmer"></span>
-                                    <span style="width: 23.5%;display: inline-block;text-align: right;color: #777;"> 网络流量</span>
-                                    <span style="width: 23.1%;display: inline-block;text-align: right;color: #777;"> 应用</span>
-                                    <span style="width: 24.5%;display: inline-block;text-align:right;margin-top: 70px;color: #777;">操作</span>
-                                    <span style="width: 25.5%;display: inline-block;text-align: right;margin-top: 70px;color: #777;"> 操作对象</span>
-                            </div>
-                            <table class="legend-table02" style="width: 100%;margin: 40px auto;min-height: 50px;vertical-align: top;text-align:
-                                   center;">
-                                <tbody>
-                                <tr>
-                                    <td class="legend-low">
-                                        <!--第3个模态框-->
-                                        <!--三角-->
-                                        <div class="triangle-top"></div>
-                                        <div class="table-content-td-plain-b" style="min-width: 205px;">
-                                            <table class="text-legend-text">
-                                                <tbody><tr>
-                                                    <td class="td-01" style="width: 40px;">IP</td>
-                                                    <td class="td-02">:</td>
-                                                    <td class="td-03">
-                                                        <p>60.15.177.190</p>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="td-01" style="width: 40px;">地址</td>
-                                                    <td class="td-02">:</td>
-                                                    <td class="td-03">
-                                                            <p>China  Heilongjiang</p>
-                                                    </td>
-                                                </tr>
-                                            </tbody></table>
-                                        </div>
-                                        <!--第3个模态框结束-->
-                                    </td>
-                                    <td class="legend-low">
-
-                                        <!--第4个模态框-->
-                                        <!--三角-->
-                                        <div class="triangle-top"></div>
-                                        <div class="table-content-td-plain-b" style="margin-right: 0;">
-                                            <table class="text-legend-text">
-                                                <tbody><tr>
-                                                    <td class="td-01">用户</td>
-                                                    <td class="td-02">:</td>
-                                                    <td class="td-03">
-                                                        <p>Administrator</p>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="td-01">类型</td>
-                                                    <td class="td-02">:</td>
-                                                    <td class="td-03">
-                                                        <p>web</p>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="td-01">进程路径</td>
-                                                    <td class="td-02">:</td>
-                                                    <td class="td-03">
-                                                        <p>C:\webscan\environment\jre\java.exe</p>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                            </table>
-                                        </div>
-                                        <!--第4个模态框结束-->
-                                    </td>
-                                    <td class="legend-low">
-                                        <!--第5个模态框-->
-                                        <!--三角-->
-                                            <div class="triangle-top"></div>
-                                            <div class="table-content-td-plain-b" style="margin-right: 0px;">
-                                                <table class="text-legend-text">
-                                                    <tbody><tr>
-                                                        <td class="td-01"></td>
-                                                        <td class="td-02">:</td>
-                                                        <td class="td-03-5">
-                                                            <p id="command_content" data-toggle="tooltip" data-html="true" data-delay="200" data-original-title="
-                                                                <code style=&quot;color:inherit;background-color:inherit;&quot;>
-                                                                </code>" data-trigger="manual" aria-describedby="tooltip249584">
-                                                                <code style="color:inherit;background-color:inherit;">
-                                                                </code></p>
-                                                        </td>
-                                                    </tr>
-                                                </tbody></table>
-
-                                            </div>
-                                        <!--第5个模态框结束-->
-                                    </td>
-                                </tr>
-                            </tbody>
-                            </table>
-                            </div>
-                        <div class="ioc_body stage1">
-                            <table class="legend-table01" style="width: 70%;">
-                                <tbody>
-                                <tr>
-                                    <td class="legend-table01-td1">
-                                        <!--第一个模态框-->
-                                        <div class="table-content-td-plain" >
-                                            <table class="text-legend-text">
-                                                <tbody>
-                                                <tr>
-                                                    <td class="td-01">请求URL</td>
-                                                    <td class="td-02">:</td>
-                                                    <td class="td-03">
-                                                        <p>http://218.2.97.66:9001/webscan/homepage/getCurrentDayNetFlow</p>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="td-01">请求方法</td>
-                                                    <td class="td-02">:</td>
-                                                    <td class="td-03">
-                                                        <p>GET</p>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="td-01">请求体</td>
-                                                    <td class="td-02">:</td>
-                                                    <td class="td-03">
-                                                        <p id="httpQueryString" data-toggle="tooltip" data-html="true" data-delay="200" data-original-title="" data-trigger="manual"></p>
-
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                            </table>
-                                        </div>
-                                        <!--三角-->
-                                        <div class="triangle-down" style="left: 7px;"></div>
-                                        <!--第一个模态框结束-->
-                                    </td>
-                                    </tr>
-                            </tbody>
-                            </table>
-                            <div class="u-legend pannel_background stagebg1">
-                                    <span class="log-alarmer"></span>
-                                    <span style="width: 23.5%;display: inline-block;text-align: right;color: #777;"> 网络流量</span>
-                                    <span style="width: 23.1%;display: inline-block;text-align: right;color: #777;"> 应用</span>
-                                    <span style="width: 24.5%;display: inline-block;text-align:right;margin-top: 70px;color: #777;">操作</span>
-                                    <span style="width: 25.5%;display: inline-block;text-align: right;margin-top: 70px;color: #777;"> 操作对象</span>
-                            </div>
-                            <table class="legend-table02" style="width: 100%;margin: 40px auto;min-height: 50px;vertical-align: top;text-align:
-                                   center;">
-                                <tbody>
-                                <tr>
-                                    <td class="legend-low">
-                                        <!--第3个模态框-->
-                                        <!--三角-->
-                                        <div class="triangle-top"></div>
-                                        <div class="table-content-td-plain-b" style="min-width: 205px;">
-                                            <table class="text-legend-text">
-                                                <tbody><tr>
-                                                    <td class="td-01" style="width: 40px;">IP</td>
-                                                    <td class="td-02">:</td>
-                                                    <td class="td-03">
-                                                        <p>60.15.177.190</p>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="td-01" style="width: 40px;">地址</td>
-                                                    <td class="td-02">:</td>
-                                                    <td class="td-03">
-                                                            <p>China  Heilongjiang</p>
-                                                    </td>
-                                                </tr>
-                                            </tbody></table>
-                                        </div>
-                                        <!--第3个模态框结束-->
-                                    </td>
-                                    <td class="legend-low">
-
-                                        <!--第4个模态框-->
-                                        <!--三角-->
-                                        <div class="triangle-top"></div>
-                                        <div class="table-content-td-plain-b" style="margin-right: 0;">
-                                            <table class="text-legend-text">
-                                                <tbody><tr>
-                                                    <td class="td-01">用户</td>
-                                                    <td class="td-02">:</td>
-                                                    <td class="td-03">
-                                                        <p>Administrator</p>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="td-01">类型</td>
-                                                    <td class="td-02">:</td>
-                                                    <td class="td-03">
-                                                        <p>web</p>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="td-01">进程路径</td>
-                                                    <td class="td-02">:</td>
-                                                    <td class="td-03">
-                                                        <p>C:\webscan\environment\jre\java.exe</p>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                            </table>
-                                        </div>
-                                        <!--第4个模态框结束-->
-                                    </td>
-                                    </tr>
-                            </tbody>
-                            </table>
-                            </div>
+                        </div>
                         <div id="detailed_report_body">
                         </div>
                     </div>
                     <div class="tab-pane fade" id="attack_traceability">
                         <div id="attack_traceability_body">
                             <table id="event_detail_attack_detail_table" class="table">
-                                <tbody class="fillin">
-                                <tr>
-                                <td style="width: 10%; text-align: right;">
-                                <br>
-                                </td>
-                                <td style="width: 4%; position: relative; padding: 0px;"><div class="event_detail_attack_detail_table_split"></div><div class="event_detail_attack_detail_table_circle red"></div></td>
-                                <td style="width: 50%;">
-                                <span class="attack_start">
-                                攻击开始
-                                </span>
-                                </td>
-                                </tr>
-                                <tr>
-                                <td style="width: 10%; text-align: right;">2019-03-27<br>09:57:53</td>
-                                <td style="width: 4%; position: relative; padding: 0px;"><div class="event_detail_attack_detail_table_split"></div><div class="event_detail_attack_detail_table_circle"></div></td>
-                                <td style="width: 50%;">
-                                <span class="ip event_detail_attack_detail_table_span label label-info">60.15.177.190</span><span class="ipAddr">（China  Heilongjiang）</span> 慢查询: 使用SELECT语句读取了大于等于500条数据
-                                    &nbsp;<span class="span_gray">
-                                 未拦截
+                                <tbody class="fillin" id="attack_body">
 
-                                </span>
-                                <span class="event_log_detail" id="1664393756_2018-05-23">&gt;&gt;详情</span>
-                                </td>
-                                </tr>
-                                <tr>
-                                <td style="width: 10%; text-align: right;">2019-03-26<br>17:03:57</td>
-                                <td style="width: 4%; position: relative; padding: 0px;"><div class="event_detail_attack_detail_table_split"></div><div class="event_detail_attack_detail_table_circle"></div></td>
-                                <td style="width: 50%;">
-                                <span class="ip event_detail_attack_detail_table_span label label-info">60.15.177.190</span><span class="ipAddr">（China  Heilongjiang）</span> 慢查询: 使用SELECT语句读取了大于等于500条数据
-                                    &nbsp;<span class="span_gray">
-                                 未拦截
-
-                                </span>
-                                <span class="event_log_detail" id="1664393756_2018-05-23">&gt;&gt;详情</span>
-                                </td>
-                                </tr>
-                                <tr>
-                                <td style="width: 10%; text-align: right;">2019-03-26<br>14:12:31</td>
-                                <td style="width: 4%; position: relative; padding: 0px;"><div class="event_detail_attack_detail_table_split"></div><div class="event_detail_attack_detail_table_circle"></div></td>
-                                <td style="width: 50%;">
-                                <span class="ip event_detail_attack_detail_table_span label label-info">60.15.177.190</span><span class="ipAddr">（China  Heilongjiang）</span> 慢查询: 使用SELECT语句读取了大于等于500条数据
-                                    &nbsp;<span class="span_gray">
-                                 未拦截
-
-                                </span>
-                                <span class="event_log_detail" id="1664393756_2018-05-23">&gt;&gt;详情</span>
-                                </td>
-                                </tr>
-                                <tr>
-                                <td style="width: 10%; text-align: right;">2019-03-26<br>08:46:56</td>
-                                <td style="width: 4%; position: relative; padding: 0px;"><div class="event_detail_attack_detail_table_split"></div><div class="event_detail_attack_detail_table_circle"></div></td>
-                                <td style="width: 50%;">
-                                <span class="ip event_detail_attack_detail_table_span label label-info">60.15.177.190</span><span class="ipAddr">（China  Heilongjiang）</span> 慢查询: 使用SELECT语句读取了大于等于500条数据
-                                    &nbsp;<span class="span_gray">
-                                 未拦截
-
-                                </span>
-                                <span class="event_log_detail" id="1664393756_2018-05-23">&gt;&gt;详情</span>
-                                </td>
-                                </tr>
-                                <tr>
-                                <td style="width: 10%; text-align: right;">2019-03-27<br>09:57:53</td>
-                                <td style="width: 4%; position: relative; padding: 0px;"><div class="event_detail_attack_detail_table_split"></div><div class="event_detail_attack_detail_table_circle"></div></td>
-                                <td style="width: 50%;">
-                                <span class="ip event_detail_attack_detail_table_span label label-info">60.15.177.190</span><span class="ipAddr">（China  Heilongjiang）</span> 慢查询: 使用SELECT语句读取了大于等于500条数据
-                                    &nbsp;<span class="span_gray">
-                                 未拦截
-
-                                </span>
-                                <span class="event_log_detail" id="1664393756_2018-05-23">&gt;&gt;详情</span>
-                                </td>
-                                </tr>
-                                <tr>
-                                <td style="width: 10%; text-align: right;">2019-03-26<br>17:03:57</td>
-                                <td style="width: 4%; position: relative; padding: 0px;"><div class="event_detail_attack_detail_table_split"></div><div class="event_detail_attack_detail_table_circle"></div></td>
-                                <td style="width: 50%;">
-                                <span class="ip event_detail_attack_detail_table_span label label-info">60.15.177.190</span><span class="ipAddr">（China  Heilongjiang）</span> 慢查询: 使用SELECT语句读取了大于等于500条数据
-                                    &nbsp;<span class="span_gray">
-                                 未拦截
-
-                                </span>
-                                <span class="event_log_detail" id="1664393756_2018-05-23">&gt;&gt;详情</span>
-                                </td>
-                                </tr>
-                                <tr>
-                                <td style="width: 10%; text-align: right;">2019-03-26<br>14:12:31</td>
-                                <td style="width: 4%; position: relative; padding: 0px;"><div class="event_detail_attack_detail_table_split"></div><div class="event_detail_attack_detail_table_circle"></div></td>
-                                <td style="width: 50%;">
-                                <span class="ip event_detail_attack_detail_table_span label label-info">60.15.177.190</span><span class="ipAddr">（China  Heilongjiang）</span> 慢查询: 使用SELECT语句读取了大于等于500条数据
-                                    &nbsp;<span class="span_gray">
-                                 未拦截
-
-                                </span>
-                                <span class="event_log_detail" id="1664393756_2018-05-23">&gt;&gt;详情</span>
-                                </td>
-                                </tr>
-
-                                <tr>
-                                <td style="width: 10%; text-align: right;">
-                                <br>
-                                </td>
-                                <td style="width: 4%; position: relative; padding: 0px;"><div class="event_detail_attack_detail_table_split"></div><div class="event_detail_attack_detail_table_circle red"></div></td>
-                                <td style="width: 50%;">
-                                <span class="attack_end">
-                                攻击结束
-                                </span>
-                                </td>
-                                </tr>
                                 </tbody>
                                 </table>
                         </div>
@@ -935,12 +558,15 @@
         /* $("select#status").change(function(){
              console.log($(this).val());
          });*/
+
+
+        /*
         window.onload = overview_click;
 
         setInterval(function () {
              overviewFlash()
          },15000);
-
+*/
         //overview_click();
 
 

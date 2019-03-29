@@ -1,4 +1,5 @@
-#coding:utf-8
+# -*- coding: utf-8 -*-
+
 """
 Django settings for gov project.
 
@@ -89,6 +90,10 @@ DATABASES = {
 
     }
 }
+
+
+# Password validation
+# https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {

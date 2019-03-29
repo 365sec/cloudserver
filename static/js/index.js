@@ -895,6 +895,9 @@ $(document).on("click", ".detail-a", function () {
     // // console.log(data)
     let b = new Base64();
     let data = JSON.parse(b.decode(data1));
+
+    let ioc_html=get_iochtml(data);
+    let attack_body_html=get_attack_body(data['server_ip']);
     var html = '<div class="card">';
     html += '<div class="card-body">';
     html += '<table class="table table-bordered">';
@@ -907,14 +910,14 @@ $(document).on("click", ".detail-a", function () {
     html += '<tbody>';
     html += '<tr><td>event_issue_id</td><td>' + data['event_issue_id'] + '</td></tr>';
     html += '<tr><td>agent_id</td><td>' + data['agent_id'] + '</td></tr>';
-    html += '<tr><td>事件类型</td><td>' + data['event_type'] + '</td></tr>';
+   // html += '<tr><td>事件类型</td><td>' + data['event_type'] + '</td></tr>';
     html += '<tr><td>事件发生时间</td><td>' + data['event_time'] + '</td></tr>';
     html += '<tr><td>服务器名称</td><td>' + data['server_hostname'] + '</td></tr>';
-    html += '<tr><td>event_id</td><td>' + data['event_id'] + '</td></tr>';
+    // html += '<tr><td>event_id</td><td>' + data['event_id'] + '</td></tr>';
     html += '<tr><td>攻击类型</td><td>' + data['attack_type'] + '</td></tr>';
     html += '<tr><td>攻击参数</td><td>' + data['attack_params'] + '</td></tr>';
     html += '<tr><td>调用栈</td><td>' + data['stack_trace'] + '</td></tr>';
-    html += '<tr><td>插件名称</td><td>' + data['plugin_name'] + '</td></tr>';
+   // html += '<tr><td>插件名称</td><td>' + data['plugin_name'] + '</td></tr>';
     html += '<tr><td>插件消息</td><td>' + data['plugin_message'] + '</td></tr>';
     html += '<tr><td>插件置信度</td><td>' + data['plugin_confidence'] + '</td></tr>';
     html += '<tr><td>是否拦截 block或log</td><td>' + data['intercept_state'] + '</td></tr>';
@@ -942,10 +945,537 @@ $(document).on("click", ".detail-a", function () {
 
 
     $("#detailed_report_body").text("").append(html);
+     $("#ioc_body").text("").append(ioc_html);
+     $("#attack_body").text("").append(attack_body_html);
+
+     //$("#attack_body").text("");
     $(".myModalLabel").text("攻击事件");
     $("#myModal").modal("show");
 
 });
+function get_iochtml(data)
+{
+
+    console.log(data);
+    let attack_type=data['attack_type1'];
+    let obj_title='';
+    let obj_code='';
+    let code=JSON.parse(data['attack_params']);
+    let db_server='';
+
+    switch (attack_type) {
+        case 'command':
+            obj_title="执行命令";
+            obj_code=code['command'];
+            break;
+        case 'sql':
+            obj_title="SQL语句";
+            obj_code=code['query'];
+            db_server=code['server'];
+            obj_title=db_server+" "+obj_title;
+
+            break;
+        case 'deserialization':
+            obj_title="反序列化类";
+            obj_code=code['clazz'];
+            break;
+        case 'ognl':
+            obj_title="OGNL表达式";
+            obj_code=code['expression'];
+            break;
+        case 'writeFile':
+            obj_title="上传文件";
+            obj_code=code['realpath'];
+            break;
+        case 'readFile':
+            obj_title="读取文件";
+            obj_code=code['realpath'];
+            break;
+        case 'directory':
+            obj_title="Webshell";
+            obj_code=code['stack'];
+            break;
+        case 'ssrf':
+            obj_title="访问URL";
+            obj_code=code['url'];
+            break;
+        case 'request':
+            obj_title="";
+            obj_code="";
+            break;
+        case 'xxe':
+            obj_title="注入实体";
+            obj_code=code['entity'];
+            break;
+        default:
+            break;
+    }
+    let iochtml="";
+
+    if (attack_type==='request')
+    {
+        iochtml=`
+         <table class="legend-table01" style="width: 70%;">
+                                <tbody>
+                                <tr>
+                                    <td class="legend-table01-td1">
+                                        <!--第一个模态框-->
+                                        <div class="table-content-td-plain" >
+                                            <table class="text-legend-text">
+                                                <tbody>
+                                                <tr>
+                                                    <td class="td-01">请求URL</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                        <p>${data['url']}</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td-01">请求方法</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                        <p>${data['method']}</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td-01">请求体</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                        <p id="httpQueryString" data-toggle="tooltip" data-html="true" data-delay="200" data-original-title="" data-trigger="manual">
+                                                        ${data['body']}
+                                                        </p>
+
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            </table>
+                                        </div>
+                                        <!--三角-->
+                                        <div class="triangle-down" style="left: 7px;"></div>
+                                        <!--第一个模态框结束-->
+                                    </td>
+                                    <!--<td class="legend-table01-td1">-->
+                                        <!---->
+                                            <!--&lt;!&ndash;三角&ndash;&gt;-->
+                                            <!--<div class="triangle-down" ></div>-->
+                                        <!--&lt;!&ndash;第2个模态框结束&ndash;&gt;-->
+                                    <!--</td>-->
+                                </tr>
+                            </tbody>
+                            </table>
+                            <div class="u-legend pannel_background">
+                                    <span class="log-alarmer"></span>
+                                    <span style="width: 23.5%;display: inline-block;text-align: right;color: #777;"> 网络流量</span>
+                                    <span style="width: 23.1%;display: inline-block;text-align: right;color: #777;"> 应用</span>
+                                   
+                            </div>
+                            <table class="legend-table02" style="width: 100%;margin: 40px auto;min-height: 50px;vertical-align: top;text-align:
+                                   center;">
+                                <tbody>
+                                <tr>
+                                    <td class="legend-low">
+                                        <!--第3个模态框-->
+                                        <!--三角-->
+                                        <div class="triangle-top"></div>
+                                        <div class="table-content-td-plain-b" style="min-width: 205px;">
+                                            <table class="text-legend-text">
+                                                <tbody><tr>
+                                                    <td class="td-01" style="width: 40px;">IP</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                        <p>${data['attack_source']}</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td-01" style="width: 40px;">地址</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                            <p>${data['city']}</p>
+                                                    </td>
+                                                </tr>
+                                            </tbody></table>
+                                        </div>
+                                        <!--第3个模态框结束-->
+                                    </td>
+                                    <td class="legend-low">
+
+                                        <!--第4个模态框-->
+                                        <!--三角-->
+                                        <div class="triangle-top"></div>
+                                        <div class="table-content-td-plain-b" style="margin-right: 0;">
+                                            <table class="text-legend-text">
+                                                <tbody>
+                                                <tr>
+                                                    <td class="td-01">用户</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                        <p>${data['system_user']}</p>
+                                                    </td>
+                                                </tr>
+                                                   <tr>
+                                                    <td class="td-01">主机名称</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                        <p>${data['server_hostname']}</p>
+                                                    </td>
+                                                </tr>
+                                                   <tr>
+                                                    <td class="td-01">服务器名称</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                        <p>${data['server_type']}</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td-01">类型</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                        <p>web</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td-01">进程路径</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                        <p>${data['process_path']}</p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            </table>
+                                        </div>
+                                        <!--第4个模态框结束-->
+                                    </td>
+                                    
+                                </tr>
+                            </tbody>
+                            </table>
+        
+        `
+    }
+
+else {
+        iochtml = `
+      <table class="legend-table01" style="width: 70%;">
+                                <tbody>
+                                <tr>
+                                    <td class="legend-table01-td1">
+                                        <!--第一个模态框-->
+                                        <div class="table-content-td-plain" >
+                                            <table class="text-legend-text">
+                                                <tbody>
+                                                <tr>
+                                                    <td class="td-01">请求URL</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                        <p>${data['url']}</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td-01">请求方法</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                        <p>${data['method']}</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td-01">请求体</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                        <p id="httpQueryString" data-toggle="tooltip" data-html="true" data-delay="200" data-original-title="" data-trigger="manual">
+                                                        ${data['body']}
+                                                        </p>
+
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            </table>
+                                        </div>
+                                        <!--三角-->
+                                        <div class="triangle-down" style="left: 7px;"></div>
+                                        <!--第一个模态框结束-->
+                                    </td>
+                                    <td class="legend-table01-td1">
+                                        <!--第2个模态框-->
+                                            <div class="table-content-td-plain">
+                                                    <table class="text-legend-text">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td class="td-01">操作类型</td>
+                                                        <td class="td-02">:</td>
+                                                        <td class="td-03">
+                                                            <p>${data['attack_type']}</p>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="td-01">操作扩展</td>
+                                                        <td class="td-02">:</td>
+                                                        <td class="td-03">
+                                                            <p>${data['stack_trace'].split(" ")[0].split("\n")[0]}</p>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                    </table>
+                                            </div>
+                                            <!--三角-->
+                                            <div class="triangle-down" ></div>
+                                        <!--第2个模态框结束-->
+                                    </td>
+                                </tr>
+                            </tbody>
+                            </table>
+                            <div class="u-legend pannel_background">
+                                    <span class="log-alarmer"></span>
+                                    <span style="width: 23.5%;display: inline-block;text-align: right;color: #777;"> 网络流量</span>
+                                    <span style="width: 23.1%;display: inline-block;text-align: right;color: #777;"> 应用</span>
+                                    <span style="width: 24.5%;display: inline-block;text-align:right;margin-top: 70px;color: #777;">操作</span>
+                                    <span style="width: 25.5%;display: inline-block;text-align: right;margin-top: 70px;color: #777;"> 操作对象</span>
+                            </div>
+                            <table class="legend-table02" style="width: 100%;margin: 40px auto;min-height: 50px;vertical-align: top;text-align:
+                                   center;">
+                                <tbody>
+                                <tr>
+                                    <td class="legend-low">
+                                        <!--第3个模态框-->
+                                        <!--三角-->
+                                        <div class="triangle-top"></div>
+                                        <div class="table-content-td-plain-b" style="min-width: 205px;">
+                                            <table class="text-legend-text">
+                                                <tbody><tr>
+                                                    <td class="td-01" style="width: 40px;">IP</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                        <p>${data['attack_source']}</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td-01" style="width: 40px;">地址</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                            <p>${data['city']}</p>
+                                                    </td>
+                                                </tr>
+                                            </tbody></table>
+                                        </div>
+                                        <!--第3个模态框结束-->
+                                    </td>
+                                    <td class="legend-low">
+
+                                        <!--第4个模态框-->
+                                        <!--三角-->
+                                        <div class="triangle-top"></div>
+                                        <div class="table-content-td-plain-b" style="margin-right: 0;">
+                                            <table class="text-legend-text">
+                                                <tbody>
+                                                <tr>
+                                                    <td class="td-01">用户</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                        <p>${data['system_user']}</p>
+                                                    </td>
+                                                </tr>
+                                                </tr>
+                                                   <tr>
+                                                    <td class="td-01">主机名称</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                        <p>${data['server_hostname']}</p>
+                                                    </td>
+                                                </tr>
+                                                   <tr>
+                                                    <td class="td-01">服务器名称</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                        <p>${data['server_type']}</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td-01">类型</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                        <p>web</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td-01">进程路径</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                        <p>${data['process_path']}</p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            </table>
+                                        </div>
+                                        <!--第4个模态框结束-->
+                                    </td>
+                                    <td class="legend-low">
+                                        <!--第5个模态框-->
+                                        <!--三角-->
+                                            <div class="triangle-top"></div>
+                                            <div class="table-content-td-plain-b" style="margin-right: 0px;">
+                                                <table class="text-legend-text">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td class="td-01">${obj_title}</td>
+                                                        <td class="td-02">:</td>
+                                                        <td class="td-03-5">
+                                                            <p>${obj_code}</p>
+                                                        </td>
+                                                    </tr>
+                                                </tbody></table>
+
+                                            </div>
+                                        <!--第5个模态框结束-->
+                                    </td>
+                                </tr>
+                            </tbody>
+                            </table>`;
+
+    }
+    return iochtml;
+}
+
+
+
+function get_attack_body(ip)
+{
+    let parm={};
+    parm['ip']=ip;
+    parm['last']=0;
+    let temp_html=``;
+
+    $.ajax({
+        url: "attack/query_source/",
+        type: 'POST',
+        data: parm,
+        async: false,
+        //dataType: "json",
+        success: function (data_list) {
+
+            console.log(data_list);
+             temp_html+=` <tr>
+                <td style="width: 10%; text-align: right;">
+                <br>
+                </td>
+                <td style="width: 4%; position: relative; padding: 0px;"><div class="event_detail_attack_detail_table_split"></div><div class="event_detail_attack_detail_table_circle red"></div></td>
+                <td style="width: 50%;">
+                <span class="attack_start">
+                攻击开始
+                </span>
+                </td>
+                </tr>
+                    `;
+
+            for( x in data_list['list'])
+            {
+                let temp_data=data_list['list'][x];
+                temp_html+=`
+                    <tr>
+                        <td style="width: 10%; text-align: right;">${temp_data[0].split(" ")[0]}<br>${temp_data[0].split(" ")[1]}</td>
+                        <td style="width: 4%; position: relative; padding: 0px;">
+                            <div class="event_detail_attack_detail_table_split"></div>
+                            <div class="event_detail_attack_detail_table_circle"></div>
+                        </td>
+                        <td style="width: 50%;">
+                            <span class="ip event_detail_attack_detail_table_span label label-info">${temp_data[2]}</span>
+                            <span class="ipAddr">（${temp_data[1]}）</span>
+                            ${temp_data[3]}
+                            &nbsp;<span class="span_gray">${temp_data[4]}  </span>
+                            <span class="event_log_detail" id="1664393756_2018-05-23">&gt;&gt;详情</span>
+                        </td>
+                    </tr>`;
+            }
+            temp_html+=` <tr id="attack_more_a">
+                    <td>
+                    <a id="attack_more_a" href="javascript:void(0)" onclick="append_attack_body('${ip}','${data_list['last_next']}','${data_list['remain']}')">加载更多</a>
+                    </td>
+                    </tr>`;
+
+        }});
+
+
+    return temp_html;
+}
+
+function append_attack_body(ip,last,remain)
+{
+
+    let parm={};
+    parm['ip']=ip;
+    parm['last']=last;
+    let temp_html=``;
+    //剩未查询的数量
+    let remain_num=0;
+    console.log(remain);
+
+    $.ajax({
+        url: "attack/query_source/",
+        type: 'POST',
+        data: parm,
+        async: false,
+        //dataType: "json",
+        success: function (data_list) {
+            console.log(data_list);
+
+            for( x in data_list['list'])
+            {
+                let temp_data=data_list['list'][x];
+                temp_html+=`
+                    <tr>
+                        <td style="width: 10%; text-align: right;">${temp_data[0].split(" ")[0]}<br>${temp_data[0].split(" ")[1]}</td>
+                        <td style="width: 4%; position: relative; padding: 0px;">
+                            <div class="event_detail_attack_detail_table_split"></div>
+                            <div class="event_detail_attack_detail_table_circle"></div>
+                        </td>
+                        <td style="width: 50%;">
+                            <span class="ip event_detail_attack_detail_table_span label label-info">${temp_data[2]}</span>
+                            <span class="ipAddr">（${temp_data[1]}）</span>
+                            ${temp_data[3]}
+                            &nbsp;<span class="span_gray">${temp_data[4]}  </span>
+                            <span class="event_log_detail" id="1664393756_2018-05-23">&gt;&gt;详情</span>
+                        </td>
+                    </tr>`;
+            }
+            temp_html+=` <tr id="attack_more_a">
+                    <td>
+                    <a id="attack_more_a" href="javascript:void(0)" onclick="append_attack_body('${ip}','${data_list['last_next']}','${data_list['remain']}')">加载更多</a>
+                    </td>
+                    </tr>`;
+
+        }});
+
+            $("#attack_more_a").remove();
+
+
+    $("#attack_body").append(temp_html);
+
+
+    if (remain <= 10) {
+        $("#attack_more_a").remove();
+        append_attack_body_more()
+    }
+
+
+}
+function append_attack_body_more() {
+
+    append_attack_body_end()
+}
+function append_attack_body_end()
+{
+    let html=` <tr>
+                <td style="width: 10%; text-align: right;">
+                <br>
+                </td>
+                <td style="width: 4%; position: relative; padding: 0px;"><div class="event_detail_attack_detail_table_split"></div><div class="event_detail_attack_detail_table_circle red"></div></td>
+                <td style="width: 50%;">
+                <span class="attack_end">
+                攻击结束
+                </span>
+                </td>
+                 </tr>`;
+    $("#attack_body").append(html)
+
+}
 $(document).on("click", ".detail-a-agent", function () {
 
     let id = $(this).attr("data-name");

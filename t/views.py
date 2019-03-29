@@ -5,7 +5,7 @@ import time
 from collections import OrderedDict
 from datetime import timedelta, datetime
 from django.db.models import Max, Avg, F, Q, Count
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.forms.models import model_to_dict
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -29,6 +29,14 @@ SENSOR_TYPE = {'10001':'Java Rasp探针','10002':'PHP Rasp探针', '20001':'IIS�
 INTERCEPT_STATUS = {'block':'拦截', 'log':'记录'}
 THREAT_LEVEL = {0:'严重',1:'高危',2:'中危',3:'低危'}
 AGENT_ID = None
+
+def auth(func):
+    def wrapper(request):
+        if request.session.has_key('superuser'):
+            return func(request)
+        else:
+            return HttpResponse('auth failed!', content_type='application/json')
+    return wrapper
 
 def refresh_agent_id():
     global AGENT_ID
@@ -84,12 +92,12 @@ def add_host(request):
             plugin.plugin_template = readConfig("config/plugin_template.conf")
             plugin.save()
             refresh_agent_id()
-    except Exception, e:
+    except Exception as e:
         data = {
             "code": 1,
             "message": 'Database operation failed.'
         }
-        print e
+        print (e)
         return HttpResponse(json.dumps(data), content_type='application/json')
     data = {
         "code": 0,
@@ -114,7 +122,7 @@ def login(request):
             request.session['username'] = username
             request.session['superuser'] = u.superuser
             request.session['is_login'] = True
-            request.session.set_expiry(20)
+            request.session.set_expiry(1800)
             return redirect('/index')
 
     return render(request, 'login.html', {})
@@ -123,6 +131,7 @@ def loginout(request):
     request.session.clear()
     return redirect('/login')
 
+@auth
 def agent_query(request):
     global SENSOR_TYPE
 
@@ -131,10 +140,10 @@ def agent_query(request):
     page=int(page)
     result = None
     if request.session['superuser']:
-        result= agents.objects.all()
+        result= agents.objects.all().order_by("-online")
     else:
         username = request.session['username']
-        result = agents.objects.filter(owner=username)
+        result = agents.objects.filter(owner=username).order_by("-online")
     # 每页显示多少个数据
     page_size=15
     # 最大分页数
@@ -164,6 +173,9 @@ def agent_query(request):
     }
     return HttpResponse(json.dumps(data),content_type='application/json')
 
+
+
+@auth
 def attack_event_query(request):
 
     # 当前页码数
@@ -173,6 +185,7 @@ def attack_event_query(request):
     filter_condition = {}
 
     result = None
+
     if not request.session['superuser']:
         username = request.session['username']
         result = agents.objects.filter(owner=username)
@@ -194,7 +207,7 @@ def attack_event_query(request):
     attack_msg = request.POST.get("attack_msg")
     if attack_msg != "" and attack_msg != None:
         #filter_condition['plugin_message__icontains']=attack_msg
-        msg_filter = Q(plugin_message__icontains=attack_msg) | Q(target=attack_msg) | Q(url__icontains=attack_msg) | Q(agent_id=attack_msg)
+        msg_filter = Q(plugin_message__icontains=attack_msg) | Q(target=attack_msg) | Q(url__icontains=attack_msg) | Q(agent_id=attack_msg) | Q(attack_source__icontains=attack_msg)
 
     # 关于攻击时间的过滤
     attack_time = request.POST.get("attack_time")
@@ -229,6 +242,7 @@ def attack_event_query(request):
         y['event_time'] = y['event_time'].strftime("%Y-%m-%d %H:%M:%S")
         y['intercept_state'] = INTERCEPT_STATUS.get(y['intercept_state'], '')
         y['threat_level'] = THREAT_LEVEL.get(y['threat_level'], '')
+        y['attack_type1']=y['attack_type']
         try:
             y['attack_type'] = event_knowledge.objects.get(event_id=y['event_id']).event_name
         except Exception as e:
@@ -238,6 +252,23 @@ def attack_event_query(request):
         y['body'] = y['body'].replace('<', '&lt').replace('>', '&gt')
         y['plugin_message'] = y['plugin_message'].replace('"', '&quot;')
 
+        #查询城市
+        y['city']=''
+
+
+        str=y['attack_source'].split(".")[0]
+        if str=="172"or str=="192" or str=="10":
+            y['city']="局域网"
+        elif str=="127" or str=="" or str=="::1":
+            y['city']="本机"
+        try:
+            gi= geoip2.database.Reader('geoip/GeoLite2-City.mmdb', locales=['zh-CN'])
+            response= gi.city(y['attack_source'])
+            y['city']=response.country.names['zh-CN']+"-"+response.subdivisions[0].names['zh-CN']+"-"+response.city.names['zh-CN']
+
+
+        except Exception as e:
+            pass
         stack_list.append(y)
 
     data = {
@@ -252,6 +283,71 @@ def attack_event_query(request):
     return HttpResponse(data, content_type='application/json')
 
 
+@auth
+def attack_query_source(request):
+    # 上一次查询到的位置
+    last = request.POST.get("last")
+    last=int(last)
+    # 查询的被攻击的id
+    ip = request.POST.get("ip")
+    # 剩下还有多少条
+    remain=0
+    # 总共条数
+    num=0
+    # 被攻击时间
+    time=None
+    # 攻击者ip
+    attack_ip=None
+    # 攻击者位置
+    attack_addr=None
+    # 插件消息
+    attack_plugin_msg=None
+    # 是否被拦截
+    intercept_state=None
+
+    result = attack_event.objects.all().values_list('event_time','attack_source','plugin_message','intercept_state').filter(server_ip=ip)
+    num=result.count()
+    last_next=last+10
+    if last+10>num:
+        last_next=num
+    last_next=int(last_next)
+    list_x_all=[]
+    print (last)
+    print (last_next)
+    print (num)
+    for x in result[last:last_next]:
+        list_x=[]
+        list_x.append(x[0].strftime("%Y-%m-%d %H:%M:%S"))
+        list_x.append(x[1])
+        str=list_x[1].split(".")[0]
+        if str=="172"or str=="192" or str=="10":
+            list_x[1]=("局域网")
+        elif str=="127" or str=="" or str=="::1":
+            list_x[1]=("本机")
+        else:
+            try:
+                gi= geoip2.database.Reader('geoip/GeoLite2-City.mmdb', locales=['zh-CN'])
+                response= gi.city(x[1])
+                res=response.country.names['zh-CN']+"-"+response.subdivisions[0].names['zh-CN']+"-"+response.city.names['zh-CN']
+                list_x[1]=(res)
+            except Exception as e:
+                pass
+        list_x.append(x[1])
+        list_x.append(x[2].replace('<', '&lt').replace('>', '&gt'))
+        list_x.append(x[3])
+        list_x_all.append(list_x)
+
+
+    remain=num-last_next
+    data={}
+    data['list']=list_x_all
+    data['remain']=remain
+    data['last_next']=last_next
+    data['all_num']=num
+    data = json.dumps(data)
+    return HttpResponse(data,content_type='application/json')
+
+@auth
 def query_threat_level(request):
     data = {}
     attack = attack_event.objects
@@ -275,6 +371,7 @@ def query_threat_level(request):
 
     return HttpResponse(data,content_type='application/json')
 
+@auth
 def query_attack_source(request):
     data = {}
     attack = attack_event.objects
@@ -304,13 +401,13 @@ def query_attack_source(request):
         try:
             response = gi.city(item[0])
 
-        except Exception, e:
+        except Exception as e:
             continue
 
         try:
             key = item[0] + '\r\n' + response.subdivisions.most_specific.name + ' ' + response.city.name
             attack_source_map[key] = [response.location.longitude, response.location.latitude, item[1]]
-        except Exception, e:
+        except Exception as e:
             attack_source_map[item[0]] = [response.location.longitude, response.location.latitude, item[1]]
 
     data['attrack_source_dic']=attrack_source_dic
@@ -319,6 +416,7 @@ def query_attack_source(request):
 
     return HttpResponse(data,content_type='application/json')
 
+@auth
 def query_attack_times(request):
     data = {}
     attack = attack_event.objects
@@ -355,6 +453,7 @@ def query_attack_times(request):
 
     return HttpResponse(data,content_type='application/json')
 
+@auth
 def query_attack_type(request):
     data = {}
     attack = attack_event.objects
@@ -390,6 +489,7 @@ def query_attack_type(request):
 
     return HttpResponse(data,content_type='application/json')
 
+@auth
 def query_attack_warn(request):
     data = {}
     attack = attack_event.objects
