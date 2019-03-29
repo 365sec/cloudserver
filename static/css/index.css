@@ -434,14 +434,22 @@ border-color: #ccc;
     height: 80px;
     width: 75%;
     padding-left: 7.5%;
-    background: url(/static/images/center-bgimg.png) no-repeat;
+
+
+}
+.stagebg2{
+    background: url(/static/images/center-bgimg2.png)center no-repeat;
     background-size: 100%;
+}
+.stagebg1{
+    background: url(/static/images/center-bgimg1.png)center no-repeat;
+    background-size: 95%;
 }
 .tab-content > .tab-pane {
     padding-top: 16px;
 }
 
-#ioc_body{
+.ioc_body{
     display: flex;
     justify-content: center;
     align-items: center;
