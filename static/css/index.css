@@ -648,3 +648,14 @@ max-width: none;
  cursor:pointer;
  }
 /*攻击追溯*/
+
+#attack_traceability{
+    height: 100%;
+}
+#attack_traceability_body{
+    height: 100%;
+    overflow-y: scroll;
+    }
+.loadmore{
+    color: #1890ff;
+}
