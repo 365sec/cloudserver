@@ -733,7 +733,7 @@
                     <div class="tab-pane fade" id="attack_traceability" >
                         <div id="attack_traceability_body">
                             <table id="event_detail_attack_detail_table" class="table">
-                                <tbody class="fillin">
+                                <tbody class="fillin" id="attack_body">
                                     <tr>
                                     <td style="width: 10%; text-align: right;">
                                     <br>
@@ -1063,7 +1063,6 @@
 </body>
 <script>
         var loadflag=true;
-
         $("#attack_traceability_body").on("scroll",function(){
         var windowHeight = $("#attack_traceability_body").height();//当前窗口的高度
         var scrollTop = $("#attack_traceability_body").scrollTop();//当前滚动条从上往下滚动的距离
@@ -1072,19 +1071,10 @@
             if(loadflag == false){
                 return;
             }
-            var loadmore = '<tr>'
-                                +'<td style="width: 10%; text-align: right;">'
-                                +'<br>'
-                                +'</td>'
-                                +'<td style="width: 4%; position: relative; padding: 0px;"><div class="event_detail_attack_detail_table_split"></div><div class="event_detail_attack_detail_table_circle"></div></td>'
-                                +'<td style="width: 50%;">'
-                                +'<span class="loadmore" onclick = "loadMore()">加载更多</span>'
-                                +'</td>'
-                                +'</tr>';
-            $(".fillin").append(loadmore);
+
             loadflag = false;
         }
-    });
+        });
     <!--首页地图切换-->
         $(document).on('click','#map-tab-world',function(){
 			var myChart = echarts.init(document.getElementById('chart_map'));
