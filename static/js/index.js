@@ -1385,15 +1385,21 @@ function get_attack_body(ip)
                         </td>
                     </tr>`;
             }
-            temp_html+=` <tr id="attack_more_a">
-                <td style="width: 10%; text-align: right;">
-                <br>
-                </td>
-                <td style="width: 4%; position: relative; padding: 0px;"><div class="event_detail_attack_detail_table_split"></div><div class="event_detail_attack_detail_table_circle red"></div></td>
-                <td style="width: 50%;">
-               <a id="attack_more_a" href="javascript:void(0)" onclick="append_attack_body('${ip}','${data_list['last_next']}','${data_list['remain']}')">加载更多</a>
-                </td>
-                 </tr>`;
+            var loadflag=true;
+            $("#attack_traceability_body").on("scroll",function(){
+            var windowHeight = $("#attack_traceability_body").height();//当前窗口的高度
+            var scrollTop = $("#attack_traceability_body").scrollTop();//当前滚动条从上往下滚动的距离
+            var docHeight = $("#event_detail_attack_detail_table").height(); //当前文档的高度
+//            console.log(windowHeight+scrollTop,docHeight);
+            if (scrollTop + windowHeight >= docHeight ) {
+                if(loadflag == false){
+                    more_html = "";
+                }else{
+                    append_attack_body(ip,data_list["last_next"],data_list["remain"]);
+                    loadflag = false;
+                }
+            }
+            });
         }});
 
 
@@ -1449,24 +1455,14 @@ function append_attack_body(ip,last,remain)
                 if(loadflag == false){
                     more_html = "";
                 }else{
-                more_html =` <tr id="attack_more_a">
-                <td style="width: 10%; text-align: right;">
-                <br>
-                </td>
-                <td style="width: 4%; position: relative; padding: 0px;"><div class="event_detail_attack_detail_table_split"></div><div class="event_detail_attack_detail_table_circle red"></div></td>
-                <td style="width: 50%;">
-               <a id="attack_more_a" href="javascript:void(0)" onclick="append_attack_body('${ip}','${data_list['last_next']}','${data_list['remain']}')">加载更多</a>
-                </td>
-                 </tr>`;
-                loadflag = false;
-                $("#attack_body").append(more_html);
+                    append_attack_body(ip,data_list["last_next"],data_list["remain"]);
+                    loadflag = false;
                 }
             }
             });
 
         }});
             $("#attack_more_a").remove();
-//    console.log(more_html);
     $("#attack_body").append(temp_html);
 
 
