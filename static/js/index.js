@@ -897,7 +897,9 @@ $(document).on("click", ".detail-a", function () {
     let data = JSON.parse(b.decode(data1));
 
     let ioc_html=get_iochtml(data);
-    let attack_body_html=get_attack_body(data['server_ip']);
+
+
+    let attack_body_html=get_attack_body(data['server_ip'],data['attack_source']);
 //    console.log(attack_body_html);
     var html = '<div class="card">';
     html += '<div class="card-body">';
@@ -946,7 +948,7 @@ $(document).on("click", ".detail-a", function () {
 
 
     $("#detailed_report_body").text("").append(html);
-     $("#ioc_body").text("").append(ioc_html);
+    // $("#ioc_body").text("").append(ioc_html);
      $("#attack_body").text("").append(attack_body_html);
 
      //$("#attack_body").text("");
@@ -963,46 +965,71 @@ function get_iochtml(data)
     let obj_code='';
     let code=JSON.parse(data['attack_params']);
     let db_server='';
+    console.log(attack_type);
 
     switch (attack_type) {
         case 'command':
             obj_title="执行命令";
             obj_code=code['command'];
             break;
-        case 'sql':
-            obj_title="SQL语句";
-            obj_code=code['query'];
-            db_server=code['server'];
-            obj_title=db_server+" "+obj_title;
-
-            break;
         case 'deserialization':
             obj_title="反序列化类";
             obj_code=code['clazz'];
+            break;
+        case 'directory':
+            obj_title="访问目录";
+            obj_code=code['realpath'];
+            break;
+        case 'fileUpload':
+           obj_title="脚本文件上传";
+           obj_code=code['filename'];
             break;
         case 'ognl':
             obj_title="OGNL表达式";
             obj_code=code['expression'];
             break;
-        case 'writeFile':
-            obj_title="上传文件";
-            obj_code=code['realpath'];
-            break;
         case 'readFile':
             obj_title="读取文件";
             obj_code=code['realpath'];
             break;
-        case 'directory':
-            obj_title="Webshell";
-            obj_code=code['stack'];
+        case 'request':
+            obj_title="";
+            obj_code="";
             break;
+        case 'request_body':
+           // obj_title="";
+           // obj_code="";
+            break;
+        case 'sql':
+            obj_title="SQL语句";
+            obj_code=code['query']
+            break;
+        case 'sqlSlowQuery':
+            obj_title="查询条数";
+            obj_code=code['query_count'];
+            break;
+
         case 'ssrf':
             obj_title="访问URL";
             obj_code=code['url'];
             break;
-        case 'request':
-            obj_title="";
-            obj_code="";
+        case 'webshell_command':
+            obj_title="执行命令";
+            obj_code=code['command'];
+            break;
+        case 'webshell_eval':
+            obj_title="执行php代码";
+
+            if (code.hasOwnProperty('eval')) {
+                obj_code='eval('+code['eval']+')';
+            }
+            if (code.hasOwnProperty('assert')) {
+                obj_code='assert('+code['assert']+')';
+            }
+            break;
+        case 'writeFile':
+            obj_title="上传文件";
+            obj_code=code['realpath'];
             break;
         case 'xxe':
             obj_title="注入实体";
@@ -1013,10 +1040,11 @@ function get_iochtml(data)
     }
     let iochtml="";
 
+
     if (attack_type==='request')
     {
         iochtml=`
-         <table class="legend-table01" style="width: 70%;">
+        <table class="legend-table01" style="width: 70%;">
                                 <tbody>
                                 <tr>
                                     <td class="legend-table01-td1">
@@ -1043,7 +1071,7 @@ function get_iochtml(data)
                                                     <td class="td-02">:</td>
                                                     <td class="td-03">
                                                         <p id="httpQueryString" data-toggle="tooltip" data-html="true" data-delay="200" data-original-title="" data-trigger="manual">
-                                                        ${data['body']}
+                                                         ${data['body']}
                                                         </p>
 
                                                     </td>
@@ -1055,20 +1083,13 @@ function get_iochtml(data)
                                         <div class="triangle-down" style="left: 7px;"></div>
                                         <!--第一个模态框结束-->
                                     </td>
-                                    <!--<td class="legend-table01-td1">-->
-                                        <!---->
-                                            <!--&lt;!&ndash;三角&ndash;&gt;-->
-                                            <!--<div class="triangle-down" ></div>-->
-                                        <!--&lt;!&ndash;第2个模态框结束&ndash;&gt;-->
-                                    <!--</td>-->
-                                </tr>
+                                    </tr>
                             </tbody>
                             </table>
-                            <div class="u-legend pannel_background">
+                            <div class="u-legend pannel_background stagebg1">
                                     <span class="log-alarmer"></span>
-                                    <span style="width: 23.5%;display: inline-block;text-align: right;color: #777;"> 网络流量</span>
-                                    <span style="width: 23.1%;display: inline-block;text-align: right;color: #777;"> 应用</span>
-                                   
+                                    <span style="width: 47.8%;display: inline-block;text-align: right;color: #777;margin-top: 70px;"> 网络流量</span>
+                                    <span style="width: 34.3%;display: inline-block;text-align: right;color: #777;margin-top: 70px;"> 应用</span>
                             </div>
                             <table class="legend-table02" style="width: 100%;margin: 40px auto;min-height: 50px;vertical-align: top;text-align:
                                    center;">
@@ -1151,12 +1172,15 @@ function get_iochtml(data)
                             </tbody>
                             </table>
         
-        `
+        `;
+
+        $("#ioc_body_stage1").text("").append(iochtml);
+        $("#ioc_body_stage2").text("");
     }
 
 else {
-        iochtml = `
-      <table class="legend-table01" style="width: 70%;">
+
+        iochtml = `                            <table class="legend-table01" style="width: 70%;">
                                 <tbody>
                                 <tr>
                                     <td class="legend-table01-td1">
@@ -1224,7 +1248,7 @@ else {
                                 </tr>
                             </tbody>
                             </table>
-                            <div class="u-legend pannel_background">
+                            <div class="u-legend pannel_background stagebg2">
                                     <span class="log-alarmer"></span>
                                     <span style="width: 23.5%;display: inline-block;text-align: right;color: #777;"> 网络流量</span>
                                     <span style="width: 23.1%;display: inline-block;text-align: right;color: #777;"> 应用</span>
@@ -1329,7 +1353,10 @@ else {
                                     </td>
                                 </tr>
                             </tbody>
-                            </table>`;
+                            </table>`
+     ;
+        $("#ioc_body_stage1").text("");
+        $("#ioc_body_stage2").text("").append(iochtml);
 
     }
     return iochtml;
@@ -1337,11 +1364,13 @@ else {
 
 
 
-function get_attack_body(ip)
+function get_attack_body(ip,attack_source)
 {
+    console.log("第一次加载 get_attack_body");
     let parm={};
     parm['ip']=ip;
     parm['last']=0;
+    parm['attack_source']=attack_source;
     let temp_html=``;
 
     $.ajax({
@@ -1385,17 +1414,18 @@ function get_attack_body(ip)
                         </td>
                     </tr>`;
             }
-            var loadflag=true;
+            let loadflag=true;
             $("#attack_traceability_body").on("scroll",function(){
-            var windowHeight = $("#attack_traceability_body").height();//当前窗口的高度
-            var scrollTop = $("#attack_traceability_body").scrollTop();//当前滚动条从上往下滚动的距离
-            var docHeight = $("#event_detail_attack_detail_table").height(); //当前文档的高度
+            let windowHeight = $("#attack_traceability_body").height();//当前窗口的高度
+            let scrollTop = $("#attack_traceability_body").scrollTop();//当前滚动条从上往下滚动的距离
+            let docHeight = $("#event_detail_attack_detail_table").height(); //当前文档的高度
 //            console.log(windowHeight+scrollTop,docHeight);
+             $("#remain_num").text("").append(data_list['all_num']- data_list["remain"]+"/"+ data_list['all_num']);
             if (scrollTop + windowHeight >= docHeight ) {
-                if(loadflag == false){
+                if(loadflag === false){
                     more_html = "";
                 }else{
-                    append_attack_body(ip,data_list["last_next"],data_list["remain"]);
+                    append_attack_body(ip,data_list["last_next"],data_list["remain"],attack_source);
                     loadflag = false;
                 }
             }
@@ -1405,12 +1435,15 @@ function get_attack_body(ip)
 
     return temp_html;
 }
-function append_attack_body(ip,last,remain)
+function append_attack_body(ip,last,remain,attack_source)
 {
+    console.log("第n次加载 append_attack_body");
 
     let parm={};
     parm['ip']=ip;
     parm['last']=last;
+    parm['attack_source']=attack_source;
+    console.log(parm);
     let temp_html=``;
     let more_html = `` ;
     //剩未查询的数量
@@ -1445,24 +1478,27 @@ function append_attack_body(ip,last,remain)
                         </td>
                     </tr>`;
             }
-            var loadflag=true;
+            let loadflag=true;
             $("#attack_traceability_body").on("scroll",function(){
-            var windowHeight = $("#attack_traceability_body").height();//当前窗口的高度
-            var scrollTop = $("#attack_traceability_body").scrollTop();//当前滚动条从上往下滚动的距离
-            var docHeight = $("#event_detail_attack_detail_table").height(); //当前文档的高度
+                let windowHeight = $("#attack_traceability_body").height();//当前窗口的高度
+                let scrollTop = $("#attack_traceability_body").scrollTop();//当前滚动条从上往下滚动的距离
+                let docHeight = $("#event_detail_attack_detail_table").height(); //当前文档的高度
 //            console.log(windowHeight+scrollTop,docHeight);
+                $("#remain_num").text("").append(data_list['all_num']- data_list["remain"]+"/"+ data_list['all_num']);
+
+
             if (scrollTop + windowHeight >= docHeight && remain > 10) {
-                if(loadflag == false){
+                if(loadflag === false){
                     more_html = "";
                 }else{
-                    append_attack_body(ip,data_list["last_next"],data_list["remain"]);
+                    append_attack_body(ip,data_list["last_next"],data_list["remain"],attack_source);
                     loadflag = false;
                 }
             }
             });
 
         }});
-            $("#attack_more_a").remove();
+
     $("#attack_body").append(temp_html);
 
 

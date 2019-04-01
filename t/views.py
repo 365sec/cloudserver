@@ -285,11 +285,20 @@ def attack_event_query(request):
 
 @auth
 def attack_query_source(request):
+
     # 上一次查询到的位置
     last = request.POST.get("last")
     last=int(last)
     # 查询的被攻击的id
     ip = request.POST.get("ip")
+
+    attack_source=request.POST.get('attack_source')
+    print (ip)
+    print (attack_source)
+    print (last)
+
+
+
     # 剩下还有多少条
     remain=0
     # 总共条数
@@ -305,7 +314,7 @@ def attack_query_source(request):
     # 是否被拦截
     intercept_state=None
 
-    result = attack_event.objects.all().values_list('event_time','attack_source','plugin_message','intercept_state').filter(server_ip=ip)
+    result = attack_event.objects.all().values_list('event_time','attack_source','plugin_message','intercept_state').filter(server_ip=ip,attack_source=attack_source)
     num=result.count()
     last_next=last+10
     if last+10>num:

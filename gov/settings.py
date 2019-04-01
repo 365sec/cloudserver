@@ -85,7 +85,7 @@ DATABASES = {
         'NAME':'gov_defence_db',
         'USER':'root',
         'PASSWORD':'12345',
-        'HOST':'172.16.39.65',
+        'HOST':'10.38.39.65',
         'PORT':'3306'
 
     }
@@ -146,8 +146,8 @@ STATICFILES_DIRS = [
 ]
 ALLOWED_HOSTS = ['*']
 
-AGENT_SERVER = '172.16.39.12:29002'
-CLOUD_SERVER = '172.16.39.65:8081'
+AGENT_SERVER = '10.38.39.12:29002'
+CLOUD_SERVER = '10.38.39.65:8081'
 
 DOWNLOAD_LIST = {
     'java_agent':'java_agent_1.0.zip',
