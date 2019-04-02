@@ -38,7 +38,6 @@
     <script src="/static/js/map/world.js"></script>
     <!--<script src="/static/js/map/echarts.min.js"></script>-->
     <script src="/static/js/index.js"></script>
-    <script src="/static/js/scrollappear.js"></script>
     <style type="text/css">
         .vue-loading[data-v-55c8f413] {
             margin: auto
@@ -643,19 +642,7 @@
 				</div>
 </body>
 <script>
-        var loadflag=true;
-        $("#attack_traceability_body").on("scroll",function(){
-        var windowHeight = $("#attack_traceability_body").height();//当前窗口的高度
-        var scrollTop = $("#attack_traceability_body").scrollTop();//当前滚动条从上往下滚动的距离
-        var docHeight = $("#event_detail_attack_detail_table").height(); //当前文档的高度
-        if (scrollTop + windowHeight >= docHeight) {
-            if(loadflag == false){
-                return;
-            }
 
-            loadflag = false;
-        }
-        });
     <!--首页地图切换-->
         $(document).on('click','#map-tab-world',function(){
 			var myChart = echarts.init(document.getElementById('chart_map'));

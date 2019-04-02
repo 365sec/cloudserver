@@ -1167,11 +1167,11 @@ function get_iochtml(data)
                                         </div>
                                         <!--第4个模态框结束-->
                                     </td>
-                                    
+
                                 </tr>
                             </tbody>
                             </table>
-        
+
         `;
 
         $("#ioc_body_stage1").text("").append(iochtml);
@@ -1415,6 +1415,7 @@ function get_attack_body(ip,attack_source)
                         </td>
                     </tr>`;
             }
+            $("#remain_num").text("").append(data_list['all_num']- data_list["remain"]+"/"+ data_list['all_num']);
 //             let loadflag=true;
 //             $("#attack_traceability_body").on("scroll",function(){
 //             let windowHeight = $("#attack_traceability_body").height();//当前窗口的高度
@@ -1433,7 +1434,8 @@ function get_attack_body(ip,attack_source)
 //             });
 
             $("#attack_body").text("").append(temp_html);
-            append_attack_body(ip,data_list['last_next'],attack_source)
+            append_attack_body(ip,data_list['last_next'],attack_source);
+
 
 
 
@@ -1448,20 +1450,40 @@ function append_attack_body(ip,last,attack_source)
             let last_next=temp_list[0];
             let html=temp_list[1];
             let remian_next=temp_list[2];
-            $("#attack_traceability_body").on("scroll",function(){
-                if (remian_next > 10) {
-                    temp_list=  append_attack_body_more(ip,last_next,attack_source);
-                    remian_next=temp_list[2];
-                    last_next=temp_list[0];
-                    html=temp_list[1];
 
+            let loadflag=true;
+             $("#attack_traceability_body").on("scroll",function(){
+             let windowHeight = $("#attack_traceability_body").height();//当前窗口的高度
+             let scrollTop = $("#attack_traceability_body").scrollTop();//当前滚动条从上往下滚动的距离
+             let docHeight = $("#event_detail_attack_detail_table").height(); //当前文档的高度
+             console.log(windowHeight,scrollTop,windowHeight+scrollTop,docHeight);
+              if(windowHeight > docHeight && loadflag){
+                 append_attack_body_end();
+                 loadflag=false;
+                 return;
+              }
+             if (scrollTop + windowHeight >= docHeight && loadflag) {
+                if (remian_next >=0) {
+                    temp_list = append_attack_body_more(ip, last_next, attack_source);
+                    remian_next = temp_list[2];
+                    last_next = temp_list[0];
+                    html = temp_list[1];
                     $("#attack_body").append(html);
+                    $("#remain_num").text("").append(remian_next);
                 }
+                if ( remian_next ===0) {
+                    append_attack_body_end();
+                    $("#remain_num").text("").append(remian_next);
+                    remian_next=-1;
+                    loadflag=false;
+                }
+                }
+
             });
 
 
 
-        append_attack_body_end();
+
 
 }
 function append_attack_body_more(ip,last,attack_source) {
