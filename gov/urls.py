@@ -21,7 +21,6 @@ from . import view
 
 
 urlpatterns = [
-
     url(r'^agent/query/$', views.agent_query),
     url(r'^attack/query/$', views.attack_event_query),
     url(r'^attack/query_source/$', views.attack_query_source),

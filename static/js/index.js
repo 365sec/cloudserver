@@ -898,46 +898,51 @@ $(document).on("click", ".detail-a", function () {
 
     let ioc_html=get_iochtml(data);
 
-
     let attack_body_html=get_attack_body(data['server_ip'],data['attack_source']);
 
     var html = '<div class="card">';
     html += '<div class="card-body">';
     html += '<table class="table table-bordered">';
-    html += '<thead>';
-    html += '<tr>';
-    html += '<th>名称</th>';
-    html += '<th>值</th>';
-    html += '</tr>';
-    html += '</thead>';
+    //html += '<thead>';
+    //html += '<tr>';
+    //html += '<th>名称</th>';
+    //html += '<th>值</th>';
+    //html += '</tr>';
+    //html += '</thead>';
     html += '<tbody>';
-    html += '<tr><td>event_issue_id</td><td>' + data['event_issue_id'] + '</td></tr>';
-    html += '<tr><td>agent_id</td><td>' + data['agent_id'] + '</td></tr>';
-    // html += '<tr><td>事件类型</td><td>' + data['event_type'] + '</td></tr>';
+    //事件信息
+    //html += '<tr><td>Agent编号</td><td>' + data['agent_id'] + '</td></tr>';
     html += '<tr><td>事件发生时间</td><td>' + data['event_time'] + '</td></tr>';
-    html += '<tr><td>服务器名称</td><td>' + data['server_hostname'] + '</td></tr>';
-    // html += '<tr><td>event_id</td><td>' + data['event_id'] + '</td></tr>';
+    html += '<tr><td>攻击事件编号</td><td>' + data['event_issue_id'] + '</td></tr>';
     html += '<tr><td>攻击类型</td><td>' + data['attack_type'] + '</td></tr>';
     html += '<tr><td>攻击参数</td><td>' + data['attack_params'] + '</td></tr>';
     html += '<tr><td>调用栈</td><td>' + data['stack_trace'] + '</td></tr>';
+    html += '<tr><td>事件描述</td><td>' + data['plugin_message'] + '</td></tr>';
+    html += '<tr><td>事件可信度</td><td>' + data['plugin_confidence'] + '</td></tr>';
+    html += '<tr><td>拦截状态</td><td>' + data['intercept_state'] + '</td></tr>';
+    html += '<tr><td>风险等级</td><td>' + data['threat_level'] + '</td></tr>';
+
+    // html += '<tr><td>事件类型</td><td>' + data['event_type'] + '</td></tr>';
+    // html += '<tr><td>event_id</td><td>' + data['event_id'] + '</td></tr>';
     // html += '<tr><td>插件名称</td><td>' + data['plugin_name'] + '</td></tr>';
-    html += '<tr><td>插件消息</td><td>' + data['plugin_message'] + '</td></tr>';
-    html += '<tr><td>插件置信度</td><td>' + data['plugin_confidence'] + '</td></tr>';
-    html += '<tr><td>是否拦截 block或log</td><td>' + data['intercept_state'] + '</td></tr>';
-    html += '<tr><td>请求id</td><td>' + data['request_id'] + '</td></tr>';
-    html += '<tr><td>攻击来源IP</td><td>' + data['attack_source'] + '</td></tr>';
-    html += '<tr><td>被攻击目标域名</td><td>' + data['target'] + '</td></tr>';
-    html += '<tr><td>被攻击目标IP</td><td>' + data['server_ip'] + '</td></tr>';
-    html += '<tr><td>被攻击目标端口</td><td>' + data['target_port'] + '</td></tr>';
-    html += '<tr><td>被攻击目标服务器类型</td><td>' + data['server_type'] + '</td></tr>';
-    html += '<tr><td>被攻击目标服务器版本</td><td>' + data['server_version'] + '</td></tr>';
+
+    //请求信息
+    html += '<tr><td>攻击源IP</td><td>' + data['attack_source'] + '</td></tr>';
+    html += '<tr><td>被攻击域名</td><td>' + data['target'] + '</td></tr>';
+    html += '<tr><td>被攻击IP</td><td>' + data['server_ip'] + '</td></tr>';
+    html += '<tr><td>被攻击端口</td><td>' + data['target_port'] + '</td></tr>';
+    html += '<tr><td>被攻击服务器类型</td><td>' + data['server_type'] + '</td></tr>';
+    html += '<tr><td>被攻击服务器版本</td><td>' + data['server_version'] + '</td></tr>';
+    html += '<tr><td>请求ID</td><td>' + data['request_id'] + '</td></tr>';
+    html += '<tr><td>请求方法</td><td>' + data['method'] + '</td></tr>';
     html += '<tr><td>被攻击URL</td><td>' + data['url'] + '</td></tr>';
     html += '<tr><td>请求体</td><td>' + data['body'] + '</td></tr>';
     html += '<tr><td>被攻击PATH路径</td><td>' + data['path'] + '</td></tr>';
     html += '<tr><td>User-Agent</td><td>' + data['user_agent'] + '</td></tr>';
     html += '<tr><td>Referer</td><td>' + data['referer'] + '</td></tr>';
-    html += '<tr><td>风险等级</td><td>' + data['threat_level'] + '</td></tr>';
-    html += '<tr><td>请求方法</td><td>' + data['method'] + '</td></tr>';
+
+    //资产信息
+    html += '<tr><td>主机名称</td><td>' + data['server_hostname'] + '</td></tr>';
     html += '<tr><td>系统用户名</td><td>' + data['system_user'] + '</td></tr>';
     html += '<tr><td>进程路径</td><td>' + data['process_path'] + '</td></tr>';
     html += '</tbody>';
@@ -1683,7 +1688,11 @@ function algorithm_config_show(algorithm_config, id) {
     dic.command_reflect = "命令执行";
     dic.command_userinput = "命令执行";
     dic.command_other = "命令执行";
-    dic.transformer_deser = "transformer 反序列化攻击";
+    dic.transformer_deser = "Transformer 反序列化攻击";
+    dic.webshell_eval = "网页后门";
+    dic.webshell_command = "网页后门";
+    dic.webshell_file_put_contents = "网页后门";
+    dic.webshell_callable = "网页后门";
     let p;
     let last_p;
     for (x in algorithm_config) {
