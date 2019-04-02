@@ -250,8 +250,13 @@ margin-right:32px;
 		opacity: 0;
 	}
 }
+.card .card-body table{
+    margin: 0;
+    border-radius: 0;
+}
 .card .card-body table,.card .card-body table a{
     font-size: 13px;
+
 }
 
 .layout > .close {
@@ -661,3 +666,15 @@ max-width: none;
 .loadmore{
     color: #1890ff;
 }
+#detailed_report_body .card{
+    margin: 0 2%;
+    width: 96%;
+}
+.card-body-title{
+    width: 100%;
+    background: #eee;
+    height: 45px;
+    padding: 8px 10px;
+    line-height: 29px;
+    font-size: 13px;
+    }

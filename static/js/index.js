@@ -926,15 +926,17 @@ $(document).on("click", ".detail-a", function () {
 
     var html = '<div class="card">';
     html += '<div class="card-body">';
+    //事件信息
+    html += '<div class = "card-body-title">事件信息</div>';
     html += '<table class="table table-bordered">';
-    //html += '<thead>';
-    //html += '<tr>';
+//    html += '<thead>';
+//    html += '<tr>';
     //html += '<th>名称</th>';
     //html += '<th>值</th>';
-    //html += '</tr>';
-    //html += '</thead>';
+//    html += '</tr>';
+//    html += '</thead>';
     html += '<tbody>';
-    //事件信息
+
     //html += '<tr><td>Agent编号</td><td>' + data['agent_id'] + '</td></tr>';
     html += '<tr><td>事件发生时间</td><td>' + data['event_time'] + '</td></tr>';
     html += '<tr><td>攻击事件编号</td><td>' + data['event_issue_id'] + '</td></tr>';
@@ -945,12 +947,16 @@ $(document).on("click", ".detail-a", function () {
     html += '<tr><td>事件可信度</td><td>' + data['plugin_confidence'] + '</td></tr>';
     html += '<tr><td>拦截状态</td><td>' + data['intercept_state'] + '</td></tr>';
     html += '<tr><td>风险等级</td><td>' + data['threat_level'] + '</td></tr>';
-
+    html += '</tbody>';
+    html += '</table>';
     // html += '<tr><td>事件类型</td><td>' + data['event_type'] + '</td></tr>';
     // html += '<tr><td>event_id</td><td>' + data['event_id'] + '</td></tr>';
     // html += '<tr><td>插件名称</td><td>' + data['plugin_name'] + '</td></tr>';
 
     //请求信息
+    html += '<div class = "card-body-title">请求信息</div>';
+    html += '<table class="table table-bordered">'
+    html += '<tbody>';
     html += '<tr><td>攻击源IP</td><td>' + data['attack_source'] + '</td></tr>';
     html += '<tr><td>被攻击域名</td><td>' + data['target'] + '</td></tr>';
     html += '<tr><td>被攻击IP</td><td>' + data['server_ip'] + '</td></tr>';
@@ -964,8 +970,12 @@ $(document).on("click", ".detail-a", function () {
     html += '<tr><td>被攻击PATH路径</td><td>' + data['path'] + '</td></tr>';
     html += '<tr><td>User-Agent</td><td>' + data['user_agent'] + '</td></tr>';
     html += '<tr><td>Referer</td><td>' + data['referer'] + '</td></tr>';
-
+    html += '</tbody>';
+    html +='</table>'
     //资产信息
+    html += '<div class = "card-body-title">资产信息</div>';
+    html += '<table class="table table-bordered">'
+    html += '<tbody>';
     html += '<tr><td>主机名称</td><td>' + data['server_hostname'] + '</td></tr>';
     html += '<tr><td>系统用户名</td><td>' + data['system_user'] + '</td></tr>';
     html += '<tr><td>进程路径</td><td>' + data['process_path'] + '</td></tr>';
