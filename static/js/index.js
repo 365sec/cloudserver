@@ -1389,12 +1389,12 @@ function get_attack_body(ip,attack_source)
                 </td>
                 <td style="width: 4%; position: relative; padding: 0px;"><div class="event_detail_attack_detail_table_split"></div><div class="event_detail_attack_detail_table_circle red"></div></td>
                 <td style="width: 50%;">
+                <div style="font-weight: bold;">
+                攻击次数：${data_list['all_num']}
+                </div>
                 <span class="attack_start">
                 攻击开始
                 </span>
-                <div>
-                攻击次数：${data_list['all_num']}
-                </div>
                 </td>
                 </tr>
                     `;

@@ -378,7 +378,7 @@ code {
 
 .text-legend-text .td-01 {
     text-align: right;
-    width: 25%;
+    width: 21%;
     padding: 0px;
     vertical-align: top;
 }
@@ -392,6 +392,7 @@ code {
 .text-legend-text .td-03 {
     text-align: left;
     width: 65%;
+    padding-right: 5%;
 }
 
 .text-legend-text .td-03 p {
@@ -530,6 +531,7 @@ word-break:break-all;
 word-wrap: break-word;
 vertical-align:middle;
 max-width:500px;
+min-width:4%;
 }
 .event_detail_attack_detail_table_span{
 cursor:pointer;
