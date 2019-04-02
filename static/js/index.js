@@ -1440,10 +1440,10 @@ var  times=0;
 
 function append_attack_body(ip,last,attack_source)
 {
-    let  temp_list=  append_attack_body_more(ip,last,attack_source);
-    let last_next=temp_list[0];
-    let html=temp_list[1];
-    let remian_next=temp_list[2];
+    //let  temp_list=  append_attack_body_more(ip,last,attack_source);
+    let last_next=10;
+    let html;
+    let remian_next=10;
 
     let loadflag=true;
     $("#attack_traceability_body").unbind("scroll").bind("scroll",function(){
