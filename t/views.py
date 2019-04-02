@@ -26,7 +26,7 @@ from t.models import plugins
 from t.models import users
 
 SENSOR_TYPE = {'10001':'Java Rasp探针','10002':'PHP Rasp探针', '20001':'IIS探针'}
-INTERCEPT_STATUS = {'block':'拦截', 'log':'记录'}
+INTERCEPT_STATUS = {'block':'拦截', 'log':'记录','ignore':'忽略'}
 THREAT_LEVEL = {0:'严重',1:'高危',2:'中危',3:'低危'}
 AGENT_ID = None
 
@@ -283,6 +283,9 @@ def attack_event_query(request):
     return HttpResponse(data, content_type='application/json')
 
 
+
+
+
 @auth
 def attack_query_source(request):
 
@@ -293,8 +296,11 @@ def attack_query_source(request):
     ip = request.POST.get("ip")
 
     attack_source=request.POST.get('attack_source')
+    print ("被攻击ip ")
     print (ip)
+    print ("攻击源ip ")
     print (attack_source)
+    print ("上次查询到 ")
     print (last)
 
 
@@ -321,8 +327,11 @@ def attack_query_source(request):
         last_next=num
     last_next=int(last_next)
     list_x_all=[]
-    print (last)
+
+
+    print ("本次查询到")
     print (last_next)
+    print ("总数")
     print (num)
     for x in result[last:last_next]:
         list_x=[]
@@ -343,7 +352,7 @@ def attack_query_source(request):
                 pass
         list_x.append(x[1])
         list_x.append(x[2].replace('<', '&lt').replace('>', '&gt'))
-        list_x.append(x[3])
+        list_x.append(INTERCEPT_STATUS.get(x[3], ''))
         list_x_all.append(list_x)
 
 

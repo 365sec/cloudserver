@@ -169,7 +169,7 @@ function query_attack_source() {
         //dataType: "json",
         success: function (data_list) {
             attack_source_charts(data_list['attrack_source_dic']);
-             chart_map(data_list['attack_source_map']);
+            chart_map(data_list['attack_source_map']);
         }
     });
 
@@ -405,9 +405,9 @@ function attrack_time_charts(data) {
             data: valueList,
             itemStyle : {
                 normal : {
-                color:'#fbcb14',
-                lineStyle:{
-                    color:'#fbcb14'
+                    color:'#fbcb14',
+                    lineStyle:{
+                        color:'#fbcb14'
                     }
                 }
             }
@@ -512,8 +512,8 @@ function chart_map(attack_source_data) {
             }
         },
         tooltip : {
-        trigger: 'item',
-        formatter: '{b}'
+            trigger: 'item',
+            formatter: '{b}'
         },
         grid:{
             left: '0',
@@ -521,7 +521,7 @@ function chart_map(attack_source_data) {
             right: '0',
             bottom: '0',
             containLabel: true
-                },
+        },
         // legend: {
         //     orient: 'vertical',
         //     y: 'bottom',
@@ -585,7 +585,7 @@ function chart_map(attack_source_data) {
         ]
     }
     myChart.setOption(option);
-    }
+}
 
 
 function attack_source_charts(data) {
@@ -913,14 +913,14 @@ $(document).on("click", ".detail-a", function () {
     html += '<tbody>';
     html += '<tr><td>event_issue_id</td><td>' + data['event_issue_id'] + '</td></tr>';
     html += '<tr><td>agent_id</td><td>' + data['agent_id'] + '</td></tr>';
-   // html += '<tr><td>事件类型</td><td>' + data['event_type'] + '</td></tr>';
+    // html += '<tr><td>事件类型</td><td>' + data['event_type'] + '</td></tr>';
     html += '<tr><td>事件发生时间</td><td>' + data['event_time'] + '</td></tr>';
     html += '<tr><td>服务器名称</td><td>' + data['server_hostname'] + '</td></tr>';
     // html += '<tr><td>event_id</td><td>' + data['event_id'] + '</td></tr>';
     html += '<tr><td>攻击类型</td><td>' + data['attack_type'] + '</td></tr>';
     html += '<tr><td>攻击参数</td><td>' + data['attack_params'] + '</td></tr>';
     html += '<tr><td>调用栈</td><td>' + data['stack_trace'] + '</td></tr>';
-   // html += '<tr><td>插件名称</td><td>' + data['plugin_name'] + '</td></tr>';
+    // html += '<tr><td>插件名称</td><td>' + data['plugin_name'] + '</td></tr>';
     html += '<tr><td>插件消息</td><td>' + data['plugin_message'] + '</td></tr>';
     html += '<tr><td>插件置信度</td><td>' + data['plugin_confidence'] + '</td></tr>';
     html += '<tr><td>是否拦截 block或log</td><td>' + data['intercept_state'] + '</td></tr>';
@@ -949,9 +949,9 @@ $(document).on("click", ".detail-a", function () {
 
     $("#detailed_report_body").text("").append(html);
     // $("#ioc_body").text("").append(ioc_html);
-   //  $("#attack_body").text("").append(attack_body_html);
+    //  $("#attack_body").text("").append(attack_body_html);
 
-     //$("#attack_body").text("");
+    //$("#attack_body").text("");
     $(".myModalLabel").text("攻击事件");
     $("#myModal").modal("show");
 
@@ -981,8 +981,8 @@ function get_iochtml(data)
             obj_code=code['realpath'];
             break;
         case 'fileUpload':
-           obj_title="脚本文件上传";
-           obj_code=code['filename'];
+            obj_title="脚本文件上传";
+            obj_code=code['filename'];
             break;
         case 'ognl':
             obj_title="OGNL表达式";
@@ -997,8 +997,8 @@ function get_iochtml(data)
             obj_code="";
             break;
         case 'request_body':
-           // obj_title="";
-           // obj_code="";
+            // obj_title="";
+            // obj_code="";
             break;
         case 'sql':
             obj_title="SQL语句";
@@ -1178,7 +1178,7 @@ function get_iochtml(data)
         $("#ioc_body_stage2").text("");
     }
 
-else {
+    else {
 
         iochtml = `                            <table class="legend-table01" style="width: 70%;">
                                 <tbody>
@@ -1354,7 +1354,7 @@ else {
                                 </tr>
                             </tbody>
                             </table>`
-     ;
+        ;
         $("#ioc_body_stage1").text("");
         $("#ioc_body_stage2").text("").append(iochtml);
 
@@ -1383,7 +1383,7 @@ function get_attack_body(ip,attack_source)
         success: function (data_list) {
 
             console.log(data_list);
-             temp_html+=` <tr>
+            temp_html+=` <tr>
                 <td style="width: 10%; text-align: right;">
                 <br>
                 </td>
@@ -1392,6 +1392,9 @@ function get_attack_body(ip,attack_source)
                 <span class="attack_start">
                 攻击开始
                 </span>
+                <div>
+                攻击次数：${data_list['all_num']}
+                </div>
                 </td>
                 </tr>
                     `;
@@ -1411,85 +1414,71 @@ function get_attack_body(ip,attack_source)
                             <span class="ipAddr">（${temp_data[1]}）</span>
                             ${temp_data[3]}
                             &nbsp;<span class="span_gray">${temp_data[4]}  </span>
-                            <span class="event_log_detail" id="1664393756_2018-05-23">&gt;&gt;详情</span>
+                            <!--<span class="event_log_detail" id="1664393756_2018-05-23">&gt;&gt;详情</span>-->
                         </td>
                     </tr>`;
             }
-            $("#remain_num").text("").append(data_list['all_num']- data_list["remain"]+"/"+ data_list['all_num']);
-//             let loadflag=true;
-//             $("#attack_traceability_body").on("scroll",function(){
-//             let windowHeight = $("#attack_traceability_body").height();//当前窗口的高度
-//             let scrollTop = $("#attack_traceability_body").scrollTop();//当前滚动条从上往下滚动的距离
-//             let docHeight = $("#event_detail_attack_detail_table").height(); //当前文档的高度
-// //            console.log(windowHeight+scrollTop,docHeight);
-//              $("#remain_num").text("").append(data_list['all_num']- data_list["remain"]+"/"+ data_list['all_num']);
-//             if (scrollTop + windowHeight >= docHeight ) {
-//                 if(loadflag === false){
-//                     more_html = "";
-//                 }else{
-//                     append_attack_body(ip,data_list["last_next"],data_list["remain"],attack_source);
-//                     loadflag = false;
-//                 }
-//             }
-//             });
+           // $("#remain_num").text("").append(data_list['all_num']- data_list["remain"]+"/"+ data_list['all_num']);
 
+            console.log("第一次查询结果 remain剩余",data_list["remain"]);
             $("#attack_body").text("").append(temp_html);
-            append_attack_body(ip,data_list['last_next'],attack_source);
 
 
-
+            if (data_list["remain"] !== 0) {
+                append_attack_body(ip, data_list['last_next'], attack_source);
+            }
+            else {
+                append_attack_body_end()
+            }
 
         }});
 
 
     //return temp_html;
 }
+var  times=0;
+
 function append_attack_body(ip,last,attack_source)
 {
-            let  temp_list=  append_attack_body_more(ip,last,attack_source);
-            let last_next=temp_list[0];
-            let html=temp_list[1];
-            let remian_next=temp_list[2];
+    let  temp_list=  append_attack_body_more(ip,last,attack_source);
+    let last_next=temp_list[0];
+    let html=temp_list[1];
+    let remian_next=temp_list[2];
 
-            let loadflag=true;
-             $("#attack_traceability_body").on("scroll",function(){
-             let windowHeight = $("#attack_traceability_body").height();//当前窗口的高度
-             let scrollTop = $("#attack_traceability_body").scrollTop();//当前滚动条从上往下滚动的距离
-             let docHeight = $("#event_detail_attack_detail_table").height(); //当前文档的高度
-             console.log(windowHeight,scrollTop,windowHeight+scrollTop,docHeight);
-              if(windowHeight > docHeight && loadflag){
-                 append_attack_body_end();
-                 loadflag=false;
-                 return;
-              }
-             if (scrollTop + windowHeight >= docHeight && loadflag) {
-                if (remian_next >=0) {
-                    temp_list = append_attack_body_more(ip, last_next, attack_source);
-                    remian_next = temp_list[2];
-                    last_next = temp_list[0];
-                    html = temp_list[1];
-                    $("#attack_body").append(html);
-                    $("#remain_num").text("").append(remian_next);
-                }
-                if ( remian_next ===0) {
-                    append_attack_body_end();
-                    $("#remain_num").text("").append(remian_next);
-                    remian_next=-1;
-                    loadflag=false;
-                }
-                }
-
-            });
+    let loadflag=true;
+    $("#attack_traceability_body").unbind("scroll").bind("scroll",function(){
 
 
+        let windowHeight = $("#attack_traceability_body").height();//当前窗口的高度
+        let scrollTop = $("#attack_traceability_body").scrollTop();//当前滚动条从上往下滚动的距离
+        let docHeight = $("#event_detail_attack_detail_table").height(); //当前文档的高度
+        //console.log(windowHeight,scrollTop,windowHeight+scrollTop,docHeight);
+        if(windowHeight > docHeight && loadflag){
+            append_attack_body_end();
+            loadflag=false;
+        }
+        if (scrollTop + windowHeight >= docHeight && loadflag) {
+            if (remian_next >=0) {
 
+                temp_list = append_attack_body_more(ip, last_next, attack_source);
+                remian_next = temp_list[2];
+                last_next = temp_list[0];
+                html = temp_list[1];
+                $("#attack_body").append(html);
+                //$("#remain_num").text("").append(remian_next);
+            }
+            if ( remian_next ===0) {
+                append_attack_body_end();
+                //$("#remain_num").text("").append(remian_next);
+                remian_next=-1;
+                loadflag=false;
+            }
+        }
 
+    });
 
 }
 function append_attack_body_more(ip,last,attack_source) {
-
-    console.log("第n次加载 append_attack_body");
-    console.log(ip,"---",attack_source);
 
     let parm={};
     parm['ip']=ip;
@@ -1502,7 +1491,6 @@ function append_attack_body_more(ip,last,attack_source) {
     let remain_num=0;
     let last_nenxt;
     let ramain;
-
 
     $.ajax({
         url: "attack/query_source/",
@@ -1526,7 +1514,7 @@ function append_attack_body_more(ip,last,attack_source) {
                             <span class="ipAddr">（${temp_data[1]}）</span>
                             ${temp_data[3]}
                             &nbsp;<span class="span_gray">${temp_data[4]}  </span>
-                            <span class="event_log_detail" id="1664393756_2018-05-23">&gt;&gt;详情</span>
+                            <!--<span class="event_log_detail" id="1664393756_2018-05-23">&gt;&gt;详情</span>-->
                         </td>
                     </tr>`;
             }
