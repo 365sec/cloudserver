@@ -418,7 +418,7 @@ function attrack_time_charts(data) {
 }
 
 function attack_threat_level_charts(data) {
-    console.log(data)
+    // console.log(data)
     let mycharts_source = echarts.init(document.getElementById('attrack_threat_level_dic_div'));
 
     option = {
@@ -900,7 +900,7 @@ $(document).on("click", ".detail-a", function () {
 
 
     let attack_body_html=get_attack_body(data['server_ip'],data['attack_source']);
-//    console.log(attack_body_html);
+
     var html = '<div class="card">';
     html += '<div class="card-body">';
     html += '<table class="table table-bordered">';
@@ -949,7 +949,7 @@ $(document).on("click", ".detail-a", function () {
 
     $("#detailed_report_body").text("").append(html);
     // $("#ioc_body").text("").append(ioc_html);
-     $("#attack_body").text("").append(attack_body_html);
+   //  $("#attack_body").text("").append(attack_body_html);
 
      //$("#attack_body").text("");
     $(".myModalLabel").text("攻击事件");
@@ -1367,6 +1367,7 @@ else {
 function get_attack_body(ip,attack_source)
 {
     console.log("第一次加载 get_attack_body");
+    console.log(ip,"---",attack_source);
     let parm={};
     parm['ip']=ip;
     parm['last']=0;
@@ -1414,30 +1415,59 @@ function get_attack_body(ip,attack_source)
                         </td>
                     </tr>`;
             }
-            let loadflag=true;
-            $("#attack_traceability_body").on("scroll",function(){
-            let windowHeight = $("#attack_traceability_body").height();//当前窗口的高度
-            let scrollTop = $("#attack_traceability_body").scrollTop();//当前滚动条从上往下滚动的距离
-            let docHeight = $("#event_detail_attack_detail_table").height(); //当前文档的高度
-//            console.log(windowHeight+scrollTop,docHeight);
-             $("#remain_num").text("").append(data_list['all_num']- data_list["remain"]+"/"+ data_list['all_num']);
-            if (scrollTop + windowHeight >= docHeight ) {
-                if(loadflag === false){
-                    more_html = "";
-                }else{
-                    append_attack_body(ip,data_list["last_next"],data_list["remain"],attack_source);
-                    loadflag = false;
-                }
-            }
-            });
+//             let loadflag=true;
+//             $("#attack_traceability_body").on("scroll",function(){
+//             let windowHeight = $("#attack_traceability_body").height();//当前窗口的高度
+//             let scrollTop = $("#attack_traceability_body").scrollTop();//当前滚动条从上往下滚动的距离
+//             let docHeight = $("#event_detail_attack_detail_table").height(); //当前文档的高度
+// //            console.log(windowHeight+scrollTop,docHeight);
+//              $("#remain_num").text("").append(data_list['all_num']- data_list["remain"]+"/"+ data_list['all_num']);
+//             if (scrollTop + windowHeight >= docHeight ) {
+//                 if(loadflag === false){
+//                     more_html = "";
+//                 }else{
+//                     append_attack_body(ip,data_list["last_next"],data_list["remain"],attack_source);
+//                     loadflag = false;
+//                 }
+//             }
+//             });
+
+            $("#attack_body").text("").append(temp_html);
+            append_attack_body(ip,data_list['last_next'],attack_source)
+
+
+
         }});
 
 
-    return temp_html;
+    //return temp_html;
 }
-function append_attack_body(ip,last,remain,attack_source)
+function append_attack_body(ip,last,attack_source)
 {
+            let  temp_list=  append_attack_body_more(ip,last,attack_source);
+            let last_next=temp_list[0];
+            let html=temp_list[1];
+            let remian_next=temp_list[2];
+            $("#attack_traceability_body").on("scroll",function(){
+                if (remian_next > 10) {
+                    temp_list=  append_attack_body_more(ip,last_next,attack_source);
+                    remian_next=temp_list[2];
+                    last_next=temp_list[0];
+                    html=temp_list[1];
+
+                    $("#attack_body").append(html);
+                }
+            });
+
+
+
+        append_attack_body_end();
+
+}
+function append_attack_body_more(ip,last,attack_source) {
+
     console.log("第n次加载 append_attack_body");
+    console.log(ip,"---",attack_source);
 
     let parm={};
     parm['ip']=ip;
@@ -1448,16 +1478,16 @@ function append_attack_body(ip,last,remain,attack_source)
     let more_html = `` ;
     //剩未查询的数量
     let remain_num=0;
-    console.log(remain);
+    let last_nenxt;
+    let ramain;
+
 
     $.ajax({
         url: "attack/query_source/",
         type: 'POST',
         data: parm,
         async: false,
-        //dataType: "json",
         success: function (data_list) {
-//            console.log(data_list);
 
             for( x in data_list['list'])
             {
@@ -1478,41 +1508,12 @@ function append_attack_body(ip,last,remain,attack_source)
                         </td>
                     </tr>`;
             }
-            let loadflag=true;
-            $("#attack_traceability_body").on("scroll",function(){
-                let windowHeight = $("#attack_traceability_body").height();//当前窗口的高度
-                let scrollTop = $("#attack_traceability_body").scrollTop();//当前滚动条从上往下滚动的距离
-                let docHeight = $("#event_detail_attack_detail_table").height(); //当前文档的高度
-//            console.log(windowHeight+scrollTop,docHeight);
-                $("#remain_num").text("").append(data_list['all_num']- data_list["remain"]+"/"+ data_list['all_num']);
-
-
-            if (scrollTop + windowHeight >= docHeight && remain > 10) {
-                if(loadflag === false){
-                    more_html = "";
-                }else{
-                    append_attack_body(ip,data_list["last_next"],data_list["remain"],attack_source);
-                    loadflag = false;
-                }
-            }
-            });
+            last_nenxt=data_list['last_next'];
+            ramain = data_list['remain'];
 
         }});
 
-    $("#attack_body").append(temp_html);
-
-
-
-    if (remain <= 10) {
-        $("#attack_more_a").remove();
-        append_attack_body_more()
-    }
-
-
-}
-function append_attack_body_more() {
-
-    append_attack_body_end()
+    return [last_nenxt,temp_html,ramain]
 }
 function append_attack_body_end()
 {
