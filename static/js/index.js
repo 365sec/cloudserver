@@ -268,16 +268,23 @@ function attrack_recent_warning(data) {
                 `;
     recent_div.append(html);
 }
-
+var mycharts_attrack_type_times;
+var mycharts_attrack_time;
+var mycharts_attack_threat_level;
+var mycharts__map;
+var mycharts_attack_source;
 function attrack_type_times(data) {
 
     /*
     * 攻击类型 次数*/
     let data_list_type = [];
     let data_list_type_dic = [];
+    if(mycharts_attrack_type_times != null && mycharts_attrack_type_times != "" && mycharts_attrack_type_times != undefined){
+        mycharts_attrack_type_times.dispose();
+    }
 
 
-    let mycharts_source = echarts.init(document.getElementById('attack_type_dic_div'));
+    mycharts_attrack_type_times = echarts.init(document.getElementById('attack_type_dic_div'));
     data = data.reverse();
     for (x in data) {
 
@@ -336,16 +343,20 @@ function attrack_type_times(data) {
         ]
     };
 
-    mycharts_source.setOption(option)
+    mycharts_attrack_type_times.setOption(option)
 
 
 }
-
 function attrack_time_charts(data) {
     /*
     * 近期攻击时间  每个时间被攻击的次数*/
     data.reverse();
-    let mycharts_source = echarts.init(document.getElementById('attrack_time_dic_div'));
+    if(mycharts_attrack_time != null
+    && mycharts_attrack_time != ""
+    && mycharts_attrack_time != undefined){
+        mycharts_attrack_time.dispose();
+    }
+    mycharts_attrack_time = echarts.init(document.getElementById('attrack_time_dic_div'));
 
     var dateList = data.map(function (item) {
         return item[0];
@@ -414,12 +425,16 @@ function attrack_time_charts(data) {
         }]
     };
 
-    mycharts_source.setOption(option)
+    mycharts_attrack_time.setOption(option)
 }
-
 function attack_threat_level_charts(data) {
     // console.log(data)
-    let mycharts_source = echarts.init(document.getElementById('attrack_threat_level_dic_div'));
+    if(mycharts_attack_threat_level != null
+    && mycharts_attack_threat_level != ""
+    && mycharts_attack_threat_level != undefined){
+        mycharts_attack_threat_level.dispose();
+    }
+    mycharts_attack_threat_level = echarts.init(document.getElementById('attrack_threat_level_dic_div'));
 
     option = {
         series: [{
@@ -481,11 +496,16 @@ function attack_threat_level_charts(data) {
         backgroundColor: '#fff'
     };
 
-    mycharts_source.setOption(option)
+    mycharts_attack_threat_level.setOption(option)
 }
 var map_flag = 1;
 function chart_map(attack_source_data) {
-    var myChart = echarts.init(document.getElementById('chart_map'));
+    if(mycharts__map != null
+    && mycharts__map != ""
+    && mycharts__map != undefined){
+        mycharts__map.dispose();
+    }
+    mycharts__map = echarts.init(document.getElementById('chart_map'));
     if  (map_flag == 1)
         geo_map = "china"
     else
@@ -584,15 +604,19 @@ function chart_map(attack_source_data) {
             }
         ]
     }
-    myChart.setOption(option);
+    mycharts__map.setOption(option);
 }
 
 
 function attack_source_charts(data) {
     /*
     * ip攻击源*/
-
-    let mycharts_source = echarts.init(document.getElementById('attrack_source_dic_div'));
+    if(mycharts_attack_source != null
+    && mycharts_attack_source != ""
+    && mycharts_attack_source != undefined){
+        mycharts_attack_source.dispose();
+    }
+    mycharts_attack_source = echarts.init(document.getElementById('attrack_source_dic_div'));
     let data_list_source = [];
     let data_list_source_dic = [];
     data = data.reverse();
@@ -653,7 +677,7 @@ function attack_source_charts(data) {
         ]
     };
 
-    mycharts_source.setOption(option)
+    mycharts_attack_source.setOption(option)
 }
 
 function download_click(attack_page) {
