@@ -58,9 +58,9 @@ function agent_click(page) {
                 html += '<td>' + data[x]['language'] + '</td>';
                 html += '<td>' + data[x]['server_type'] + '</td>';
                 html += '<td>' + data[x]['server_version'] + '</td>';
-                if(data[x]['online'] == '在线'){
+                if (data[x]['online'] == '在线') {
                     html += '<td><img src = "/static/images/online.png" style="width: 12px;">' + data[x]['online'] + '</td>';
-                }else{
+                } else {
                     html += '<td><img src = "/static/images/offline.png" style="width: 12px;">' + data[x]['online'] + '</td>';
                 }
 
@@ -91,7 +91,7 @@ function agent_click(page) {
         }
     });
     $(".agentDiv").show().siblings().hide();
-    $(".container1").css('background-color','#f0f2f5');
+    $(".container1").css('background-color', '#f0f2f5');
 }
 
 function agent_jump() {
@@ -132,17 +132,17 @@ function overview_click() {
     overviewFlash();
 
     $(".overviewDiv").show().siblings().hide();
-    $(".container1").css('background-color','#fff');
+    $(".container1").css('background-color', '#fff');
 }
 
-function overviewFlash()
-{
+function overviewFlash() {
     query_threat_level();
     query_attack_source();
     query_attack_times();
     query_attack_type();
     query_attack_warn();
 }
+
 //overviewQuery
 function query_threat_level() {
     $.ajax({
@@ -268,18 +268,20 @@ function attrack_recent_warning(data) {
                 `;
     recent_div.append(html);
 }
+
 var mycharts_attrack_type_times;
 var mycharts_attrack_time;
 var mycharts_attack_threat_level;
 var mycharts__map;
 var mycharts_attack_source;
+
 function attrack_type_times(data) {
 
     /*
     * 攻击类型 次数*/
     let data_list_type = [];
     let data_list_type_dic = [];
-    if(mycharts_attrack_type_times != null && mycharts_attrack_type_times != "" && mycharts_attrack_type_times != undefined){
+    if (mycharts_attrack_type_times != null && mycharts_attrack_type_times != "" && mycharts_attrack_type_times != undefined) {
         mycharts_attrack_type_times.dispose();
     }
 
@@ -347,13 +349,14 @@ function attrack_type_times(data) {
 
 
 }
+
 function attrack_time_charts(data) {
     /*
     * 近期攻击时间  每个时间被攻击的次数*/
     data.reverse();
-    if(mycharts_attrack_time != null
-    && mycharts_attrack_time != ""
-    && mycharts_attrack_time != undefined){
+    if (mycharts_attrack_time != null
+        && mycharts_attrack_time != ""
+        && mycharts_attrack_time != undefined) {
         mycharts_attrack_time.dispose();
     }
     mycharts_attrack_time = echarts.init(document.getElementById('attrack_time_dic_div'));
@@ -414,11 +417,11 @@ function attrack_time_charts(data) {
             showSymbol: false,
             name: "事件",
             data: valueList,
-            itemStyle : {
-                normal : {
-                    color:'#fbcb14',
-                    lineStyle:{
-                        color:'#fbcb14'
+            itemStyle: {
+                normal: {
+                    color: '#fbcb14',
+                    lineStyle: {
+                        color: '#fbcb14'
                     }
                 }
             }
@@ -427,11 +430,12 @@ function attrack_time_charts(data) {
 
     mycharts_attrack_time.setOption(option)
 }
+
 function attack_threat_level_charts(data) {
     // console.log(data)
-    if(mycharts_attack_threat_level != null
-    && mycharts_attack_threat_level != ""
-    && mycharts_attack_threat_level != undefined){
+    if (mycharts_attack_threat_level != null
+        && mycharts_attack_threat_level != ""
+        && mycharts_attack_threat_level != undefined) {
         mycharts_attack_threat_level.dispose();
     }
     mycharts_attack_threat_level = echarts.init(document.getElementById('attrack_threat_level_dic_div'));
@@ -463,7 +467,7 @@ function attack_threat_level_charts(data) {
                     }
                 }
             },
-            grid:{
+            grid: {
                 left: '0',
                 top: '0',
                 right: '0',
@@ -471,9 +475,9 @@ function attack_threat_level_charts(data) {
                 containLabel: true
             },
             labelLine: {
-                normal:{
+                normal: {
                     show: true,
-                    length:20,
+                    length: 20,
                     length2: 10
                 }
             },
@@ -498,22 +502,24 @@ function attack_threat_level_charts(data) {
 
     mycharts_attack_threat_level.setOption(option)
 }
+
 var map_flag = 1;
+
 function chart_map(attack_source_data) {
-    if(mycharts__map != null
-    && mycharts__map != ""
-    && mycharts__map != undefined){
+    if (mycharts__map != null
+        && mycharts__map != ""
+        && mycharts__map != undefined) {
         mycharts__map.dispose();
     }
     mycharts__map = echarts.init(document.getElementById('chart_map'));
-    if  (map_flag == 1)
+    if (map_flag == 1)
         geo_map = "china"
     else
         geo_map = "world"
 
     var convertData = function (data) {
         var res = [];
-        for (var ip in data){
+        for (var ip in data) {
             res.push({
                 name: ip,
                 value: data[ip]
@@ -526,16 +532,16 @@ function chart_map(attack_source_data) {
         backgroundColor: '#fff',
         title: {
             text: '',
-            x:'center',
+            x: 'center',
             textStyle: {
                 color: '#fff'
             }
         },
-        tooltip : {
+        tooltip: {
             trigger: 'item',
             formatter: '{b}'
         },
-        grid:{
+        grid: {
             left: '0',
             top: '0',
             right: '0',
@@ -611,9 +617,9 @@ function chart_map(attack_source_data) {
 function attack_source_charts(data) {
     /*
     * ip攻击源*/
-    if(mycharts_attack_source != null
-    && mycharts_attack_source != ""
-    && mycharts_attack_source != undefined){
+    if (mycharts_attack_source != null
+        && mycharts_attack_source != ""
+        && mycharts_attack_source != undefined) {
         mycharts_attack_source.dispose();
     }
     mycharts_attack_source = echarts.init(document.getElementById('attrack_source_dic_div'));
@@ -690,7 +696,7 @@ function download_click(attack_page) {
     $(".javaDiv").hide();
     $(".IISDiv").hide();
     let html = ``;
-    $(".container1").css('background-color','#fff');
+    $(".container1").css('background-color', '#fff');
 }
 
 function java_click() {
@@ -808,7 +814,6 @@ function attack_click(attack_page) {
             html_select += '<input id="attack_msg" value="' + attack_msg + '" />';
 
 
-
             //html_select+='<a href="javascript:void(0);" onclick="attack_click(1)" >查询<a/>';
             html_select += '<button  class="btn" onclick="attack_click(1)" >查询</button>';
             html_select += '<button  class="btn" onclick="reset()" >重置</button>';
@@ -879,7 +884,7 @@ function attack_click(attack_page) {
             div_container.append(html);
             $("#attack_type_select").val(attack_type);
             $("#attack_level_select").val(attack_level);
-            $(".container1").css('background-color','#f0f2f5');
+            $(".container1").css('background-color', '#f0f2f5');
         }
     });
 
@@ -915,7 +920,7 @@ $(document).on("change", "select#attack_level_select", function () {
 
 
 $(document).on("click", ".detail-a", function () {
-    let model_html=`
+    let model_html = `
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
              aria-hidden="true">
             <div class="modal-dialog">
@@ -979,9 +984,9 @@ $(document).on("click", ".detail-a", function () {
     let b = new Base64();
     let data = JSON.parse(b.decode(data1));
 
-    let ioc_html=get_iochtml(data);
+    let ioc_html = get_iochtml(data);
 
-    let attack_body_html=get_attack_body(data['server_ip'],data['attack_source']);
+    let attack_body_html = get_attack_body(data['server_ip'], data['attack_source']);
 
     var html = '<div class="card">';
     html += '<div class="card-body">';
@@ -1030,7 +1035,7 @@ $(document).on("click", ".detail-a", function () {
     html += '<tr><td>User-Agent</td><td>' + data['user_agent'] + '</td></tr>';
     html += '<tr><td>Referer</td><td>' + data['referer'] + '</td></tr>';
     html += '</tbody>';
-    html +='</table>';
+    html += '</table>';
     //资产信息
     html += '<div class = "card-body-title">资产信息</div>';
     html += '<table class="table table-bordered">';
@@ -1044,7 +1049,6 @@ $(document).on("click", ".detail-a", function () {
     html += '<div>';
 
 
-
     $("#detailed_report_body").text("").append(html);
     // $("#ioc_body").text("").append(ioc_html);
     //  $("#attack_body").text("").append(attack_body_html);
@@ -1054,94 +1058,93 @@ $(document).on("click", ".detail-a", function () {
     $("#myModal").modal("show");
 
 });
-function get_iochtml(data)
-{
+
+function get_iochtml(data) {
 
     console.log(data);
-    let attack_type=data['attack_type1'];
-    let obj_title='';
-    let obj_code='';
-    let code=JSON.parse(data['attack_params']);
-    let db_server='';
+    let attack_type = data['attack_type1'];
+    let obj_title = '';
+    let obj_code = '';
+    let code = JSON.parse(data['attack_params']);
+    let db_server = '';
     console.log(attack_type);
 
     switch (attack_type) {
         case 'command':
-            obj_title="执行命令";
-            obj_code=code['command'];
+            obj_title = "执行命令";
+            obj_code = code['command'];
             break;
         case 'deserialization':
-            obj_title="反序列化类";
-            obj_code=code['clazz'];
+            obj_title = "反序列化类";
+            obj_code = code['clazz'];
             break;
         case 'directory':
-            obj_title="访问目录";
-            obj_code=code['realpath'];
+            obj_title = "访问目录";
+            obj_code = code['realpath'];
             break;
         case 'fileUpload':
-            obj_title="脚本文件上传";
-            obj_code=code['filename'];
+            obj_title = "脚本文件上传";
+            obj_code = code['filename'];
             break;
         case 'ognl':
-            obj_title="OGNL表达式";
-            obj_code=code['expression'];
+            obj_title = "OGNL表达式";
+            obj_code = code['expression'];
             break;
         case 'readFile':
-            obj_title="读取文件";
-            obj_code=code['realpath'];
+            obj_title = "读取文件";
+            obj_code = code['realpath'];
             break;
         case 'request':
-            obj_title="";
-            obj_code="";
+            obj_title = "";
+            obj_code = "";
             break;
         case 'request_body':
             // obj_title="";
             // obj_code="";
             break;
         case 'sql':
-            obj_title="SQL语句";
-            obj_code=code['query']
+            obj_title = "SQL语句";
+            obj_code = code['query']
             break;
         case 'sqlSlowQuery':
-            obj_title="查询条数";
-            obj_code=code['query_count'];
+            obj_title = "查询条数";
+            obj_code = code['query_count'];
             break;
 
         case 'ssrf':
-            obj_title="访问URL";
-            obj_code=code['url'];
+            obj_title = "访问URL";
+            obj_code = code['url'];
             break;
         case 'webshell_command':
-            obj_title="执行命令";
-            obj_code=code['command'];
+            obj_title = "执行命令";
+            obj_code = code['command'];
             break;
         case 'webshell_eval':
-            obj_title="执行php代码";
+            obj_title = "执行php代码";
 
             if (code.hasOwnProperty('eval')) {
-                obj_code='eval('+code['eval']+')';
+                obj_code = 'eval(' + code['eval'] + ')';
             }
             if (code.hasOwnProperty('assert')) {
-                obj_code='assert('+code['assert']+')';
+                obj_code = 'assert(' + code['assert'] + ')';
             }
             break;
         case 'writeFile':
-            obj_title="上传文件";
-            obj_code=code['realpath'];
+            obj_title = "上传文件";
+            obj_code = code['realpath'];
             break;
         case 'xxe':
-            obj_title="注入实体";
-            obj_code=code['entity'];
+            obj_title = "注入实体";
+            obj_code = code['entity'];
             break;
         default:
             break;
     }
-    let iochtml="";
+    let iochtml = "";
 
 
-    if (attack_type==='request')
-    {
-        iochtml=`
+    if (attack_type === 'request'||attack_type==='request_body' ) {
+        iochtml = `
         <table class="legend-table01" style="width: 70%;">
                                 <tbody>
                                 <tr>
@@ -1457,16 +1460,14 @@ function get_iochtml(data)
 }
 
 
-
-function get_attack_body(ip,attack_source)
-{
+function get_attack_body(ip, attack_source) {
     console.log("第一次加载 get_attack_body");
-    console.log(ip,"---",attack_source);
-    let parm={};
-    parm['ip']=ip;
-    parm['last']=0;
-    parm['attack_source']=attack_source;
-    let temp_html=``;
+    console.log(ip, "---", attack_source);
+    let parm = {};
+    parm['ip'] = ip;
+    parm['last'] = 0;
+    parm['attack_source'] = attack_source;
+    let temp_html = ``;
 
     $.ajax({
         url: "attack/query_source/",
@@ -1477,7 +1478,7 @@ function get_attack_body(ip,attack_source)
         success: function (data_list) {
             console.log($(document).scrollTop());
             console.log(data_list);
-            temp_html+=` <tr>
+            temp_html += ` <tr>
                 <td style="width: 10%; text-align: right;">
                 <br>
                 </td>
@@ -1493,10 +1494,9 @@ function get_attack_body(ip,attack_source)
                 </tr>
                     `;
 
-            for( x in data_list['list'])
-            {
-                let temp_data=data_list['list'][x];
-                temp_html+=`
+            for (x in data_list['list']) {
+                let temp_data = data_list['list'][x];
+                temp_html += `
                     <tr>
                         <td style="width: 10%; text-align: right;">${temp_data[0].split(" ")[0]}<br>${temp_data[0].split(" ")[1]}</td>
                         <td style="width: 4%; position: relative; padding: 0px;">
@@ -1512,9 +1512,9 @@ function get_attack_body(ip,attack_source)
                         </td>
                     </tr>`;
             }
-           // $("#remain_num").text("").append(data_list['all_num']- data_list["remain"]+"/"+ data_list['all_num']);
+            // $("#remain_num").text("").append(data_list['all_num']- data_list["remain"]+"/"+ data_list['all_num']);
 
-            console.log("第一次查询结果 remain剩余",data_list["remain"]);
+            console.log("第一次查询结果 remain剩余", data_list["remain"]);
             $("#attack_body").text("").append(temp_html);
 
 
@@ -1525,34 +1525,35 @@ function get_attack_body(ip,attack_source)
                 append_attack_body_end()
             }
 
-        }});
+        }
+    });
 
 
     //return temp_html;
 }
-var  times=0;
 
-function append_attack_body(ip,last,attack_source)
-{
+var times = 0;
+
+function append_attack_body(ip, last, attack_source) {
     //let  temp_list=  append_attack_body_more(ip,last,attack_source);
-    let last_next=10;
+    let last_next = 10;
     let html;
-    let remian_next=10;
+    let remian_next = 10;
 
-    let loadflag=true;
-    $("#attack_traceability_body").unbind("scroll").bind("scroll",function(){
+    let loadflag = true;
+    $("#attack_traceability_body").unbind("scroll").bind("scroll", function () {
 
 
         let windowHeight = $("#attack_traceability_body").height();//当前窗口的高度
         let scrollTop = $("#attack_traceability_body").scrollTop();//当前滚动条从上往下滚动的距离
         let docHeight = $("#event_detail_attack_detail_table").height(); //当前文档的高度
         //console.log(windowHeight,scrollTop,windowHeight+scrollTop,docHeight);
-        if(windowHeight > docHeight && loadflag){
+        if (windowHeight > docHeight && loadflag) {
             append_attack_body_end();
-            loadflag=false;
+            loadflag = false;
         }
         if (scrollTop + windowHeight >= docHeight && loadflag) {
-            if (remian_next >=0) {
+            if (remian_next >= 0) {
 
                 temp_list = append_attack_body_more(ip, last_next, attack_source);
                 remian_next = temp_list[2];
@@ -1561,28 +1562,29 @@ function append_attack_body(ip,last,attack_source)
                 $("#attack_body").append(html);
                 //$("#remain_num").text("").append(remian_next);
             }
-            if ( remian_next ===0) {
+            if (remian_next === 0) {
                 append_attack_body_end();
                 //$("#remain_num").text("").append(remian_next);
-                remian_next=-1;
-                loadflag=false;
+                remian_next = -1;
+                loadflag = false;
             }
         }
 
     });
 
 }
-function append_attack_body_more(ip,last,attack_source) {
 
-    let parm={};
-    parm['ip']=ip;
-    parm['last']=last;
-    parm['attack_source']=attack_source;
+function append_attack_body_more(ip, last, attack_source) {
+
+    let parm = {};
+    parm['ip'] = ip;
+    parm['last'] = last;
+    parm['attack_source'] = attack_source;
     console.log(parm);
-    let temp_html=``;
-    let more_html = `` ;
+    let temp_html = ``;
+    let more_html = ``;
     //剩未查询的数量
-    let remain_num=0;
+    let remain_num = 0;
     let last_nenxt;
     let ramain;
 
@@ -1593,10 +1595,9 @@ function append_attack_body_more(ip,last,attack_source) {
         async: false,
         success: function (data_list) {
 
-            for( x in data_list['list'])
-            {
-                let temp_data=data_list['list'][x];
-                temp_html+=`
+            for (x in data_list['list']) {
+                let temp_data = data_list['list'][x];
+                temp_html += `
                     <tr>
                         <td style="width: 10%; text-align: right;">${temp_data[0].split(" ")[0]}<br>${temp_data[0].split(" ")[1]}</td>
                         <td style="width: 4%; position: relative; padding: 0px;">
@@ -1612,16 +1613,17 @@ function append_attack_body_more(ip,last,attack_source) {
                         </td>
                     </tr>`;
             }
-            last_nenxt=data_list['last_next'];
+            last_nenxt = data_list['last_next'];
             ramain = data_list['remain'];
 
-        }});
+        }
+    });
 
-    return [last_nenxt,temp_html,ramain]
+    return [last_nenxt, temp_html, ramain]
 }
-function append_attack_body_end()
-{
-    let html=` <tr>
+
+function append_attack_body_end() {
+    let html = ` <tr>
                 <td style="width: 10%; text-align: right;">
                 <br>
                 </td>
@@ -1635,7 +1637,89 @@ function append_attack_body_end()
     $("#attack_body").append(html)
 
 }
+
 $(document).on("click", ".detail-a-agent", function () {
+    let model_html = `
+    <div class="modal fade" id="setting" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                </button>
+                <h4 class="modal-title myModalLabel">
+                    agent配置
+                </h4>
+            </div>
+            <div class="modal-body">
+
+                <div id="host_msg">
+                    <!--<h3>主机信息</h3>-->
+                    <div id="host_msg_div" >
+
+                    </div>
+
+                </div>
+                <ul class="nav nav-tabs myTab">
+                    <li class="active"><a href="#algorithm_config" data-toggle="tab">RASP防御策略</a></li>
+                    <li>
+                        <a href="#httpProtec_config" data-toggle="tab">
+                            WAF防御策略
+                        </a>
+                    </li>
+
+                    <li><a href="#globalConfig" data-toggle="tab">全局配置</a></li>
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade in active" id="algorithm_config">
+                        <div>
+                            <textarea style="min-height: 300px;min-width: 600px  ;display: none"
+                                      id="input_algorithm_config"> </textarea> <br>
+                        </div>
+                        <div id="algorithm_config_body">
+
+                        </div>
+
+
+                    </div>
+                    <div class="tab-pane fade" id="httpProtec_config">
+                        <div>
+                            <textarea style="min-height: 300px;min-width: 600px ;display: none"
+                                      id="input_httpProtec_config"> </textarea> <br>
+
+                        </div>
+                        <div id="httpProtec_config_body">
+
+                        </div>
+
+
+                    </div>
+                    <div class="tab-pane fade" id="globalConfig">
+                        <div>
+                            <textarea style="min-height: 300px;min-width: 600px  ;display: none"
+                                      id="input_global_config"> </textarea> <br>
+                        </div>
+                        <div id="globalConfig_body">
+
+                        </div>
+
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+                <div id="agent_manage_submit">
+
+                </div>
+
+            </div>
+        </div><!-- /.modal -->
+    </div>
+    `;
+
+    $("#agent_model_div").text("").append(model_html);
+
 
     let id = $(this).attr("data-name");
     let algorithm_html = ``;
@@ -1858,6 +1942,7 @@ function global_config_show(global_config, id) {
 
 
 function agent_manage_algorithm_change(x_id, state, id) {
+
     let aa = $("#input_algorithm_config");
     let b = new Base64();
     //let data1 = JSON.parse(b.decode(data));
@@ -1936,7 +2021,7 @@ function agent_manage_submit(id) {
 
 }
 
-function formSubmit(){
+function formSubmit() {
     $.ajax({
         type: "post",
         //async : false, //同步请求
@@ -1944,9 +2029,9 @@ function formSubmit(){
         data: {"remarkmsg": $("#remarkmsg").html()},
         // timeout:1000,
         success: function (data) {
-            if(!data['code']) {
+            if (!data['code']) {
                 $("#agent-id").html(data['agent_id'])
-            }else{
+            } else {
                 alert('添加主机失败。');
             }
         }
