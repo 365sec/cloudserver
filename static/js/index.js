@@ -938,7 +938,7 @@ $(document).on("click", ".detail-a", function () {
     html += '<tbody>';
 
     //html += '<tr><td>Agent编号</td><td>' + data['agent_id'] + '</td></tr>';
-    html += '<tr><td>事件发生时间</td><td>' + data['event_time'] + '</td></tr>';
+    html += '<tr><td class="td_left">事件发生时间</td><td>' + data['event_time'] + '</td></tr>';
     html += '<tr><td>攻击事件编号</td><td>' + data['event_issue_id'] + '</td></tr>';
     html += '<tr><td>攻击类型</td><td>' + data['attack_type'] + '</td></tr>';
     html += '<tr><td>攻击参数</td><td>' + data['attack_params'] + '</td></tr>';
@@ -957,7 +957,7 @@ $(document).on("click", ".detail-a", function () {
     html += '<div class = "card-body-title">请求信息</div>';
     html += '<table class="table table-bordered">'
     html += '<tbody>';
-    html += '<tr><td>攻击源IP</td><td>' + data['attack_source'] + '</td></tr>';
+    html += '<tr><td  class="td_left">攻击源IP</td><td>' + data['attack_source'] + '</td></tr>';
     html += '<tr><td>被攻击域名</td><td>' + data['target'] + '</td></tr>';
     html += '<tr><td>被攻击IP</td><td>' + data['server_ip'] + '</td></tr>';
     html += '<tr><td>被攻击端口</td><td>' + data['target_port'] + '</td></tr>';
@@ -971,12 +971,12 @@ $(document).on("click", ".detail-a", function () {
     html += '<tr><td>User-Agent</td><td>' + data['user_agent'] + '</td></tr>';
     html += '<tr><td>Referer</td><td>' + data['referer'] + '</td></tr>';
     html += '</tbody>';
-    html +='</table>'
+    html +='</table>';
     //资产信息
     html += '<div class = "card-body-title">资产信息</div>';
-    html += '<table class="table table-bordered">'
+    html += '<table class="table table-bordered">';
     html += '<tbody>';
-    html += '<tr><td>主机名称</td><td>' + data['server_hostname'] + '</td></tr>';
+    html += '<tr><td class="td_left">主机名称</td><td>' + data['server_hostname'] + '</td></tr>';
     html += '<tr><td>系统用户名</td><td>' + data['system_user'] + '</td></tr>';
     html += '<tr><td>进程路径</td><td>' + data['process_path'] + '</td></tr>';
     html += '</tbody>';

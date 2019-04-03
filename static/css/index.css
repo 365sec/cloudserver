@@ -678,3 +678,7 @@ max-width: none;
     line-height: 29px;
     font-size: 13px;
     }
+
+.table-bordered .td_left{
+    width: 15%;
+}
