@@ -915,6 +915,70 @@ $(document).on("change", "select#attack_level_select", function () {
 
 
 $(document).on("click", ".detail-a", function () {
+    let model_html=`
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                </button>
+                <h4 class="modal-title myModalLabel">
+                    攻击事件
+                </h4>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs myTab">
+                    <li class="active"><a href="#detailed_report" data-toggle="tab">详情报告</a></li>
+                    <li><a href="#attack_traceability" data-toggle="tab">攻击追溯</a></li>
+                </ul>
+                <div class="tab-content myTabContent">
+                    <div class="tab-pane fade in active" id="detailed_report">
+                        <div id="ioc_body_stage2" class="ioc_body">
+
+                            </div>
+                        <div id="ioc_body_stage1" class="ioc_body">
+
+                            </div>
+                        <div id="detailed_report_body">
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="attack_traceability" >
+                        <div id="attack_traceability_body">
+                            <table id="event_detail_attack_detail_table" class="table">
+                                <tbody class="fillin" id="attack_body">
+
+                                </tbody>
+                                </table>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+            <div class="modal-footer">
+                <div id="remain_num"></div>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+                <div class="agent_manage_submit">
+                </div>
+
+            </div>
+        </div><!-- /.modal -->
+    </div>
+  </div>
+    
+    
+    
+    `;
+
+
+    $("#model_div").text("").append(model_html);
+
+
+    console.log($("#model_div").text());
+
+
+
+
     let data1 = $(this).attr("data-name");
     // // console.log(data)
     let b = new Base64();
@@ -955,7 +1019,7 @@ $(document).on("click", ".detail-a", function () {
 
     //请求信息
     html += '<div class = "card-body-title">请求信息</div>';
-    html += '<table class="table table-bordered">'
+    html += '<table class="table table-bordered">';
     html += '<tbody>';
     html += '<tr><td  class="td_left">攻击源IP</td><td>' + data['attack_source'] + '</td></tr>';
     html += '<tr><td>被攻击域名</td><td>' + data['target'] + '</td></tr>';

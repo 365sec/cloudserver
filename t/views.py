@@ -35,7 +35,8 @@ def auth(func):
         if request.session.has_key('superuser'):
             return func(request)
         else:
-            return HttpResponse('auth failed!', content_type='application/json')
+            #return HttpResponse('auth failed!', content_type='application/json')
+            return redirect('/login')
     return wrapper
 
 def refresh_agent_id():
