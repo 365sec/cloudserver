@@ -974,11 +974,6 @@ $(document).on("click", ".detail-a", function () {
     $("#model_div").text("").append(model_html);
 
 
-    console.log($("#model_div").text());
-
-
-
-
     let data1 = $(this).attr("data-name");
     // // console.log(data)
     let b = new Base64();

@@ -197,7 +197,7 @@ def attack_event_query(request):
     attack_type = request.POST.get("attack_type")
     event_dic = {}
     event_div_arr = []
-    for x in event_knowledge.objects.all():
+    for x in event_knowledge.objects.filter(event_type=1):
         event_div_arr.append(x.event_name)
         event_dic[x.event_name] = x.event_id
     if attack_type != "" and attack_type != None:
@@ -249,6 +249,7 @@ def attack_event_query(request):
         except Exception as e:
             y['attack_type'] = ''
         y['plugin_message'] = y['plugin_message'].replace('<', '&lt').replace('>', '&gt')
+        y['attack_params'] = y['attack_params'].replace('<', '&lt').replace('>', '&gt')
         y['url'] = y['url'].replace('<', '&lt').replace('>', '&gt')
         y['body'] = y['body'].replace('<', '&lt').replace('>', '&gt')
         y['plugin_message'] = y['plugin_message'].replace('"', '&quot;')
