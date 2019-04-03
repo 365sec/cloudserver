@@ -651,6 +651,20 @@ td {
     padding-top: 10px;
     border-bottom: 1px solid #dee2e6;
 }
+.table-bordered td pre{
+     border: none;
+     color: #757575;
+     padding: 0;
+     margin: 0;
+     font-family: auto;
+     font-size: 13px;
+     line-height: 25px;
+     white-space: pre-wrap;
+     white-space: -moz-pre-wrap;
+     white-space: -pre-wrap;
+     white-space: -o-pre-wrap;
+     word-wrap: break-word;
+}
 .table-bordered td>img{
     margin-bottom: 3px;
     margin-right: 5px;

@@ -579,11 +579,14 @@
         /* $("select#status").change(function(){
              console.log($(this).val());
          });*/
-        window.onload = overview_click;
 
+
+        window.onload = overview_click;
         setInterval(function () {
-             overviewFlash()
-         },15000);
+            if($(".overviewDiv").css('display') != 'none'){
+             overviewFlash();
+             }
+         },5000);
 
         //overview_click();
 

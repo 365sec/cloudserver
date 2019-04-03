@@ -965,9 +965,9 @@ $(document).on("click", ".detail-a", function () {
         </div><!-- /.modal -->
     </div>
   </div>
-    
-    
-    
+
+
+
     `;
 
 
@@ -1000,8 +1000,8 @@ $(document).on("click", ".detail-a", function () {
     html += '<tr><td class="td_left">事件发生时间</td><td>' + data['event_time'] + '</td></tr>';
     html += '<tr><td>攻击事件编号</td><td>' + data['event_issue_id'] + '</td></tr>';
     html += '<tr><td>攻击类型</td><td>' + data['attack_type'] + '</td></tr>';
-    html += '<tr><td>攻击参数</td><td>' + data['attack_params'] + '</td></tr>';
-    html += '<tr><td>调用栈</td><td>' + data['stack_trace'] + '</td></tr>';
+    html += '<tr><td>攻击参数</td><td><pre>' + data['attack_params'] + '</pre></td></tr>';
+    html += '<tr><td>调用栈</td><td><pre>' + data['stack_trace'] + '</pre></td></tr>';
     html += '<tr><td>事件描述</td><td>' + data['plugin_message'] + '</td></tr>';
     html += '<tr><td>事件可信度</td><td>' + data['plugin_confidence'] + '</td></tr>';
     html += '<tr><td>拦截状态</td><td>' + data['intercept_state'] + '</td></tr>';
@@ -1014,7 +1014,7 @@ $(document).on("click", ".detail-a", function () {
 
     //请求信息
     html += '<div class = "card-body-title">请求信息</div>';
-    html += '<table class="table table-bordered">';
+    html += '<table class="table table-bordered">'
     html += '<tbody>';
     html += '<tr><td  class="td_left">攻击源IP</td><td>' + data['attack_source'] + '</td></tr>';
     html += '<tr><td>被攻击域名</td><td>' + data['target'] + '</td></tr>';
@@ -1025,7 +1025,7 @@ $(document).on("click", ".detail-a", function () {
     html += '<tr><td>请求ID</td><td>' + data['request_id'] + '</td></tr>';
     html += '<tr><td>请求方法</td><td>' + data['method'] + '</td></tr>';
     html += '<tr><td>被攻击URL</td><td>' + data['url'] + '</td></tr>';
-    html += '<tr><td>请求体</td><td>' + data['body'] + '</td></tr>';
+    html += '<tr><td>请求体</td><td><pre>' + data['body'] + '</pre></td></tr>';
     html += '<tr><td>被攻击PATH路径</td><td>' + data['path'] + '</td></tr>';
     html += '<tr><td>User-Agent</td><td>' + data['user_agent'] + '</td></tr>';
     html += '<tr><td>Referer</td><td>' + data['referer'] + '</td></tr>';
@@ -1168,9 +1168,7 @@ function get_iochtml(data)
                                                     <td class="td-01">请求体</td>
                                                     <td class="td-02">:</td>
                                                     <td class="td-03">
-                                                        <p id="httpQueryString" data-toggle="tooltip" data-html="true" data-delay="200" data-original-title="" data-trigger="manual">
-                                                         ${data['body']}
-                                                        </p>
+                                                        <pre id="httpQueryString" data-toggle="tooltip" data-html="true" data-delay="200" data-original-title="" data-trigger="manual">${data['body']}</pre>
 
                                                     </td>
                                                 </tr>
@@ -1304,9 +1302,7 @@ function get_iochtml(data)
                                                     <td class="td-01">请求体</td>
                                                     <td class="td-02">:</td>
                                                     <td class="td-03">
-                                                        <p id="httpQueryString" data-toggle="tooltip" data-html="true" data-delay="200" data-original-title="" data-trigger="manual">
-                                                        ${data['body']}
-                                                        </p>
+                                                        <pre id="httpQueryString" data-toggle="tooltip" data-html="true" data-delay="200" data-original-title="" data-trigger="manual">${data['body']}</pre>
 
                                                     </td>
                                                 </tr>
@@ -1479,7 +1475,7 @@ function get_attack_body(ip,attack_source)
         async: false,
         //dataType: "json",
         success: function (data_list) {
-
+            console.log($(document).scrollTop());
             console.log(data_list);
             temp_html+=` <tr>
                 <td style="width: 10%; text-align: right;">
