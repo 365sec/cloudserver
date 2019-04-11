@@ -87,6 +87,11 @@
                                         <a href="javascript:void(0)" class="nav-link" data-value="download">
                                             <i class="iconfont">&#xeb12;</i>探针下载</a>
                                     </li>
+
+                                    <li class="nav-item">
+                                        <a href="javascript:void(0)" class="nav-link" data-value="countDiv">
+                                            <i class="iconfont">&#xeb12;</i>统计信息</a>
+                                    </li>
                                     {#										<li class="nav-item">#}
                                     {#											<a href="http://127.0.0.1:8000/#" class="nav-link"><i class="fe fe-user-check"></i>操作审计</a>#}
                                     {#										</li>#}
@@ -293,7 +298,7 @@
                                                                 class="copy-btn"
                                                                 data-clipboard-target="#JAVA_v2url_linux"><a
                                                                 data-tip="复制" class="icon copy-button"
-                                                                href="javascript:;"></a></span></span></code></div>
+                                                                href="javascript:void(0)"></a></span></span></code></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -374,7 +379,7 @@
                                                                 class="copy-btn"
                                                                 data-clipboard-target="#JAVA_v2url_linux"><a
                                                                 data-tip="复制" class="icon copy-button"
-                                                                href="javascript:;"></a></span></span></code></div>
+                                                                href="javascript:void(0)"></a></span></span></code></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -411,6 +416,16 @@
 
                         </div>
                     </div>
+                </div>
+                <div class="count_div">
+
+                    <div id="count_week">
+                        周报
+                    </div>
+                    <div id="count_month">
+                        月报
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -567,15 +582,18 @@
                 map: 'world'
             }
         });
+        query_attack_source(0);
     });
     $(document).on('click', '#map-tab-China', function () {
         var myChart = echarts.init(document.getElementById('chart_map'));
         map_flag = 1;
         myChart.setOption({
             geo: {
-                map: 'china'
+            map: 'china'
             }
         });
+        query_attack_source(0);
+
     });
 
     <!--首页地图切换-->

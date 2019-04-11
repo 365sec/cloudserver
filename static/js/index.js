@@ -120,6 +120,9 @@ $(document).on("click", ".nav.nav-tabs li>a", function () {
         case "overview":
             overview_click();
             break;
+        case "countDiv":
+            count_div_click();
+            break;
         default:
     }
 });
@@ -137,7 +140,8 @@ function overview_click() {
 
 function overviewFlash() {
     query_threat_level();
-    query_attack_source();
+
+    query_attack_source(1);
     query_attack_times();
     query_attack_type();
     query_attack_warn();
@@ -159,16 +163,19 @@ function query_threat_level() {
 
 }
 
-function query_attack_source() {
+function query_attack_source(show_continuous) {
     $.ajax({
         url: "query_attack_source",
         type: 'POST',
         data: {
-            "page": "asdsad"
+            "flag": map_flag
+
         },
         //dataType: "json",
         success: function (data_list) {
-            attack_source_charts(data_list['attrack_source_dic']);
+            if(show_continuous) {
+                attack_source_charts(data_list['attrack_source_dic']);
+            }
             chart_map(data_list['attack_source_map']);
         }
     });
@@ -1599,7 +1606,7 @@ function append_attack_body_more(ip, last, attack_source) {
                 let temp_data = data_list['list'][x];
                 temp_html += `
                     <tr>
-                        <td style="width: 10%; text-align: right;">${temp_data[0].split(" ")[0]}<br>${temp_data[0].split(" ")[1]}</td>
+                        <td style="width: 10%; text-align: right;">${temp_data[0].split("\r\n")[0]}<br>${temp_data[0].split("\r\n")[1]}</td>
                         <td style="width: 4%; position: relative; padding: 0px;">
                             <div class="event_detail_attack_detail_table_split"></div>
                             <div class="event_detail_attack_detail_table_circle"></div>
@@ -2037,4 +2044,34 @@ function formSubmit() {
         }
     });
     //document.getElementById("myForm").submit();
+}
+
+function count_div_click() {
+    /*
+     * 日志统计
+     */
+
+    $(".count_div").show().siblings().hide();
+    $(".tanzhen").hide();
+    $(".javaDiv").hide();
+    $(".IISDiv").hide();
+    let html = ``;
+    //$(".container1").css('background-color', '#fff');
+
+    let id="Asdasd";
+    $.ajax({
+        url: "data_count",
+        type: 'POST',
+        data: {
+            "id": id
+        },
+        async: false,
+       // dataType: "json",
+        success: function (data_list) {
+
+            data_list=JSON.stringify(data_list,null,4);
+            $("#count_week").html("").append(data_list)
+
+        }})
+
 }
