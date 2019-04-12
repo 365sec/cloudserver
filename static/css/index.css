@@ -120,7 +120,7 @@ margin-right:32px;
 }
 .row  .chart-con{
     width: 100%;
-    height: calc(100% - 46px)!important;
+    height: calc(100% - 20px)!important;
 }
 
 .page-title{

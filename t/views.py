@@ -429,39 +429,33 @@ def query_attack_source(request):
     attack_source_map = {}
 
 
-    if flag==1:
+    for item in attrack_source:
+        response = None
+        try:
+            response = gi.city(item[0])
+        except Exception as e:
+            continue
 
-        for item in attrack_source:
-            response = None
-            try:
-                response = gi.city(item[0])
+        result = []
 
-            except Exception as e:
+        try:
+            if flag == 1 and response.country.names['zh-CN'] not in ['中国', '香港', '澳门', '台湾']:
                 continue
-            if  response.country.names['zh-CN'] in ['中国','香港','澳门','台湾'] :
-
-                #print(response.country.names['zh-CN'])
-                try:
-                    key = item[0] + '\r\n' + response.subdivisions.most_specific.name + ' ' + response.city.name
-                    attack_source_map[key] = [response.location.longitude, response.location.latitude, item[1]]
-                except Exception as e:
-                    attack_source_map[item[0]] = [response.location.longitude, response.location.latitude, item[1]]
-    else:
-        for item in attrack_source:
-            response = None
-            try:
-                response = gi.city(item[0])
-
-            except Exception as e:
-                continue
-
-
-            #print(response.country.names['zh-CN'])
-            try:
-                key = item[0] + '\r\n' + response.subdivisions.most_specific.name + ' ' + response.city.name
-                attack_source_map[key] = [response.location.longitude, response.location.latitude, item[1]]
-            except Exception as e:
+        except Exception as e:
+            if flag == 0:
                 attack_source_map[item[0]] = [response.location.longitude, response.location.latitude, item[1]]
+                continue
+        try:
+            result.append(response.subdivisions.most_specific.names['zh-CN'])
+        except Exception as e:
+            pass
+        try:
+            result.append(response.city.names['zh-CN'])
+        except Exception as e:
+            pass
+
+        y = ' '.join(result)
+        attack_source_map[y] = [response.location.longitude, response.location.latitude, item[1]]
 
     data['attrack_source_dic'] = attrack_source_dic
     data['attack_source_map'] = attack_source_map
