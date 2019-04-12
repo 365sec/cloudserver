@@ -404,7 +404,7 @@ def query_threat_level(request):
 def query_attack_source(request):
     # 0代表世界 1代表中国
     flag = request.POST.get("flag")
-
+    flag=int(flag)
     data = {}
     attack = attack_event.objects
 
@@ -428,21 +428,35 @@ def query_attack_source(request):
     gi = geoip2.database.Reader('geoip/GeoLite2-City.mmdb', locales=['zh-CN'])
     attack_source_map = {}
 
-    for item in attrack_source:
-        response = None
-        try:
-            response = gi.city(item[0])
 
-        except Exception as e:
-            continue
-        if flag == 0 and response.country.names['zh-CN'] in ['中国','香港','澳门','台湾'] :
+    if flag==1:
 
+        for item in attrack_source:
+            response = None
             try:
-                key = item[0] + '\r\n' + response.subdivisions.most_specific.name + ' ' + response.city.name
-                attack_source_map[key] = [response.location.longitude, response.location.latitude, item[1]]
+                response = gi.city(item[0])
+
             except Exception as e:
-                attack_source_map[item[0]] = [response.location.longitude, response.location.latitude, item[1]]
-        else:
+                continue
+            if  response.country.names['zh-CN'] in ['中国','香港','澳门','台湾'] :
+
+                #print(response.country.names['zh-CN'])
+                try:
+                    key = item[0] + '\r\n' + response.subdivisions.most_specific.name + ' ' + response.city.name
+                    attack_source_map[key] = [response.location.longitude, response.location.latitude, item[1]]
+                except Exception as e:
+                    attack_source_map[item[0]] = [response.location.longitude, response.location.latitude, item[1]]
+    else:
+        for item in attrack_source:
+            response = None
+            try:
+                response = gi.city(item[0])
+
+            except Exception as e:
+                continue
+
+
+            #print(response.country.names['zh-CN'])
             try:
                 key = item[0] + '\r\n' + response.subdivisions.most_specific.name + ' ' + response.city.name
                 attack_source_map[key] = [response.location.longitude, response.location.latitude, item[1]]
@@ -684,6 +698,17 @@ def data_count(request):
         date)
     attack_time_dic_list = cursor.fetchall()
     attack_time_dic_list = list(attack_time_dic_list)
+    attack_time_dic_list1=[]
+    # dt_s = (dt_e - timedelta(num))  # 2018-7-08
+    for x in range(num):
+        time1=(dt_e - timedelta(num-x)).strftime("%Y-%m-%d")
+        if attack_time_dic_list[0][0]==time1:
+            attack_time_dic_list1.append([time1,attack_time_dic_list[0][1]])
+            attack_time_dic_list.pop(0)
+        else:
+            attack_time_dic_list1.append([time1,0])
+    attack_time_dic_list=attack_time_dic_list1
+
 
     # 资产统计 系统、服务器类型
     attack_server = attack.values_list('server_type').annotate(number=Count('server_type')).order_by('-number')
@@ -697,7 +722,7 @@ def data_count(request):
     attack_server_ip_list = []
     for x in attack_server_ip:
         y = list(x)
-        address = ip_to_address(y[0])[0]
+        address = ip_to_address(y[0])
         y.append(address)
         attack_server_ip_list.append(y)
     # 事件类型统计
@@ -733,6 +758,9 @@ def data_count(request):
                 attack_scan_list[name] = x[1]
             else:
                 attack_scan_list[name] += x[1]
+
+
+    print(request.META)
     data = {"attack_source": attack_source_list,
             "attack_level": attack_level_list,
             "attack_time_dic": attack_time_dic_list,

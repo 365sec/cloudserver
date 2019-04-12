@@ -420,6 +420,10 @@
                 <div class="count_div">
 
                     <div id="count_week">
+
+                        <div id="count_attack_time_dic" style="height: 300px;width: 300px">
+
+                        </div>
                         周报
                     </div>
                     <div id="count_month">
@@ -494,7 +498,7 @@
             if($(".overviewDiv").css('display') != 'none'){
              overviewFlash();
              }
-         },5000);
+         },15000);
 
         //overview_click();
 
@@ -577,22 +581,25 @@
     $(document).on('click', '#map-tab-world', function () {
         var myChart = echarts.init(document.getElementById('chart_map'));
         map_flag = 0;
+        query_attack_source(0);
         myChart.setOption({
             geo: {
                 map: 'world'
             }
         });
-        query_attack_source(0);
+
     });
     $(document).on('click', '#map-tab-China', function () {
-        var myChart = echarts.init(document.getElementById('chart_map'));
+
         map_flag = 1;
+        query_attack_source(0);
+        var myChart = echarts.init(document.getElementById('chart_map'));
         myChart.setOption({
             geo: {
             map: 'china'
             }
         });
-        query_attack_source(0);
+
 
     });
 

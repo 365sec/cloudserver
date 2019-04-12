@@ -171,9 +171,10 @@ function query_attack_source(show_continuous) {
             "flag": map_flag
 
         },
+
         //dataType: "json",
         success: function (data_list) {
-            if(show_continuous) {
+            if (show_continuous) {
                 attack_source_charts(data_list['attrack_source_dic']);
             }
             chart_map(data_list['attack_source_map']);
@@ -514,17 +515,17 @@ var map_flag = 1;
 
 function chart_map(attack_source_data) {
     if (mycharts__map != null
-        && mycharts__map != ""
-        && mycharts__map != undefined) {
+        && mycharts__map !== ""
+        && mycharts__map !== undefined) {
         mycharts__map.dispose();
     }
     mycharts__map = echarts.init(document.getElementById('chart_map'));
-    if (map_flag == 1)
-        geo_map = "china"
+    if (map_flag === 1)
+        geo_map = "china";
     else
-        geo_map = "world"
-
+        geo_map = "world";
     var convertData = function (data) {
+
         var res = [];
         for (var ip in data) {
             res.push({
@@ -1150,7 +1151,8 @@ function get_iochtml(data) {
     let iochtml = "";
 
 
-    if (attack_type === 'request'||attack_type==='request_body' ) {
+
+    if (attack_type === 'request' || attack_type === 'request_body') {
         iochtml = `
         <table class="legend-table01" style="width: 70%;">
                                 <tbody>
@@ -1282,9 +1284,7 @@ function get_iochtml(data) {
 
         $("#ioc_body_stage1").text("").append(iochtml);
         $("#ioc_body_stage2").text("");
-    }
-
-    else {
+    } else {
 
         iochtml = `                            <table class="legend-table01" style="width: 70%;">
                                 <tbody>
@@ -1339,7 +1339,7 @@ function get_iochtml(data) {
                                                         <td class="td-01">操作扩展</td>
                                                         <td class="td-02">:</td>
                                                         <td class="td-03">
-                                                            <p>${data['stack_trace'].split(" ")[0].split("\n")[0]}</p>
+                                                            <p>${data['stack_trace'].split("\r\n")[0].split("\n")[0]}</p>
                                                         </td>
                                                     </tr>
                                                     </tbody>
@@ -1527,8 +1527,7 @@ function get_attack_body(ip, attack_source) {
 
             if (data_list["remain"] !== 0) {
                 append_attack_body(ip, data_list['last_next'], attack_source);
-            }
-            else {
+            } else {
                 append_attack_body_end()
             }
 
@@ -1736,7 +1735,7 @@ $(document).on("click", ".detail-a-agent", function () {
     let algorithm_config;
     let globalConfig;
     $.ajax({
-        url: "plugins",
+         url: "plugins",
         type: 'POST',
         data: {
             "id": id
@@ -2058,7 +2057,7 @@ function count_div_click() {
     let html = ``;
     //$(".container1").css('background-color', '#fff');
 
-    let id="Asdasd";
+    let id = "Asdasd";
     $.ajax({
         url: "data_count",
         type: 'POST',
@@ -2066,12 +2065,13 @@ function count_div_click() {
             "id": id
         },
         async: false,
-       // dataType: "json",
+        dataType: "json",
         success: function (data_list) {
 
-            data_list=JSON.stringify(data_list,null,4);
-            $("#count_week").html("").append(data_list)
-
-        }})
+            //data_list = JSON.stringify(data_list, null, 4);
+            let count_week = $("#count_week").html("");
+            console.log(data_list);
+        }
+    })
 
 }
