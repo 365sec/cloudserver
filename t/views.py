@@ -87,7 +87,7 @@ def add_host(request):
             agent.online = 0
             agent.agent_id = AGENT_ID
             agent.remark = remark_message
-            agent.owner = 'test'
+            agent.owner = request.session['username']
             agent.save()
 
             # 在t_plugins中增加记录
@@ -454,7 +454,7 @@ def query_attack_source(request):
         except Exception as e:
             pass
 
-        y = ' '.join(result)
+        y = item[0] +' ' + ' '.join(result)
         attack_source_map[y] = [response.location.longitude, response.location.latitude, item[1]]
 
     data['attrack_source_dic'] = attrack_source_dic
