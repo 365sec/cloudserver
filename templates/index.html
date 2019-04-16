@@ -8,6 +8,9 @@
     <script src="/static/js/base64.js"></script>
     <link rel="stylesheet" href="/static/css/index.css">
     <script src="/static/js/echarts.common.min.js"></script>
+    <script src="/static/js/html2canvas.min.js"></script>
+    <script src="/static/js/jsPdf.debug.js"></script>
+
     <link href="/static/css/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
     {#        <link href="/static/css/gfonts/main.css" rel="stylesheet">#}
     <link href="/static/css/plugins/charts-c3/plugin.css" rel="stylesheet">
@@ -49,10 +52,9 @@
 
 </head>
 
-<body class="">
-<div id="app"></div>
+<body >
 
-<div id="main" class="page">
+<div id="main" >
     <div style="min-height: calc(100vh);position: relative;">
         <div class='header-top'>
             <div>
@@ -88,10 +90,10 @@
                                             <i class="iconfont">&#xeb12;</i>探针下载</a>
                                     </li>
 
-                                    <!--li class="nav-item">
+                                    <li class="nav-item">
                                         <a href="javascript:void(0)" class="nav-link" data-value="countDiv">
                                             <i class="iconfont">&#xeb12;</i>统计信息</a>
-                                    </li-->
+                                    </li>
                                     {#										<li class="nav-item">#}
                                     {#											<a href="http://127.0.0.1:8000/#" class="nav-link"><i class="fe fe-user-check"></i>操作审计</a>#}
                                     {#										</li>#}
@@ -121,13 +123,13 @@
                 <div id="overviewDiv" class="overviewDiv">
                     <div class="row" >
                         <div class="col-3" style="height: 100%">
-                            <div class="content h50" style="height: 60%">
+                            <div class="content " style="height: 60%">
                                 <div class="title">
                                     <span class="special">攻击类型排行</span>
                                 </div>
                                 <div id="attack_type_dic_div" class="chart-con"></div>
                             </div>
-                            <div class="content h50" style="height: 40%">
+                            <div class="content " style="height: 40%">
                                 <div class="title">
                                     <span class="special">外部威胁趋势</span>
                                 </div>
@@ -141,8 +143,8 @@
                                 <div class="title">
                                     <span class="special">全球分布</span>
                                 </div>
-                                 <div style="height: 100%">
-                                     <div style="padding: 10px">
+                                 <div style="height: 100%;positon:relation">
+                                     <div style="padding: 10px;position: absolute;z-index: 2;">
                                          <button type="button" class="map-tab current" id="map-tab-China">中国地图</button><!--
                                          --><button type="button" class="map-tab" id="map-tab-world">世界地图</button>
 
@@ -154,7 +156,7 @@
                                 <div class="title">
                                     <span class="special">最近告警内容</span>
                                 </div>
-                                <div id="attrack_recent_warning_dic_div" class="chart-con" style="overflow-y: scroll;"></div>
+                                <div id="attrack_recent_warning_dic_div" class="chart-con chart-table" style="overflow-y: scroll;"></div>
                             </div>
                         </div>
                         <div class="col-3" style="height: 100%">
@@ -172,46 +174,6 @@
                             </div>
                         </div>
                     </div>
-                    <!--<div class="row">-->
-                        <!--<div class="col-4 chart-bo">-->
-                            <!--<div id="attack_type_dic_div" class="chart-con"></div>-->
-                            <!--<div class="title">-->
-                                <!--<span class="special">攻击类型排行</span>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="col-4 chart-bo">-->
-                            <!--<div id="attrack_source_dic_div" class="chart-con"></div>-->
-                            <!--<div class="title">-->
-                                <!--<span class="special">攻击IP排行</span>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="col-4 chart-bo">-->
-                            <!--<div id="attrack_ua_dic_div" class="chart-con"></div>-->
-                            <!--<div class="title">-->
-                                <!--<span class="special">User-Agent排行</span>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="row">-->
-                        <!--<div class="col-6 chart-bo">-->
-                            <!--<div id="attrack_time_dic_div" class="chart-con"></div>-->
-                            <!--<div class="title">-->
-                                <!--<span class="special">外部威胁趋势</span>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="col-6 chart-bo">-->
-                            <!--<div id="attrack_recent_warning_dic_div" class="chart-con">-->
-                                <!--&lt;!&ndash;<h4>最近告警内容</h4>&ndash;&gt;-->
-                            <!--</div>-->
-                            <!--<div class="title">-->
-                                <!--<span class="special">最近告警内容</span>-->
-                            <!--</div>-->
-
-                        <!--</div>-->
-
-                    <!--</div>-->
-
-
                 </div>
                 <div class="attackDiv">
                     <h1 class="page-title"><i class="iconfont">&#xe73b;</i>攻击事件</h1>
@@ -412,25 +374,86 @@
                                             <!-- span class="span2">-jar oneapm.jar install</span></code -->
                                         </div>
                                     </div>
+                                </div>
                             </fieldset>
 
                         </div>
                     </div>
                 </div>
-                <div class="count_div">
-
-                    <div id="count_week">
-
-                        <div id="count_attack_time_dic" style="height: 300px;width: 300px">
-
-                        </div>
-                        周报
+                <div id="count_div" class="count_div" style="height: auto">
+                    <div class="report_title">
+                        <h1>资产分析报告</h1>
+                        <div style="display: none;">分析目标：</div>
+                        <div  id="now_time" ></div>
+                        <a class="print btn" href="javascript:void(0)" onclick="print_report()">打印报告</a>
+                        <a class="download btn" id="download" href="javascript:void(0)" onclick="download_report()">下载文档</a>
                     </div>
-                    <div id="count_month">
-                        月报
+                    <div class="report_content">
+                        <div class="w-100">
+                            <div class="title">
+                                <span class="special">攻击类型排行</span>
+                            </div>
+                            <div id="attack_type_part" class="bar_size"></div>
+                        </div>
+                        <div class="w-100">
+                            <div class="title">
+                                <span class="special">被攻击域名</span>
+                            </div>
+                            <div id="attack_target_part" class="bar_size"></div>
+                        </div>
+
+                        <div class="w-100">
+                            <div class="title">
+                                <span class="special">被攻击IP</span>
+                            </div>
+                            <div id="attack_server_ip_part" class="bar_size"></div>
+                        </div>
+                        <div class="w-100">
+                            <div class="title">
+                                <span class="special">被攻击服务器类型 </span>
+                            </div>
+                            <div id="attack_server_part" class="bar_size"></div>
+                        </div>
+                        <div class="w-100 row" style="padding-top: 25px">
+                            <div class="col-6">
+                                <div class="title">
+                                    <span class="special">危险等级分布</span>
+                                </div>
+                                <div id="attack_level_part" class="bar_size"></div>
+                            </div>
+                            <div class="col-5 offset-1">
+                                <div class="title">
+                                    <span class="special">扫描器统计信息</span>
+                                </div>
+                                <div id="attack_scan_part" class="bar_size"></div>
+                            </div>
+                        </div>
+                        <div class="w-100">
+                            <div class="title">
+                                <span class="special">外部威胁趋势 </span>
+                            </div>
+                            <div id="attack_time_dic_part" class="bar_size"></div>
+                        </div>
+                        <div class="w-100">
+                            <div class="title">
+                                <span class="special">攻击源</span>
+                            </div>
+                            <div id="attack_source_part" ></div>
+                        </div>
                     </div>
 
                 </div>
+
+<!--                <div class="count_div">-->
+
+<!--                    <div id="count_week">-->
+<!--                        周报-->
+<!--                    </div>-->
+<!--                    <div id="count_month">-->
+<!--                        月报-->
+<!--                    </div>-->
+
+<!--                </div>-->
             </div>
         </div>
 
@@ -450,115 +473,23 @@
     </div>
 </div>
 
-<div id="model_div">
+<div id="model_div"></div>
+<div id="agent_model_div"></div>
+<!-- /.modal-content-->
+<!--            <div class="modal-footer">-->
+<!--                <button type="button" class="btn btn-default" data-dismiss="modal">关闭-->
+<!--                </button>-->
+<!--                <div class="agent_manage_submit">-->
 
+<!--                </div>-->
 
-</div>
-
-
-<div id="agent_model_div">
-
-
-</div>
-
-                    </div>
-                    <div class="tab-pane fade" id="globalConfig">
-                        <div>
-                            <textarea style="min-height: 300px;min-width: 600px  ;display: none"
-                                      id="input_global_config"> </textarea> <br>
-                        </div>
-                        <div id="globalConfig_body">
-
-                        </div>
-
-                    </div>
-                </div>
-            </div><!-- /.modal-content -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
-                </button>
-                <div class="agent_manage_submit">
-
-                </div>
-
-            </div>
-        </div><!-- /.modal -->
-    </div>
-
-    <script>
-        // $().readOnly()
-
-        /* $("select#status").change(function(){
-             console.log($(this).val());
-         });*/
-
-
-        window.onload = overview_click;
-        setInterval(function () {
-            if($(".overviewDiv").css('display') != 'none'){
-             overviewFlash();
-             }
-         },15000);
-
-        //overview_click();
-
-
-</script>
-
-
-<div class="__transltor">
-    <div class="__transltor_button" style="left: 709px; top: 346px;"></div>
-    <!---->
-    <!---->
-</div>
-
-<script type="text/javascript">
-    var beginTimeStore = '';
-    var endTimeStore = '';
-    $('#attack_time').daterangepicker({
-        "timePicker": true,
-        "timePicker24Hour": true,
-        "linkedCalendars": false,
-        "autoUpdateInput": false,
-        "locale": {
-            format: 'YYYY-MM-DD',
-            separator: ' ~ ',
-            applyLabel: "应用",
-            cancelLabel: "取消",
-            resetLabel: "重置",
-        }
-    }, function (start, end, label) {
-        beginTimeStore = start;
-        endTimeStore = end;
-        console.log(this.startDate.format(this.locale.format));
-        console.log(this.endDate.format(this.locale.format));
-        if (!this.startDate) {
-            this.element.val('');
-        } else {
-            this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
-        }
-    });
-
-
-    $(".row .col-4 > div").css({
-        "width": $(".row .col-4 > div").width(),
-        "height": $(".row .col-4 > div").height()
-    });
-    $("#attrack_time_dic_div").css({"width": $("#attrack_time_dic_div").width(), "height": "276px"});
-
-</script>
-{#弹框新样式#}
-<script>
-    $(document).on("click", ".myTab li", function () {
-        $(this).addClass("active").siblings().removeClass("active")
-    });
-
-    $(document).on("click", ".btn-group button", function () {
-        $(this).addClass("active").siblings().removeClass("active");
-    })
-
-</script>
-</div>
+<!--            </div>-->
+<!-- /.modal-->
+<!--<div class="__transltor">-->
+<!--    <div class="__transltor_button" style="left: 709px; top: 346px;"></div>-->
+<!--    &lt;!&ndash;&ndash;&gt;-->
+<!--    &lt;!&ndash;&ndash;&gt;-->
+<!--</div>-->
 <div class="shade" style="visibility: hidden;">
     <div class="layout" style="visibility: hidden; animation: action_scale 0.3s ease 0s 1 normal forwards running;">
         <div class="layout-title">备注信息：</div>
@@ -575,31 +506,49 @@
     </div>
 </div>
 </body>
-<script>
 
+<script>
+    // $().readOnly()
+
+    /* $("select#status").change(function(){
+         console.log($(this).val());
+     });*/
+
+
+    window.onload = overview_click;
+    setInterval(function () {
+        if($(".overviewDiv").css('display') != 'none'){
+            overviewFlash();
+        }
+    },15000);
+
+    //overview_click();
+    $(".print").click(function () {
+        // $('.header-top').hide();
+        // window.print();
+        // $('.header-top').show();
+
+    })
     <!--首页地图切换-->
     $(document).on('click', '#map-tab-world', function () {
         var myChart = echarts.init(document.getElementById('chart_map'));
         map_flag = 0;
-        query_attack_source(0);
         myChart.setOption({
             geo: {
                 map: 'world'
             }
         });
-
+        query_attack_source(0);
     });
     $(document).on('click', '#map-tab-China', function () {
-
-        map_flag = 1;
-        query_attack_source(0);
         var myChart = echarts.init(document.getElementById('chart_map'));
+        map_flag = 1;
         myChart.setOption({
             geo: {
             map: 'china'
             }
         });
-
+        query_attack_source(0);
 
     });
 
@@ -648,7 +597,6 @@
         chartDiv_init('attrack_recent_warning_dic_div');
         chartDiv_init('attrack_threat_level_dic_div');
 
-
             //关闭弹窗
         $(document).on('click',".layout .close,.layout .layout-close",function (e) {
                     actionIn(".layout", 'action_scale_out', .3, "");
@@ -674,6 +622,7 @@
                 $(this).addClass('current');
             })
         }
+
 
 </script>
 </html>

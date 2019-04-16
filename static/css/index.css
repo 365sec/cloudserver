@@ -110,17 +110,19 @@ margin-right:32px;
     padding: 5px 10px 5px;
 }
 
+
 .title .special{
     font-size: 16px;
     font-weight: bold;
 }
-.overviewDiv .chart-bo{
+.overviewDiv .chart-bo,.count_div .chart-bo{
     position: relative;
     padding-left: 0;
 }
+
 .row  .chart-con{
     width: 100%;
-    height: calc(100% - 20px)!important;
+    height: calc(100% - 11px)!important;
 }
 
 .page-title{
@@ -141,6 +143,7 @@ margin-right:32px;
 }
 .container1 .card{
     margin: 20px;
+    margin-bottom: 68px;
     padding: 10px 20px;
     z-index: 1;
     width: auto;
@@ -418,7 +421,7 @@ code {
      text-align: left;
      white-space: pre-wrap;
      white-space: -moz-pre-wrap;
-     white-space: -pre-wrap;
+     /*white-space: -webkit-pre-wrap;*/
      white-space: -o-pre-wrap;
      word-wrap: break-word;
      overflow: visible;
@@ -699,3 +702,80 @@ max-width: none;
 .table-bordered .td_left{
     width: 15%;
 }
+.h33{
+    height: 33%!important;
+}
+.h50{
+    height: 50%!important;
+}
+/*统计信息start*/
+.count_div{
+    width: 960px;
+    margin: 0 auto;
+}
+.report_title {
+    font-size:16px;
+    border-bottom:4px solid #00284d;
+    position:relative
+}
+.report_title h1 {
+    font-size:60px;
+    color:#00284d;
+    font-weight:600;
+    padding-top:72px;
+    margin-bottom:20px
+}
+.report_title>div {
+    line-height:24px;
+    margin-bottom:5px
+}
+.report_title>div:last-child {
+    margin-bottom:20px
+}
+
+
+.print{
+    position: absolute;
+    right:130px;
+    top:94px;
+}
+.download{
+    top:94px;
+    position: absolute;
+    right:0px;
+}
+.report_content{
+    width: 100%;
+    margin: 40px 0;
+}
+.report_content>div{
+    margin-bottom: 50px;
+}
+.bar_size{
+    width: 100%;
+    height: 390px;
+}
+.pie_size{
+    width: 100%;
+    height: 400px;
+}
+#attack_source_part{
+    width: 90%;
+    margin: 4% 5%;
+    border: 1px solid rgba(24, 144, 255, 0.3);
+    text-align: center;
+}
+.res_table{
+    width: 100%;
+    line-height: 35px;
+}
+.res_table th{
+    color: #FFFFFF;
+    background: rgba(24, 144, 255, 1);
+    text-align: center;
+}
+.res_table>tbody tr:nth-child(2n){
+    background: rgba(24, 144, 255, 0.3);
+}
+
+/*统计信息end*/

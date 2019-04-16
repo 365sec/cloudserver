@@ -59,9 +59,9 @@ b {
 }
 
 .modal-open .modal {
-    overflow-x: hidden;
-    overflow-y: hidden;
-    position: absolute;
+    /*overflow-x: hidden;*/
+    /*overflow-y: hidden;*/
+    /*position: absolute;*/
     top: 10%;
     bottom: 10%;
     left: 15%;
@@ -455,17 +455,11 @@ td {
 }
 
 .my-3.my-md-5.setup {
-/*    position: absolute;
-    top: 65px;
-    left: 0;
-    right: 0;
-    bottom: 48px;
-    */
     margin-bottom: 0px !important;
-    padding-bottom: 10px;
+    /*padding-bottom: 10px;*/
     box-sizing: border-box;
-        max-height: calc(100vh - 88px);
-    overflow: scroll;
+    /*height: calc(100vh - 88px);*/
+    /*overflow: scroll;*/
 }
 
 #div_container {
@@ -482,7 +476,7 @@ td {
     border: 0;
 }
 
-#div_container > div:nth-child(1) {
+.overviewDiv{
     display: block;
     height: calc(100vh - 113px);
 }
@@ -498,7 +492,7 @@ td {
     width: 100%;
 }
 
-.overviewDiv .row {
+.overviewDiv .row ,.count_div .row{
     height: 100%;
     width: 100%;
 }
@@ -566,7 +560,7 @@ td {
     margin: 0 20px;
 }
 
-#attrack_recent_warning_dic_div .table td, #attrack_recent_warning_dic_div .table th {
+.chart-table .table td, .chart-table .table th {
     height: 35px;
     line-height: 35px;
     padding: 0px 5px;

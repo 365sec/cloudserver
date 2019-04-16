@@ -1698,10 +1698,10 @@ body {
     line-height: 1.42858
 }
 
-body, html {
-    height: 100%;
-    overflow: hidden
-}
+/*body, html {*/
+/*    height: 100%;*/
+/*    overflow: hidden*/
+/*}*/
 
 [tabindex="-1"]:focus {
     outline: none !important
@@ -3540,7 +3540,7 @@ input[type=file] {
 .modal-backdrop {
     background-color: rgba(51, 51, 51, .8);
     display: block;
-    position: absolute;
+    /*position: absolute;*/
     left: 0;
     top: 0;
     right: 0;
