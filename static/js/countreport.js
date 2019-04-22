@@ -13,11 +13,28 @@ function count_div_click() {
             $(".container1").css('background-color', '#fff');
             if($(".daterangepicker").length > 0){
                 $('.daterangepicker').remove();
-            }
-            $('.daterangepicker').remove();
+            };
+            let beginTimeStore = '';
+            let endTimeStore = '';
             $('input[name="daterange"]').daterangepicker({
-                locale: {
-                    format: 'YYYY/MM/DD'
+                "timePicker": true,
+                "timePicker24Hour": true,
+                "linkedCalendars": false,
+                "autoUpdateInput": false,
+                "locale": {
+                    format: 'YYYY-MM-DD',
+                    separator: ' ~ ',
+                    applyLabel: "应用",
+                    cancelLabel: "取消",
+                    resetLabel: "重置",
+                }
+            }, function (start, end, label) {
+                beginTimeStore = start;
+                endTimeStore = end;
+                if (!this.startDate) {
+                    this.element.val('');
+                } else {
+                    this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
                 }
             });
             let now = new Date();
@@ -417,10 +434,6 @@ function linechart(data,div) {
 
         tooltip: {
             trigger: 'axis'
-        },
-        legend: {
-            data: ['事件'],
-            right: 10
         },
         color: ['#3398db', "#2FC25B", "#FACC14", "#223273", "#8543E0", "#13C2C2", "#3436C7", "#F04864"],
         xAxis: [{

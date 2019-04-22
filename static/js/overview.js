@@ -325,10 +325,6 @@ function attrack_time_charts(data,div) {
         tooltip: {
             trigger: 'axis'
         },
-        legend: {
-            data: ['事件'],
-            right: 10
-        },
         color: ['#3398db', "#2FC25B", "#FACC14", "#223273", "#8543E0", "#13C2C2", "#3436C7", "#F04864"],
         xAxis: [{
             data: dateList,

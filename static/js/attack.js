@@ -38,13 +38,13 @@ function attack_click(attack_page) {
             // let div_container1 = $(".attackDiv");
             let div_container2 = $(".btnGroup");
             div_container2.append("<div id='table_select_div'></div>");
-//    div_container1.append("<div id='table_div'></div>");
+            //    div_container1.append("<div id='table_div'></div>");
 
             $.ajax({
                 url: "attack/query/",
                 type: 'POST',
                 data: data,
-                //async: false,
+                async: false,
                 dataType: "json",
                 success: function (data_list) {
                     let data = data_list['stack'];
@@ -62,19 +62,19 @@ function attack_click(attack_page) {
                     html_select += '<div id="" class="search_btngroup">';
                     html_select += `<div class="search_button datesel">
                                 <span class="btnvalue">日期选择: </span>
-                                <input type="text" id="attack_time" name="daterange_attack" class="daterange-text">
-                                <i class="datesel_icon fa fa-calendar"></i>
+                                <input type="text" id="attack_time" class="daterange-text form-control">
+                                <i class="glyphicon glyphicon-calendar datesel_icon fa fa-calendar"></i>
                             </div>
                             `;
                     html_select += '<div class="search_button"><span class="btnvalue">攻击类型: </span>';
-                    html_select += '<select id="attack_type_select" class="form-btn">';
+                    html_select += '<select id="attack_type" class="form-btn">';
                     html_select += '<option value="" >' + "--请选择攻击类型--" + '</option>';
                     for (x in attack_type_list) {
                         html_select += '<option value="' + attack_type_list[x] + '" >' + attack_type_list[x] + '</option>'
                     }
                     html_select += '</select></div>';
                     html_select += '<div class="search_button"><span class="btnvalue">危险等级: </span>';
-                    html_select += '<select id="attack_level_select">';
+                    html_select += '<select id="attack_level">';
                     html_select += '<option value="" >' + "--请选择危险等级--" + '</option>';
                     html_select += '<option value="0" >严重</option>';
                     html_select += '<option value="1" >高危</option>';
@@ -86,7 +86,7 @@ function attack_click(attack_page) {
 
 
                     //html_select+='<a href="javascript:void(0);" onclick="attack_click(1)" >查询<a/>';
-                    html_select += '<button  class="btn" onclick="attack_click(1)" >查询</button>';
+                    html_select += '<button  class="btn" onclick="attack_click_search(1)" >查询</button>';
                     html_select += '<button  class="btn" onclick="reset()" >重置</button>';
                     //html_select+='<a href="javascript:void(0);" onclick="reset()" >重置<a/>';
                     html_select += '</div>';
@@ -159,14 +159,31 @@ function attack_click(attack_page) {
                     if($(".daterangepicker").length > 0){
                         $('.daterangepicker').remove();
                     }
-                    $('input[name="daterange_attack"]').daterangepicker({
-                        locale: {
-                            format: 'YYYY/MM/DD'
+                    let beginTimeStore = '';
+                    let endTimeStore = '';
+                    $('#attack_time').daterangepicker({
+                        "timePicker": true,
+                        "timePicker24Hour": true,
+                        "linkedCalendars": false,
+                        "autoUpdateInput": false,
+                        "locale": {
+                            format: 'YYYY-MM-DD',
+                            separator: ' ~ ',
+                            applyLabel: "应用",
+                            cancelLabel: "取消",
+                            resetLabel: "重置",
                         }
-                    }, function(start,end, label) {
-
+                    }, function (start, end, label) {
+                        beginTimeStore = start;
+                        endTimeStore = end;
+                        // console.log(this.startDate.format(this.locale.format));
+                        // console.log(this.endDate.format(this.locale.format));
+                        if (!this.startDate) {
+                            this.element.val('');
+                        } else {
+                            this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
+                        }
                     });
-
                 }
             });
 
@@ -177,7 +194,125 @@ function attack_click(attack_page) {
 
 
 }
+function attack_click_search(attack_page) {
+    let data = {};
+    let attack_time = $("#attack_time").val();
+    let attack_type = $("#attack_type").val();
+    let attack_msg = $("#attack_msg").val();
+    let attack_level = $("#attack_level").val();
+    if (attack_time === undefined) {
+        attack_time = ""
+    }
+    if (attack_type === undefined) {
+        attack_type = ""
+    }
+    if (attack_msg === undefined) {
+        attack_msg = ""
+    }
+    if (attack_level === undefined) {
+        attack_level = ""
+    }
 
+
+    data['attack_time'] = attack_time;
+    data['attack_type'] = attack_type;
+    data['attack_msg'] = attack_msg;
+    data ['attack_level'] = attack_level;
+    data['page'] = attack_page;
+    if (attack_page == null || attack_page < 1) {
+        attack_page = 1;
+    }
+    // let div_container1 = $(".attackDiv");
+    let div_container2 = $(".btnGroup");
+    div_container2.append("<div id='table_select_div'></div>");
+//    div_container1.append("<div id='table_div'></div>");
+
+    $.ajax({
+        url: "attack/query/",
+        type: 'POST',
+        data: data,
+        async: false,
+        dataType: "json",
+        success: function (data_list) {
+            let data = data_list['stack'];
+            let now_page = data_list['page'];
+            let max_size = data_list['max_size'];
+            let attack_type_list = data_list['attack_type'];
+            let attack_level = data_list['attack_level'];
+            // data = data.replace(/}{/g, "}****{").split("****");
+
+            //let select_div=$("#table_select_div");
+
+
+
+            let div_container = $("#table_div");
+            div_container.text("");
+
+            let html = "<div>";
+
+
+            html += '<div class="card-body">';
+            html += '<table class="table table-bordered">';
+            html += '<thead>';
+            html += '<tr>';
+            html += '<th>agent_id</th>';
+            html += '<th>攻击时间</th>';
+            html += '<th>攻击类型</th>';
+            html += '<th style="min-width: 100px;">攻击来源</th>';
+            html += '<th>URL</th>';
+            html += '<th>报警消息</th>';
+            html += '<th>拦截状态</th>';
+            html += '<th>服务器类型</th>';
+            html += '<th>操作</th>';
+            html += '</tr>';
+            html += '</thead>';
+            html += '<tbody>';
+            for (x in data) {
+
+                html += '<tr>';
+
+                html += '<td >' + data[x]['agent_id'] + '</td>';
+                html += '<td>' + data[x]['event_time'] + '</td>';
+                html += '<td>' + data[x]['attack_type'] + '</td>';
+                html += '<td>' + data[x]['attack_source'] + '</td>';
+                html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['url'] + '">' + data[x]['url'] + '</td>';
+                html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['plugin_message'] + '">' + data[x]['plugin_message'] + '</td>';
+                html += '<td>' + data[x]['intercept_state'] + '</td>';
+                html += '<td>' + data[x]['server_type'] + '</td>';
+                //html+='<td><a class="modal-a" href="#myModal" data-toggle="modal" data-target="#myModal"  >详情</a> </td>';
+
+                let b = new Base64();
+                let str = b.encode(JSON.stringify(data[x]));
+                html += '<td class="detail-td"><a class="detail-a" href="javascript:void(0)" data-name="' + str + '"   >详情</a> </td>';
+                html += '</tr>';
+            }
+            html += '</tbody>';
+            html += '</table>';
+            html += '</div>';
+
+            html += '<ul role="menubar" aria-disabled="false" aria-label="Pagination" class="pagination b-pagination pagination-md justify-content-center">';
+
+            html += '<a href="javascript:void(0);" onclick="attack_click(' + (now_page - 1) + ')">上一页</a>';
+            html += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
+            html += '<a href="javascript:void(0);">' + now_page + "/" + max_size + '</a>';
+            html += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
+            html += '<a href="javascript:void(0);" onclick="attack_click(' + (now_page + 1) + ')">下一页</a>';
+            html += '<input id="attack_jump" value="' + now_page + '" />';
+
+            html += '<a href="javascript:void(0);" onclick="attack_jump()">跳转</a>';
+
+            html += '</ul>';
+            div_container.append(html);
+            $("#attack_type_select").val(attack_type);
+            $("#attack_level_select").val(attack_level);
+            $(".container1").css('background-color', '#f0f2f5');
+
+        }
+    });
+
+    let attach_search = $("#attack_search");
+
+}
 function reset() {
 
     $("#attack_time").val("");
