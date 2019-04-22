@@ -1,0 +1,180 @@
+<div class="tanzhen">
+    <h5 class="padding-20">请选择探针类型</h5>
+    <div>
+        <div class="lang-selector">
+            <a href="javascript:void(0)" onclick="java_click()" class="agentsImg agentsjava"></a>
+        </div>
+        <div class="lang-selector">
+            <a href="javascript:void(0)" onclick="iis_click()" class="agentsImg agentsdotnet"></a>
+        </div>
+
+    </div>
+    <div>
+        <!--    java探针     -->
+        <div class="bottom1 javaDiv">
+            <h3 class="padding-20">安装&nbsp; <b>JAVA</b> &nbsp;探针</h3>
+            <div class="javaa">
+                <p class="p1"><span class="title"><b>开始安装之前，检查你的环境，确保以下条件：</b></span></p>
+                <p><span>1. 检查Agent_Server端所在系统与Agent端所在系统之间网络环境可以相互连接。<!-- /react-text --></span></p>
+                <p><span>2. 检查Agent端所在环境是否在我们的支持列表中。<!-- /react-text --></span></p>
+            </div>
+            <fieldset>
+                <legend><span>1</span> 获取授权编号
+                </legend>
+                <div class="form-section">
+
+                    <!--code class="code-copy code2" >
+                    <span class="clipboard">
+                        <span class="copy-btn" data-clipboard-target="#license">
+                            <a data-tip="复制" class="icon copy-button" href="javascript:;"></a>
+                        </span>
+                    </span>
+                    </code-->
+                    <p class="note">
+                        您的授权编号(Agent ID)通过添加主机后生成，请将agent_id以及agent_server地址<span
+                            style="color:#F00" id="agent_server_addr1"></span>写入到rasp.properties中。
+                    </p>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend><span>2</span> 下载探针
+                </legend>
+                <div class="form-section">
+                    <p>提供的探针版本</p>
+                    <div class="tab-nav">
+                        <div class="widget-content">
+                            <div class="pure-g">
+                                <div class="pure-u-1-2 div6">
+                                    <div class="box">
+                                        下载：
+                                        <a id="java_a_download_url" href="#" class="btn btn-primary"
+                                           style="color: white">JAVA Agent</a>
+                                    </div>
+
+                                    <div class="box"><span>wget: </span><code class="code-copy">
+                                        <div id="java_wget_download_url">12132</div>
+                                        <span class="clipboard"><span class="hide"
+                                                                      id="JAVA_v2url_linux"></span><span
+                                                class="copy-btn"
+                                                data-clipboard-target="#JAVA_v2url_linux"><a
+                                                data-tip="复制" class="icon copy-button"
+                                                href="javascript:void(0)"></a></span></span></code></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend><span>3</span> 安装探针
+                </legend>
+                <div class="form-section">
+                    <div class="div3">
+                        <p>
+                            1.运行探针
+                        </p>
+                        <div class="div5">
+                            <p>
+                                <!-- react-text: 171 -->&nbsp;&nbsp; 切换到安装包所在目录，解压安装包到应用服务器目录下，如下：
+                                <span class="note-attention"></span></p><code class="code3">
+                            <span class="span1">java</span><!-- react-text: 176 -->
+                            <!-- /react-text -->
+                            <span class="span2">-jar RaspInstall.jar -install &lt;path/to/server_home&gt;</span></code>
+                        </div>
+                    </div>
+                    <p>
+                        2.重启 Tomcat/JBoss/Jetty/SpringBoot 应用服务器
+                    </p>
+
+                </div>
+            </fieldset>
+
+        </div>
+
+        <!--    iis探针     -->
+        <div class="bottom1 IISDiv"><h3 class="padding-20">安装&nbsp; <b>IIS</b> &nbsp;探针</h3>
+            <div class="javaa">
+                <p class="p1"><span class="title"><b>开始安装之前，检查你的环境，确保以下条件：</b></span></p>
+                <p><span>1. 检查Agent_Server端所在系统与Agent端所在系统之间网络环境可以相互连接。<!-- /react-text --></span></p>
+                <p><span>2. 检查Agent端所在环境是否在我们的支持列表中目前只支持IIS 7.0~10.0之间的版本。<!-- /react-text --></span>
+                </p>
+            </div>
+            <fieldset>
+                <legend><span>1</span> 获取授权编号
+                </legend>
+                <div class="form-section">
+                    <!--code class="code-copy code2">
+                        <div id="iis_guid">
+                        </div><span class="clipboard">
+                        <span class="hide" id="license"></span>
+                        <span class="copy-btn" data-clipboard-target="#license">
+                            <a data-tip="复制" class="icon copy-button" href="javascript:;"></a>
+                        </span>
+                        </span>
+                    </code-->
+                    <p class="note">
+                        您的授权编号(Agent ID)通过添加主机后生成，请将agent_id以及agent_server地址<span
+                            style="color:#F00" id="agent_server_addr2"></span>写入到appsensor.ini中。
+                    </p>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend><span>2</span> 下载探针
+                </legend>
+                <div class="form-section">
+                    <p>提供的探针版本</p>
+                    <div class="tab-nav">
+                        <div class="widget-content">
+                            <div class="pure-g">
+                                <div class="pure-u-1-2 div6">
+                                    <div class="box">
+                                        下载：
+                                        <a id="iis_a_download_url" href="#" class="btn btn-primary"
+                                           style="color: white">IIS Agent</a>
+                                    </div>
+                                    <div class="box"><span>wget: </span><code class="code-copy">
+                                        <div id="iis_wget_download_url">#</div>
+                                        <span class="clipboard"><span class="hide"
+                                                                      id="JAVA_v2url_linux">https://xxxxxxxxxxx</span><span
+                                                class="copy-btn"
+                                                data-clipboard-target="#JAVA_v2url_linux"><a
+                                                data-tip="复制" class="icon copy-button"
+                                                href="javascript:void(0)"></a></span></span></code></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend><span>3</span> 安装探针
+                </legend>
+                <div class="form-section">
+                    <div class="div3">
+                        <p>
+                            1.安装vc环境
+                        </p>
+                        <div class="div5">
+                            <p>
+                                <!-- react-text: 171 -->&nbsp;&nbsp;
+                                切换到安装包所在目录，安装vc_redist.x86.exe及vc_redist.x64.exe
+                        </div>
+                        <p>
+                            2.安装IIS探针
+                        </p>
+                        <div class="div5">
+                            <p>
+                                &nbsp;
+                                以管理员权限执行install.bat脚本。
+                            </p>
+                            <!--code class="code3"><span class="span1">java</span-->
+                            <!-- /react-text -->
+                            <!-- span class="span2">-jar oneapm.jar install</span></code -->
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+        </div>
+    </div>
+</div>

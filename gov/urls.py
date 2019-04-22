@@ -16,9 +16,8 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from t import views
-
+from t import link
 from . import view
-
 
 urlpatterns = [
     url(r'^data_count$', views.data_count),
@@ -38,5 +37,11 @@ urlpatterns = [
     url(r'^login$', views.login),
     url(r'^logout$', views.loginout),
     url(r'^index$', views.index),
+    url(r'^overview$', link.overview),
+    url(r'^attack$', link.attack),
+    url(r'^agent$', link.agent),
+    url(r'^countreport$', link.countreport),
+    url(r'^agent_download$', link.agent_download),
     url(r'', views.index),
 ]
+
