@@ -435,7 +435,7 @@ function agent_manage_httpProtec_change(x_id, state, id) {
     let input_id = '#' + x_id;
     data1[x_id].action = state;
     $(input_id).val(state);
-    // aa.val(JSON.stringify(data1,undefined,4));
+    aa.val(JSON.stringify(data1,undefined,4));
     aa.val(JSON.stringify(data1));
     let btn = `<button type="button" onclick="agent_manage_submit('${id}')" class="btn btn-primary">
                 提交更改
@@ -525,3 +525,8 @@ $(document).on("click", ".agentDiv .card .btngroup .btn", function() {
     });
     event.stopPropagation(); //阻止事件向上冒泡
 });
+
+
+$(document).on("click", ".btn-group button", function () {
+    $(this).addClass("active").siblings().removeClass("active");
+})
