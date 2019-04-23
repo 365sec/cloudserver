@@ -1,5 +1,4 @@
 function report_btn() {
-    console.log('11111');
     $.ajax({
                 url: "data_count",
                 type: 'POST',
@@ -290,6 +289,7 @@ function piechart(data,div) {
             radius: ['60%', '75%'],
             center: ['40%', '50%'],
             clockwise: false,
+
             data: function () {
                 let res=[];
                 for (let x in data) {

@@ -584,7 +584,7 @@ def view_report(request):
                 print(e)
         attack_source_list.append(y)
     # 统计严重级别
-    attack_level = attack.values_list('threat_level').annotate(number=Count('threat_level')).order_by('-number')
+    attack_level = attack.values_list('threat_level').annotate(number=Count('threat_level'))
     # print(attack_level)
     attack_level_list = []
     for x in attack_level:

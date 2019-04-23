@@ -754,7 +754,7 @@ function get_iochtml(data) {
                                                         <td class="td-01">操作扩展</td>
                                                         <td class="td-02">:</td>
                                                         <td class="td-03">
-                                                            <p>${data['stack_trace'].split(" ")[0].split("\n")[0]}</p>
+                                                            <p>${data['stack_trace'].split("\r\n")[0].split("\n")[0]}</p>
                                                         </td>
                                                     </tr>
                                                     </tbody>

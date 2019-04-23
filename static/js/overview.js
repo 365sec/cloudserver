@@ -385,7 +385,7 @@ function attack_threat_level_charts(data,div) {
             clockwise: false,
             data: [{
                 value: data[0],
-                name: '高危'
+                name: '严重'
             }, {
                 value: data[1],
                 name: '高危'
@@ -428,8 +428,8 @@ function attack_threat_level_charts(data,div) {
             }
         }],
         color: [
-            '#C23531',
-            '#D48205',
+            '#c2110f',
+            '#d45a46',
             '#6AAEB8',
             '#399B39'
         ],
