@@ -256,7 +256,7 @@ function attrack_type_times(data,div) {
             },
             axisTick: {
                 show: false
-            },
+            }
         },
         yAxis: {
             type: 'category',
@@ -271,6 +271,7 @@ function attrack_type_times(data,div) {
         },
         series: [
             {
+                barMaxWidth:30,
                 name: '次数',
                 type: 'bar',
                 data: data_list_type_dic

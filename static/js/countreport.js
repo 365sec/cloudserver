@@ -1,7 +1,36 @@
+function report_btn() {
+    console.log('11111');
+    $.ajax({
+                url: "data_count",
+                type: 'POST',
+                data: {
+                    "attack_time": $("#daterange-btn").val()
+                },
+                async: false,
+                // dataType: "json",
+                success: function (data_list) {
+
+                    // data_list=JSON.stringify(data_list,null,4);
+                    // $("#count_week").html("").append(data_list)
+                    // console.log(data_list["attack_type"]);
+                    barchart(data_list['attack_type'].reverse(),'attack_type_part');
+                    barchart(data_list['attack_target'].reverse(),'attack_target_part');
+                    attack_server_ip(data_list['attack_server_ip'].reverse(),'attack_server_ip_part');
+                    barchartv(data_list['attack_server'].reverse(),'attack_server_part');
+                    // console.log(data_list['attack_level'],typeof data_list['attack_level'])
+                    piechart(data_list['attack_level'],'attack_level_part');
+                    // console.log(data_list['attack_scan'],typeof data_list['attack_scan']);
+                    piechart1(data_list['attack_scan'],'attack_scan_part');
+                    linechart(data_list['attack_time_dic'],'attack_time_dic_part');
+                    attack_source(data_list['attack_source'],'#attack_source_part')
+                }})
+}
+
 function count_div_click() {
     /*
      * 统计信息
      */
+
     $.ajax( {
         url: 'countreport',
         dataType:"html",
@@ -55,12 +84,11 @@ function count_div_click() {
             }
             $('#now_time').text('');
             $('#now_time').append("报告时间："+ year+"-"+month+"-"+day+" "+hour+":"+minute+":"+second);
-            let id="Asdasd";
             $.ajax({
                 url: "data_count",
                 type: 'POST',
                 data: {
-                    "id": id
+                    "attack_time": $("#daterange-btn").val()
                 },
                 async: false,
                 // dataType: "json",
@@ -83,8 +111,6 @@ function count_div_click() {
         }
 
     });
-
-
 }
 //条形图echarts
 function  barchart(data,div) {

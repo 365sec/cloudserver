@@ -2,76 +2,34 @@
 from __future__ import unicode_literals
 from django.db import connection
 
-import time
+
 from collections import OrderedDict
 from datetime import timedelta, datetime
 from django.db.models import Max, Avg, F, Q, Count
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.forms.models import model_to_dict
-
 from django.views.decorators.http import require_http_methods
 from django.db import transaction
-import json
-
-import hashlib
-import geoip2.database
-from .scan import get_scan
-
-# Create your views here.
 from pymysql.constants.FIELD_TYPE import JSON
 
+import time
+import json
+import hashlib
+import geoip2.database
+from common.scan import get_scan
+from common.common import readConfig, ip_to_address
 from t.models import agents
 from t.models import attack_event
 from t.models import event_knowledge
 from t.models import plugins
 from t.models import users
+from t.auth import auth
+from t.login import AGENT_ID
 
 SENSOR_TYPE = {'10001': 'Java Rasp探针', '10002': 'PHP Rasp探针', '20001': 'IIS探针'}
 INTERCEPT_STATUS = {'block': '拦截', 'log': '记录', 'ignore': '忽略'}
 THREAT_LEVEL = {0: '严重', 1: '高危', 2: '中危', 3: '低危'}
-AGENT_ID = None
-
-
-def auth(func):
-    def wrapper(request):
-        if request.session.has_key('superuser'):
-            return func(request)
-        else:
-            # return HttpResponse('auth failed!', content_type='application/json')
-            return redirect('/login')
-
-    return wrapper
-
-
-def refresh_agent_id():
-    global AGENT_ID
-    AGENT_ID = hashlib.md5(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))).hexdigest()[8:-8]
-
-
-refresh_agent_id()
-
-
-def readConfig(filename):
-    try:
-        f = open(filename, "r")
-        content = f.read()
-        f.close()
-        return content
-    except Exception as e:
-        print(e)
-
-
-@require_http_methods(['GET'])
-def index(request):
-    is_login = request.session.get('is_login', False)
-    if is_login:
-        context = {}
-        context['agent_id'] = AGENT_ID
-        context['login_username'] = request.session['username']
-        return render(request, 'index.html', context)
-    else:
-        return redirect('/login')
 
 
 def add_host(request):
@@ -96,10 +54,10 @@ def add_host(request):
             plugin.plugin_name = "offical"
             timeArray = time.localtime()
             plugin.plugin_version = time.strftime("%Y%m%d-%H%M%S", timeArray)
-            plugin.algorithm_config = readConfig("config/algorithm_config.conf")
-            plugin.globalConfig = readConfig("config/globalConfig.conf")
-            plugin.httpProtectConfig = readConfig("config/httpProtectConfig.conf")
-            plugin.plugin_template = readConfig("config/plugin_template.conf")
+            plugin.algorithm_config = readConfig("data/rasp_config/algorithm_config.conf")
+            plugin.globalConfig = readConfig("data/rasp_config/globalConfig.conf")
+            plugin.httpProtectConfig = readConfig("data/rasp_config/httpProtectConfig.conf")
+            plugin.plugin_template = readConfig("data/rasp_config/plugin_template.conf")
             plugin.save()
             refresh_agent_id()
     except Exception as e:
@@ -115,33 +73,6 @@ def add_host(request):
         'agent_id': AGENT_ID
     }
     return HttpResponse(json.dumps(data), content_type='application/json')
-
-
-@require_http_methods(['GET', 'POST'])
-def login(request):
-    if request.method == 'GET':
-        return render(request, 'login.html', {})
-    elif request.method == 'POST':
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-        m2 = hashlib.md5()
-        m2.update(password)
-        u = users.objects.filter(username=username).first()
-        print(u.password)
-        print(m2.hexdigest())
-        if u.password == m2.hexdigest():
-            request.session['username'] = username
-            request.session['superuser'] = u.superuser
-            request.session['is_login'] = True
-            request.session.set_expiry(1800)
-            return redirect('/index')
-
-    return render(request, 'login.html', {})
-
-
-def loginout(request):
-    request.session.clear()
-    return redirect('/login')
 
 
 @auth
@@ -274,10 +205,6 @@ def attack_event_query(request):
         elif str_ip == "127" or str_ip == "" or str_ip == "::1":
             y['city'] = "本机"
         try:
-            # gi = geoip2.database.Reader('geoip/GeoLite2-City.mmdb', locales=['zh-CN'])
-            # response = gi.city(y['attack_source'])
-            # y['city'] = response.country.names['zh-CN'] + "-" + response.subdivisions[0].names['zh-CN'] + "-" + \
-            #             response.city.names['zh-CN']
             y['city'] = ip_to_address(y['attack_source'])
         except Exception as e:
             pass
@@ -304,12 +231,6 @@ def attack_query_source(request):
     ip = request.POST.get("ip")
 
     attack_source = request.POST.get('attack_source')
-    # print("被攻击ip ")
-    # print(ip)
-    # print("攻击源ip ")
-    # print(attack_source)
-    # print("上次查询到 ")
-    # print(last)
 
     # 剩下还有多少条
     remain = 0
@@ -335,10 +256,6 @@ def attack_query_source(request):
     last_next = int(last_next)
     list_x_all = []
 
-    # print("本次查询到")
-    # print(last_next)
-    # print("总数")
-    # print(num)
     for x in result[last:last_next]:
         list_x = []
         list_x.append(x[0].strftime("%Y-%m-%d %H:%M:%S"))
@@ -350,11 +267,6 @@ def attack_query_source(request):
             list_x[1] = ("本机")
         else:
             try:
-                # gi = geoip2.database.Reader('geoip/GeoLite2-City.mmdb', locales=['zh-CN'])
-                # response = gi.city(x[1])
-                # res = response.country.names['zh-CN'] + "-" + response.subdivisions[0].names['zh-CN'] + "-" + \
-                #       response.city.names['zh-CN']
-                print("asdsadsa")
                 res = ip_to_address(x[1])
                 list_x[1] = (res)
             except Exception as e:
@@ -371,6 +283,7 @@ def attack_query_source(request):
     data['last_next'] = last_next
     data['all_num'] = num
     data = json.dumps(data)
+    print(data)
     return HttpResponse(data, content_type='application/json')
 
 
@@ -425,7 +338,7 @@ def query_attack_source(request):
         attrack_source_dic[str(x[0])] = x[1]
     attrack_source_dic = sorted(attrack_source_dic.items(), key=lambda item: item[1], reverse=True)
 
-    gi = geoip2.database.Reader('geoip/GeoLite2-City.mmdb', locales=['zh-CN'])
+    gi = geoip2.database.Reader('data/geoip/GeoLite2-City.mmdb', locales=['zh-CN'])
     attack_source_map = {}
 
 
@@ -470,7 +383,7 @@ def query_attack_source_map(request):
     data = {}
     attack = attack_event.objects
     attrack_source = attack.values_list('attack_source').annotate(number=Count('attack_source')).order_by('-number')
-    gi = geoip2.database.Reader('geoip/GeoLite2-City.mmdb', locales=['zh-CN'])
+    gi = geoip2.database.Reader('data/geoip/GeoLite2-City.mmdb', locales=['zh-CN'])
     for item in attrack_source:
         response = None
         try:
@@ -486,7 +399,6 @@ def query_attack_source_map(request):
             attack_source_map[item[0]] = [response.location.longitude, response.location.latitude, item[1]]
 
     data['attack_source_map'] = attack_source_map
-    print(attack_source_map)
     data = json.dumps(data)
 
     return HttpResponse(data, content_type='application/json')
@@ -638,18 +550,18 @@ def plugins_update(request):
 
 
 @auth
-def data_count(request):
+def view_report(request):
     # 关于攻击时间的过滤
-
     attack_time_range = request.POST.get("attack_time")
-    num = 30  # 前num天
     dt_e = datetime.now().date()  # 2018-7-15
-    dt_s = (dt_e - timedelta(num))  # 2018-7-08
+    dt_s = (dt_e - timedelta(30))  # 2018-7-08
     if attack_time_range != "" and attack_time_range != None:
-        dt_s = attack_time_range.split(" ~ ")[0]
-        dt_e = attack_time_range.split(" ~ ")[1]
+        dt_s = datetime.strptime(attack_time_range.split(" ~ ")[0], "%Y-%m-%d")
+        dt_e = datetime.strptime(attack_time_range.split(" ~ ")[1], "%Y-%m-%d")
+    num = dt_e - dt_s
+
     attack_time_range = attack_event.objects.filter(event_time__range=(dt_s, dt_e))
-    # strftime("%Y-%m-%d %H:%M:%S")
+
 
     attack = attack_time_range
     # 统计攻击源
@@ -688,21 +600,21 @@ def data_count(request):
     cursor.execute(
         "SELECT DATE_FORMAT( event_time, '%%Y-%%m-%%d' ) AS dataTime, "
         "COUNT(1) AS countNumber FROM`t_attack_event`"
-        "WHERE event_time >%s GROUP BY dataTime  ",
-        date)
+        "WHERE event_time between '%s' and '%s' GROUP BY dataTime  "%(
+        dt_s, dt_e))
     attack_time_dic_list = cursor.fetchall()
     attack_time_dic_list = list(attack_time_dic_list)
+
     attack_time_dic_list1=[]
     # dt_s = (dt_e - timedelta(num))  # 2018-7-08
-    for x in range(num):
-        time1=(dt_e - timedelta(num-x)).strftime("%Y-%m-%d")
-        if attack_time_dic_list[0][0]==time1:
-            attack_time_dic_list1.append([time1,attack_time_dic_list[0][1]])
+    for x in range(num.days):
+        time1=(dt_e - timedelta(num.days-x)).strftime("%Y-%m-%d")
+        if attack_time_dic_list and attack_time_dic_list[0][0]==time1:
+            attack_time_dic_list1.append([time1, attack_time_dic_list[0][1]])
             attack_time_dic_list.pop(0)
         else:
             attack_time_dic_list1.append([time1,0])
     attack_time_dic_list=attack_time_dic_list1
-
 
     # 资产统计 系统、服务器类型
     attack_server = attack.values_list('server_type').annotate(number=Count('server_type')).order_by('-number')
@@ -753,8 +665,6 @@ def data_count(request):
             else:
                 attack_scan_list[name] += x[1]
 
-
-    print(request.META)
     data = {"attack_source": attack_source_list,
             "attack_level": attack_level_list,
             "attack_time_dic": attack_time_dic_list,
@@ -766,38 +676,4 @@ def data_count(request):
             }
     return HttpResponse(json.dumps(data), content_type='application/json')
 
-
-def ip_to_address(ip):
-    # 将ip转换成对应的中文地点
-
-    str = ip.split(".")[0]
-    y = ''
-    if str == "172" or str == "192" or str == "10":
-        y = "局域网"
-    elif str == "127" or str == "" or str == "::1":
-        y = "本机"
-    else:
-        result = []
-        try:
-            gi = geoip2.database.Reader('geoip/GeoLite2-City.mmdb', locales=['zh-CN'])
-            response = gi.city(ip)
-        except Exception as e:
-            pass
-        try:
-            result.append(response.country.names['zh-CN'])
-        except Exception as e:
-            pass
-        try:
-            result.append(response.subdivisions.most_specific.names['zh-CN'])
-        except Exception as e:
-            pass
-        try:
-            result.append(response.city.names['zh-CN'])
-        except Exception as e:
-            pass
-
-        y = '-'.join(result)
-    # print(ip)
-    # print(y)
-    return y
 

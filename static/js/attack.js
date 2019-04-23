@@ -8,6 +8,9 @@ function attack_click(attack_page) {
         success: function(res){
 
             $("#div_container").html($(res));
+
+            attack_click_search(attack_page);
+
             let data = {};
             let attack_time = $("#attack_time").val();
             let attack_type = $("#attack_type").val();
@@ -292,11 +295,11 @@ function attack_click_search(attack_page) {
 
             html += '<ul role="menubar" aria-disabled="false" aria-label="Pagination" class="pagination b-pagination pagination-md justify-content-center">';
 
-            html += '<a href="javascript:void(0);" onclick="attack_click(' + (now_page - 1) + ')">上一页</a>';
+            html += '<a href="javascript:void(0);" onclick="attack_click_search(' + (now_page - 1) + ')">上一页</a>';
             html += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
             html += '<a href="javascript:void(0);">' + now_page + "/" + max_size + '</a>';
             html += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
-            html += '<a href="javascript:void(0);" onclick="attack_click(' + (now_page + 1) + ')">下一页</a>';
+            html += '<a href="javascript:void(0);" onclick="attack_click_search(' + (now_page + 1) + ')">下一页</a>';
             html += '<input id="attack_jump" value="' + now_page + '" />';
 
             html += '<a href="javascript:void(0);" onclick="attack_jump()">跳转</a>';
@@ -1016,7 +1019,7 @@ function append_attack_body_more(ip, last, attack_source) {
                 let temp_data = data_list['list'][x];
                 temp_html += `
                     <tr>
-                        <td style="width: 10%; text-align: right;">${temp_data[0].split("\r\n")[0]}<br>${temp_data[0].split("\r\n")[1]}</td>
+                        <td style="width: 10%; text-align: right;">${temp_data[0].split(" ")[0]}<br>${temp_data[0].split(" ")[1]}</td>
                         <td style="width: 4%; position: relative; padding: 0px;">
                             <div class="event_detail_attack_detail_table_split"></div>
                             <div class="event_detail_attack_detail_table_circle"></div>
