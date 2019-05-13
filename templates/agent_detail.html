@@ -1,0 +1,55 @@
+<div class="agent_detailDiv">
+    <h1 class="page-title"></h1>
+    <div class = "card" style="background: initial">
+        <ul class="nav nav-tabs myTab">
+            <li class="active"><a href="#algorithm_config" data-toggle="tab">RASP防御策略</a></li>
+            <li>
+                <a href="#httpProtec_config" data-toggle="tab">
+                    WAF防御策略
+                </a>
+            </li>
+
+            <li><a href="#globalConfig" data-toggle="tab">全局配置</a></li>
+        </ul>
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade in active" id="algorithm_config">
+                <div>
+                            <textarea style="min-height: 300px;min-width: 600px  ;display: none"
+                                      id="input_algorithm_config"> </textarea> <br>
+                </div>
+                <div id="algorithm_config_body">
+
+                </div>
+
+
+            </div>
+            <div class="tab-pane fade" id="httpProtec_config">
+                <div>
+                            <textarea style="min-height: 300px;min-width: 600px ;display: none"
+                                      id="input_httpProtec_config"> </textarea> <br>
+
+                </div>
+                <div id="httpProtec_config_body">
+
+                </div>
+
+
+            </div>
+            <div class="tab-pane fade" id="globalConfig">
+                <div>
+                            <textarea style="min-height: 300px;min-width: 600px  ;display: none"
+                                      id="input_global_config"> </textarea> <br>
+                </div>
+                <div id="globalConfig_body">
+
+                </div>
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div id="agent_manage_submit">
+
+            </div>
+        </div>
+    </div>
+</div>

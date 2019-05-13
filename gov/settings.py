@@ -86,8 +86,8 @@ DATABASES = {
         'USER':'root',
         'PASSWORD':'12345',
         'HOST':'10.38.39.65',
-        'PORT':'3306'
-
+        'PORT':'3306',
+        'CONN_MAX_AGE':6
     }
 }
 

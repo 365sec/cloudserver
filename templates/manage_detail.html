@@ -1,0 +1,389 @@
+<div class="manage_detailDiv">
+    <h1 class="page-title"></h1>
+    <div class = "card" >
+        <div class="right_content_content" style="min-height:220px;">
+            <p class="pull-left" style="font-size:18px;padding-left:16px;">服务器信息</p>
+            <p class="pull-right" style="padding-right:16px;">今日为当前服务器拦截攻击&nbsp;&nbsp;<span class="text-warning" id="id_nowcount" style="font-size:16px;">0</span>&nbsp;&nbsp;次，累计&nbsp;&nbsp;<span class="text-warning" id="id_allcount" style="font-size:16px;">3</span>&nbsp;&nbsp;次</p>
+            <div class="spclear"></div>
+            <div class="pull-left" style="text-align:center;width:210px;margin-top:18px;">
+                <div style="position:relative;">
+                    <img src="/static/img/server-group-detail-pc-logo.png" style="width:84px;">
+                    <img src="/static/img/server-group-detail-pc-logo-windows.png" style="width:20px;position:absolute;top:0px; left:63px;">
+                </div>
+                <div style="margin-top:8px;" id="machine_name_view"><span style="color:#3366ff;font-size:16px;word-break:break-all;word-wrap: break-word;"></span></div>
+
+            </div>
+            <div class="pull-left">
+                <table id="promotionTable" class="table server_detail_table" style="width:600px;margin-top:40px;">
+
+                    <tbody><tr>
+                        <td class="text-muted">操作系统：</td>
+                        <td >Microsoft Windows Server 2012 R2 Standard Edition 64-bit</td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">内网IP：</td>
+                        <td >172.16.39.245</td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">外网IP：</td>
+                        <td >218.94.29.59</td>
+                    </tr>
+
+                    </tbody></table>
+            </div>
+            <div class="pull-right" style="padding-right:16px;">
+                <span class="color_index" style="font-size: 25px; color: rgb(153, 153, 153);">未巡检</span>
+                <br>
+            </div>
+        </div>
+        <ul id="server_detail_panel" class="custom_nav nav nav-tabs ul-tabs">
+            <li class="tab-oblique active"><a class="tab-col" data-toggle="tab" href="#security_analysis" aria-expanded="true"><span class="glyphicon glyphicon-dashboard"></span>&nbsp;<span class="sp-word">安全分析</span></a></li>
+            <li class="tab-oblique"><a class="tab-col" data-toggle="tab" href="#event_statistics"><span class="glyphicon glyphicon-dashboard"></span>&nbsp;<span class="sp-word">事件处理</span></a></li>
+            <li class="tab-oblique"><a class="tab-col" data-toggle="tab" href="#application_security"><span class="glyphicon glyphicon-cog"></span>&nbsp;<span class="sp-word">安全设置</span></a></li>
+            <li class="tab-oblique"><a class="tab-col" data-toggle="tab" href="#security_settings"><span class="glyphicon glyphicon-cog"></span>&nbsp;<span class="sp-word">常用开关</span></a></li>
+            <li class="tab-oblique"><a class="tab-col" data-toggle="tab" href="#server_checking"><span class="glyphicon glyphicon-dashboard"></span>&nbsp;<span class="sp-word">基线检查</span></a></li>
+            <li class="tab-oblique"><a class="tab-col" data-toggle="tab" href="#resources_overview"><span class="glyphicon glyphicon-signal"></span>&nbsp;<span class="sp-word">资源监控</span></a></li>
+            <li class="tab-oblique"><a class="tab-col" data-toggle="tab" href="#server_website_list"><span class="glyphicon glyphicon-folder-open"></span>&nbsp;<span class="sp-word">网站详情</span></a></li>
+            <li class="tab-oblique"><a class="tab-col" data-toggle="tab" href="#black_white_list"><span class="glyphicon glyphicon-user"></span>&nbsp;<span class="sp-word">黑白名单</span></a></li>
+        </ul>
+        <div id="server_detail_panel_content_wrapper" class="right_content_content" style="margin-top:0px;">
+            <div class="tab-content">
+                <div id="security_analysis" class="tab-pane fade active in">
+                    <div class="pull-left" style="width:65%;padding:6px;">
+                        <div>
+                            <p class="pull-left" style="font-size:15px;line-height:36px;margin-left:12px;">服务器攻击趋势</p>
+                            <div id="server_detail_tab1_duration" class="duration_select_wrapper pull-right" role="group">
+                                <button type="button" class="map-tab current" data-type="tday">今</button>
+                                <button type="button" href="#" class="map-tab" data-type="yday">昨</button>
+                                <button type="button" href="#" class="map-tab" data-type="week">周</button>
+                            </div>
+                            <div class="spclear"></div>
+                        </div>
+                        <div id="chart_wrapper" style="height: 350px; width: 755.95px;"></div>
+
+                    </div>
+                    <div class="pull-right" style="width:320px;height:400px;margin:20px 0;margin-right:20px;position:relative;">
+                        <table style = 'width: 100%;font-size: 15px;'>
+                            <thead >
+                                <tr>
+                                    <th>攻击类型</th>
+                                    <th>攻击次数</th>
+                                </tr>
+                            </thead></table>
+                        <div class="chart-table" style="width:320px;height:350px;margin:20px 0;margin-right:20px;position:relative;overflow-y: scroll">
+                            <table class='table' id='ana_attack'>
+                            </table>
+                        </div>
+                    </div >
+                    <div class="spclear"></div>
+                    <div id="tab1_bottom" style="margin-top:20px;padding-top:12px;border-top:1px solid #ccc;">
+                        <p style="text-align:center;font-size:15px;margin:10px 0 0 0;">服务器被攻击类型分析及被攻击网站列表</p>
+                        <div class="pull-left" style="width:49%;overflow:hidden;">
+                            <div class="chart_wrapper" style="width: 581.63px; height: 387.753px; -webkit-tap-highlight-color: transparent; user-select: none; background-color: rgba(0, 0, 0, 0); cursor: move;" _echarts_instance_="1557386981669"><div style="position: relative; overflow: hidden; width: 581px; height: 387px;"><div data-zr-dom-id="bg" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 581px; height: 387px; user-select: none;"></div><canvas width="581" height="387" data-zr-dom-id="0" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 581px; height: 387px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas><canvas width="581" height="387" data-zr-dom-id="1" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 581px; height: 387px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas><canvas width="581" height="387" data-zr-dom-id="_zrender_hover_" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 581px; height: 387px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas><div class="echarts-tooltip zr-element" style="position: absolute; display: block; border-style: solid; white-space: nowrap; transition: left 0.4s, top 0.4s; background-color: rgba(0, 0, 0, 0.7); border-width: 0px; border-color: rgb(51, 51, 51); border-radius: 4px; color: rgb(255, 255, 255); padding: 5px; left: 273px; top: 238px;"> <br>没有攻击 : 100 (100.00%)</div></div></div>
+                        </div>
+                        <div class="pull-left" style="width:49%;overflow:hidden;">
+                            <div class="chart_wrapper" style="width: 581.63px; height: 387.753px; -webkit-tap-highlight-color: transparent; user-select: none; background-color: rgba(0, 0, 0, 0); cursor: default;" _echarts_instance_="1557386981670"><div style="position: relative; overflow: hidden; width: 581px; height: 387px;"><div data-zr-dom-id="bg" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 581px; height: 387px; user-select: none;"></div><canvas width="581" height="387" data-zr-dom-id="0" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 581px; height: 387px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas><canvas width="581" height="387" data-zr-dom-id="1" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 581px; height: 387px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas><canvas width="581" height="387" data-zr-dom-id="_zrender_hover_" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 581px; height: 387px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas></div></div>
+                        </div>
+                        <div class="spclear"></div>
+                    </div>
+                </div>
+                <div id="event_statistics" class="tab-pane fade" style="height: 600px;">
+                    <div id="right_content_main">
+                        <div id="right_content_main_header" class="clearfix general_header">
+                            <!--             <button id="id_deal_event" type="button" class="btn btn-success pull-left btn_fixed_width" data-view-status="select-more-than-or-one" disabled>处理</button> -->
+<!--                            <div class="custom_search input-group has-primary pull-right" style="width:300px;">-->
+<!--                                <input type="text" class="form-control" name="keyword" id="event_keyword" placeholder="IP关键字或类型" value="">-->
+<!--                                <div id="queryBtn" class="input-group-addon btn btn-default"><span class="glyphicon glyphicon-search"></span>&nbsp;查询-->
+<!--                                </div>-->
+<!--                            </div>-->
+                            <div class="btnGroup">
+                                <div id="table_select_div">
+                                    <div>
+                                        <div id="" class="search_btngroup">
+                                            <input type="text" class="form-control" name="keyword" id="event_keyword" placeholder="IP关键字或类型" value="">
+                                            <div id="queryBtn" class="input-group-addon btn btn-default"><span class="glyphicon glyphicon-search"></span>&nbsp;查询
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <table id="alarm_event_list_table" class="table table-bordered table-hover data-view-status data-view-sortable data-view-custom" style="table-layout:fixed;" data-sortable="" data-sortable-initialized="true">
+                                <thead>
+                                    <tr>
+                                        <th data-sortable="false" class="no-sortable">攻击时间</th>
+                                        <th >事件类型</th>
+                                        <th style="width: 38%">事件摘要</th>
+                                        <th >风险等级</th>
+                                        <th >操作</th>
+                                        <th >状态</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>2019-04-29 17:30:36</td>
+                                        <td>发现未知Webshell</td>
+                                        <td style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                                            10.38.39.65（局域网） 访问 未知Webshell 172.16.39.245/vulns/004-command-2.php（物理路径：c:\phpstudy\www\vulns\004-command-2.php）
+                                        </td>
+                                        <td><span class="label label-custom label-red" style="color: #fe0202;border-color: #fe0202;">高危
+                                        </span></td>
+                                        <td><span class="custom_a event_detail" alarmeventid="20c316881d0a41fd81d3f818b7dac5aa_2019-04-29" alarmeventtype="发现未知Webshell">查看报告
+                                        </span></td>
+                                        <td>
+                                            <button class="deal_cls btn btn-xs btn-warning" alarmeventid="20c316881d0a41fd81d3f818b7dac5aa_2019-04-29" style="line-height: 1.5">未处理</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <!--                 	<td> -->
+                                        <!-- 			           <input class="custom_checkbox" type="checkbox" id="41e6aade8b8c4d0188b805eb1c72ed36_2019-04-29"> -->
+                                        <!-- 			        </td> -->
+                                        <td>
+                                            2019-04-29 17:24:55
+                                        </td>
+                                        <td>
+                                            发现已知Webshell
+                                        </td>
+                                        <td style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                                            10.38.39.65（局域网） 访问 已知Webshell 172.16.39.245:8022/vulns/014-webshell-eval.php（物理路径：c:\phpstudy\www\vulns\014-webshell-eval.php）
+                                        </td>
+                                        <td>
+                                <span class="label label-custom label-grey" style="color: #85d603;border-color: #85d603;">
+                                    一般
+                                </span>
+                                        </td>
+                                        <td>
+                                <span class="custom_a event_detail" alarmeventid="41e6aade8b8c4d0188b805eb1c72ed36_2019-04-29" alarmeventtype="发现已知Webshell ">
+                                    查看报告
+                                </span>
+                                        </td>
+                                        <td>
+                                            <button class="deal_cls btn btn-xs btn-warning" alarmeventid="41e6aade8b8c4d0188b805eb1c72ed36_2019-04-29" style="line-height: 1.5">未处理</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2019-04-29 17:30:36</td>
+                                        <td>发现未知Webshell</td>
+                                        <td style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                                            10.38.39.65（局域网） 访问 未知Webshell 172.16.39.245/vulns/004-command-2.php（物理路径：c:\phpstudy\www\vulns\004-command-2.php）
+                                        </td>
+                                        <td><span class="label label-custom label-red" style="color: #fe0202;border-color: #fe0202;">高危
+                                        </span></td>
+                                        <td><span class="custom_a event_detail" alarmeventid="20c316881d0a41fd81d3f818b7dac5aa_2019-04-29" alarmeventtype="发现未知Webshell">查看报告
+                                        </span></td>
+                                        <td>
+                                            <button class="deal_cls btn btn-xs btn-warning" alarmeventid="20c316881d0a41fd81d3f818b7dac5aa_2019-04-29" style="line-height: 1.5">未处理</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <!--                 	<td> -->
+                                        <!-- 			           <input class="custom_checkbox" type="checkbox" id="41e6aade8b8c4d0188b805eb1c72ed36_2019-04-29"> -->
+                                        <!-- 			        </td> -->
+                                        <td>
+                                            2019-04-29 17:24:55
+                                        </td>
+                                        <td>
+                                            发现已知Webshell
+                                        </td>
+                                        <td style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                                            10.38.39.65（局域网） 访问 已知Webshell 172.16.39.245:8022/vulns/014-webshell-eval.php（物理路径：c:\phpstudy\www\vulns\014-webshell-eval.php）
+                                        </td>
+                                        <td>
+                                <span class="label label-custom label-grey" style="color: #85d603;border-color: #85d603;">
+                                    一般
+                                </span>
+                                        </td>
+                                        <td>
+                                <span class="custom_a event_detail" alarmeventid="41e6aade8b8c4d0188b805eb1c72ed36_2019-04-29" alarmeventtype="发现已知Webshell ">
+                                    查看报告
+                                </span>
+                                        </td>
+                                        <td>
+                                            <button class="deal_cls btn btn-xs btn-warning" alarmeventid="41e6aade8b8c4d0188b805eb1c72ed36_2019-04-29" style="line-height: 1.5">未处理</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2019-04-29 17:30:36</td>
+                                        <td>发现未知Webshell</td>
+                                        <td style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                                            10.38.39.65（局域网） 访问 未知Webshell 172.16.39.245/vulns/004-command-2.php（物理路径：c:\phpstudy\www\vulns\004-command-2.php）
+                                        </td>
+                                        <td><span class="label label-custom label-red" style="color: #fe0202;border-color: #fe0202;">高危
+                                        </span></td>
+                                        <td><span class="custom_a event_detail" alarmeventid="20c316881d0a41fd81d3f818b7dac5aa_2019-04-29" alarmeventtype="发现未知Webshell">查看报告
+                                        </span></td>
+                                        <td>
+                                            <button class="deal_cls btn btn-xs btn-warning" alarmeventid="20c316881d0a41fd81d3f818b7dac5aa_2019-04-29" style="line-height: 1.5">未处理</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <!--                 	<td> -->
+                                        <!-- 			           <input class="custom_checkbox" type="checkbox" id="41e6aade8b8c4d0188b805eb1c72ed36_2019-04-29"> -->
+                                        <!-- 			        </td> -->
+                                        <td>
+                                            2019-04-29 17:24:55
+                                        </td>
+                                        <td>
+                                            发现已知Webshell
+                                        </td>
+                                        <td style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                                            10.38.39.65（局域网） 访问 已知Webshell 172.16.39.245:8022/vulns/014-webshell-eval.php（物理路径：c:\phpstudy\www\vulns\014-webshell-eval.php）
+                                        </td>
+                                        <td>
+                                <span class="label label-custom label-grey" style="color: #85d603;border-color: #85d603;">
+                                    一般
+                                </span>
+                                        </td>
+                                        <td>
+                                <span class="custom_a event_detail" alarmeventid="41e6aade8b8c4d0188b805eb1c72ed36_2019-04-29" alarmeventtype="发现已知Webshell ">
+                                    查看报告
+                                </span>
+                                        </td>
+                                        <td>
+                                            <button class="deal_cls btn btn-xs btn-warning" alarmeventid="41e6aade8b8c4d0188b805eb1c72ed36_2019-04-29" style="line-height: 1.5">未处理</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2019-04-29 17:30:36</td>
+                                        <td>发现未知Webshell</td>
+                                        <td style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                                            10.38.39.65（局域网） 访问 未知Webshell 172.16.39.245/vulns/004-command-2.php（物理路径：c:\phpstudy\www\vulns\004-command-2.php）
+                                        </td>
+                                        <td><span class="label label-custom label-red" style="color: #fe0202;border-color: #fe0202;">高危
+                                        </span></td>
+                                        <td><span class="custom_a event_detail" alarmeventid="20c316881d0a41fd81d3f818b7dac5aa_2019-04-29" alarmeventtype="发现未知Webshell">查看报告
+                                        </span></td>
+                                        <td>
+                                            <button class="deal_cls btn btn-xs btn-warning" alarmeventid="20c316881d0a41fd81d3f818b7dac5aa_2019-04-29" style="line-height: 1.5">未处理</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <!--                 	<td> -->
+                                        <!-- 			           <input class="custom_checkbox" type="checkbox" id="41e6aade8b8c4d0188b805eb1c72ed36_2019-04-29"> -->
+                                        <!-- 			        </td> -->
+                                        <td>
+                                            2019-04-29 17:24:55
+                                        </td>
+                                        <td>
+                                            发现已知Webshell
+                                        </td>
+                                        <td style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                                            10.38.39.65（局域网） 访问 已知Webshell 172.16.39.245:8022/vulns/014-webshell-eval.php（物理路径：c:\phpstudy\www\vulns\014-webshell-eval.php）
+                                        </td>
+                                        <td>
+                                <span class="label label-custom label-grey" style="color: #85d603;border-color: #85d603;">
+                                    一般
+                                </span>
+                                        </td>
+                                        <td>
+                                <span class="custom_a event_detail" alarmeventid="41e6aade8b8c4d0188b805eb1c72ed36_2019-04-29" alarmeventtype="发现已知Webshell ">
+                                    查看报告
+                                </span>
+                                        </td>
+                                        <td>
+                                            <button class="deal_cls btn btn-xs btn-warning" alarmeventid="41e6aade8b8c4d0188b805eb1c72ed36_2019-04-29" style="line-height: 1.5">未处理</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2019-04-29 17:30:36</td>
+                                        <td>发现未知Webshell</td>
+                                        <td style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                                            10.38.39.65（局域网） 访问 未知Webshell 172.16.39.245/vulns/004-command-2.php（物理路径：c:\phpstudy\www\vulns\004-command-2.php）
+                                        </td>
+                                        <td><span class="label label-custom label-red" style="color: #fe0202;border-color: #fe0202;">高危
+                                        </span></td>
+                                        <td><span class="custom_a event_detail" alarmeventid="20c316881d0a41fd81d3f818b7dac5aa_2019-04-29" alarmeventtype="发现未知Webshell">查看报告
+                                        </span></td>
+                                        <td>
+                                            <button class="deal_cls btn btn-xs btn-warning" alarmeventid="20c316881d0a41fd81d3f818b7dac5aa_2019-04-29" style="line-height: 1.5">未处理</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <!--                 	<td> -->
+                                        <!-- 			           <input class="custom_checkbox" type="checkbox" id="41e6aade8b8c4d0188b805eb1c72ed36_2019-04-29"> -->
+                                        <!-- 			        </td> -->
+                                        <td>
+                                            2019-04-29 17:24:55
+                                        </td>
+                                        <td>
+                                            发现已知Webshell
+                                        </td>
+                                        <td style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                                            10.38.39.65（局域网） 访问 已知Webshell 172.16.39.245:8022/vulns/014-webshell-eval.php（物理路径：c:\phpstudy\www\vulns\014-webshell-eval.php）
+                                        </td>
+                                        <td>
+                                <span class="label label-custom label-grey" style="color: #85d603;border-color: #85d603;">
+                                    一般
+                                </span>
+                                        </td>
+                                        <td>
+                                <span class="custom_a event_detail" alarmeventid="41e6aade8b8c4d0188b805eb1c72ed36_2019-04-29" alarmeventtype="发现已知Webshell ">
+                                    查看报告
+                                </span>
+                                        </td>
+                                        <td>
+                                            <button class="deal_cls btn btn-xs btn-warning" alarmeventid="41e6aade8b8c4d0188b805eb1c72ed36_2019-04-29" style="line-height: 1.5">未处理</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2019-04-29 17:30:36</td>
+                                        <td>发现未知Webshell</td>
+                                        <td style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                                            10.38.39.65（局域网） 访问 未知Webshell 172.16.39.245/vulns/004-command-2.php（物理路径：c:\phpstudy\www\vulns\004-command-2.php）
+                                        </td>
+                                        <td><span class="label label-custom label-red" style="color: #fe0202;border-color: #fe0202;">高危
+                                        </span></td>
+                                        <td><span class="custom_a event_detail" alarmeventid="20c316881d0a41fd81d3f818b7dac5aa_2019-04-29" alarmeventtype="发现未知Webshell">查看报告
+                                        </span></td>
+                                        <td>
+                                            <button class="deal_cls btn btn-xs btn-warning" alarmeventid="20c316881d0a41fd81d3f818b7dac5aa_2019-04-29" style="line-height: 1.5">未处理</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <!--                 	<td> -->
+                                        <!-- 			           <input class="custom_checkbox" type="checkbox" id="41e6aade8b8c4d0188b805eb1c72ed36_2019-04-29"> -->
+                                        <!-- 			        </td> -->
+                                        <td>
+                                            2019-04-29 17:24:55
+                                        </td>
+                                        <td>
+                                            发现已知Webshell
+                                        </td>
+                                        <td style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                                            10.38.39.65（局域网） 访问 已知Webshell 172.16.39.245:8022/vulns/014-webshell-eval.php（物理路径：c:\phpstudy\www\vulns\014-webshell-eval.php）
+                                        </td>
+                                        <td>
+                                <span class="label label-custom label-grey" style="color: #85d603;border-color: #85d603;">
+                                    一般
+                                </span>
+                                        </td>
+                                        <td>
+                                <span class="custom_a event_detail" alarmeventid="41e6aade8b8c4d0188b805eb1c72ed36_2019-04-29" alarmeventtype="发现已知Webshell ">
+                                    查看报告
+                                </span>
+                                        </td>
+                                        <td>
+                                            <button class="deal_cls btn btn-xs btn-warning" alarmeventid="41e6aade8b8c4d0188b805eb1c72ed36_2019-04-29" style="line-height: 1.5">未处理</button>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                        </table>
+
+                    </div>
+
+                    <div class="clearfix general_footer">
+                        <p style="width:500px;font-size:13px;padding-top: 0px;" class="pull-left">
+                            共计查询 <span class="text-success">9</span> 条记录，当前
+                            <input class="jump_page" style="width:36px;text-align:center;color:#00a5e3;padding:2px 4px;" value="1" maxlength="10"> 页 /  1 页</p>
+                        <button type="button" class="btn btn-default pull-right btn-sm last_page" disabled="disabled">尾页</button>
+                        <button type="button" class="btn btn-default pull-right btn-sm next_page" disabled="disabled">下一页</button>
+                        <button type="button" class="btn btn-default pull-right btn-sm previous_page" disabled="disabled">上一页</button>
+                        <button type="button" class="btn btn-default pull-right btn-sm first_page" disabled="disabled">首页</button>
+                        <form class="pager_form" action="" method="post">
+                            <input type="hidden" class="currentPage" name="currentPage" value="1">		<input type="hidden" id="maxResults" name="maxResults" value="10">		<input type="hidden" id="typecode" name="typecode" value="">		</form></div></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

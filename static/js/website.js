@@ -1,4 +1,4 @@
-function agent_click(page) {
+function website_click(page) {
     /*
     * 探针管理被点击
     * */
@@ -8,7 +8,6 @@ function agent_click(page) {
         dataType:"html",
         type: "get",
         success: function(res){
-            let secvalue = $(this).children().attr("data-secvalue");
             $("#div_container").html($(res));
             if (page == null || page < 1) {
                 page = 1;
@@ -27,27 +26,20 @@ function agent_click(page) {
                     let max_size = data_list['max_size'];
                     // data = data.replace(/}{/g, "}****{").split("****");
                     let div_container = $(".manageDiv");
-                    // let div_container2 = $(".table-manage");
+                    let div_container2 = $(".table-manage");
                     div_container.text("");
-                    let html = '<h1 class="page-title" ><i class="iconfont">&#xe73b;</i>探针管理</h1>';
+                    let html = '<h1 class="page-title" ><i class="iconfont">&#xe73b;</i>服网站管理</h1>';
                     html += '<div class="card">';
                     html += '<div class = "btngroup"><button  class="btn" onclick="javascript:void(0)" >添加主机</button></div>'
                     html += '<div class="card-body">';
                     html += '<table class="table table-bordered">';
                     html += '<thead>';
                     html += '<tr>';
-                    html += '<th>agent id</th>';
-                    html += '<th>探针类型</th>';
-                    html += '<th>注册IP</th>';
-                    html += '<th>操作系统</th>';
-                    html += '<th>主机名</th>';
-                    html += '<th>agent 版本</th>';
-                    html += '<th>开发语言</th>';
-                    html += '<th>服务器类型</th>';
-                    html += '<th>服务器版本</th>';
-                    html += '<th>是否在线</th>';
-                    //html += '<th>是否禁用该探针</th>';
-                    html += '<th>备注信息</th>';
+                    html += '<th>网站名称</th>';
+                    html += '<th>标签</th>';
+                    html += '<th>所属服务器</th>';
+                    html += '<th>所属分组</th>';
+                    html += '<th>更新时间</th>';
                     html += '</tr>';
                     html += '</thead>';
                     html += '<tbody>';
@@ -55,21 +47,12 @@ function agent_click(page) {
                         html += '<tr>';
                         data[x] = JSON.parse(data[x]);
                         let agent_id = data[x]['agent_id'];
+
                         html += '<td><a class="detail-a-agent" href="javascript:void(0)" data-name="' + agent_id + '"   >' + data[x]['agent_id'] + '</a> </td>';
-                        html += '<td>' + data[x]['sensor_type_id'] + '</td>';
-                        html += '<td>' + data[x]['register_ip'] + '</td>';
-                        html += '<td>' + data[x]['os'] + '</td>';
-                        html += '<td>' + data[x]['host_name'] + '</td>';
+                        html += '<td>' + data[x]['remark'] + '</td>';
                         html += '<td>' + data[x]['version'] + '</td>';
-                        html += '<td>' + data[x]['language'] + '</td>';
                         html += '<td>' + data[x]['server_type'] + '</td>';
                         html += '<td>' + data[x]['server_version'] + '</td>';
-                        if (data[x]['online'] == '在线') {
-                            html += '<td><img src = "/static/images/online.png" style="width: 12px;">' + data[x]['online'] + '</td>';
-                        } else {
-                            html += '<td><img src = "/static/images/offline.png" style="width: 12px;">' + data[x]['online'] + '</td>';
-                        }
-                        html += '<td>' + data[x]['remark'] + '</td>';
                         html += '</tr>';
                     }
                     html += '</tbody>';
@@ -97,53 +80,126 @@ function agent_click(page) {
 }
 
 $(document).on("click", ".detail-a-agent", function () {
+    let model_html = `
+    <div class="modal fade" id="setting" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                </button>
+                <h4 class="modal-title myModalLabel">
+                    agent配置
+                </h4>
+            </div>
+            <div class="modal-body">
+
+                <div id="host_msg">
+                    <!--<h3>主机信息</h3>-->
+                    <div id="host_msg_div" >
+
+                    </div>
+
+                </div>
+                <ul class="nav nav-tabs myTab">
+                    <li class="active"><a href="#algorithm_config" data-toggle="tab">RASP防御策略</a></li>
+                    <li>
+                        <a href="#httpProtec_config" data-toggle="tab">
+                            WAF防御策略
+                        </a>
+                    </li>
+
+                    <li><a href="#globalConfig" data-toggle="tab">全局配置</a></li>
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade in active" id="algorithm_config">
+                        <div>
+                            <textarea style="min-height: 300px;min-width: 600px  ;display: none"
+                                      id="input_algorithm_config"> </textarea> <br>
+                        </div>
+                        <div id="algorithm_config_body">
+
+                        </div>
+
+
+                    </div>
+                    <div class="tab-pane fade" id="httpProtec_config">
+                        <div>
+                            <textarea style="min-height: 300px;min-width: 600px ;display: none"
+                                      id="input_httpProtec_config"> </textarea> <br>
+
+                        </div>
+                        <div id="httpProtec_config_body">
+
+                        </div>
+
+
+                    </div>
+                    <div class="tab-pane fade" id="globalConfig">
+                        <div>
+                            <textarea style="min-height: 300px;min-width: 600px  ;display: none"
+                                      id="input_global_config"> </textarea> <br>
+                        </div>
+                        <div id="globalConfig_body">
+
+                        </div>
+
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+                <div id="agent_manage_submit">
+
+                </div>
+
+            </div>
+        </div><!-- /.modal -->
+    </div>
+    `;
+
+    $("#agent_model_div").text("").append(model_html);
+
+
     let id = $(this).attr("data-name");
+    let algorithm_html = ``;
+    let httpProtec_html = ``;
+    let global_html = ``;
+    let httpProtectConfig;
+    let algorithm_config;
+    let globalConfig;
     $.ajax({
-        url: 'agent_detail',
-        type: 'get',
-        dataType: 'html',
-        success: function (res) {
-            $('#div_container').html($(res));
+        url: "plugins",
+        type: 'POST',
+        data: {
+            "id": id
+        },
+        async: false,
+        dataType: "json",
+        success: function (data_list) {
+            //// console.log(data_list['algorithm_config']);
+            // // console.log(data_list['globalConfig']);
+            // // console.log(data_list['httpProtectConfig']);
+            httpProtectConfig = data_list['httpProtectConfig'];
+            algorithm_config = data_list['algorithm_config'];
+            globalConfig = data_list['globalConfig'];
+            $("#input_httpProtec_config").val(httpProtectConfig);
+            $("#input_algorithm_config").val(algorithm_config);
+            $("#input_global_config").val(globalConfig);
 
-            $('.page-title').html('主机：'+id);
-            let algorithm_html = ``;
-            let httpProtec_html = ``;
-            let global_html = ``;
-            let httpProtectConfig;
-            let algorithm_config;
-            let globalConfig;
-            $.ajax({
-                url: "plugins",
-                type: 'POST',
-                data: {
-                    "id": id
-                },
-                async: false,
-                dataType: "json",
-                success: function (data_list) {
-                    //// console.log(data_list['algorithm_config']);
-                    // // console.log(data_list['globalConfig']);
-                    // // console.log(data_list['httpProtectConfig']);
-                    httpProtectConfig = data_list['httpProtectConfig'];
-                    algorithm_config = data_list['algorithm_config'];
-                    globalConfig = data_list['globalConfig'];
-                    $("#input_httpProtec_config").val(httpProtectConfig);
-                    $("#input_algorithm_config").val(algorithm_config);
-                    $("#input_global_config").val(globalConfig);
-
-                    httpProtec_html = httpProtec_config_show(httpProtectConfig, id);
-                    algorithm_html = algorithm_config_show(algorithm_config, id);
-                    global_html = global_config_show(globalConfig, id);
-                }
-            });
-            $("#agent_manage_submit").html("");
-            $("#algorithm_config_body").html(algorithm_html);
-            $("#httpProtec_config_body").html(httpProtec_html);
-
-            $("#globalConfig_body").html(global_html);
-            // $("#setting").modal("show");
+            httpProtec_html = httpProtec_config_show(httpProtectConfig, id);
+            algorithm_html = algorithm_config_show(algorithm_config, id);
+            global_html = global_config_show(globalConfig, id);
         }
     });
+
+    $("#agent_manage_submit").html("");
+    $("#algorithm_config_body").html(algorithm_html);
+    $("#httpProtec_config_body").html(httpProtec_html);
+
+    $("#globalConfig_body").html(global_html);
+    // $("#setting").modal("show");
 });
 
 function httpProtec_config_show(httpProtec_config, id) {
@@ -443,7 +499,7 @@ $(document).on("click", ".manageDiv .card .btngroup .btn", function() {
     event.stopPropagation(); //阻止事件向上冒泡
 });
 
-//
+
 $(document).on("click", ".btn-group button", function () {
     $(this).addClass("active").siblings().removeClass("active");
 })

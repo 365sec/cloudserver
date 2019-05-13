@@ -6,13 +6,18 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link href="/static/css/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="/static/css/plugins/charts-c3/plugin.css" rel="stylesheet">
+    <link href="/static/css/plugins/jquery-ui.css" rel="stylesheet">
+<!--    <link href="/static/css/plugins/bootstrap.css" rel="stylesheet">-->
+
     <link href=/static/css/orl/app.f0ed56399b7c53536fe0a115734a4d50.css rel=stylesheet>
     <link href=/static/css/orl/app-b16f1d665ca03251b414.css rel=stylesheet>
     <link href=/static/css/main.css rel=stylesheet>
+
+
     <link href=/static/css/time/daterangepicker.css rel=stylesheet>
     <script src="/static/js/plugins/jquery-3.2.1.min.js"></script>
     <script src="/static/js/plugins/base64.js"></script>
-    <script src="/static/js/plugins/echarts.common.min.js"></script>
+<!--    <script src="/static/js/plugins/echarts.common.min.js"></script>-->
     <script src="/static/js/plugins/html2canvas.min.js"></script>
     <script src="/static/js/plugins/jsPdf.debug.js"></script>
     <script src="/static/js/orl/manifest.2ae2e69a05c33dfc65f8.js"></script>
@@ -28,75 +33,106 @@
     <script src="/static/js/overview.js"></script>
     <script src="/static/js/attack.js"></script>
     <script src="/static/js/agent.js"></script>
+    <script src="/static/js/server.js"></script>
+    <script src="/static/js/website.js"></script>
+
     <script src="/static/js/countreport.js"></script>
     <script src="/static/js/download.js"></script>
+    <script src="/static/js/plugins/jquery-ui.js"></script>
 </head>
-
 <body >
 
 <div id="main" >
-    <div style="min-height: calc(100vh);position: relative;">
-        <div class='header-top'>
-            <div>
-                <div class="logodiv dip-inbl">
-                    <img width="130" height="40" src="/static/img/LOGO.png">
+    <div class="s-side side_open tran">
+        <div class="logodiv dip-inbl tran">
+        </div>
+        <ul class="nano-content">
+            <li class="s-firstItem">
+                <div class="d-firstNav s-firstNav">
+                    <a href="javascript:void(0)" class="nav-link active" data-value="overview">
+                        <i class="iconfont">&#xe7b7;</i>
+                        <span>&nbsp;&nbsp;安全总览</span>
+                    </a>
                 </div>
-                <div id="headerMenuCollapse" class="header dip-inbl">
-                    <div class="container">
-                        <div class="row align-items-center">
-                            <div class="col-lg order-lg-first">
-                                <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
-                                    <li class="nav-item">
-                                        <a href="javascript:void(0)" class="nav-link active" data-value="overview">
-                                            <i class="iconfont">&#xe7b7;</i>安全总览
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="javascript:void(0)" class="nav-link" data-value="attack">
-                                            <i class="iconfont">&#xe73b;</i>攻击事件</a>
-                                    </li>
-                                    {#										<li class="nav-item dropdown">#}
-                                    {#											<a href="http://127.0.0.1:8000/#" class="nav-link"><i class="fe fe-check-square"></i>安全基线</a>#}
-                                    {#										</li>#}
-                                    <li class="nav-item">
-                                        <a href="javascript:void(0)" class="nav-link" data-value="agent">
-                                            <i class="iconfont">&#xe88b;</i>探针管理</a>
-                                    </li>
-                                    {#										<li class="nav-item">#}
-                                    {#											<a href="http://127.0.0.1:8000/#" class="nav-link"><i class="fe fe-zap"></i>插件管理</a>#}
-                                    {#										</li>#}
+            </li>
+            <li class="s-firstItem">
+                <div  class="d-firstNav s-firstNav">
+                    <a href="javascript:void(0)" class="nav-link" data-value="attack">
+                        <i class="iconfont">&#xe73b;</i>
+                        <span>&nbsp;&nbsp;攻击事件</span>
+                    </a>
+                </div>
+            </li>
+            <li class="s-firstItem">
+                <div class="d-firstNav s-firstNav">
+                    <a href="javascript:void(0)" class="nav-link" data-value="agent">
+                        <i class="iconfont">&#xe88b;</i>
+                        <span>&nbsp;&nbsp;探针管理
+                        <i class="iconfont slide_mark slide_down">&#xe64a;</i></span>
+                    </a>
+                </div>
+                <ul class="d-firstDrop s-firstDrop">
+                    <li>
+                        <div class="d-secondNav s-secondNav">
 
-                                    <li class="nav-item">
-                                        <a href="javascript:void(0)" class="nav-link" data-value="countDiv">
-                                            <i class="iconfont">&#xeb12;</i>统计信息</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="javascript:void(0)" class="nav-link" data-value="download">
-                                            <i class="iconfont">&#xeb12;</i>探针下载</a>
-                                    </li>
-                                    {#										<li class="nav-item">#}
-                                    {#											<a href="http://127.0.0.1:8000/#" class="nav-link"><i class="fe fe-user-check"></i>操作审计</a>#}
-                                    {#										</li>#}
-                                    {#										<li class="nav-item dropdown">#}
-                                    {#											<a href="http://127.0.0.1:8000/#" class="nav-link"><i class="fe fe-settings"></i>系统设置</a>#}
-                                    {#										</li>#}
-                                    <!--li class="nav-item"><a href="https://rasp.baidu.com/doc" target="_blank" class="nav-link"><i class="fe fe-file-text"></i>帮助文档</a></li-->
-                                </ul>
-                            </div>
+                            <a href="javascript:void(0)" data-value="server" class="nav-link-sec"><i class="iconfont">&#xe602;</i>服务器管理</a>
                         </div>
-                    </div>
+                        <ul class="d-secondDrop s-secondDrop">
+                            <li class="s-thirdItem">
+                                <div>
+                                <a href="#"  class="nav-link-thd">未分组</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <div class="d-secondNav s-secondNav">
+                            <a href="javascript:void(0)" data-value="website" class="nav-link-sec"><i class="iconfont">&#xe602;</i>网站管理</a>
+                        </div>
+                        <ul class="d-secondDrop s-secondDrop">
+                            <li class="s-thirdItem">
+                                <div>
+                                <a href="#"  class="nav-link-thd">111</a>
+                                </div>
+                            </li>
+                            <li class="s-thirdItem">
+                                <div>
+                                <a href="#"  class="nav-link-thd">未分组</a></div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li  class="s-firstItem">
+                <div class="d-firstNav s-firstNav">
+                    <a href="javascript:void(0)" class="nav-link" data-value="countDiv" target="_blank">
+                        <i class="iconfont">&#xe604;</i>
+                        <span>&nbsp;&nbsp;统计信息</span>
+                    </a>
                 </div>
-                <div class="header dip-inbl headertop-right">
+        </li>
+            <li  class="s-firstItem">
+                <div  class="d-firstNav s-firstNav">
+                    <a href="javascript:void(0)" class="nav-link" data-value="download">
+                        <i class="iconfont">&#xeb12;</i>
+                        <span>&nbsp;&nbsp;探针下载</span>
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </div>
+   <div id="main_right">
+        <div class='header-top'>
+                <div class="menu_button"><i class="iconfont">&#xe666;</i></div>
+                <div class="dip-inbl headertop-right">
                     <div class="top-info-wrap">
                         <ul class="top-info-list clearfix">
-                        <li>欢迎：{{ login_username }}</li>
-                        <li><a title="退出" href="/logout"><i class="iconfont" title="退出登录">&#xeb13;</i></a></li>
+                            <li>欢迎：{{ login_username }}</li>
+                            <li><a title="退出" href="/logout"><i class="iconfont" title="退出登录">&#xeb13;</i></a></li>
 
                         </ul>
                     </div>
                 </div>
-
-            </div>
         </div>
         <div class="setup" >
             <div class="container1" id="div_container" style = "background: #fff;">

@@ -165,7 +165,7 @@ function attrack_recent_warning(data) {
     for (x in data) {
 
         table += '<tr>';
-        table += '<td>';
+        table += '<td style="min-width: 135px;">';
         table += data[x]['event_time'];
         table += '</td>';
         table += '<td>';

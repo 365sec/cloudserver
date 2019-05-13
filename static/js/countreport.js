@@ -517,24 +517,30 @@ function attack_source(data,div) {
     source.append(html);
 }
 function print_report() {
+    $('.s-side').hide();
     $('.header-top').hide();
-    $('.footer').hide();
     $('.print').hide();
     $('.download').hide();
-    $('.datasel').hide();
+    $('.search_btngroup').hide();
+    $('.footer').hide();
+    $('#main_right').css('overflow-y','initial')
     window.print();
     $('.header-top').show();
     $('.footer').show();
     $('.print').show();
     $('.download').show();
-    $('.datasel').show();
+    $('.search_btngroup').show();
+    $('.s-side').show();
+    $('#main_right').css('overflow-y','scroll')
 }
 function download_report() {
+    $('.s-side').hide();
     $('.header-top').hide();
-    $('.footer').hide();
     $('.print').hide();
     $('.download').hide();
-    $('.datasel').show();
+    $('.search_btngroup').hide();
+    $('.footer').hide();
+    $('#main_right').css('overflow-y','initial')
 
     html2canvas($(document.body),{
         background: '#f7f7f7',
@@ -580,5 +586,7 @@ function download_report() {
     $('.footer').show();
     $('.print').show();
     $('.download').show();
-    $('.datasel').show();
+    $('.search_btngroup').show();
+    $('.s-side').show();
+    $('#main_right').css('overflow-y','scroll')
 }

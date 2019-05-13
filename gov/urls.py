@@ -39,9 +39,11 @@ urlpatterns = [
     url(r'^index$', views.index),
     url(r'^overview$', link.overview),
     url(r'^attack$', link.attack),
-    url(r'^agent$', link.agent),
+    url(r'^manage$', link.manage),
     url(r'^countreport$', link.countreport),
     url(r'^agent_download$', link.agent_download),
+    url(r'^agent_detail$', link.agent_detail),
+    url(r'^manage_detail$', link.manage_detail),
     url(r'', views.index),
 ]
 
