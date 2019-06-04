@@ -30,7 +30,9 @@ urlpatterns = [
     url(r'^countreport$', link.countreport),
     url(r'^agent_download$', link.agent_download),
     url(r'^agent_detail$', link.agent_detail),
-    url(r'^manage_detail$', link.manage_detail),
+    url(r'^server_manage_detail$', link.server_manage_detail),
+    url(r'^website_manage_detail$', link.website_manage_detail),
+
     url(r'^manage$', link.manage),
     url(r'', login.index),
 ]

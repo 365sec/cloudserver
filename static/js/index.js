@@ -30,7 +30,7 @@ $(document).on("click", ".nano-content li>div", function () {
         default:
     }
 });
-$(document).on("click", ".map-tab", function (e) {
+$(document).on("click", ".tab", function (e) {
     $(this).addClass('current').siblings().removeClass('current');
 });
 $(document).on("click", ".nav-tabs>li", function (e) {

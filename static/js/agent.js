@@ -8,7 +8,6 @@ function agent_click(page) {
         dataType:"html",
         type: "get",
         success: function(res){
-            let secvalue = $(this).children().attr("data-secvalue");
             $("#div_container").html($(res));
             if (page == null || page < 1) {
                 page = 1;
@@ -31,7 +30,7 @@ function agent_click(page) {
                     div_container.text("");
                     let html = '<h1 class="page-title" ><i class="iconfont">&#xe73b;</i>探针管理</h1>';
                     html += '<div class="card">';
-                    html += '<div class = "btngroup"><button  class="btn" onclick="javascript:void(0)" >添加主机</button></div>'
+                    html += '<div class = "btngroup"><div  class="btn" onclick="javascript:void(0)" >添加主机</div></div>'
                     html += '<div class="card-body">';
                     html += '<table class="table table-bordered">';
                     html += '<thead>';
@@ -88,6 +87,11 @@ function agent_click(page) {
                     //  html += '<a href="javascript:void(0);" onclick="agent_jump()">跳转</a>';
                     html += '</ul>';
                     div_container.append(html);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus);
                 }
             });
             $(".container1").css('background-color', '#f0f2f5');
@@ -121,9 +125,6 @@ $(document).on("click", ".detail-a-agent", function () {
                 async: false,
                 dataType: "json",
                 success: function (data_list) {
-                    //// console.log(data_list['algorithm_config']);
-                    // // console.log(data_list['globalConfig']);
-                    // // console.log(data_list['httpProtectConfig']);
                     httpProtectConfig = data_list['httpProtectConfig'];
                     algorithm_config = data_list['algorithm_config'];
                     globalConfig = data_list['globalConfig'];
@@ -427,6 +428,7 @@ function formSubmit() {
 //添加主机弹窗
 //关闭弹窗
 $(document).on('click',".layout .close,.layout .layout-close",function (e) {
+    $('.shade>.layout').html('');
     actionIn(".layout", 'action_scale_out', .3, "");
     $(".shade").css({
         visibility: "hidden"
@@ -436,6 +438,18 @@ $(document).on('click',".layout .close,.layout .layout-close",function (e) {
 });
 //打开弹窗
 $(document).on("click", ".manageDiv .card .btngroup .btn", function() {
+    let html = `<div class="layout-title">备注信息：</div>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <form action="post">
+            <div id="remarkid">Agent ID <span style="color:#F00" id="agent-id">{{ agent_id }}</span></div>
+            <br/>
+            <div contenteditable="true" id="remarkmsg"></div>
+            <div class='layout-btn'>
+                <div class="btn layout-close" onclick="formSubmit()">保存</div>
+                <div class="btn layout-close" onclick="javascript:void(0)">关闭</div>
+            </div>
+        </form>`;
+    $('.shade>.layout').html(html);
     actionIn(".layout", 'action_scale', .3, "");
     $(".shade").css({
         visibility: "visible"
@@ -443,7 +457,7 @@ $(document).on("click", ".manageDiv .card .btngroup .btn", function() {
     event.stopPropagation(); //阻止事件向上冒泡
 });
 
-//
+//拦截记录忽略按钮切换
 $(document).on("click", ".btn-group button", function () {
     $(this).addClass("active").siblings().removeClass("active");
 })

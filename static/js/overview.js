@@ -7,20 +7,12 @@ function overview_click() {
         url: 'overview',
         dataType:"html",
         type: "get",
-
         success: function(res){
-
             $("#div_container").html($(res));
-            // $(".overviewDiv").show().siblings().hide();
             $(".container1").css('background-color', '#fff');
             overviewFlash();
         }
-
     });
-
-    //     $.get("../../templates/overview.html", function(data) {
-    //     $("#div_container").html(data)
-    // })
 
 }
 
@@ -638,7 +630,7 @@ function chartDiv_init(obj) {
 }
 
 $(function () {
-    tabs($(".map-tab"));
+    tabs($(".tab"));
     //初始化echarts盒子宽高
     chartDiv_init('attack_type_dic_div');
     chartDiv_init('chart_map');

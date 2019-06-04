@@ -62,8 +62,11 @@ def agent_download(request):
 def agent_detail(request):
     return render(request, 'agent_detail.html', {})
 
-def manage_detail(request):
-    return render(request, 'manage_detail.html', {})
+def server_manage_detail(request):
+    return render(request, 'server_manage_detail.html', {})
+
+def website_manage_detail(request):
+    return render(request, 'website_manage_detail.html', {})
 
 def manage(request):
     return render(request, 'manage.html', {})

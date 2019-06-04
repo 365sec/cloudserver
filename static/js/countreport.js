@@ -16,7 +16,7 @@ function report_btn() {
                     barchart(data_list['attack_target'].reverse(),'attack_target_part');
                     attack_server_ip(data_list['attack_server_ip'].reverse(),'attack_server_ip_part');
                     barchartv(data_list['attack_server'].reverse(),'attack_server_part');
-                    // console.log(data_list['attack_level'],typeof data_list['attack_level'])
+                    console.log(data_list['attack_level'])
                     piechart(data_list['attack_level'],'attack_level_part');
                     // console.log(data_list['attack_scan'],typeof data_list['attack_scan']);
                     piechart1(data_list['attack_scan'],'attack_scan_part');
@@ -286,7 +286,7 @@ function piechart(data,div) {
         series: [{
             name: '威胁指数',
             type: 'pie',
-            radius: ['60%', '75%'],
+            radius: ['55%', '70%'],
             center: ['40%', '50%'],
             clockwise: false,
 
@@ -310,7 +310,7 @@ function piechart(data,div) {
 
             },
             grid: {
-                left: '0',
+                left: '5%',
                 top: '0',
                 right: '0',
                 bottom: '0',

@@ -47,7 +47,7 @@ function attack_click(attack_page) {
                 url: "attack/query/",
                 type: 'POST',
                 data: data,
-                async: false,
+                // async: false,
                 dataType: "json",
                 success: function (data_list) {
                     let data = data_list['stack'];
@@ -89,8 +89,8 @@ function attack_click(attack_page) {
 
 
                     //html_select+='<a href="javascript:void(0);" onclick="attack_click(1)" >查询<a/>';
-                    html_select += '<button  class="btn" onclick="attack_click_search(1)" >查询</button>';
-                    html_select += '<button  class="btn" onclick="reset()" >重置</button>';
+                    html_select += '<div  class="btn" onclick="attack_click_search(1)" >查询</div>';
+                    html_select += '<div  class="btn" onclick="reset()" >重置</div>';
                     //html_select+='<a href="javascript:void(0);" onclick="reset()" >重置<a/>';
                     html_select += '</div>';
                     html_select += '</div>';
@@ -234,7 +234,7 @@ function attack_click_search(attack_page) {
         url: "attack/query/",
         type: 'POST',
         data: data,
-        async: false,
+        // async: false,
         dataType: "json",
         success: function (data_list) {
             let data = data_list['stack'];
