@@ -6,7 +6,7 @@ from django.views.decorators.http import require_http_methods
 import time
 import json
 import hashlib
-from t.models import users
+from t.models import TUsers
 
 AGENT_ID = None
 
@@ -34,7 +34,7 @@ def login(request):
         password = request.POST.get("password")
         m2 = hashlib.md5()
         m2.update(password)
-        u = users.objects.filter(username=username).first()
+        u = TUsers.objects.filter(username=username).first()
         print(u.password)
         print(m2.hexdigest())
         if u.password == m2.hexdigest():

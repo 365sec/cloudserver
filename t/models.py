@@ -6,77 +6,157 @@ from django.db import models
 # Create your models here.
 
 
-class agents(models.Model):
+class DjangoMigrations(models.Model):
+    app = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
+    applied = models.DateTimeField()
 
-    agent_id=models.CharField(max_length=50,db_column='agent_id',primary_key=True)
-    sensor_type_id=models.CharField(max_length=50,db_column='sensor_type_id',blank=False)
-    os=models.CharField(max_length=255,db_column='os',blank=False)
-    host_name=models.CharField(max_length=255,db_column='host_name',blank=False)
-    version=models.CharField(max_length=255,db_column='version',blank=False)
-    language=models.CharField(max_length=255,db_column='language',blank=False)
-    server_type=models.CharField(max_length=255,db_column='server_type',blank=False)
-    server_version=models.CharField(max_length=255,db_column='server_version',blank=False)
-    register_ip=models.CharField(max_length=255,db_column='register_ip',blank=False)
-    remote_ip = models.CharField(max_length=255, db_column='remote_ip', blank=False)
-    online=models.IntegerField(db_column='online',blank=False)
-    disabled=models.IntegerField(db_column='disabled',blank=False)
-    remark = models.CharField(max_length=1000, db_column='remark', blank=False)
-    owner = models.CharField(max_length=255, db_column='owner', blank=False)
-
-class attack_event(models.Model):
-
-    event_issue_id=models.CharField(max_length=100,db_column='event_issue_id',primary_key=True)
-    agent_id=models.CharField(max_length=100,db_column='agent_id',blank=True)
-    event_type=models.CharField(max_length=100,db_column='event_type',blank=True)
-    event_time=models.DateTimeField(db_column='event_time',blank=True)
-    server_hostname=models.CharField(max_length=200,db_column='server_hostname',blank=False)
-    event_id=models.IntegerField(db_column='event_id',blank=True)
-    #event=models.ForeignKey('event_knowledge',to_field='event_id',default=1,on_delete=models.CASCADE)
-
-    attack_type=models.CharField(max_length=100,db_column='attack_type',blank=False)
-    attack_params=models.TextField(db_column='attack_params',blank=False)
-    stack_trace=models.TextField(db_column='stack_trace',blank=False)
-    plugin_name=models.CharField(max_length=100,db_column= 'plugin_name',blank=False)
-    plugin_message=models.CharField(max_length=4000,db_column='plugin_message',blank=False)
-    plugin_confidence=models.IntegerField(db_column='plugin_confidence',blank=False)
-    intercept_state=models.CharField(max_length=255,db_column='intercept_state',blank=False)
-    request_id=models.CharField(max_length=100,db_column='request_id',blank=False)
-    attack_source=models.CharField(max_length=100,db_column='attack_source',blank=False)
-    target=models.CharField(max_length=1000,db_column='target',blank=False)
-    target_port=models.IntegerField(db_column='target_port',blank=False)
-    server_ip=models.CharField(max_length=100,db_column='server_ip',blank=False)
-    server_type=models.CharField(max_length=100,db_column='server_type',blank=False)
-    server_version=models.CharField(max_length=100,db_column='server_version',blank=False)
-    url=models.CharField(max_length=500,db_column='url',blank=False)
-    body=models.TextField(db_column='body',blank=False)
-    path=models.CharField(max_length=500,db_column='path',blank=False)
-    user_agent=models.CharField(max_length=200,db_column='user_agent',blank=False)
-    referer=models.CharField(max_length=200,db_column='referer',blank=True)
-    threat_level=models.IntegerField(db_column='threat_level',blank=False)
-    method=models.CharField(max_length=50,db_column='method',blank=False)
-    system_user=models.CharField(max_length=100,db_column='system_user',blank=True)
-    process_path=models.CharField(max_length=500,db_column='process_path',blank=True)
+    class Meta:
+        managed = False
+        db_table = 'django_migrations'
 
 
-class event_knowledge(models.Model):
-    event_id=models.IntegerField(db_column="event_id",primary_key=True)
-    event_type=models.IntegerField(db_column="event_type",blank=False)
-    event_name=models.CharField(max_length=500,db_column="event_name",blank=False)
-    event_description=models.IntegerField(db_column="event_description",blank=True)
-    event_advice=models.TextField(db_column="event_advice",blank=True)
+class TAgents(models.Model):
+    agent_id = models.CharField(primary_key=True, max_length=50)
+    sensor_type_id = models.CharField(max_length=50, blank=True, null=True)
+    os = models.CharField(max_length=255, blank=True, null=True)
+    host_name = models.CharField(max_length=255, blank=True, null=True)
+    version = models.CharField(max_length=255, blank=True, null=True)
+    rasp_home = models.CharField(max_length=255, blank=True, null=True)
+    language = models.CharField(max_length=255, blank=True, null=True)
+    server_type = models.CharField(max_length=255, blank=True, null=True)
+    server_version = models.CharField(max_length=255, blank=True, null=True)
+    remote_ip = models.CharField(max_length=255, blank=True, null=True)
+    register_ip = models.CharField(max_length=255, blank=True, null=True)
+    online = models.PositiveIntegerField(blank=True, null=True)
+    disabled = models.PositiveIntegerField(blank=True, null=True)
+    remark = models.CharField(max_length=1000, blank=True, null=True)
+    owner = models.CharField(max_length=255, blank=True, null=True)
 
-class plugins(models.Model):
-    agent_id=models.CharField(db_column="agent_id",max_length=255,primary_key=True,)
-    plugin_version=models.CharField(db_column="plugin_version",blank=False,max_length=255)
-    plugin_name=models.CharField(db_column="plugin_name",max_length=255,blank=True)
-    globalConfig=models.TextField(db_column="globalConfig",blank=True)
-    httpProtectConfig=models.TextField(db_column="httpProtectConfig",blank=True)
-    algorithm_config=models.TextField(db_column="algorithm_config",blank=True)
-    plugin_template=models.TextField(db_column="plugin_template",blank=True)
+    class Meta:
+        managed = False
+        db_table = 't_agents'
 
-class users(models.Model):
-    username = models.CharField(db_column="username", max_length=255,primary_key=True)
-    password = models.CharField(db_column="password", max_length=255, blank=True)
-    phone = models.CharField(db_column="phone", max_length=255, blank=True)
-    email = models.CharField(db_column="email", max_length=255, blank=True)
-    superuser = models.CharField(db_column="superuser", max_length=1, blank=True)
+
+class TAlgorithmConfig(models.Model):
+    name = models.CharField(max_length=255)
+    desc = models.CharField(max_length=255)
+    action = models.CharField(max_length=255)
+    default_action = models.CharField(max_length=255)
+
+    class Meta:
+        managed = False
+        db_table = 't_algorithm_config'
+
+
+class TAttackEvent(models.Model):
+    event_issue_id = models.CharField(primary_key=True, max_length=100)
+    agent_id = models.CharField(max_length=100)
+    event_type = models.CharField(max_length=50)
+    event_time = models.DateTimeField()
+    server_hostname = models.CharField(max_length=200, blank=True, null=True)
+    event_id = models.IntegerField()
+    attack_type = models.CharField(max_length=100, blank=True, null=True)
+    attack_params = models.TextField(blank=True, null=True)
+    stack_trace = models.TextField(blank=True, null=True)
+    plugin_name = models.CharField(max_length=100, blank=True, null=True)
+    plugin_message = models.CharField(max_length=4000, blank=True, null=True)
+    plugin_confidence = models.IntegerField(blank=True, null=True)
+    intercept_state = models.CharField(max_length=255, blank=True, null=True)
+    request_id = models.CharField(max_length=100, blank=True, null=True)
+    attack_source = models.CharField(max_length=100, blank=True, null=True)
+    target_port = models.IntegerField(blank=True, null=True)
+    target = models.CharField(max_length=1000, blank=True, null=True)
+    server_ip = models.CharField(max_length=100, blank=True, null=True)
+    server_type = models.CharField(max_length=100, blank=True, null=True)
+    server_version = models.CharField(max_length=100, blank=True, null=True)
+    url = models.TextField(blank=True, null=True)
+    body = models.TextField(blank=True, null=True)
+    path = models.CharField(max_length=1000, blank=True, null=True)
+    user_agent = models.CharField(max_length=1000, blank=True, null=True)
+    referer = models.CharField(max_length=1000, blank=True, null=True)
+    threat_level = models.IntegerField()
+    method = models.CharField(max_length=50, blank=True, null=True)
+    system_user = models.CharField(max_length=100, blank=True, null=True)
+    process_path = models.CharField(max_length=500)
+
+    class Meta:
+        managed = False
+        db_table = 't_attack_event'
+
+
+class TEventKnowledge(models.Model):
+    event_id = models.IntegerField(primary_key=True)
+    event_type = models.IntegerField()
+    event_name = models.CharField(max_length=500)
+    event_description = models.TextField(blank=True, null=True)
+    event_advice = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 't_event_knowledge'
+
+
+class THostAgent(models.Model):
+    agent_id = models.CharField(primary_key=True, max_length=100)
+    version = models.CharField(max_length=255)
+    host_name = models.CharField(max_length=255)
+    os = models.CharField(max_length=1000)
+    os_full = models.CharField(max_length=1000)
+    internal_ip = models.CharField(max_length=255, blank=True, null=True)
+    extranet_ip = models.CharField(max_length=255, blank=True, null=True)
+    cpu = models.CharField(max_length=255, blank=True, null=True)
+    memory = models.CharField(max_length=255, blank=True, null=True)
+    last_hearbeat = models.DateTimeField(blank=True, null=True)
+    online = models.IntegerField(blank=True, null=True)
+    remark = models.CharField(max_length=1000, blank=True, null=True)
+    own_user = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 't_host_agent'
+
+
+class TPlugins(models.Model):
+    agent_id = models.CharField(primary_key=True, max_length=255)
+    plugin_version = models.CharField(max_length=255)
+    plugin_name = models.CharField(max_length=255, blank=True, null=True)
+    globalconfig = models.TextField(db_column='globalConfig', blank=True, null=True)  # Field name made lowercase.
+    httpprotectconfig = models.TextField(db_column='httpProtectConfig', blank=True, null=True)  # Field name made lowercase.
+    algorithm_config = models.TextField(blank=True, null=True)
+    plugin_template = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 't_plugins'
+
+
+class TSecurityPolicyEvent(models.Model):
+    event_id = models.CharField(primary_key=True, max_length=100)
+    event_type = models.CharField(max_length=50)
+    event_time = models.DateTimeField()
+    policy_id = models.IntegerField()
+    server_hostname = models.CharField(max_length=200, blank=True, null=True)
+    server_nic = models.CharField(max_length=100, blank=True, null=True)
+    server_type = models.CharField(max_length=100, blank=True, null=True)
+    server_version = models.CharField(max_length=100, blank=True, null=True)
+    message = models.CharField(max_length=4000, blank=True, null=True)
+    params = models.TextField(blank=True, null=True)
+    stack_trace = models.TextField(blank=True, null=True)
+    threat_level = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 't_security_policy_event'
+
+
+class TUsers(models.Model):
+    username = models.CharField(primary_key=True, max_length=255)
+    password = models.CharField(max_length=255)
+    phone = models.CharField(max_length=255, blank=True, null=True)
+    email = models.CharField(max_length=255, blank=True, null=True)
+    superuser = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 't_users'

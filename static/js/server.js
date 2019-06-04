@@ -3,6 +3,7 @@ function server_click(page) {
     * 服务器管理被点击
     * */
     //let page=1;
+    console.log("服务器管理被点击")
     $.ajax( {
         url: 'manage',
         dataType:"html",

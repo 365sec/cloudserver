@@ -19,11 +19,11 @@ import hashlib
 import geoip2.database
 from common.scan import get_scan
 from common.common import readConfig, ip_to_address
-from t.models import agents
-from t.models import attack_event
-from t.models import event_knowledge
-from t.models import plugins
-from t.models import users
+from t.models import TAgents
+from t.models import TAttackEvent
+from t.models import TEventKnowledge
+from t.models import TPlugins
+from t.models import TUsers
 from t.auth import auth
 from t.login import AGENT_ID
 
@@ -40,7 +40,7 @@ def add_host(request):
     remark_message = request.POST.get('remarkmsg')
     try:
         with transaction.atomic():
-            agent = agents()
+            agent = TAgents()
             agent.disabled = 0
             agent.online = 0
             agent.agent_id = AGENT_ID
@@ -49,7 +49,7 @@ def add_host(request):
             agent.save()
 
             # 在t_plugins中增加记录
-            plugin = plugins()
+            plugin = TPlugins()
             plugin.agent_id = AGENT_ID
             plugin.plugin_name = "offical"
             timeArray = time.localtime()
@@ -78,16 +78,16 @@ def add_host(request):
 @auth
 def agent_query(request):
     global SENSOR_TYPE
-
+    print("ahentquery")
     # 当前页码数
     page = request.POST.get("page")
     page = int(page)
     result = None
     if request.session['superuser']:
-        result = agents.objects.all().order_by("-online")
+        result = TAgents.objects.all().order_by("-online")
     else:
         username = request.session['username']
-        result = agents.objects.filter(owner=username).order_by("-online")
+        result = TAgents.objects.filter(owner=username).order_by("-online")
     # 每页显示多少个数据
     page_size = 15
     # 最大分页数
@@ -96,7 +96,7 @@ def agent_query(request):
         max_size = 1
     if page > max_size:
         page = max_size
-    agents_list = []
+    TAgents_list = []
     for x in result[(page - 1) * page_size:(page) * page_size]:
         y = model_to_dict(x)
 
@@ -109,9 +109,9 @@ def agent_query(request):
                 y[k] = ''
         y = json.dumps(y)
 
-        agents_list.append(y)
+        TAgents_list.append(y)
     data = {
-        "agents": agents_list,
+        "agents": TAgents_list,
         "max_size": max_size,
         "page": page,
     }
@@ -130,7 +130,7 @@ def attack_event_query(request):
 
     if not request.session['superuser']:
         username = request.session['username']
-        result = agents.objects.filter(owner=username)
+        result = TAgents.objects.filter(owner=username)
         agent_ids = [x.agent_id for x in result]
         filter_condition['agent_id__in'] = agent_ids
 
@@ -138,7 +138,7 @@ def attack_event_query(request):
     attack_type = request.POST.get("attack_type")
     event_dic = {}
     event_div_arr = []
-    for x in event_knowledge.objects.filter(event_type=1):
+    for x in TEventKnowledge.objects.filter(event_type=1):
         event_div_arr.append(x.event_name)
         event_dic[x.event_name] = x.event_id
     if attack_type != "" and attack_type != None:
@@ -166,9 +166,9 @@ def attack_event_query(request):
         filter_condition['threat_level'] = attack_level
 
     if msg_filter:
-        result = attack_event.objects.filter(msg_filter, **filter_condition).order_by('-event_time')
+        result = TAttackEvent.objects.filter(msg_filter, **filter_condition).order_by('-event_time')
     else:
-        result = attack_event.objects.filter(**filter_condition).order_by('-event_time')
+        result = TAttackEvent.objects.filter(**filter_condition).order_by('-event_time')
 
     max_lenth = result.count()
     # 每页显示多少个数据
@@ -187,7 +187,7 @@ def attack_event_query(request):
         y['threat_level'] = THREAT_LEVEL.get(y['threat_level'], '')
         y['attack_type1'] = y['attack_type']
         try:
-            y['attack_type'] = event_knowledge.objects.get(event_id=y['event_id']).event_name
+            y['attack_type'] = TEventKnowledge.objects.get(event_id=y['event_id']).event_name
         except Exception as e:
             y['attack_type'] = ''
         y['plugin_message'] = y['plugin_message'].replace('<', '&lt').replace('>', '&gt')
@@ -224,6 +224,11 @@ def attack_event_query(request):
 
 @auth
 def attack_query_source(request):
+    '''
+    攻击源ip相关查询
+    :param request:
+    :return:
+    '''
     # 上一次查询到的位置
     last = request.POST.get("last")
     last = int(last)
@@ -247,7 +252,7 @@ def attack_query_source(request):
     # 是否被拦截
     intercept_state = None
 
-    result = attack_event.objects.all().values_list('event_time', 'attack_source', 'plugin_message',
+    result = TAttackEvent.objects.all().values_list('event_time', 'attack_source', 'plugin_message',
                                                     'intercept_state').filter(server_ip=ip, attack_source=attack_source)
     num = result.count()
     last_next = last + 10
@@ -290,13 +295,13 @@ def attack_query_source(request):
 @auth
 def query_threat_level(request):
     data = {}
-    attack = attack_event.objects
+    attack = TAttackEvent.objects
 
     filter_condition = {}
     result = None
     if not request.session['superuser']:
         username = request.session['username']
-        result = agents.objects.filter(owner=username)
+        result = TAgents.objects.filter(owner=username)
         agent_ids = [x.agent_id for x in result]
         filter_condition['agent_id__in'] = agent_ids
 
@@ -319,13 +324,13 @@ def query_attack_source(request):
     flag = request.POST.get("flag")
     flag=int(flag)
     data = {}
-    attack = attack_event.objects
+    attack = TAttackEvent.objects
 
     filter_condition = {}
     result = None
     if not request.session['superuser']:
         username = request.session['username']
-        result = agents.objects.filter(owner=username)
+        result = TAgents.objects.filter(owner=username)
         agent_ids = [x.agent_id for x in result]
         filter_condition['agent_id__in'] = agent_ids
 
@@ -381,7 +386,7 @@ def query_attack_source(request):
 def query_attack_source_map(request):
     attack_source_map = {}
     data = {}
-    attack = attack_event.objects
+    attack = TAttackEvent.objects
     attrack_source = attack.values_list('attack_source').annotate(number=Count('attack_source')).order_by('-number')
     gi = geoip2.database.Reader('data/geoip/GeoLite2-City.mmdb', locales=['zh-CN'])
     for item in attrack_source:
@@ -407,13 +412,13 @@ def query_attack_source_map(request):
 @auth
 def query_attack_times(request):
     data = {}
-    attack = attack_event.objects
+    attack = TAttackEvent.objects
 
     filter_condition = {}
     result = None
     if not request.session['superuser']:
         username = request.session['username']
-        result = agents.objects.filter(owner=username)
+        result = TAgents.objects.filter(owner=username)
         agent_ids = [x.agent_id for x in result]
         filter_condition['agent_id__in'] = agent_ids
 
@@ -447,19 +452,19 @@ def query_attack_times(request):
 @auth
 def query_attack_type(request):
     data = {}
-    attack = attack_event.objects
+    attack = TAttackEvent.objects
 
     filter_condition = {}
     result = None
     if not request.session['superuser']:
         username = request.session['username']
-        result = agents.objects.filter(owner=username)
+        result = TAgents.objects.filter(owner=username)
         agent_ids = [x.agent_id for x in result]
         filter_condition['agent_id__in'] = agent_ids
 
     # 统计攻击事件
     attack_type = {}
-    result = event_knowledge.objects.all()
+    result = TEventKnowledge.objects.all()
     for x in result:
         attack_type[str(x.event_id)] = x.event_name
 
@@ -485,18 +490,18 @@ def query_attack_type(request):
 @auth
 def query_attack_warn(request):
     data = {}
-    attack = attack_event.objects
+    attack = TAttackEvent.objects
 
     filter_condition = {}
     result = None
     if not request.session['superuser']:
         username = request.session['username']
-        result = agents.objects.filter(owner=username)
+        result = TAgents.objects.filter(owner=username)
         agent_ids = [x.agent_id for x in result]
         filter_condition['agent_id__in'] = agent_ids
 
     attack_type = {}
-    result = event_knowledge.objects.all()
+    result = TEventKnowledge.objects.all()
     for x in result:
         attack_type[str(x.event_id)] = x.event_name
 
@@ -520,7 +525,7 @@ def query_attack_warn(request):
 def plugins_manage(request):
     id = request.POST.get("id")
 
-    result = plugins.objects.all().filter(agent_id=id)
+    result = TPlugins.objects.all().filter(agent_id=id)
     data1 = {}
     for x in result:
         data1 = model_to_dict(x)
@@ -535,7 +540,7 @@ def plugins_update(request):
     http = request.POST.get('http')
     glob = request.POST.get('glob')
 
-    plugin = plugins.objects.get(agent_id=id)
+    plugin = TPlugins.objects.get(agent_id=id)
     plugin.algorithm_config = algo
     plugin.httpProtectConfig = http
     plugin.globalConfig = glob
@@ -560,7 +565,7 @@ def view_report(request):
         dt_e = datetime.strptime(attack_time_range.split(" ~ ")[1], "%Y-%m-%d")
     num = dt_e - dt_s
 
-    attack_time_range = attack_event.objects.filter(event_time__range=(dt_s, dt_e))
+    attack_time_range = TAttackEvent.objects.filter(event_time__range=(dt_s, dt_e))
 
 
     attack = attack_time_range
@@ -634,7 +639,7 @@ def view_report(request):
     # 事件类型统计
     attack_type = {}
     attack_type_list = []
-    result = event_knowledge.objects.all()
+    result = TEventKnowledge.objects.all()
     for x in result:
         attack_type[str(x.event_id)] = x.event_name
     attack_type_ = attack.values_list('event_id').annotate(number=Count('event_id')).order_by('-number')

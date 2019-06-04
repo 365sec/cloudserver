@@ -4,7 +4,7 @@ import time
 
 from django.http import HttpResponse, response, StreamingHttpResponse
 from django.shortcuts import render
-from t.models import agents
+
 from django.http import FileResponse
 from common.data import CONF
 from common.common import file_iterator
