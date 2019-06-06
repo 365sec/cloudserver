@@ -57,10 +57,10 @@ WSGI_APPLICATION = 'mis.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE':'django.db.backends.mysql',
-        'NAME':'gov_defence_db',
+        'NAME':'gov_defence',
         'USER':'root',
         'PASSWORD':'12345',
-        'HOST':'10.38.39.65',
+        'HOST':'172.16.39.65',
         'PORT':'3306',
         'CONN_MAX_AGE':6
     }

@@ -1,15 +1,15 @@
 function attack_click(attack_page) {
     //let page=1;
-    $.ajax( {
+    $.ajax({
         url: 'attack',
-        dataType:"html",
+        dataType: "html",
         type: "get",
 
-        success: function(res){
+        success: function (res) {
 
             $("#div_container").html($(res));
 
-            attack_click_search(attack_page);
+            // attack_click_search(attack_page);
 
             let data = {};
             let attack_time = $("#attack_time").val();
@@ -50,7 +50,7 @@ function attack_click(attack_page) {
                 // async: false,
                 dataType: "json",
                 success: function (data_list) {
-                    let data = data_list['stack'];
+                    let data = data_list['attack'];
                     let now_page = data_list['page'];
                     let max_size = data_list['max_size'];
                     let attack_type_list = data_list['attack_type'];
@@ -109,13 +109,12 @@ function attack_click(attack_page) {
                     html += '<thead>';
                     html += '<tr>';
                     html += '<th>agent_id</th>';
-                    html += '<th>攻击时间</th>';
-                    html += '<th>攻击类型</th>';
-                    html += '<th style="min-width: 100px;">攻击来源</th>';
-                    html += '<th>URL</th>';
-                    html += '<th>报警消息</th>';
-                    html += '<th>拦截状态</th>';
-                    html += '<th>服务器类型</th>';
+                    html += '<th>时间</th>';
+                    html += '<th>事件名称</th>';
+                    html += '<th style="min-width: 100px;">事件内容</th>';
+                    html += '<th>源ip</th>';
+                    html += '<th>目的ip</th>';
+                    html += '<th>服务器名称</th>';
                     html += '<th>操作</th>';
                     html += '</tr>';
                     html += '</thead>';
@@ -126,12 +125,15 @@ function attack_click(attack_page) {
 
                         html += '<td >' + data[x]['agent_id'] + '</td>';
                         html += '<td>' + data[x]['event_time'] + '</td>';
-                        html += '<td>' + data[x]['attack_type'] + '</td>';
+                        html += '<td>' + data[x]['event_name'] + '</td>';
+                        html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['comment'] + '">' + data[x]['comment'] + '</td>';
                         html += '<td>' + data[x]['attack_source'] + '</td>';
-                        html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['url'] + '">' + data[x]['url'] + '</td>';
-                        html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['plugin_message'] + '">' + data[x]['plugin_message'] + '</td>';
-                        html += '<td>' + data[x]['intercept_state'] + '</td>';
-                        html += '<td>' + data[x]['server_type'] + '</td>';
+                        html += '<td>' + data[x]['server_ip'] + '</td>';
+                        html += '<td>' + data[x]['hostname'] + '</td>';
+                        // html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['url'] + '">' + data[x]['url'] + '</td>';
+                        // html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['plugin_message'] + '">' + data[x]['plugin_message'] + '</td>';
+                        // html += '<td>' + data[x]['intercept_state'] + '</td>';
+                        // html += '<td>' + data[x]['server_type'] + '</td>';
                         //html+='<td><a class="modal-a" href="#myModal" data-toggle="modal" data-target="#myModal"  >详情</a> </td>';
 
                         let b = new Base64();
@@ -159,7 +161,7 @@ function attack_click(attack_page) {
                     $("#attack_type_select").val(attack_type);
                     $("#attack_level_select").val(attack_level);
                     $(".container1").css('background-color', '#f0f2f5');
-                    if($(".daterangepicker").length > 0){
+                    if ($(".daterangepicker").length > 0) {
                         $('.daterangepicker').remove();
                     }
                     let beginTimeStore = '';
@@ -197,6 +199,7 @@ function attack_click(attack_page) {
 
 
 }
+
 function attack_click_search(attack_page) {
     let data = {};
     let attack_time = $("#attack_time").val();
@@ -237,7 +240,7 @@ function attack_click_search(attack_page) {
         // async: false,
         dataType: "json",
         success: function (data_list) {
-            let data = data_list['stack'];
+            let data = data_list['attack'];
             let now_page = data_list['page'];
             let max_size = data_list['max_size'];
             let attack_type_list = data_list['attack_type'];
@@ -245,7 +248,6 @@ function attack_click_search(attack_page) {
             // data = data.replace(/}{/g, "}****{").split("****");
 
             //let select_div=$("#table_select_div");
-
 
 
             let div_container = $("#table_div");
@@ -259,13 +261,12 @@ function attack_click_search(attack_page) {
             html += '<thead>';
             html += '<tr>';
             html += '<th>agent_id</th>';
-            html += '<th>攻击时间</th>';
-            html += '<th>攻击类型</th>';
-            html += '<th style="min-width: 100px;">攻击来源</th>';
-            html += '<th>URL</th>';
-            html += '<th>报警消息</th>';
-            html += '<th>拦截状态</th>';
-            html += '<th>服务器类型</th>';
+            html += '<th>时间</th>';
+            html += '<th>事件名称</th>';
+            html += '<th style="min-width: 100px;">事件内容</th>';
+            html += '<th>源ip</th>';
+            html += '<th>目的ip</th>';
+            html += '<th>服务器名称</th>';
             html += '<th>操作</th>';
             html += '</tr>';
             html += '</thead>';
@@ -274,14 +275,18 @@ function attack_click_search(attack_page) {
 
                 html += '<tr>';
 
+
                 html += '<td >' + data[x]['agent_id'] + '</td>';
                 html += '<td>' + data[x]['event_time'] + '</td>';
-                html += '<td>' + data[x]['attack_type'] + '</td>';
+                html += '<td>' + data[x]['event_name'] + '</td>';
+                html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['comment'] + '">' + data[x]['comment'] + '</td>';
                 html += '<td>' + data[x]['attack_source'] + '</td>';
-                html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['url'] + '">' + data[x]['url'] + '</td>';
-                html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['plugin_message'] + '">' + data[x]['plugin_message'] + '</td>';
-                html += '<td>' + data[x]['intercept_state'] + '</td>';
-                html += '<td>' + data[x]['server_type'] + '</td>';
+                html += '<td>' + data[x]['server_ip'] + '</td>';
+                html += '<td>' + data[x]['hostname'] + '</td>';
+                // html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['url'] + '">' + data[x]['url'] + '</td>';
+                // html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['plugin_message'] + '">' + data[x]['plugin_message'] + '</td>';
+                // html += '<td>' + data[x]['intercept_state'] + '</td>';
+                // html += '<td>' + data[x]['server_type'] + '</td>';
                 //html+='<td><a class="modal-a" href="#myModal" data-toggle="modal" data-target="#myModal"  >详情</a> </td>';
 
                 let b = new Base64();
@@ -316,6 +321,7 @@ function attack_click_search(attack_page) {
     let attach_search = $("#attack_search");
 
 }
+
 function reset() {
 
     $("#attack_time").val("");
@@ -357,7 +363,10 @@ $(document).on("click", ".detail-a", function () {
             <div class="modal-body">
                 <ul class="nav nav-tabs myTab">
                     <li class="active"><a href="#detailed_report" data-toggle="tab">详情报告</a></li>
-                    <li><a href="#attack_traceability" data-toggle="tab">攻击追溯</a></li>
+                    <div id = "attack_back">
+                        <li><a href="#attack_traceability" data-toggle="tab">攻击追溯</a></li>
+                    </div>
+                    
                 </ul>
                 <div class="tab-content myTabContent">
                     <div class="tab-pane fade in active" id="detailed_report">
@@ -393,104 +402,248 @@ $(document).on("click", ".detail-a", function () {
     </div>
   </div>
 
-
-
     `;
 
 
     $("#model_div").text("").append(model_html);
 
-
     let data1 = $(this).attr("data-name");
-    // // console.log(data)
     let b = new Base64();
     let data = JSON.parse(b.decode(data1));
-
-    let ioc_html = get_iochtml(data);
-
-    let attack_body_html = get_attack_body(data['server_ip'], data['attack_source']);
-
-    var html = '<div class="card">';
-    html += '<div class="card-body">';
-    //事件信息
-    html += '<div class = "card-body-title">事件信息</div>';
-    html += '<table class="table table-bordered">';
-//    html += '<thead>';
-//    html += '<tr>';
-    //html += '<th>名称</th>';
-    //html += '<th>值</th>';
-//    html += '</tr>';
-//    html += '</thead>';
-    html += '<tbody>';
-
-    //html += '<tr><td>Agent编号</td><td>' + data['agent_id'] + '</td></tr>';
-    html += '<tr><td class="td_left">事件发生时间</td><td>' + data['event_time'] + '</td></tr>';
-    html += '<tr><td>攻击事件编号</td><td>' + data['event_issue_id'] + '</td></tr>';
-    html += '<tr><td>攻击类型</td><td>' + data['attack_type'] + '</td></tr>';
-    html += '<tr><td>攻击参数</td><td><pre>' + data['attack_params'] + '</pre></td></tr>';
-    html += '<tr><td>调用栈</td><td><pre>' + data['stack_trace'] + '</pre></td></tr>';
-    html += '<tr><td>事件描述</td><td>' + data['plugin_message'] + '</td></tr>';
-    html += '<tr><td>事件可信度</td><td>' + data['plugin_confidence'] + '</td></tr>';
-    html += '<tr><td>拦截状态</td><td>' + data['intercept_state'] + '</td></tr>';
-    html += '<tr><td>风险等级</td><td>' + data['threat_level'] + '</td></tr>';
-    html += '</tbody>';
-    html += '</table>';
-    // html += '<tr><td>事件类型</td><td>' + data['event_type'] + '</td></tr>';
-    // html += '<tr><td>event_id</td><td>' + data['event_id'] + '</td></tr>';
-    // html += '<tr><td>插件名称</td><td>' + data['plugin_name'] + '</td></tr>';
-
-    //请求信息
-    html += '<div class = "card-body-title">请求信息</div>';
-    html += '<table class="table table-bordered">'
-    html += '<tbody>';
-    html += '<tr><td  class="td_left">攻击源IP</td><td>' + data['attack_source'] + '</td></tr>';
-    html += '<tr><td>被攻击域名</td><td>' + data['target'] + '</td></tr>';
-    html += '<tr><td>被攻击IP</td><td>' + data['server_ip'] + '</td></tr>';
-    html += '<tr><td>被攻击端口</td><td>' + data['target_port'] + '</td></tr>';
-    html += '<tr><td>被攻击服务器类型</td><td>' + data['server_type'] + '</td></tr>';
-    html += '<tr><td>被攻击服务器版本</td><td>' + data['server_version'] + '</td></tr>';
-    html += '<tr><td>请求ID</td><td>' + data['request_id'] + '</td></tr>';
-    html += '<tr><td>请求方法</td><td>' + data['method'] + '</td></tr>';
-    html += '<tr><td>被攻击URL</td><td>' + data['url'] + '</td></tr>';
-    html += '<tr><td>请求体</td><td><pre>' + data['body'] + '</pre></td></tr>';
-    html += '<tr><td>被攻击PATH路径</td><td>' + data['path'] + '</td></tr>';
-    html += '<tr><td>User-Agent</td><td>' + data['user_agent'] + '</td></tr>';
-    html += '<tr><td>Referer</td><td>' + data['referer'] + '</td></tr>';
-    html += '</tbody>';
-    html += '</table>';
-    //资产信息
-    html += '<div class = "card-body-title">资产信息</div>';
-    html += '<table class="table table-bordered">';
-    html += '<tbody>';
-    html += '<tr><td class="td_left">主机名称</td><td>' + data['server_hostname'] + '</td></tr>';
-    html += '<tr><td>系统用户名</td><td>' + data['system_user'] + '</td></tr>';
-    html += '<tr><td>进程路径</td><td>' + data['process_path'] + '</td></tr>';
-    html += '</tbody>';
-    html += '</table>';
-    html += '</div>';
-    html += '<div>';
+    //根据ID获得单条详细数据
+    detail_date = get_detail_data_from_issue_id(data['event_issue_id']);
+    //生成详情页部分
+    get_iochtml(detail_date);
 
 
-    $("#detailed_report_body").text("").append(html);
-    // $("#ioc_body").text("").append(ioc_html);
-    //  $("#attack_body").text("").append(attack_body_html);
 
-    //$("#attack_body").text("");
     $(".myModalLabel").text("攻击事件");
     $("#myModal").modal("show");
 
 });
 
 function get_iochtml(data) {
-
+    /*
+    详情页面显示部分
+    * */
     console.log(data);
+    if (data['event_category'] === "web_event") {
+        web_event_html(data);
+        //追踪溯源部分
+        get_attack_body(data['server_ip'], data['attack_source']);
+    } else if (data['event_category'] === "log_analysisd") {
+        log_event_html(data);
+        //追踪溯源部分
+        get_attack_body(data['dstip'], data['srcip']);
+    } else if (data['event_category'] === "file_integrity") {
+        $("#attack_back").remove();
+        file_event_html(data)
+    }
+
+
+}
+
+
+function get_attack_body(ip, attack_source) {
+    /*
+    * 追踪溯源部分 生成
+    * */
+    let parm = {};
+    parm['ip'] = ip;
+    parm['last'] = 0;
+    parm['attack_source'] = attack_source;
+    let temp_html = ``;
+
+    $.ajax({
+        url: "attack/query_source/",
+        type: 'POST',
+        data: parm,
+        async: false,
+        //dataType: "json",
+        success: function (data_list) {
+            console.log($(document).scrollTop());
+            console.log(data_list);
+            temp_html += ` <tr>
+                <td style="width: 10%; text-align: right;">
+                <br>
+                </td>
+                <td style="width: 4%; position: relative; padding: 0px;"><div class="event_detail_attack_detail_table_split"></div><div class="event_detail_attack_detail_table_circle red"></div></td>
+                <td style="width: 50%;">
+                <div style="font-weight: bold;">
+                攻击次数：${data_list['all_num']}
+                </div>
+                <span class="attack_start">
+                攻击开始
+                </span>
+                </td>
+                </tr>
+                    `;
+
+            for (x in data_list['list']) {
+                let temp_data = data_list['list'][x];
+                temp_html += `
+                    <tr>
+                        <td style="width: 10%; text-align: right;">${temp_data[0].split(" ")[0]}<br>${temp_data[0].split(" ")[1]}</td>
+                        <td style="width: 4%; position: relative; padding: 0px;">
+                            <div class="event_detail_attack_detail_table_split"></div>
+                            <div class="event_detail_attack_detail_table_circle"></div>
+                        </td>
+                        <td style="width: 50%;">
+                            <span class="ip event_detail_attack_detail_table_span label label-info">${temp_data[2]}</span>
+                            <span class="ipAddr">（${temp_data[1]}）</span>
+                            ${temp_data[3]}
+                            &nbsp;<span class="span_gray">${temp_data[4]}  </span>
+                            <!--<span class="event_log_detail" id="1664393756_2018-05-23">&gt;&gt;详情</span>-->
+                        </td>
+                    </tr>`;
+            }
+            // $("#remain_num").text("").append(data_list['all_num']- data_list["remain"]+"/"+ data_list['all_num']);
+
+            console.log("第一次查询结果 remain剩余", data_list["remain"]);
+            $("#attack_body").text("").append(temp_html);
+
+
+            if (data_list["remain"] !== 0) {
+                append_attack_body(ip, data_list['last_next'], attack_source);
+            } else {
+                append_attack_body_end()
+            }
+
+        }
+    });
+
+
+    //return temp_html;
+}
+
+function append_attack_body(ip, last, attack_source) {
+    //let  temp_list=  append_attack_body_more(ip,last,attack_source);
+    let last_next = 10;
+    let html;
+    let remian_next = 10;
+
+    let loadflag = true;
+    $("#attack_traceability_body").unbind("scroll").bind("scroll", function () {
+        let windowHeight = $("#attack_traceability_body").height();//当前窗口的高度
+        let scrollTop = $("#attack_traceability_body").scrollTop();//当前滚动条从上往下滚动的距离
+        let docHeight = $("#event_detail_attack_detail_table").height(); //当前文档的高度
+        //console.log(windowHeight,scrollTop,windowHeight+scrollTop,docHeight);
+        if (windowHeight > docHeight && loadflag) {
+            append_attack_body_end();
+            loadflag = false;
+        }
+        if (scrollTop + windowHeight >= docHeight && loadflag) {
+            if (remian_next >= 0) {
+
+                temp_list = append_attack_body_more(ip, last_next, attack_source);
+                remian_next = temp_list[2];
+                last_next = temp_list[0];
+                html = temp_list[1];
+                $("#attack_body").append(html);
+                //$("#remain_num").text("").append(remian_next);
+            }
+            if (remian_next === 0) {
+                append_attack_body_end();
+                //$("#remain_num").text("").append(remian_next);
+                remian_next = -1;
+                loadflag = false;
+            }
+        }
+
+    });
+
+}
+
+function append_attack_body_more(ip, last, attack_source) {
+
+    let parm = {};
+    parm['ip'] = ip;
+    parm['last'] = last;
+    parm['attack_source'] = attack_source;
+    console.log(parm);
+    let temp_html = ``;
+    let more_html = ``;
+    //剩未查询的数量
+    let remain_num = 0;
+    let last_nenxt;
+    let ramain;
+
+    $.ajax({
+        url: "attack/query_source/",
+        type: 'POST',
+        data: parm,
+        async: false,
+        success: function (data_list) {
+
+            for (x in data_list['list']) {
+                let temp_data = data_list['list'][x];
+                temp_html += `
+                    <tr>
+                        <td style="width: 10%; text-align: right;">${temp_data[0].split(" ")[0]}<br>${temp_data[0].split(" ")[1]}</td>
+                        <td style="width: 4%; position: relative; padding: 0px;">
+                            <div class="event_detail_attack_detail_table_split"></div>
+                            <div class="event_detail_attack_detail_table_circle"></div>
+                        </td>
+                        <td style="width: 50%;">
+                            <span class="ip event_detail_attack_detail_table_span label label-info">${temp_data[2]}</span>
+                            <span class="ipAddr">（${temp_data[1]}）</span>
+                            ${temp_data[3]}
+                            &nbsp;<span class="span_gray">${temp_data[4]}  </span>
+                            <!--<span class="event_log_detail" id="1664393756_2018-05-23">&gt;&gt;详情</span>-->
+                        </td>
+                    </tr>`;
+            }
+            last_nenxt = data_list['last_next'];
+            ramain = data_list['remain'];
+
+        }
+    });
+
+    return [last_nenxt, temp_html, ramain]
+}
+
+function append_attack_body_end() {
+    let html = ` <tr>
+                <td style="width: 10%; text-align: right;">
+                <br>
+                </td>
+                <td style="width: 4%; position: relative; padding: 0px;"><div class="event_detail_attack_detail_table_split"></div><div class="event_detail_attack_detail_table_circle red"></div></td>
+                <td style="width: 50%;">
+                <span class="attack_end">
+                攻击结束
+                </span>
+                </td>
+                 </tr>`;
+    $("#attack_body").append(html)
+
+}
+
+function get_detail_data_from_issue_id(event_issue_id) {
+    /* 根据issue_id 获得表中的单条信息*/
+    let parm = {};
+    let data = null;
+    parm['id'] = event_issue_id;
+    $.ajax({
+        url: "attack/query_detail_data/",
+        type: 'POST',
+        data: parm,
+        async: false,
+        success: function (data_list) {
+            data = data_list
+        }
+    });
+    return data
+}
+
+function web_event_html(data) {
+    /*
+    * 渲染 web_event_html 上面部分*/
+
     let attack_type = data['attack_type1'];
     let obj_title = '';
     let obj_code = '';
     let code = JSON.parse(data['attack_params']);
     let db_server = '';
-    console.log(attack_type);
-
     switch (attack_type) {
         case 'command':
             obj_title = "执行命令";
@@ -526,7 +679,7 @@ function get_iochtml(data) {
             break;
         case 'sql':
             obj_title = "SQL语句";
-            obj_code = code['query']
+            obj_code = code['query'];
             break;
         case 'sqlSlowQuery':
             obj_title = "查询条数";
@@ -563,9 +716,7 @@ function get_iochtml(data) {
             break;
     }
     let iochtml = "";
-
-
-    if (attack_type === 'request'||attack_type==='request_body' ) {
+    if (attack_type === 'request' || attack_type === 'request_body') {
         iochtml = `
         <table class="legend-table01" style="width: 70%;">
                                 <tbody>
@@ -697,9 +848,7 @@ function get_iochtml(data) {
 
         $("#ioc_body_stage1").text("").append(iochtml);
         $("#ioc_body_stage2").text("");
-    }
-
-    else {
+    } else {
 
         iochtml = `                            <table class="legend-table01" style="width: 70%;">
                                 <tbody>
@@ -878,182 +1027,229 @@ function get_iochtml(data) {
         $("#ioc_body_stage2").text("").append(iochtml);
 
     }
-    return iochtml;
-}
+    /*
+    下面列表部分
+    * */
+    var html = '<div class="card">';
+    html += '<div class="card-body">';
+    //事件信息
+    html += '<div class = "card-body-title">事件信息</div>';
+    html += '<table class="table table-bordered">';
+    html += '<tbody>';
+    html += '<tr><td class="td_left">事件发生时间</td><td>' + data['event_time'] + '</td></tr>';
+    html += '<tr><td>攻击事件编号</td><td>' + data['event_issue_id'] + '</td></tr>';
+    html += '<tr><td>攻击类型</td><td>' + data['attack_type'] + '</td></tr>';
+    html += '<tr><td>攻击参数</td><td><pre>' + data['attack_params'] + '</pre></td></tr>';
+    html += '<tr><td>调用栈</td><td><pre>' + data['stack_trace'] + '</pre></td></tr>';
+    html += '<tr><td>事件描述</td><td>' + data['plugin_message'] + '</td></tr>';
+    html += '<tr><td>事件可信度</td><td>' + data['plugin_confidence'] + '</td></tr>';
+    html += '<tr><td>拦截状态</td><td>' + data['intercept_state'] + '</td></tr>';
+    html += '<tr><td>风险等级</td><td>' + data['threat_level'] + '</td></tr>';
+    html += '</tbody>';
+    html += '</table>';
 
 
-function get_attack_body(ip, attack_source) {
-    console.log("第一次加载 get_attack_body");
-    console.log(ip, "---", attack_source);
-    let parm = {};
-    parm['ip'] = ip;
-    parm['last'] = 0;
-    parm['attack_source'] = attack_source;
-    let temp_html = ``;
-
-    $.ajax({
-        url: "attack/query_source/",
-        type: 'POST',
-        data: parm,
-        async: false,
-        //dataType: "json",
-        success: function (data_list) {
-            console.log($(document).scrollTop());
-            console.log(data_list);
-            temp_html += ` <tr>
-                <td style="width: 10%; text-align: right;">
-                <br>
-                </td>
-                <td style="width: 4%; position: relative; padding: 0px;"><div class="event_detail_attack_detail_table_split"></div><div class="event_detail_attack_detail_table_circle red"></div></td>
-                <td style="width: 50%;">
-                <div style="font-weight: bold;">
-                攻击次数：${data_list['all_num']}
-                </div>
-                <span class="attack_start">
-                攻击开始
-                </span>
-                </td>
-                </tr>
-                    `;
-
-            for (x in data_list['list']) {
-                let temp_data = data_list['list'][x];
-                temp_html += `
-                    <tr>
-                        <td style="width: 10%; text-align: right;">${temp_data[0].split(" ")[0]}<br>${temp_data[0].split(" ")[1]}</td>
-                        <td style="width: 4%; position: relative; padding: 0px;">
-                            <div class="event_detail_attack_detail_table_split"></div>
-                            <div class="event_detail_attack_detail_table_circle"></div>
-                        </td>
-                        <td style="width: 50%;">
-                            <span class="ip event_detail_attack_detail_table_span label label-info">${temp_data[2]}</span>
-                            <span class="ipAddr">（${temp_data[1]}）</span>
-                            ${temp_data[3]}
-                            &nbsp;<span class="span_gray">${temp_data[4]}  </span>
-                            <!--<span class="event_log_detail" id="1664393756_2018-05-23">&gt;&gt;详情</span>-->
-                        </td>
-                    </tr>`;
-            }
-            // $("#remain_num").text("").append(data_list['all_num']- data_list["remain"]+"/"+ data_list['all_num']);
-
-            console.log("第一次查询结果 remain剩余", data_list["remain"]);
-            $("#attack_body").text("").append(temp_html);
+    //请求信息
+    html += '<div class = "card-body-title">请求信息</div>';
+    html += '<table class="table table-bordered">';
+    html += '<tbody>';
+    html += '<tr><td  class="td_left">攻击源IP</td><td>' + data['attack_source'] + '</td></tr>';
+    html += '<tr><td>被攻击域名</td><td>' + data['target'] + '</td></tr>';
+    html += '<tr><td>被攻击IP</td><td>' + data['server_ip'] + '</td></tr>';
+    html += '<tr><td>被攻击端口</td><td>' + data['target_port'] + '</td></tr>';
+    html += '<tr><td>被攻击服务器类型</td><td>' + data['server_type'] + '</td></tr>';
+    html += '<tr><td>被攻击服务器版本</td><td>' + data['server_version'] + '</td></tr>';
+    html += '<tr><td>请求ID</td><td>' + data['request_id'] + '</td></tr>';
+    html += '<tr><td>请求方法</td><td>' + data['method'] + '</td></tr>';
+    html += '<tr><td>被攻击URL</td><td>' + data['url'] + '</td></tr>';
+    html += '<tr><td>请求体</td><td><pre>' + data['body'] + '</pre></td></tr>';
+    html += '<tr><td>被攻击PATH路径</td><td>' + data['path'] + '</td></tr>';
+    html += '<tr><td>User-Agent</td><td>' + data['user_agent'] + '</td></tr>';
+    html += '<tr><td>Referer</td><td>' + data['referer'] + '</td></tr>';
+    html += '</tbody>';
+    html += '</table>';
+    //资产信息
+    html += '<div class = "card-body-title">资产信息</div>';
+    html += '<table class="table table-bordered">';
+    html += '<tbody>';
+    html += '<tr><td class="td_left">主机名称</td><td>' + data['server_hostname'] + '</td></tr>';
+    html += '<tr><td>系统用户名</td><td>' + data['system_user'] + '</td></tr>';
+    html += '<tr><td>进程路径</td><td>' + data['process_path'] + '</td></tr>';
+    html += '</tbody>';
+    html += '</table>';
+    html += '</div>';
+    html += '<div>';
 
 
-            if (data_list["remain"] !== 0) {
-                append_attack_body(ip, data_list['last_next'], attack_source);
-            }
-            else {
-                append_attack_body_end()
-            }
-
-        }
-    });
-
-
-    //return temp_html;
-}
-
-var times = 0;
-
-function append_attack_body(ip, last, attack_source) {
-    //let  temp_list=  append_attack_body_more(ip,last,attack_source);
-    let last_next = 10;
-    let html;
-    let remian_next = 10;
-
-    let loadflag = true;
-    $("#attack_traceability_body").unbind("scroll").bind("scroll", function () {
-        let windowHeight = $("#attack_traceability_body").height();//当前窗口的高度
-        let scrollTop = $("#attack_traceability_body").scrollTop();//当前滚动条从上往下滚动的距离
-        let docHeight = $("#event_detail_attack_detail_table").height(); //当前文档的高度
-        //console.log(windowHeight,scrollTop,windowHeight+scrollTop,docHeight);
-        if (windowHeight > docHeight && loadflag) {
-            append_attack_body_end();
-            loadflag = false;
-        }
-        if (scrollTop + windowHeight >= docHeight && loadflag) {
-            if (remian_next >= 0) {
-
-                temp_list = append_attack_body_more(ip, last_next, attack_source);
-                remian_next = temp_list[2];
-                last_next = temp_list[0];
-                html = temp_list[1];
-                $("#attack_body").append(html);
-                //$("#remain_num").text("").append(remian_next);
-            }
-            if (remian_next === 0) {
-                append_attack_body_end();
-                //$("#remain_num").text("").append(remian_next);
-                remian_next = -1;
-                loadflag = false;
-            }
-        }
-
-    });
+    $("#detailed_report_body").text("").append(html);
 
 }
 
-function append_attack_body_more(ip, last, attack_source) {
+function log_event_html(data) {
+    /*
+    * 渲染 log_event_html*/
 
-    let parm = {};
-    parm['ip'] = ip;
-    parm['last'] = last;
-    parm['attack_source'] = attack_source;
-    console.log(parm);
-    let temp_html = ``;
-    let more_html = ``;
-    //剩未查询的数量
-    let remain_num = 0;
-    let last_nenxt;
-    let ramain;
+    iochtml = `
+        
+        <h3>基本信息</h3>
+        <table class="table table-bordered">
+        <tbody>
+        <tr>
+            <td>服务器名称</td>
+            <td>类型</td>
+            <td>事件时间</td>
+            <td>事件内容</td>
+            </tr>
+        <tr>
+            <td>${data['host_name']}</td>
+            <td>${data['event_name']}</td>
+            <td>${data['event_time']}</td>
+            <td>${data['comment']}</td>
+        </tr>
+        </tbody>
+        </table>
+        <h3>操作过程</h3>
+        <table class="legend-table01" style="width: 70%;">
+                                <tbody>
+                                <tr>
+                                    <td class="legend-table01-td1">
+                                        <!--第一个模态框-->
+                                        <div class="table-content-td-plain" >
+                                            <table class="text-legend-text">
+                                                <tbody>
+                                                <tr>
+                                                    <td class="td-01">计算机名</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                        <p>${data['host_name']}</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td-01">用户名</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                        <p>${data['dstuser']}</p>
+                                                    </td>
+                                                </tr>
+                                                
+                                            </tbody>
+                                            </table>
+                                        </div>
+                                        <!--三角-->
+                                        <div class="triangle-down" style="left: 7px;"></div>
+                                        <!--第一个模态框结束-->
+                                    </td>
+                                    </tr>
+                            </tbody>
+                            </table>
+                            <div class="u-legend pannel_background stagebg1">
+                                    <span class="log-alarmer"></span>
+                                    <span style="width: 47.8%;display: inline-block;text-align: right;color: #777;margin-top: 70px;"> 网络流量</span>
+                                    <span style="width: 34.3%;display: inline-block;text-align: right;color: #777;margin-top: 70px;"> 应用</span>
+                            </div>
+                            <table class="legend-table02" style="width: 100%;margin: 40px auto;min-height: 50px;vertical-align: top;text-align:
+                                   center;">
+                                <tbody>
+                                <tr>
+                                    <td class="legend-low">
+                                        <!--第3个模态框-->
+                                        <!--三角-->
+                                        <div class="triangle-top"></div>
+                                        <div class="table-content-td-plain-b" style="min-width: 205px;">
+                                            <table class="text-legend-text">
+                                                <tbody><tr>
+                                                    <td class="td-01" style="width: 40px;">IP</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                        <p>${data['srcip']}</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td-01" style="width: 40px;">地址</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                            <p>${data['city']}</p>
+                                                    </td>
+                                                </tr>
+                                            </tbody></table>
+                                        </div>
+                                        <!--第3个模态框结束-->
+                                    </td>
+                                    <td class="legend-low">
 
-    $.ajax({
-        url: "attack/query_source/",
-        type: 'POST',
-        data: parm,
-        async: false,
-        success: function (data_list) {
+                                        <!--第4个模态框-->
+                                        <!--三角-->
+                                        <div class="triangle-top"></div>
+                                        <div class="table-content-td-plain-b" style="margin-right: 0;">
+                                            <table class="text-legend-text">
+                                                <tbody>
+                                     
+                                                <tr>
+                                                    <td class="td-01">类型</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                        <p>rdp</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td-01">进程路径</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                        <p>rdp</p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            </table>
+                                        </div>
+                                        <!--第4个模态框结束-->
+                                    </td>
 
-            for (x in data_list['list']) {
-                let temp_data = data_list['list'][x];
-                temp_html += `
-                    <tr>
-                        <td style="width: 10%; text-align: right;">${temp_data[0].split(" ")[0]}<br>${temp_data[0].split(" ")[1]}</td>
-                        <td style="width: 4%; position: relative; padding: 0px;">
-                            <div class="event_detail_attack_detail_table_split"></div>
-                            <div class="event_detail_attack_detail_table_circle"></div>
-                        </td>
-                        <td style="width: 50%;">
-                            <span class="ip event_detail_attack_detail_table_span label label-info">${temp_data[2]}</span>
-                            <span class="ipAddr">（${temp_data[1]}）</span>
-                            ${temp_data[3]}
-                            &nbsp;<span class="span_gray">${temp_data[4]}  </span>
-                            <!--<span class="event_log_detail" id="1664393756_2018-05-23">&gt;&gt;详情</span>-->
-                        </td>
-                    </tr>`;
-            }
-            last_nenxt = data_list['last_next'];
-            ramain = data_list['remain'];
+                                </tr>
+                            </tbody>
+                            </table>
 
-        }
-    });
+        `;
 
-    return [last_nenxt, temp_html, ramain]
+    $("#ioc_body_stage1").text("").append(iochtml);
+    $("#ioc_body_stage2").text("");
+
+
 }
 
-function append_attack_body_end() {
-    let html = ` <tr>
-                <td style="width: 10%; text-align: right;">
-                <br>
-                </td>
-                <td style="width: 4%; position: relative; padding: 0px;"><div class="event_detail_attack_detail_table_split"></div><div class="event_detail_attack_detail_table_circle red"></div></td>
-                <td style="width: 50%;">
-                <span class="attack_end">
-                攻击结束
-                </span>
-                </td>
-                 </tr>`;
-    $("#attack_body").append(html)
+function file_event_html(data) {
+    /*
+    * 渲染 file_event_html*/
+    iochtml = `
+        <div>
+            <h3>基本信息</h3>
+            <table class="table table-bordered">
+            <tbody>
+           
+              <tr>  <td>事件名称</td><td>${data['event_name']}</td> </tr>
+              <tr>  <td>事件时间</td><td>${data['event_time']}</td> </tr>
+              <tr>  <td>主机名称</td><td>${data['host_name']}</td> </tr>
+              <tr>  <td>主机名称</td><td>${data['host_name']}</td> </tr>
+              <tr>  <td>系统用户</td><td>${data['system_user']}</td> </tr>
+              <tr>  <td>文件路径</td><td>${data['file_path']}</td> </tr>
+              <tr>  <td>原MD5</td><td>${data['md5_before']}</td> </tr>
+              <tr>  <td>现MD5</td><td>${data['md5_after']}</td> </tr> 
+              <tr>  <td>原sha1</td><td>${data['sha1_before']}</td> </tr>
+              <tr>  <td>现sha1</td><td>${data['sha1_after']}</td> </tr>
+              <tr>  <td>原owner_before</td><td>${data['owner_before']}</td> </tr>
+              <tr>  <td>现owner_before</td><td>${data['owner_after']}</td> </tr>
+              <tr>  <td>事件内容</td><td>${data['full_log']}</td> </tr>
+              
+           
+            </tbody>
+            </table>
+    </div>
+        
+  
+
+        `;
+
+    $("#ioc_body_stage1").text("").append(iochtml);
+    $("#ioc_body_stage2").text("");
+
 
 }

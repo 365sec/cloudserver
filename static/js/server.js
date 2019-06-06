@@ -3,7 +3,6 @@ function server_click(page) {
     * 服务器管理被点击
     * */
     //let page=1;
-    console.log("服务器管理被点击")
     $.ajax( {
         url: 'manage',
         dataType:"html",
@@ -106,6 +105,7 @@ $(document).on("click", ".detail-a-server", function () {
         type: 'get',
         dataType: 'html',
         success: function (res) {
+            console.log(res);
             $('#div_container').html($(res));
             $('.page-title').html('主机：'+id);
             $('#machine_name_view span').html(id);
@@ -386,7 +386,7 @@ $(document).on('click','.check_box',function () {
         visibility: "visible"
     });
     event.stopPropagation(); //阻止事件向上冒泡
-})
+});
 function check_ignore() {
 // 执行操作
     let html = `

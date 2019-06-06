@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^data_count$', views.view_report),
     url(r'^agent/query/$', views.agent_query),
     url(r'^attack/query/$', views.attack_event_query),
+    url(r'^attack/query_detail_data/$', views.query_detail_data),
     url(r'^attack/query_source/$', views.attack_query_source),
     url(r'^query_threat_level$', views.query_threat_level),
     url(r'^query_attack_source$', views.query_attack_source),

@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.db import connection
 
+from itertools import chain
+
+from django.db import connection
 
 from collections import OrderedDict
 from datetime import timedelta, datetime
@@ -19,8 +21,15 @@ import hashlib
 import geoip2.database
 from common.scan import get_scan
 from common.common import readConfig, ip_to_address
-from t.models import TAgents
-from t.models import TAttackEvent
+
+from t.models import THostAgents as TAgents
+from t.models import TWebEvent as TAttackEvent
+
+from t.models import TWebEvent
+from t.models import TFileIntegrity
+from t.models import TLogAnalysisd
+from t.models import THostAgents
+
 from t.models import TEventKnowledge
 from t.models import TPlugins
 from t.models import TUsers
@@ -78,7 +87,6 @@ def add_host(request):
 @auth
 def agent_query(request):
     global SENSOR_TYPE
-    print("ahentquery")
     # 当前页码数
     page = request.POST.get("page")
     page = int(page)
@@ -89,6 +97,7 @@ def agent_query(request):
         username = request.session['username']
         result = TAgents.objects.filter(owner=username).order_by("-online")
     # 每页显示多少个数据
+
     page_size = 15
     # 最大分页数
     max_size = (result.count() + page_size - 1) / page_size
@@ -134,41 +143,67 @@ def attack_event_query(request):
         agent_ids = [x.agent_id for x in result]
         filter_condition['agent_id__in'] = agent_ids
 
-    # 关于攻击类型的过滤
+    tweb_obj = TWebEvent.objects.all()
+    tfile_obj = TFileIntegrity.objects.all()
+    tlog_obj = TLogAnalysisd.objects.all()
+
+    # 关于攻击类型的过滤,在搜索界面展示的下拉框
     attack_type = request.POST.get("attack_type")
     event_dic = {}
     event_div_arr = []
-    for x in TEventKnowledge.objects.filter(event_type=1):
+    for x in TEventKnowledge.objects.filter():
         event_div_arr.append(x.event_name)
         event_dic[x.event_name] = x.event_id
     if attack_type != "" and attack_type != None:
-        filter_condition['event_id'] = event_dic[attack_type]
+        tfile_obj = tfile_obj.filter(event_id=event_dic[attack_type])
+        tlog_obj = tlog_obj.filter(event_id=event_dic[attack_type])
+        tweb_obj = tweb_obj.filter(event_id=event_dic[attack_type])
 
     # 关于报警消息的过滤
     msg_filter = None
     attack_msg = request.POST.get("attack_msg")
     if attack_msg != "" and attack_msg != None:
         # filter_condition['plugin_message__icontains']=attack_msg
-        msg_filter = Q(plugin_message__icontains=attack_msg) | Q(target=attack_msg) | Q(url__icontains=attack_msg) | Q(
-            agent_id=attack_msg) | Q(attack_source__icontains=attack_msg)
+        tfile_msg_filter = Q(event_name__icontains=attack_msg) | Q(full_log__icontains=attack_msg)
+        tlog_msg_filter = Q(event_name__icontains=attack_msg) | Q(comment__icontains=attack_msg)
+        tweb_msg_filter = Q(event_name__icontains=attack_msg) | Q(plugin_message__icontains=attack_msg)
+        tfile_obj = tfile_obj.filter(tfile_msg_filter)
+        tlog_obj = tlog_obj.filter(tlog_msg_filter)
+        tweb_obj = tweb_obj.filter(tweb_msg_filter)
 
     # 关于攻击时间的过滤
     attack_time = request.POST.get("attack_time")
     if attack_time != "" and attack_time != None:
         start_time = attack_time.split(" ~ ")[0]
         end_time = attack_time.split(" ~ ")[1]
-        filter_condition['event_time__range'] = [start_time, end_time]
+        tfile_obj = tfile_obj.filter(event_time__range=(start_time, end_time))
+        tlog_obj = tlog_obj.filter(event_time__range=(start_time, end_time))
+        tweb_obj = tweb_obj.filter(event_time__range=(start_time, end_time))
 
     # 关于攻击等级的过滤
     attack_level = request.POST.get("attack_level")
     if attack_level != "" and attack_level != None:
         attack_level = int(attack_level)
-        filter_condition['threat_level'] = attack_level
+        tweb_obj = tweb_obj.filter(threat_level=attack_level)
+        if attack_level != 3:
+            tfile_obj = tfile_obj.filter(event_issue_id=0)
+            tlog_obj = tlog_obj.filter(event_issue_id=0)
 
-    if msg_filter:
-        result = TAttackEvent.objects.filter(msg_filter, **filter_condition).order_by('-event_time')
-    else:
-        result = TAttackEvent.objects.filter(**filter_condition).order_by('-event_time')
+    # if msg_filter:
+    #     result = TAttackEvent.objects.filter(msg_filter, **filter_condition).order_by('-event_time')
+    # else:
+    #     result = TAttackEvent.objects.filter(**filter_condition).order_by('-event_time')
+
+    # 每张表需要查询的数据
+    tweb = tweb_obj.values_list("agent_id", "event_time", "event_name", "plugin_message", "attack_source", "server_ip",
+                                "event_issue_id", "event_id")
+    tfile = tfile_obj.values_list("agent_id", "event_time", "event_name", "full_log", "unused", "unused",
+                                  "event_issue_id", "event_id")
+    tlog = tlog_obj.values_list("agent_id", "event_time", "event_name", "comment", "srcip", "dstip", "event_issue_id",
+                                "event_id")
+    # 三张表联合查询
+    qchain = tweb.union(tlog, tfile)
+    result = qchain.order_by("-event_time")
 
     max_lenth = result.count()
     # 每页显示多少个数据
@@ -179,9 +214,108 @@ def attack_event_query(request):
         max_size = 1
     if page > max_size:
         page = max_size
-    stack_list = []
+    attack_list = []
+    if page < 1:
+        page = 1
+
     for x in result[(page - 1) * page_size:(page) * page_size]:
-        y = model_to_dict(x)
+        x = list(x)
+        for z in range(len(x)):
+            if x[int(z)] == None:
+                x[int(z)] = ""
+        y = {}
+        y['agent_id'] = x[0]
+        y['event_time'] = x[1].strftime("%Y-%m-%d %H:%M:%S")
+        y['event_name'] = x[2]
+        y['comment'] = x[3]
+        y['attack_source'] = x[4]
+        y['server_ip'] = x[5]
+        y['event_issue_id'] = x[6]
+        y['hostname'] = THostAgents.objects.all().filter(agent_id=x[0]).values_list("host_name").first()
+        attack_list.append(y)
+
+    # for x in result[(page - 1) * page_size:(page) * page_size]:
+    #     y = model_to_dict(x)
+    #     y['event_time'] = y['event_time'].strftime("%Y-%m-%d %H:%M:%S")
+    #     y['intercept_state'] = INTERCEPT_STATUS.get(y['intercept_state'], '')
+    #     y['threat_level'] = THREAT_LEVEL.get(y['threat_level'], '')
+    #     y['attack_type1'] = y['attack_type']
+    #     try:
+    #         y['attack_type'] = TEventKnowledge.objects.get(event_id=y['event_id']).event_name
+    #     except Exception as e:
+    #         y['attack_type'] = ''
+    #     y['plugin_message'] = y['plugin_message'].replace('<', '&lt').replace('>', '&gt')
+    #     y['attack_params'] = y['attack_params'].replace('<', '&lt').replace('>', '&gt')
+    #     y['url'] = y['url'].replace('<', '&lt').replace('>', '&gt')
+    #     y['body'] = y['body'].replace('<', '&lt').replace('>', '&gt')
+    #     y['plugin_message'] = y['plugin_message'].replace('"', '&quot;')
+    #
+    #     # 查询城市
+    #     y['city'] = ''
+    #
+    #     str_ip = y['attack_source'].split(".")[0]
+    #     if str_ip == "172" or str_ip == "192" or str_ip == "10":
+    #         y['city'] = "局域网"
+    #     elif str_ip == "127" or str_ip == "" or str_ip == "::1":
+    #         y['city'] = "本机"
+    #     try:
+    #         y['city'] = ip_to_address(y['attack_source'])
+    #     except Exception as e:
+    #         pass
+    #     attack_list.append(y)
+
+    data = {
+        "attack": attack_list,
+        "max_size": max_size,
+        "page": page,
+        "attack_type": event_div_arr,
+        "attack_level": attack_level,
+    }
+
+    data = json.dumps(data)
+    return HttpResponse(data, content_type='application/json')
+
+
+@auth
+def query_detail_data(request):
+    '''
+    根据ID查询相应表的单条数据
+    :param id:
+    :return:
+    '''
+    id = request.POST.get("id")
+    tweb_obj = TWebEvent.objects.all()
+    tfile_obj = TFileIntegrity.objects.all()
+    tlog_obj = TLogAnalysisd.objects.all()
+    obj=None
+    y={}
+    if id  and id != "":
+        tfile_obj = tfile_obj.filter(event_issue_id=id)
+        tlog_obj = tlog_obj.filter(event_issue_id=id)
+        tweb_obj = tweb_obj.filter(event_issue_id=id)
+    if tfile_obj:
+        obj=tfile_obj.first()
+        y=model_to_dict(obj)
+        y['event_time']=y['event_time'].strftime("%Y-%m-%d %H:%M:%S")
+    if tlog_obj:
+        obj=tlog_obj.first()
+        y=model_to_dict(obj)
+        y['event_time']=y['event_time'].strftime("%Y-%m-%d %H:%M:%S")
+        # 查询城市
+        y['city'] = ''
+        if "." in y['srcip']:
+            str_ip = y['srcip'].split(".")[0]
+            if str_ip == "172" or str_ip == "192" or str_ip == "10":
+                y['city'] = "局域网"
+            elif str_ip == "127" or str_ip == "" or str_ip == "::1":
+                y['city'] = "本机"
+            try:
+                y['city'] = ip_to_address(y['attack_source'])
+            except Exception as e:
+                pass
+    if tweb_obj:
+        obj=tweb_obj.first()
+        y=model_to_dict(obj)
         y['event_time'] = y['event_time'].strftime("%Y-%m-%d %H:%M:%S")
         y['intercept_state'] = INTERCEPT_STATUS.get(y['intercept_state'], '')
         y['threat_level'] = THREAT_LEVEL.get(y['threat_level'], '')
@@ -208,17 +342,9 @@ def attack_event_query(request):
             y['city'] = ip_to_address(y['attack_source'])
         except Exception as e:
             pass
-        stack_list.append(y)
 
-    data = {
-        "stack": stack_list,
-        "max_size": max_size,
-        "page": page,
-        "attack_type": event_div_arr,
-        "attack_level": attack_level,
-    }
-
-    data = json.dumps(data)
+    # y['event_time']=y['event_time'].strftime("%Y-%m-%d %H:%M:%S")
+    data = json.dumps(y)
     return HttpResponse(data, content_type='application/json')
 
 
@@ -288,7 +414,7 @@ def attack_query_source(request):
     data['last_next'] = last_next
     data['all_num'] = num
     data = json.dumps(data)
-    print(data)
+    # print(data)
     return HttpResponse(data, content_type='application/json')
 
 
@@ -322,7 +448,7 @@ def query_threat_level(request):
 def query_attack_source(request):
     # 0代表世界 1代表中国
     flag = request.POST.get("flag")
-    flag=int(flag)
+    flag = int(flag)
     data = {}
     attack = TAttackEvent.objects
 
@@ -345,7 +471,6 @@ def query_attack_source(request):
 
     gi = geoip2.database.Reader('data/geoip/GeoLite2-City.mmdb', locales=['zh-CN'])
     attack_source_map = {}
-
 
     for item in attrack_source:
         response = None
@@ -372,7 +497,7 @@ def query_attack_source(request):
         except Exception as e:
             pass
 
-        y = item[0] +' ' + ' '.join(result)
+        y = item[0] + ' ' + ' '.join(result)
         attack_source_map[y] = [response.location.longitude, response.location.latitude, item[1]]
 
     data['attrack_source_dic'] = attrack_source_dic
@@ -567,7 +692,6 @@ def view_report(request):
 
     attack_time_range = TAttackEvent.objects.filter(event_time__range=(dt_s, dt_e))
 
-
     attack = attack_time_range
     # 统计攻击源
     attack_source = attack.values_list('attack_source').annotate(number=Count('attack_source')).order_by('-number')
@@ -605,21 +729,21 @@ def view_report(request):
     cursor.execute(
         "SELECT DATE_FORMAT( event_time, '%%Y-%%m-%%d' ) AS dataTime, "
         "COUNT(1) AS countNumber FROM`t_attack_event`"
-        "WHERE event_time between '%s' and '%s' GROUP BY dataTime  "%(
-        dt_s, dt_e))
+        "WHERE event_time between '%s' and '%s' GROUP BY dataTime  " % (
+            dt_s, dt_e))
     attack_time_dic_list = cursor.fetchall()
     attack_time_dic_list = list(attack_time_dic_list)
 
-    attack_time_dic_list1=[]
+    attack_time_dic_list1 = []
     # dt_s = (dt_e - timedelta(num))  # 2018-7-08
     for x in range(num.days):
-        time1=(dt_e - timedelta(num.days-x)).strftime("%Y-%m-%d")
-        if attack_time_dic_list and attack_time_dic_list[0][0]==time1:
+        time1 = (dt_e - timedelta(num.days - x)).strftime("%Y-%m-%d")
+        if attack_time_dic_list and attack_time_dic_list[0][0] == time1:
             attack_time_dic_list1.append([time1, attack_time_dic_list[0][1]])
             attack_time_dic_list.pop(0)
         else:
-            attack_time_dic_list1.append([time1,0])
-    attack_time_dic_list=attack_time_dic_list1
+            attack_time_dic_list1.append([time1, 0])
+    attack_time_dic_list = attack_time_dic_list1
 
     # 资产统计 系统、服务器类型
     attack_server = attack.values_list('server_type').annotate(number=Count('server_type')).order_by('-number')
@@ -680,5 +804,3 @@ def view_report(request):
             "attack_scan": attack_scan_list,
             }
     return HttpResponse(json.dumps(data), content_type='application/json')
-
-

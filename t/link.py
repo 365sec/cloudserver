@@ -63,6 +63,7 @@ def agent_detail(request):
     return render(request, 'agent_detail.html', {})
 
 def server_manage_detail(request):
+
     return render(request, 'server_manage_detail.html', {})
 
 def website_manage_detail(request):

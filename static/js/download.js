@@ -1,4 +1,4 @@
-function download_click(attack_page) {
+function download_click() {
     /*
     * 下载事件*/
 

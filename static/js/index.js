@@ -13,7 +13,7 @@ $(document).on("click", ".nano-content li>div", function () {
             attack_click(1);
             break;
         case "download":
-            download_click(1);
+            download_click();
             break;
         case "overview":
             overview_click();
