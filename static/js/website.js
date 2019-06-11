@@ -14,8 +14,9 @@ function website_click(page) {
                 page = 1;
             }
             $(this).addClass("active router-link-active").siblings().removeClass("active router-link-active");
+
             $.ajax({
-                url: "agent/query/",
+                url: "web_agent/query/",
                 type: 'POST',
                 data: {
                     "page": page
@@ -31,16 +32,20 @@ function website_click(page) {
                     div_container.text("");
                     let html = '<h1 class="page-title" ><i class="iconfont">&#xe73b;</i>网站管理</h1>';
                     html += '<div class="card">';
-                    html += '<div class = "btngroup"><div  class="btn" onclick="javascript:void(0)" >添加主机</div></div>'
+                    html += '<div class = "btngroup"><div  class="btn" onclick="javascript:void(0)" >添加主机</div></div>';
                     html += '<div class="card-body">';
                     html += '<table class="table table-bordered">';
                     html += '<thead>';
                     html += '<tr>';
-                    html += '<th>网站名称</th>';
+                    // html += '<th>AGENT_ID</th>';
+                    html += '<th>IP</th>';
                     html += '<th>标签</th>';
                     html += '<th>所属服务器</th>';
-                    html += '<th>所属分组</th>';
-                    html += '<th>更新时间</th>';
+                    html += '<th>实例</th>';
+                    html += '<th>开发语言</th>';
+                    html += '<th>版本号</th>';
+                    html += '<th>在线状态</th>';
+                    html += '<th>上次心跳时间</th>';
                     html += '</tr>';
                     html += '</thead>';
                     html += '<tbody>';
@@ -48,12 +53,18 @@ function website_click(page) {
                         html += '<tr>';
                         data[x] = JSON.parse(data[x]);
                         let agent_id = data[x]['agent_id'];
+                        let b = new Base64();
+                        let data1 = b.encode(JSON.stringify(data[x]));
 
-                        html += '<td><a class="detail-a-website" href="javascript:void(0)" data-name="' + agent_id + '"   >' + data[x]['register_ip'] + '</a> </td>';
-                        html += '<td>' + data[x]['os'] + '</td>';
-                        html += '<td>' + data[x]['server_type'] + '</td>';
-                        html += '<td>' + data[x]['agent_id'] + '</td>';
+                        html += '<td><a class="detail-a-website" href="javascript:void(0)" data-name="' + data1 + '"   >' + data[x]['register_ip'] + '</a> </td>';
+                        // html += '<td>' + data[x]['register_ip'] + '</td>';
+                        html += '<td>' + data[x]['remark'] + '</td>';
+                        html += '<td>' + data[x]['hostname'] + '</td>';
+                        html += '<td>' + data[x]['server_type']+'-'+data[x]['server_version'] +'</td>';
+                        html += '<td>' + data[x]['language'] + '</td>';
                         html += '<td>' + data[x]['version'] + '</td>';
+                        html += '<td>' + data[x]['online'] + '</td>';
+                        html += '<td>' + data[x]['last_heartbeat'] + '</td>';
                         // html += '<td>' + data[x]['server_type'] + '</td>';
                         html += '</tr>';
                     }
@@ -92,34 +103,77 @@ $(document).on("click", ".manageDiv .card .btngroup .btn", function() {
 
 //详情
 $(document).on("click", ".detail-a-website", function () {
-    let id = $(this).attr("data-name");
+    let data1 = $(this).attr("data-name");
+    let b=new Base64();
+    let data=JSON.parse(b.decode(data1));
+    console.log(data);
     $.ajax({
         url: 'website_manage_detail',
         type: 'get',
         dataType: 'html',
         success: function (res) {
             $('#div_container').html($(res));
-            $('.page-title').html('主机：'+id);
-            $('#machine_name_view span').html(id);
+            $('.page-title').html('主机：'+data['agent_id']);
+            $('#machine_name_view span').html(data['agent_id']);
+            $("#web_manager_ip").html("").append(data['register_ip']);
+            $("#web_manager_remark").html("").append(data['remark']);
+            $("#web_manager_hostname").html("").append(data['hostname']);
+            $("#web_manager_server").html("").append(data['server_type']+"-"+data['server_version']);
+            $("#web_manager_language").html("").append(data['language']);
+            $("#web_manager_status").html("").append(data['online']);
+            $("#web_manager_lastbeat").html("").append(data['last_heartbeat']);
 
             // 安全分析
-            chart_attack_trend();
+            chart_attack_trend_web(data['agent_id']);
 
             // 事件处理
-            event_treat(1);
+            event_treat_web(1,data['agent_id']);
 
         }
     });
 });
 
 // 安全分析
-function chart_attack_trend(){
+function chart_attack_trend_web(agent_id){
     // chart_attack_trend 服务器攻击趋势
-    let tday = [["2:00", 21273],["4:00", 12273],["6:00", 15273],["8:00", 6273],["10:00", 8273],["12:00", 10273]];
-    linechart(tday,'chart_attack_trend');
+    let data;
+    $.ajax({
+        url: "attack/web_trend/",
+        type: 'POST',
+        data: {
+            "id": agent_id
+        },
+        // dataType: "json",
+        async: false,
+        success: function (data_list) {
+            data=data_list;
+
+        }});
+
+    let temp_tday = [];
+    let temp_yday = [];
+    let temp_week = [];
+    for( x in data['num_list']['tday'])
+    {
+        temp_tday.push([x,data['num_list']['tday'][x]])
+    }
+    for( x in data['num_list']['yday'])
+    {
+        temp_yday.push([x,data['num_list']['yday'][x]])
+    }
+    for( x in data['num_list']['week'])
+    {
+        temp_week.push([x,data['num_list']['week'][x]])
+    }
+    // chart_attack_trend 服务器攻击趋势
+    // let tday = [["2:00", 21273],["4:00", 12273],["6:00", 15273],["8:00", 6273],["10:00", 8273],["12:00", 10273]];
+    let tday = temp_tday;
+    let yday =temp_yday;
+    let week = temp_week;
+    linechart(tday,'chart_attack_trend_web');
 
     let attack = [["1", 21273],["没有攻击", 12273]];
-    piechart(attack,'chart_attack_kind');
+    piechart(attack,'chart_attack_kind_web');
 
     // 攻击类型攻击次数
     let ana_attack = '';
@@ -136,79 +190,82 @@ function chart_attack_trend(){
         web_attack +='<td>'+parseInt(Math.random()*500+1)+'</td></tr>';
     }
     $('#web_attack').html(web_attack);
+    $(document).on('click','.web_detail_tab',function () {
+
+        let value = $(this).attr('data-type');
+        let data = [];
+        switch (value) {
+            case 'tday' :
+                data = tday;
+                break;
+            case 'yday' :
+                data = yday;
+                break;
+            case 'week' :
+                data = week;
+                break;
+        }
+        let linechart = echarts.init(document.getElementById('chart_attack_trend_web'))
+        let option = linechart.getOption();
+        option.series[0].data = data;
+        linechart.setOption(option);
+    });
 }
 //安全分析服务器攻击趋势tab切换
-$(document).on('click','.server_detail_tab',function () {
-    let tday = [["2:00", 21273],["4:00", 12273],["6:00", 15273],["8:00", 6273],["10:00", 8273],["12:00", 10273]];
-    let yday = [["2:00", 1273],["4:00", 2273],["6:00", 15273],["8:00", 6273],["10:00", 8273],["12:00", 10273]];
-    let week = [["2:00", 21273],["4:00", 12273],["6:00", 15273],["8:00", 273],["10:00", 8273],["12:00", 1273]];
-    let value = $(this).attr('data-type');
-    let data = [];
-    switch (value) {
-        case 'tday' :
-            data = tday;
-            break;
-        case 'yday' :
-            data = yday;
-            break;
-        case 'week' :
-            data = week;
-            break;
-    }
-    let linechart = echarts.init(document.getElementById('chart_attack_trend'))
-    let option = linechart.getOption();
-    option.series[0].data = data;
-    linechart.setOption(option);
-})
+
 
 
 // 事件处理
-function event_treat(now_page){
-    max_size = 3;
+function event_treat_web(now_page,app_id){
+    let data;
+    $.ajax({
+        url: "attack/web_event/",
+        type: 'POST',
+        data: {
+            "app_id": app_id,
+            "page":now_page
+        },
+        // dataType: "json",
+        async: false,
+        success: function (data_list) {
+            data=data_list;
+            console.log(data)
+
+        }});
+    max_size = data ['max_size'];
     if (now_page == null || now_page < 1) {
         now_page = 1;
     }
     if (now_page > max_size) {
         now_page = max_size;
     }
-    let alarm_event_list_table_data = [['111','2019-04-29 17:30:36','发现未知Webshell','可疑进程 C:\\Windows\\System32\\WerFault.exe 创建二进制文件 c:\\windows\\temp\\wax7507.tmp','高危','未处理'],
-        ['222','2019-04-29 17:30:36','发现已知Webshell','可疑进程 C:\\Windows\\System32\\WerFault.exe 创建二进制文件 c:\\windows\\temp\\wax7507.tmp','一般','已处理'],
-        ['333','2019-04-29 17:30:36','发现已知Webshell','可疑进程 C:\\Windows\\System32\\WerFault.exe 创建二进制文件 c:\\windows\\temp\\wax7507.tmp','一般','已处理'],
-        ['444','2019-04-29 17:30:36','发现已知Webshell','可疑进程 C:\\Windows\\System32\\WerFault.exe 创建二进制文件 c:\\windows\\temp\\wax7507.tmp','一般','已处理'],
-        ['555','2019-04-29 17:30:36','发现已知Webshell','可疑进程 C:\\Windows\\System32\\WerFault.exe 创建二进制文件 c:\\windows\\temp\\wax7507.tmp','一般','未处理'],
-        ['666','2019-04-29 17:30:36','发现已知Webshell','可疑进程 C:\\Windows\\System32\\WerFault.exe 创建二进制文件 c:\\windows\\temp\\wax7507.tmp','一般','已处理'],
-        ['777','2019-04-29 17:30:36','发现已知Webshell','可疑进程 C:\\Windows\\System32\\WerFault.exe 创建二进制文件 c:\\windows\\temp\\wax7507.tmp','一般','已处理'],
-        ['888','2019-04-29 17:30:36','发现已知Webshell','可疑进程 C:\\Windows\\System32\\WerFault.exe 创建二进制文件 c:\\windows\\temp\\wax7507.tmp','一般','已处理'],
-        ['999','2019-04-29 17:30:36','发现已知Webshell','可疑进程 C:\\Windows\\System32\\WerFault.exe 创建二进制文件 c:\\windows\\temp\\wax7507.tmp','一般','已处理'],
-        ['000','2019-04-29 17:30:36','发现已知Webshell','可疑进程 C:\\Windows\\System32\\WerFault.exe 创建二进制文件 c:\\windows\\temp\\wax7507.tmp','一般','未处理'],
-        ['123','2019-04-29 17:30:36','发现已知Webshell','可疑进程 C:\\Windows\\System32\\WerFault.exe 创建二进制文件 c:\\windows\\temp\\wax7507.tmp','一般','已处理']
-    ];
+    let alarm_event_list_table_data = data['event_list'];
     let alarm_event_list_table = '';
     for(let j=0,len = alarm_event_list_table_data.length;j<len;j++){
-        alarm_event_list_table +='<tr><td>'+alarm_event_list_table_data[j][1]+'</td>'+
-            '<td>'+alarm_event_list_table_data[j][2]+'</td>'+
-            '<td style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">'+alarm_event_list_table_data[j][3]+'</td>';
-        switch (alarm_event_list_table_data[j][4]) {
+        alarm_event_list_table +='<tr><td>'+alarm_event_list_table_data[j]['event_time']+'</td>'+
+            '<td>'+alarm_event_list_table_data[j]['attack_type']+'</td>'+
+            '<td style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">'+alarm_event_list_table_data[j]['plugin_message']+'</td>';
+        switch (alarm_event_list_table_data[j]['threat_level']) {
             case '高危':
-                alarm_event_list_table +='<td><span class="label label_custom label_high" >'+alarm_event_list_table_data[j][4]+'</span></td>';
+                alarm_event_list_table +='<td><span class="label label_custom label_high" >高危</span></td>';
                 break;
             case '一般':
-                alarm_event_list_table +='<td><span class="label label_custom label_norm" >'+alarm_event_list_table_data[j][4]+'</span></td>';
+                alarm_event_list_table +='<td><span class="label label_custom label_norm" >一般</span></td>';
                 break;
         }
         alarm_event_list_table +='<td><a class="custom_a event_detail detail-a" href="javascript:void(0)" data-name="eyJzZXJ2ZXJfaG9zdG5hbWUiOiJXSU4tVjQ4U084Q1IzNEsiLCJldmVudF90eXBlIjoicmFzcF9hdHRhY2siLCJhdHRhY2tfc291cmNlIjoiMTcyLjE2LjM5LjE1IiwidGhyZWF0X2xldmVsIjoi6auY5Y2xIiwiYXR0YWNrX3R5cGUiOiJIVFRQ5Y2P6K6u5pS75Ye7IiwiY2l0eSI6IuWxgOWfn+e9kSIsInN5c3RlbV91c2VyIjoiQWRtaW5pc3RyYXRvciIsImV2ZW50X3RpbWUiOiIyMDE5LTA1LTE2IDIzOjQ5OjI0IiwiZXZlbnRfaWQiOjEwMTUsInBsdWdpbl9jb25maWRlbmNlIjo5MCwic2VydmVyX2lwIjoiMTcyLjE2LjM5LjI2IiwibWV0aG9kIjoiUFVUIiwicGx1Z2luX21lc3NhZ2UiOiLmraPlnKjlsJ3or5Xkvb/nlKhIVFRQIHB1dOaWueazlS4iLCJib2R5IjoiIiwic3RhY2tfdHJhY2UiOiJvcmcuYXBhY2hlLmNhdGFsaW5hLmNvcmUuQXBwbGljYXRpb25GaWx0ZXJDaGFpbi5kb0ZpbHRlcihBcHBsaWNhdGlvbkZpbHRlckNoYWluLmphdmEpXG5vcmcuYXBhY2hlLmNhdGFsaW5hLmNvcmUuU3RhbmRhcmRXcmFwcGVyVmFsdmUuaW52b2tlKFN0YW5kYXJkV3JhcHBlclZhbHZlLmphdmE6Mjc1KVxub3JnLmFwYWNoZS5jYXRhbGluYS5jb3JlLlN0YW5kYXJkQ29udGV4dFZhbHZlLmludm9rZShTdGFuZGFyZENvbnRleHRWYWx2ZS5qYXZhOjE2MSlcbm9yZy5hcGFjaGUuY2F0YWxpbmEuY29yZS5TdGFuZGFyZEhvc3RWYWx2ZS5pbnZva2UoU3RhbmRhcmRIb3N0VmFsdmUuamF2YToxNTUpXG5vcmcuYXBhY2hlLmNhdGFsaW5hLnZhbHZlcy5FcnJvclJlcG9ydFZhbHZlLmludm9rZShFcnJvclJlcG9ydFZhbHZlLmphdmE6MTAyKVxub3JnLmFwYWNoZS5jYXRhbGluYS5jb3JlLlN0YW5kYXJkRW5naW5lVmFsdmUuaW52b2tlKFN0YW5kYXJkRW5naW5lVmFsdmUuamF2YToxMDkpXG5vcmcuYXBhY2hlLmNhdGFsaW5hLmNvbm5lY3Rvci5Db3lvdGVBZGFwdGVyLnNlcnZpY2UoQ295b3RlQWRhcHRlci5qYXZhOjM2OClcbm9yZy5hcGFjaGUuY295b3RlLmh0dHAxMS5IdHRwMTFQcm9jZXNzb3IucHJvY2VzcyhIdHRwMTFQcm9jZXNzb3IuamF2YTo4NzcpXG5vcmcuYXBhY2hlLmNveW90ZS5odHRwMTEuSHR0cDExUHJvdG9jb2wkSHR0cDExQ29ubmVjdGlvbkhhbmRsZXIucHJvY2VzcyhIdHRwMTFQcm90b2NvbC5qYXZhOjY3MSlcbm9yZy5hcGFjaGUudG9tY2F0LnV0aWwubmV0LkpJb0VuZHBvaW50JFdvcmtlci5ydW4oSklvRW5kcG9pbnQuamF2YTo5MzApXG5qYXZhLmxhbmcuVGhyZWFkLnJ1bihUaHJlYWQuamF2YTo3NDQpXG4iLCJwcm9jZXNzX3BhdGgiOiJDOlxcUHJvZ3JhbSBGaWxlc1xcSmF2YVxcamRrMS43LjBfNDVcXGpyZVxcamF2YS5leGUiLCJzZXJ2ZXJfdHlwZSI6Impib3NzIGVhcCIsInBsdWdpbl9uYW1lIjoib2ZmaWNhbCIsInRhcmdldF9wb3J0Ijo5MDgwLCJhZ2VudF9pZCI6IjA2MTdmZDkyNzQ2MjUyNzEiLCJwYXRoIjoiL2Noa3Z1bG5fY3AudHh0Iiwic2VydmVyX3ZlcnNpb24iOiIxLjEuMS5HQSIsImludGVyY2VwdF9zdGF0ZSI6IuaLpuaIqiIsInRhcmdldCI6IjE3Mi4xNi4zOS4yNiIsInVybCI6Imh0dHA6Ly8xNzIuMTYuMzkuMjY6OTA4MC9jaGt2dWxuX2NwLnR4dCIsInVzZXJfYWdlbnQiOiJweXRob24tcmVxdWVzdHMvMi4yMS4wIiwiZXZlbnRfaXNzdWVfaWQiOiI1MWU5ZWUwOGJhY2Y0YTZiYWM1OWQwMDBiZDMxODU2YiIsInJlcXVlc3RfaWQiOiJmMDExN2Y4ZmIwMTk0ZTIxODZmNjVmOGUxZTM5YzBkYSIsImF0dGFja19wYXJhbXMiOiJ7fSIsInJlZmVyZXIiOiIiLCJhdHRhY2tfdHlwZTEiOiJyZXF1ZXN0In0=">查看报告</a></td>' ;
-        if(alarm_event_list_table_data[j][5]== '未处理'){
-            alarm_event_list_table +='<td><div class="deal_cls btn btn_untreated"  id = "btn_'+alarm_event_list_table_data[j][0]+'">'+alarm_event_list_table_data[j][5]+'</div></td></tr>';
+        if(alarm_event_list_table_data[j]['status']=== '未处理'){
+            alarm_event_list_table +='<td><div class="deal_cls btn btn_untreated"  id = "btn_'+alarm_event_list_table_data[j]['event_issue_id']+'">'+alarm_event_list_table_data[j]['status']+'</div></td></tr>';
         }else{
-            alarm_event_list_table +='<td><div class="btn" disabled id = "btn_'+alarm_event_list_table_data[j][0]+'">'+alarm_event_list_table_data[j][5]+'</div></td></tr>';
+            alarm_event_list_table +='<td><div class="btn" disabled id = "btn_'+alarm_event_list_table_data[j]['event_issue_id']+'">'+alarm_event_list_table_data[j]['status']+'</div></td></tr>';
         }
         let page = '<ul role="menubar" aria-disabled="false" aria-label="Pagination" class="pagination b-pagination pagination-md justify-content-center">'+
-            '<a href="javascript:void(0);" onclick="event_treat(' + (now_page - 1) + ')">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp'+
+            '<a href="javascript:void(0);" onclick="event_treat_web(' + (now_page - 1) +","+app_id+ ')">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp'+
             '<a href="javascript:void(0);">' + now_page + "/" + max_size + '</a>'+
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp'+
-            '<a href="javascript:void(0);" onclick="event_treat(' + (now_page + 1) + ')">下一页</a>'+
+            '<a href="javascript:void(0);" onclick="event_treat_web(' + (now_page + 1) +","+app_id+ ')">下一页</a>'+
             '<input id = "agent_jump" value="'+now_page+'" />'+
-            '<a href="javascript:void(0);" onclick="event_treat()">跳转</a>'+
+            '<a href="javascript:void(0);" onclick="event_treat_web_jump()">跳转</a>'+
             '</ul>';
         $('.page').html(page);
     }

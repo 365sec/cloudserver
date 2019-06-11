@@ -1,9 +1,11 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
+# This is an auto-generated Django model module.
+# You'll have to do the following manually to clean this up:
+#   * Rearrange models' order
+#   * Make sure each model has one field with primary_key=True
+#   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
+#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
+# Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
-
-# Create your models here.
 
 
 class DjangoMigrations(models.Model):
@@ -55,8 +57,8 @@ class TFileIntegrity(models.Model):
     sha1_after = models.CharField(max_length=255, blank=True, null=True)
     owner_before = models.CharField(max_length=255, blank=True, null=True)
     owner_after = models.CharField(max_length=255, blank=True, null=True)
-    unused = models.CharField(max_length=255, blank=True, null=True)
     full_log = models.CharField(max_length=4000, blank=True, null=True)
+    unused = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -65,10 +67,10 @@ class TFileIntegrity(models.Model):
 
 class THostAgents(models.Model):
     agent_id = models.CharField(primary_key=True, max_length=100)
-    version = models.CharField(max_length=255)
-    host_name = models.CharField(max_length=255)
-    os = models.CharField(max_length=1000)
-    os_full = models.CharField(max_length=1000)
+    version = models.CharField(max_length=255, blank=True, null=True)
+    host_name = models.CharField(max_length=255, blank=True, null=True)
+    os = models.CharField(max_length=1000, blank=True, null=True)
+    os_full = models.CharField(max_length=1000, blank=True, null=True)
     internal_ip = models.CharField(max_length=255, blank=True, null=True)
     extranet_ip = models.CharField(max_length=255, blank=True, null=True)
     cpu = models.CharField(max_length=255, blank=True, null=True)
@@ -110,6 +112,7 @@ class TLogAnalysisd(models.Model):
     decoder_parent = models.CharField(max_length=255, blank=True, null=True)
     action = models.CharField(max_length=255, blank=True, null=True)
     protocol = models.CharField(max_length=255, blank=True, null=True)
+    process_name = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -162,7 +165,8 @@ class TUsers(models.Model):
 
 
 class TWebAgents(models.Model):
-    agent_id = models.CharField(primary_key=True, max_length=50)
+    app_id = models.CharField(primary_key=True, max_length=100)
+    agent_id = models.CharField(max_length=50)
     rasp_home = models.CharField(max_length=255)
     sensor_type_id = models.CharField(max_length=50, blank=True, null=True)
     version = models.CharField(max_length=255, blank=True, null=True)
@@ -175,17 +179,16 @@ class TWebAgents(models.Model):
     disabled = models.PositiveIntegerField(blank=True, null=True)
     remark = models.CharField(max_length=1000, blank=True, null=True)
     owner = models.CharField(max_length=255, blank=True, null=True)
+    last_heartbeat = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 't_web_agents'
-        unique_together = (('agent_id', 'rasp_home'),)
 
 
 class TWebEvent(models.Model):
     event_issue_id = models.CharField(primary_key=True, max_length=100)
     agent_id = models.CharField(max_length=100)
-    # agent = models.ForeignKey(THostAgents,max_length=100)
     event_category = models.CharField(max_length=50)
     event_time = models.DateTimeField()
     server_hostname = models.CharField(max_length=200, blank=True, null=True)
@@ -214,7 +217,7 @@ class TWebEvent(models.Model):
     system_user = models.CharField(max_length=100, blank=True, null=True)
     process_path = models.CharField(max_length=500)
     attack_type = models.CharField(max_length=255, blank=True, null=True)
-
+    status = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False

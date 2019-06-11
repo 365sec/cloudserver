@@ -15,33 +15,49 @@
                 </div>
                 <div style="margin-top:8px;" id="machine_name_view"><span style="color:#3366ff;font-size:16px;word-break:break-all;word-wrap: break-word;"></span></div>
 
+                <div>
+                    <div class="pull-left">
+                        <table id="promotionTable" class="table server_detail_table" style="width:600px;margin-top:40px;">
 
+                            <tbody>
+                            <tr>
+                                <td class="text-muted">CPU：</td>
+                                <td id="server_manager_cpu" ></td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted">内存：</td>
+                                <td id="server_manager_memory" ></td>
+                            </tr>
+
+                            </tbody></table>
+                    </div>
+                </div>
             </div>
             <div class="pull-left">
                 <table id="promotionTable" class="table server_detail_table" style="width:600px;margin-top:40px;">
 
                     <tbody><tr>
                         <td class="text-muted">操作系统：</td>
-                        <td >Microsoft Windows Server 2012 R2 Standard Edition 64-bit</td>
+                        <td id="server_manager_os" ></td>
                     </tr>
                     <tr>
                         <td class="text-muted">内网IP：</td>
-                        <td >172.16.39.245</td>
+                        <td id="server_manager_iip"></td>
                     </tr>
                     <tr>
                         <td class="text-muted">外网IP：</td>
-                        <td >218.94.29.59</td>
+                        <td id="server_manager_eip" ></td>
                     </tr>
 
                     </tbody></table>
             </div>
-            <div class="pull-right" style="padding-right:16px;">
-                <span class="color_index" style="font-size: 25px; color: rgb(153, 153, 153);">未巡检</span>
-                <br>
-            </div>
+{#            <div class="pull-right" style="padding-right:16px;">#}
+{#                <span class="color_index" style="font-size: 25px; color: rgb(153, 153, 153);">未巡检</span>#}
+{#                <br>#}
+{#            </div>#}
         </div>
         <ul id="server_detail_panel" class="custom_nav nav nav-tabs ul-tabs">
-            <li class="tab-oblique active"><a class="tab-col" data-toggle="tab" href="#security_analysis" aria-expanded="true"><i class="iconfont">&#xe662;</i> 安全分析</span></a></li>
+            <li class="tab-oblique active"><a class="tab-col" data-toggle="tab" href="#security_analysis" aria-expanded="true"><i class="iconfont">&#xe662;</i><span> 安全分析</span></a></li>
             <li class="tab-oblique"><a class="tab-col" data-toggle="tab" href="#event_statistics"><i class="iconfont">&#xe73c;</i><span> 事件处理</span></a></li>
             <li class="tab-oblique"><a class="tab-col" data-toggle="tab" href="#application_security"><i class="iconfont">&#xe6ee;</i><span>  安全设置</span></a></li>
             <li class="tab-oblique"><a class="tab-col" data-toggle="tab" href="#security_settings"><i class="iconfont">&#xe615;</i><span>  常用开关</span></a></li>

@@ -8,6 +8,7 @@ from django.shortcuts import render
 from django.http import FileResponse
 from common.data import CONF
 from common.common import file_iterator
+from t.models import THostAgents
 
 def agent_click(request):
     java_agent_download_url = "http://" + CONF.CLOUD_SERVER + "/download?filepath=static/package/" + CONF.JAVA_PACKAGE_URL

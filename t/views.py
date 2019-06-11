@@ -22,13 +22,15 @@ import geoip2.database
 from common.scan import get_scan
 from common.common import readConfig, ip_to_address
 
-from t.models import THostAgents as TAgents
+from t.models import TWebAgents as TAgents
+from t.models import TWebAgents
+from t.models import THostAgents
 from t.models import TWebEvent as TAttackEvent
 
 from t.models import TWebEvent
 from t.models import TFileIntegrity
 from t.models import TLogAnalysisd
-from t.models import THostAgents
+
 
 from t.models import TEventKnowledge
 from t.models import TPlugins
@@ -92,10 +94,10 @@ def agent_query(request):
     page = int(page)
     result = None
     if request.session['superuser']:
-        result = TAgents.objects.all().order_by("-online")
+        result = THostAgents.objects.all().order_by("-online")
     else:
         username = request.session['username']
-        result = TAgents.objects.filter(owner=username).order_by("-online")
+        result = THostAgents.objects.filter(owner=username).order_by("-online")
     # 每页显示多少个数据
 
     page_size = 15
@@ -108,8 +110,9 @@ def agent_query(request):
     TAgents_list = []
     for x in result[(page - 1) * page_size:(page) * page_size]:
         y = model_to_dict(x)
-
-        y['sensor_type_id'] = SENSOR_TYPE.get(y['sensor_type_id'], '')
+        # print (y)
+        y['last_hearbeat']=y['last_hearbeat'].strftime("%Y-%m-%d %H:%M:%S")
+        # y['sensor_type_id'] = SENSOR_TYPE.get(y['sensor_type_id'], '')
         y['online'] = '在线' if y['online'] else '离线'
         y['disabled'] = '是' if y['disabled'] else '否'
 
@@ -118,6 +121,97 @@ def agent_query(request):
                 y[k] = ''
         y = json.dumps(y)
 
+        TAgents_list.append(y)
+    data = {
+        "agents": TAgents_list,
+        "max_size": max_size,
+        "page": page,
+    }
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
+@auth
+def server_agent_query(request):
+    global SENSOR_TYPE
+    # 当前页码数
+    page = request.POST.get("page")
+    page = int(page)
+    result = None
+    if request.session['superuser']:
+        result = THostAgents.objects.all().order_by("-online")
+    else:
+        username = request.session['username']
+        result = THostAgents.objects.filter(owner=username).order_by("-online")
+    # 每页显示多少个数据
+
+    page_size = 15
+    # 最大分页数
+    max_size = (result.count() + page_size - 1) / page_size
+    if max_size == 0:
+        max_size = 1
+    if page > max_size:
+        page = max_size
+    TAgents_list = []
+    for x in result[(page - 1) * page_size:(page) * page_size]:
+        y = model_to_dict(x)
+        # print (y)
+        y['last_hearbeat']=y['last_hearbeat'].strftime("%Y-%m-%d %H:%M:%S")
+        # y['sensor_type_id'] = SENSOR_TYPE.get(y['sensor_type_id'], '')
+        y['online'] = '在线' if y['online'] else '离线'
+        y['disabled'] = '是' if y['disabled'] else '否'
+
+        for k, v in y.items():
+            if not y[k]:
+                y[k] = ''
+        y = json.dumps(y)
+
+        TAgents_list.append(y)
+    data = {
+        "agents": TAgents_list,
+        "max_size": max_size,
+        "page": page,
+    }
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
+def web_agent_query(request):
+    global SENSOR_TYPE
+    # 当前页码数
+    page = request.POST.get("page")
+    page = int(page)
+    result = None
+    if request.session['superuser']:
+        result = TWebAgents.objects.all().order_by("-online")
+    else:
+        username = request.session['username']
+        result = TWebAgents.objects.filter(owner=username).order_by("-online")
+    # 每页显示多少个数据
+
+    page_size = 15
+    # 最大分页数
+    max_size = (result.count() + page_size - 1) / page_size
+    if max_size == 0:
+        max_size = 1
+    if page > max_size:
+        page = max_size
+    TAgents_list = []
+    for x in result[(page - 1) * page_size:(page) * page_size]:
+        y = model_to_dict(x)
+        hostname=THostAgents.objects.all().filter(agent_id=y['agent_id']).first()
+        print (hostname)
+        if hostname.internal_ip:
+            y['register_ip']=hostname.internal_ip
+        else:
+            y['register_ip']=hostname.extranet_ip
+        y['hostname']=hostname.host_name
+        y['sensor_type_id'] = SENSOR_TYPE.get(y['sensor_type_id'], '')
+        y['online'] = '在线' if y['online'] else '离线'
+        y['disabled'] = '是' if y['disabled'] else '否'
+        y['last_heartbeat']=y['last_heartbeat'].strftime("%Y-%m-%d %H:%M:%S")
+
+        for k, v in y.items():
+            if not y[k]:
+                y[k] = ''
+        y = json.dumps(y)
+        print (y)
         TAgents_list.append(y)
     data = {
         "agents": TAgents_list,
@@ -234,35 +328,7 @@ def attack_event_query(request):
         y['hostname'] = THostAgents.objects.all().filter(agent_id=x[0]).values_list("host_name").first()
         attack_list.append(y)
 
-    # for x in result[(page - 1) * page_size:(page) * page_size]:
-    #     y = model_to_dict(x)
-    #     y['event_time'] = y['event_time'].strftime("%Y-%m-%d %H:%M:%S")
-    #     y['intercept_state'] = INTERCEPT_STATUS.get(y['intercept_state'], '')
-    #     y['threat_level'] = THREAT_LEVEL.get(y['threat_level'], '')
-    #     y['attack_type1'] = y['attack_type']
-    #     try:
-    #         y['attack_type'] = TEventKnowledge.objects.get(event_id=y['event_id']).event_name
-    #     except Exception as e:
-    #         y['attack_type'] = ''
-    #     y['plugin_message'] = y['plugin_message'].replace('<', '&lt').replace('>', '&gt')
-    #     y['attack_params'] = y['attack_params'].replace('<', '&lt').replace('>', '&gt')
-    #     y['url'] = y['url'].replace('<', '&lt').replace('>', '&gt')
-    #     y['body'] = y['body'].replace('<', '&lt').replace('>', '&gt')
-    #     y['plugin_message'] = y['plugin_message'].replace('"', '&quot;')
-    #
-    #     # 查询城市
-    #     y['city'] = ''
-    #
-    #     str_ip = y['attack_source'].split(".")[0]
-    #     if str_ip == "172" or str_ip == "192" or str_ip == "10":
-    #         y['city'] = "局域网"
-    #     elif str_ip == "127" or str_ip == "" or str_ip == "::1":
-    #         y['city'] = "本机"
-    #     try:
-    #         y['city'] = ip_to_address(y['attack_source'])
-    #     except Exception as e:
-    #         pass
-    #     attack_list.append(y)
+
 
     data = {
         "attack": attack_list,
@@ -347,6 +413,56 @@ def query_detail_data(request):
     data = json.dumps(y)
     return HttpResponse(data, content_type='application/json')
 
+def query_web_event_by_app_id(request):
+
+    # 当前页码数
+    page = request.POST.get("page")
+    app_id=request.POST.get("app_id")
+    page = int(page)
+    print (app_id)
+    result = TWebEvent.objects.filter(agent_id=app_id).order_by("-event_time")
+    # 每页显示多少个数据
+
+
+    page_size = 15
+    # 最大分页数
+    max_size = (result.count() + page_size - 1) / page_size
+    if max_size == 0:
+        max_size = 1
+    if page > max_size:
+        page = max_size
+    event_list = []
+    for x in result[(page - 1) * page_size:(page) * page_size]:
+        y = model_to_dict(x)
+        y['event_time']=y['event_time'].strftime("%Y-%m-%d %H:%M:%S")
+        if y['threat_level'] == 0:
+            y['threat_level']="高危"
+        else:
+            y['threat_level']="一般"
+
+        print (y['status'])
+        if y['status'] == 0:
+            y['status']="未处理"
+        else:
+            y['status']="已处理"
+        print (y['status'])
+
+        for k, v in y.items():
+            if not y[k]:
+                y[k] = ''
+
+        event_list.append(y)
+
+
+    data = {
+        "event_list": event_list,
+        "max_size": max_size,
+        "page": page,
+    }
+
+    data = json.dumps(data)
+    return HttpResponse(data, content_type='application/json')
+
 
 @auth
 def attack_query_source(request):
@@ -417,6 +533,121 @@ def attack_query_source(request):
     # print(data)
     return HttpResponse(data, content_type='application/json')
 
+
+@auth
+def server_attack_trend(request):
+    '''
+    安全分析
+    :param request:
+    :return:
+    '''
+    id=request.POST.get("id")
+    tweb_obj = TWebEvent.objects.all().filter(agent_id=id)
+    tfile_obj = TFileIntegrity.objects.all().filter(agent_id=id)
+    tlog_obj = TLogAnalysisd.objects.all().filter(agent_id=id)
+
+    # 统计今日、昨日、这周的攻击情况
+    date=datetime.today().day
+    # dt_s = datetime.now().date()  # 2018-7-15
+    # dt_e = (dt_s - timedelta(num))  # 2018-7-08
+    dt_s = datetime.now().date()
+    time_list_d=OrderedDict()
+    time_list_y=OrderedDict()
+    time_list_w=OrderedDict()
+    num_list={}
+    for d in [0,1,6]:
+        for x in range(25):
+            time_list_d[str(x).zfill(2)+":00"]=0
+            time_list_y[str(x).zfill(2)+":00"]=0
+            time_list_w[str(x).zfill(2)+":00"]=0
+
+        dt_e = (dt_s - timedelta(d))
+        tweb_obj1=tweb_obj.filter(event_time__range=(dt_e, dt_s)).extra(select={"event_time":"DATE_FORMAT( event_time, '%%Y-%%m-%%d %%H')"})\
+                                .values('event_time').annotate(num=Count('event_time')).values('event_time','num').order_by('event_time')
+        tfile_obj1=tfile_obj.filter(event_time__range=(dt_e, dt_s)).extra(select={"event_time":"DATE_FORMAT( event_time, '%%Y-%%m-%%d %%H')"}) \
+                                .values('event_time').annotate(num=Count('event_time')).values('event_time','num').order_by('event_time')
+        tlog_obj1=tlog_obj.filter(event_time__range=(dt_e, dt_s)).extra(select={"event_time":"DATE_FORMAT( event_time, '%%Y-%%m-%%d %%H')"}) \
+                                .values('event_time').annotate(num=Count('event_time')).values('event_time','num').order_by('event_time')
+        union_obj=tweb_obj1.union(tfile_obj1,tlog_obj1)
+        if d==0:
+            for x in union_obj:
+                time1=x['event_time'].split(" ")[1]+":00"
+                time_list_d[time1]+=x['num']
+            num_list['tday']=time_list_d
+        if d==1:
+            for x in union_obj:
+                time1=x['event_time'].split(" ")[1]+":00"
+                time_list_y[time1]+=x['num']
+            num_list['yday']=time_list_y
+        if d==6:
+            for x in union_obj:
+                time1=x['event_time'].split(" ")[1]+":00"
+                time_list_w[time1]+=x['num']
+            num_list['week']=time_list_w
+
+    # 攻击类型类型及数目
+
+    # 攻击类型分析及被攻击网站列表
+    data={
+        "num_list":num_list
+    }
+    data = json.dumps(data)
+    return HttpResponse(data, content_type='application/json')
+
+@auth
+def web_attack_trend(request):
+    '''
+    网站安全分析
+    :param request:
+    :return:
+    '''
+    id=request.POST.get("id")
+    tweb_obj = TWebEvent.objects.all().filter(agent_id=id)
+
+    # 统计今日、昨日、这周的攻击情况
+    date=datetime.today().day
+    # dt_s = datetime.now().date()  # 2018-7-15
+    # dt_e = (dt_s - timedelta(num))  # 2018-7-08
+    dt_s = datetime.now().date()
+    time_list_d=OrderedDict()
+    time_list_y=OrderedDict()
+    time_list_w=OrderedDict()
+    num_list={}
+    for d in [0,1,6]:
+        for x in range(25):
+            time_list_d[str(x).zfill(2)+":00"]=0
+            time_list_y[str(x).zfill(2)+":00"]=0
+            time_list_w[str(x).zfill(2)+":00"]=0
+
+        dt_e = (dt_s - timedelta(d))
+        tweb_obj1=tweb_obj.filter(event_time__range=(dt_e, dt_s)).extra(select={"event_time":"DATE_FORMAT( event_time, '%%Y-%%m-%%d %%H')"}) \
+            .values('event_time').annotate(num=Count('event_time')).values('event_time','num').order_by('event_time')
+
+        union_obj=tweb_obj1
+        if d==0:
+            for x in union_obj:
+                time1=x['event_time'].split(" ")[1]+":00"
+                time_list_d[time1]+=x['num']
+            num_list['tday']=time_list_d
+        if d==1:
+            for x in union_obj:
+                time1=x['event_time'].split(" ")[1]+":00"
+                time_list_y[time1]+=x['num']
+            num_list['yday']=time_list_y
+        if d==6:
+            for x in union_obj:
+                time1=x['event_time'].split(" ")[1]+":00"
+                time_list_w[time1]+=x['num']
+            num_list['week']=time_list_w
+
+    # 攻击类型类型及数目
+
+    # 攻击类型分析及被攻击网站列表
+    data={
+        "num_list":num_list
+    }
+    data = json.dumps(data)
+    return HttpResponse(data, content_type='application/json')
 
 @auth
 def query_threat_level(request):

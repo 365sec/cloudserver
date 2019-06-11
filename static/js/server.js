@@ -15,7 +15,7 @@ function server_click(page) {
             }
             $(this).addClass("active router-link-active").siblings().removeClass("active router-link-active");
             $.ajax({
-                url: "agent/query/",
+                url: "server_agent/query/",
                 type: 'POST',
                 data: {
                     "page": page
@@ -50,18 +50,20 @@ function server_click(page) {
                         html += '<tr>';
                         data[x] = JSON.parse(data[x]);
                         let agent_id = data[x]['agent_id'];
+                        let b = new Base64();
+                        let data1 = b.encode(JSON.stringify(data[x]));
 
-                        html += '<td><a class="detail-a-server" href="javascript:void(0)" data-name="' + agent_id + '"   >' + data[x]['agent_id'] + '</a> </td>';
+                        html += '<td><a class="detail-a-server" href="javascript:void(0)" data-name="' + data1 + '"   >' + data[x]['host_name'] + '</a> </td>';
                         html += '<td>' + data[x]['os'] + '</td>';
-                        html += '<td>' + data[x]['register_ip'] + '</td>';
-                        html += '<td>' + data[x]['register_ip'] + '</td>';
-                        if (data[x]['online'] == '在线') {
+                        html += '<td>' + data[x]['internal_ip'] + '</td>';
+                        html += '<td>' + data[x]['extranet_ip'] + '</td>';
+                        if (data[x]['online'] === '在线') {
                             html += '<td><img src = "/static/images/online.png" style="width: 12px;">' + data[x]['online'] + '</td>';
                         } else {
                             html += '<td><img src = "/static/images/offline.png" style="width: 12px;">' + data[x]['online'] + '</td>';
                         }
-                        html += '<td>' + data[x]['version'] + '</td>';
-                        html += '<td>' + data[x]['server_type'] + '</td>';
+                        html += '<td>' + data[x]['own_user'] + '</td>';
+                        html += '<td>' + data[x]['remark'] + '</td>';
                         html += '</tr>';
                     }
                     html += '</tbody>';
@@ -99,22 +101,32 @@ $(document).on("click", ".manageDiv .card .btngroup .btn", function() {
 
 //详情
 $(document).on("click", ".detail-a-server", function () {
-    let id = $(this).attr("data-name");
+    let data1 = $(this).attr("data-name");
+    let b=new Base64();
+    let data=JSON.parse(b.decode(data1));
+    console.log(data);
     $.ajax({
         url: 'server_manage_detail',
         type: 'get',
         dataType: 'html',
+
         success: function (res) {
-            console.log(res);
+            // console.log(res);
             $('#div_container').html($(res));
-            $('.page-title').html('主机：'+id);
-            $('#machine_name_view span').html(id);
+            $('.page-title').html('主机：'+data['host_name']);
+            $('#machine_name_view span').html(data['remark']);
+            $("#server_manager_os").html("").append(data['os_full']);
+            $("#server_manager_iip").html("").append(data['internal_ip']);
+            $("#server_manager_eip").html("").append(data['extranet_ip']);
+            $("#server_manager_cpu").html("").append(data['cpu']);
+            $("#server_manager_memory").html("").append(data['memory']);
+
 
             // 安全分析
-            chart_attack_trend();
+            chart_attack_trend_server(data['agent_id']);
 
             // 事件处理
-            event_treat(1);
+            event_treat_server(1);
 
             //安全设置
             application_security();
@@ -128,13 +140,49 @@ $(document).on("click", ".detail-a-server", function () {
     });
 });
 
+
+
 // 安全分析
-function chart_attack_trend(){
+function chart_attack_trend_server(agent_id){
+    let data;
+    $.ajax({
+        url: "attack/server_trend/",
+        type: 'POST',
+        data: {
+            "id": agent_id
+        },
+        // dataType: "json",
+        async: false,
+        success: function (data_list) {
+            data=data_list;
+            console.log(data_list);
+            console.log((data_list['num_list']));
+        }});
+
+    let temp_tday = [];
+    let temp_yday = [];
+    let temp_week = [];
+    for( x in data['num_list']['tday'])
+    {
+        temp_tday.push([x,data['num_list']['tday'][x]])
+    }
+    for( x in data['num_list']['yday'])
+    {
+        temp_yday.push([x,data['num_list']['yday'][x]])
+    }
+    for( x in data['num_list']['week'])
+    {
+        temp_week.push([x,data['num_list']['week'][x]])
+    }
     // chart_attack_trend 服务器攻击趋势
-    let tday = [["2:00", 21273],["4:00", 12273],["6:00", 15273],["8:00", 6273],["10:00", 8273],["12:00", 10273]];
+    // let tday = [["2:00", 21273],["4:00", 12273],["6:00", 15273],["8:00", 6273],["10:00", 8273],["12:00", 10273]];
+    let tday = temp_tday;
+    let yday =temp_yday;
+    let week = temp_week;
     linechart(tday,'chart_attack_trend');
 
-    let attack = [["1", 21273],["没有攻击", 12273]];
+
+    let attack = [["1", 3333],["没有攻击", 12273]];
     piechart(attack,'chart_attack_kind');
 
     // 攻击类型攻击次数
@@ -152,34 +200,34 @@ function chart_attack_trend(){
         web_attack +='<td>'+parseInt(Math.random()*500+1)+'</td></tr>';
     }
     $('#web_attack').html(web_attack);
+    // 安全分析服务器攻击趋势tab切换
+    $(document).on('click','.server_detail_tab',function () {
+        let value = $(this).attr('data-type');
+        let data = [];
+        switch (value) {
+            case 'tday' :
+                data = tday;
+                break;
+            case 'yday' :
+                data = yday;
+                break;
+            case 'week' :
+                data = week;
+                break;
+        }
+        let linechart = echarts.init(document.getElementById('chart_attack_trend'));
+        let option = linechart.getOption();
+        option.series[0].data = data;
+        linechart.setOption(option);
+    })
 }
-//安全分析服务器攻击趋势tab切换
-$(document).on('click','.server_detail_tab',function () {
-    let tday = [["2:00", 21273],["4:00", 12273],["6:00", 15273],["8:00", 6273],["10:00", 8273],["12:00", 10273]];
-    let yday = [["2:00", 1273],["4:00", 2273],["6:00", 15273],["8:00", 6273],["10:00", 8273],["12:00", 10273]];
-    let week = [["2:00", 21273],["4:00", 12273],["6:00", 15273],["8:00", 273],["10:00", 8273],["12:00", 1273]];
-    let value = $(this).attr('data-type');
-    let data = [];
-    switch (value) {
-        case 'tday' :
-            data = tday;
-            break;
-        case 'yday' :
-            data = yday;
-            break;
-        case 'week' :
-            data = week;
-            break;
-    }
-    let linechart = echarts.init(document.getElementById('chart_attack_trend'))
-    let option = linechart.getOption();
-    option.series[0].data = data;
-    linechart.setOption(option);
-})
+
+
 
 
 // 事件处理
-function event_treat(now_page){
+function event_treat_server(now_page){
+    console.log("事件处理");
     max_size = 3;
     if (now_page == null || now_page < 1) {
         now_page = 1;
@@ -259,6 +307,7 @@ function treat(obj) {
 
 // 安全设置
 function application_security(){
+    console.log("安全设置");
     let application_security_table_table = [['Web应用','80','IIS','8.5','微软公司的Windows平台Web服务器软件',[['插件',1],['强制访问控制',0],['端口防护',0],['防暴力破解',1]]],
         ['Web应用','81','IIS2','8.5','微软公司的Windows平台Web服务器软件',[['插件',0],['端口防护',0],['防暴力破解',1]]],
         ['Web应用','82','IIS3','8.5','微软公司的Windows平台Web服务器软件',[['插件',1],['强制访问控制',0],['端口防护',1]]]];
@@ -428,6 +477,7 @@ function check_del() {
 
 //网站详情
 function server_website_list(now_page){
+    console.log("网站详情");
     max_size = 3;
     if (now_page == null || now_page < 1) {
         now_page = 1;

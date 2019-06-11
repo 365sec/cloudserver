@@ -363,9 +363,7 @@ $(document).on("click", ".detail-a", function () {
             <div class="modal-body">
                 <ul class="nav nav-tabs myTab">
                     <li class="active"><a href="#detailed_report" data-toggle="tab">详情报告</a></li>
-                    <div id = "attack_back">
-                        <li><a href="#attack_traceability" data-toggle="tab">攻击追溯</a></li>
-                    </div>
+                    <li id="attack_back"><a href="#attack_traceability" data-toggle="tab">攻击追溯</a></li>
                     
                 </ul>
                 <div class="tab-content myTabContent">
@@ -414,8 +412,6 @@ $(document).on("click", ".detail-a", function () {
     detail_date = get_detail_data_from_issue_id(data['event_issue_id']);
     //生成详情页部分
     get_iochtml(detail_date);
-
-
 
     $(".myModalLabel").text("攻击事件");
     $("#myModal").modal("show");
@@ -1195,7 +1191,7 @@ function log_event_html(data) {
                                                     <td class="td-01">进程路径</td>
                                                     <td class="td-02">:</td>
                                                     <td class="td-03">
-                                                        <p>rdp</p>
+                                                        <p>${data['process_name']}</p>
                                                     </td>
                                                 </tr>
                                             </tbody>
