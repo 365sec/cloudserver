@@ -51,8 +51,8 @@ def overview(request):
 def attack(request):
     return render(request, 'attack.html')
 
-def agent(request):
-    return render(request, 'agent.html')
+# def agent(request):
+#     return render(request, 'agent.html')
 
 def countreport(request):
     return render(request, 'countreport.html')
@@ -60,8 +60,8 @@ def countreport(request):
 def agent_download(request):
     return render(request, 'download.html')
 
-def agent_detail(request):
-    return render(request, 'agent_detail.html', {})
+# def agent_detail(request):
+#     return render(request, 'agent_detail.html', {})
 
 def server_manage_detail(request):
 

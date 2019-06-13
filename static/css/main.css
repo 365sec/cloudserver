@@ -1,11 +1,11 @@
 @font-face {
     font-family: 'iconfont';  /* project id 1075499 */
-    src: url('//at.alicdn.com/t/font_1075499_hfk2n35cwwd.eot');
-    src: url('//at.alicdn.com/t/font_1075499_hfk2n35cwwd.eot?#iefix') format('embedded-opentype'),
-    url('//at.alicdn.com/t/font_1075499_hfk2n35cwwd.woff2') format('woff2'),
-    url('//at.alicdn.com/t/font_1075499_hfk2n35cwwd.woff') format('woff'),
-    url('//at.alicdn.com/t/font_1075499_hfk2n35cwwd.ttf') format('truetype'),
-    url('//at.alicdn.com/t/font_1075499_hfk2n35cwwd.svg#iconfont') format('svg');
+    src: url('//at.alicdn.com/t/font_1075499_5zqckt7amnu.eot');
+    src: url('//at.alicdn.com/t/font_1075499_5zqckt7amnu.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_1075499_5zqckt7amnu.woff2') format('woff2'),
+    url('//at.alicdn.com/t/font_1075499_5zqckt7amnu.woff') format('woff'),
+    url('//at.alicdn.com/t/font_1075499_5zqckt7amnu.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_1075499_5zqckt7amnu.svg#iconfont') format('svg');
 }
 .iconfont1{
     font-family:"iconfont" !important;
@@ -92,7 +92,9 @@ b {
     margin: 0;
 }
 .modal-dialog .modal-content{
-    height: 100%;}
+    height: 100%;
+    background-color: #f5f5f5;
+}
 .modal-body {
     height: calc(100% - 98px);
     padding: 10px;
@@ -104,9 +106,7 @@ b {
 .modal-content .modal-header .close{
     margin: -18px;
 }
-#myTabContent div button{
-    background: none;
-}
+
 
 #model-body td {
     word-break: keep-all;
@@ -754,17 +754,6 @@ td {
     color: #757575;
 }
 
-#myTabContent div.active {
-    font-size: 14px;
-    padding: 10px 15px;
-    box-sizing: border-box;
-}
-
-#myTabContent div button.active {
-    color: rgba(0, 0, 0, .7);
-    border: 1px solid #458df9;
-    box-shadow: none;
-}
 
 .form > div {
     margin-bottom: 10px;
@@ -776,7 +765,9 @@ td {
     line-height: 34px;
     margin-left: 10px;
 }
+.form b{
 
+}
 a:not([href]):not([tabindex]), a:not([href]):not([tabindex]):focus, a:not([href]):not([tabindex]):hover {
     color: #458df9;
     text-decoration: none;
@@ -1224,7 +1215,8 @@ code {
     background-size: 95%;
 }
 .tab-content > .tab-pane {
-    padding-top: 16px;
+    padding: 24px;
+    margin-bottom: 48px;
 }
 
 .ioc_body{
@@ -1784,68 +1776,7 @@ ul {
     background-color: #fff;
     border-color: #dedede;
 }
-/*security_settings*/
-.btn_on_off{
-    border-radius: 3px;
-    margin-top: 10px;
-    height: 18px;
-    width: 60px;
-    overflow: hidden;
-    display: inline-flex;
-}
-.btn_fath{
-    position: relative;
-    width: 120px;
-    height: 18px;
-    display: flex;
-    left: -57px;
-}
 
-.btn1{
-    float: left;
-    background-color: #333;
-}
-
-.btn2{
-    float: right;
-    background-color: #e6e6e6;
-
-}
-.btnSwitch{
-    border:none;
-    color: #fff;
-    line-height: 18px;
-    font-size: 12px;
-    text-align: center;
-    z-index: 1;
-    width: 60px;
-}
-
-.move{
-    z-index: 100;
-    height: 18px;
-    width: 6px;
-    border-radius: 3px;
-    position: absolute;
-    cursor: pointer;
-    border: 1px solid #828282;
-    background-color: #fff;
-    left: 57px;
-}
-.on .btn_fath{
-    left: -3px;
-}
-.fillin td{
-    border: none;
-    text-align: left;
-    padding: 10px 50px;
-}
-.security_settings_span {
-    padding: 0 10px;
-    display: inline-block;
-    width: 120px;
-}
-/*security_settings*/
 
 .dialogbox{
     position: absolute;
@@ -1910,7 +1841,6 @@ ul {
 
 .panel-group .panel-fst>div>.panel-body{
     background: rgb(245, 245, 245);
-    padding: 0;
 }
 .panel-group .panel-fst>.panel-body>{
     background: rgb(245, 245, 245);
@@ -2039,3 +1969,91 @@ ul {
     width:14px;
     height: 14px;
 }
+
+/*防御策略*/
+.config_show_title {
+    font-size: 16px;
+    line-height: 30px;
+}
+#config_show .panel-title a i{
+    margin-left: auto;
+}
+#config_show .panel-group div button{
+    background: none;
+}
+#config_show .panel-group div.active {
+    font-size: 14px;
+    padding: 10px 15px;
+    box-sizing: border-box;
+}
+
+#config_show .panel-group div button.active {
+    color: rgba(0, 0, 0, .7);
+    border: 1px solid #458df9;
+    box-shadow: none;
+}
+#agent_manage_submit{
+    display: flex;
+    justify-content: flex-end;
+}
+/*security_settings*/
+/*.btn_on_off{*/
+/*    border-radius: 3px;*/
+/*    margin-top: 10px;*/
+/*    height: 18px;*/
+/*    width: 60px;*/
+/*    overflow: hidden;*/
+/*    display: inline-flex;*/
+/*}*/
+/*.btn_fath{*/
+/*    position: relative;*/
+/*    width: 120px;*/
+/*    height: 18px;*/
+/*    display: flex;*/
+/*    left: -57px;*/
+/*}*/
+
+/*.btn1{*/
+/*    float: left;*/
+/*    background-color: #333;*/
+/*}*/
+
+/*.btn2{*/
+/*    float: right;*/
+/*    background-color: #e6e6e6;*/
+
+/*}*/
+/*.btnSwitch{*/
+/*    border:none;*/
+/*    color: #fff;*/
+/*    line-height: 18px;*/
+/*    font-size: 12px;*/
+/*    text-align: center;*/
+/*    z-index: 1;*/
+/*    width: 60px;*/
+/*}*/
+
+/*.move{*/
+/*    z-index: 100;*/
+/*    height: 18px;*/
+/*    width: 6px;*/
+/*    border-radius: 3px;*/
+/*    position: absolute;*/
+/*    cursor: pointer;*/
+/*    border: 1px solid #828282;*/
+/*    background-color: #fff;*/
+/*    left: 57px;*/
+/*}*/
+/*.on .btn_fath{*/
+/*    left: -3px;*/
+/*}*/
+/*.fillin td{*/
+/*    border: none;*/
+/*    text-align: left;*/
+/*    padding: 10px 50px;*/
+/*}*/
+/*.security_settings_span {*/
+/*    padding: 0 10px;*/
+/*    display: inline-block;*/
+/*    width: 120px;*/
+/*}*/

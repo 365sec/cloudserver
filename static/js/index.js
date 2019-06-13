@@ -6,9 +6,9 @@ $(document).on("click", ".nano-content li>div", function () {
     let value = $(this).children().attr("data-value");
     // console.log(value);
     switch (value) {
-        case "agent":
-            agent_click(1);
-            break;
+        // case "agent":
+        //     agent_click(1);
+        //     break;
         case "attack":
             attack_click(1);
             break;

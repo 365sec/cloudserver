@@ -32,10 +32,10 @@ urlpatterns = [
     url(r'^agentClick$', link.agent_click),
     url(r'^overview$', link.overview),
     url(r'^attack$', link.attack),
-    url(r'^agent$', link.agent),
+    # url(r'^agent$', link.agent),
     url(r'^countreport$', link.countreport),
     url(r'^agent_download$', link.agent_download),
-    url(r'^agent_detail$', link.agent_detail),
+    # url(r'^agent_detail$', link.agent_detail),
     url(r'^server_manage_detail$', link.server_manage_detail),
     url(r'^website_manage_detail$', link.website_manage_detail),
 

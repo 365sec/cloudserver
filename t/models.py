@@ -130,7 +130,7 @@ class TPlugins(models.Model):
 
     class Meta:
         managed = False
-        db_table = 't_plugins'
+        db_table = 't_config'
 
 
 class TSecurityPolicyEvent(models.Model):
