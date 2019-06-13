@@ -120,32 +120,37 @@ $(document).on("click", ".detail-a-server", function () {
             $("#server_manager_eip").html("").append(data['extranet_ip']);
             $("#server_manager_cpu").html("").append(data['cpu']);
             $("#server_manager_memory").html("").append(data['memory']);
-
+            // for(let i=0;i<$('#server_detail_panel>li').length;i++){
+            //     $('#server_detail_panel>li:nth-child('+i+')').attr('data-agent-id',data['agent_id'])
+            // }
 
             // 安全分析
             chart_attack_trend_server(data['agent_id']);
+            click_chart_attack_trend_server(data['agent_id']);
 
             // 事件处理
-            event_treat_server(1);
+            click_event_treat_server(1);
 
             //安全设置
-            application_security();
+            click_application_security();
 
             // 网站详情
-            server_website_list(1);
+            click_server_website_list(1);
 
             // 黑白名单
-            black_white_list();
+            click_black_white_list();
 
             // 防御策略
-            config_show(data['agent_id']);
+            click_config_show(data['agent_id']);
         }
     });
 });
-
-
-
 // 安全分析
+function click_chart_attack_trend_server(data){
+    $(document).on('click','#security_analysis_link',function () {
+        chart_attack_trend_server(data);
+    })
+}
 function chart_attack_trend_server(agent_id){
     let data;
     $.ajax({
@@ -225,7 +230,13 @@ function chart_attack_trend_server(agent_id){
     })
 }
 
+
 // 事件处理
+function click_event_treat_server(){
+    $(document).on('click','#event_statistics_link',function () {
+        event_treat_server();
+    })
+}
 function event_treat_server(now_page){
     console.log("事件处理");
     max_size = 3;
@@ -306,6 +317,11 @@ function treat(obj) {
 }
 
 // 安全设置
+function click_application_security(data){
+    $(document).on('click','#application_security_link',function () {
+        application_security(data);
+    })
+}
 function application_security(){
     console.log("安全设置");
     let application_security_table_table = [['Web应用','80','IIS','8.5','微软公司的Windows平台Web服务器软件',[['插件',1],['强制访问控制',0],['端口防护',0],['防暴力破解',1]]],
@@ -476,6 +492,11 @@ function check_del() {
 
 
 //网站详情
+function click_server_website_list(data){
+    $(document).on('click','#server_website_list_link',function () {
+        server_website_list(data);
+    })
+}
 function server_website_list(now_page){
     console.log("网站详情");
     max_size = 3;
@@ -537,10 +558,15 @@ $(document).on("click", "#server_website_list_del", function() {
     event.stopPropagation(); //阻止事件向上冒泡
 });
 // 黑白名单
+
+function click_black_white_list(){
+    $(document).on('click','#black_white_list_link',function () {
+        black_white_list();
+    })
+}
 function black_white_list(){
     let black_list_data = ['117.158.142.120','117.158.142.121','117.158.142.122','117.158.142.123'];
     let white_list_data = ['117.158.142.127','117.158.142.126','117.158.142.125','117.158.142.124'];
-
     let black_list_table = '';
     for(let j=0,len = black_list_data.length;j<len;j++){
         black_list_table +='<tr><td style="width: 46px;padding: 14px;">\n' +
@@ -718,6 +744,11 @@ $(document).on('click','#releaseall_white',function () {
 
 
 // 防御策略
+function click_config_show(data){
+    $(document).on('click','#config_show_link',function () {
+        config_show(data);
+    })
+}
 function config_show(id) {
     let algorithm_html = ``;
     let httpProtec_html = ``;

@@ -68,3 +68,15 @@ $(document).on('click','.menu_button',function () {
         $('.nano-content').find('.slide_mark').removeClass('iconRotate')
     }
 })
+
+
+// 关闭弹窗
+$(document).on('click',".layout .close,.layout .layout-close",function (e) {
+    $('.shade>.layout').html('');
+    actionIn(".layout", 'action_scale_out', .3, "");
+    $(".shade").css({
+        visibility: "hidden"
+    });
+    event.stopPropagation(); //阻止事件向上冒泡
+
+});
