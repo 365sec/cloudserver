@@ -31,9 +31,8 @@ from t.models import TWebEvent
 from t.models import TFileIntegrity
 from t.models import TLogAnalysisd
 
-
 from t.models import TEventKnowledge
-from t.models import TPlugins
+from t.models import TConfig
 from t.models import TUsers
 from t.auth import auth
 from t.login import AGENT_ID
@@ -60,7 +59,7 @@ def add_host(request):
             agent.save()
 
             # 在t_plugins中增加记录
-            plugin = TPlugins()
+            plugin = TConfig()
             plugin.agent_id = AGENT_ID
             plugin.plugin_name = "offical"
             timeArray = time.localtime()
@@ -111,7 +110,7 @@ def agent_query(request):
     for x in result[(page - 1) * page_size:(page) * page_size]:
         y = model_to_dict(x)
         # print (y)
-        y['last_hearbeat']=y['last_hearbeat'].strftime("%Y-%m-%d %H:%M:%S")
+        y['last_hearbeat'] = y['last_hearbeat'].strftime("%Y-%m-%d %H:%M:%S")
         # y['sensor_type_id'] = SENSOR_TYPE.get(y['sensor_type_id'], '')
         y['online'] = '在线' if y['online'] else '离线'
         y['disabled'] = '是' if y['disabled'] else '否'
@@ -128,6 +127,7 @@ def agent_query(request):
         "page": page,
     }
     return HttpResponse(json.dumps(data), content_type='application/json')
+
 
 @auth
 def server_agent_query(request):
@@ -154,7 +154,7 @@ def server_agent_query(request):
     for x in result[(page - 1) * page_size:(page) * page_size]:
         y = model_to_dict(x)
         # print (y)
-        y['last_hearbeat']=y['last_hearbeat'].strftime("%Y-%m-%d %H:%M:%S")
+        y['last_hearbeat'] = y['last_hearbeat'].strftime("%Y-%m-%d %H:%M:%S")
         # y['sensor_type_id'] = SENSOR_TYPE.get(y['sensor_type_id'], '')
         y['online'] = '在线' if y['online'] else '离线'
         y['disabled'] = '是' if y['disabled'] else '否'
@@ -171,6 +171,7 @@ def server_agent_query(request):
         "page": page,
     }
     return HttpResponse(json.dumps(data), content_type='application/json')
+
 
 def web_agent_query(request):
     global SENSOR_TYPE
@@ -195,17 +196,17 @@ def web_agent_query(request):
     TAgents_list = []
     for x in result[(page - 1) * page_size:(page) * page_size]:
         y = model_to_dict(x)
-        hostname=THostAgents.objects.all().filter(agent_id=y['agent_id']).first()
+        hostname = THostAgents.objects.all().filter(agent_id=y['agent_id']).first()
         print (hostname)
         if hostname.internal_ip:
-            y['register_ip']=hostname.internal_ip
+            y['register_ip'] = hostname.internal_ip
         else:
-            y['register_ip']=hostname.extranet_ip
-        y['hostname']=hostname.host_name
+            y['register_ip'] = hostname.extranet_ip
+        y['hostname'] = hostname.host_name
         y['sensor_type_id'] = SENSOR_TYPE.get(y['sensor_type_id'], '')
         y['online'] = '在线' if y['online'] else '离线'
         y['disabled'] = '是' if y['disabled'] else '否'
-        y['last_heartbeat']=y['last_heartbeat'].strftime("%Y-%m-%d %H:%M:%S")
+        y['last_heartbeat'] = y['last_heartbeat'].strftime("%Y-%m-%d %H:%M:%S")
 
         for k, v in y.items():
             if not y[k]:
@@ -241,11 +242,20 @@ def attack_event_query(request):
     tfile_obj = TFileIntegrity.objects.all()
     tlog_obj = TLogAnalysisd.objects.all()
 
+    # 根据agent_id的过滤
+    agent_id=request.POST.get("agent_id")
+    if agent_id != "" and agent_id != None:
+        tfile_obj = tfile_obj.filter(agent_id=agent_id)
+        tlog_obj = tlog_obj.filter(agent_id=agent_id)
+        tweb_obj = tweb_obj.filter(agent_id=agent_id)
+        print (agent_id)
+
+
     # 关于攻击类型的过滤,在搜索界面展示的下拉框
     attack_type = request.POST.get("attack_type")
     event_dic = {}
     event_div_arr = []
-    for x in TEventKnowledge.objects.filter():
+    for x in TEventKnowledge.objects.filter(allow_search=1).order_by("event_id"):
         event_div_arr.append(x.event_name)
         event_dic[x.event_name] = x.event_id
     if attack_type != "" and attack_type != None:
@@ -290,11 +300,11 @@ def attack_event_query(request):
 
     # 每张表需要查询的数据
     tweb = tweb_obj.values_list("agent_id", "event_time", "event_name", "plugin_message", "attack_source", "server_ip",
-                                "event_issue_id", "event_id")
+                                "event_issue_id", "event_id","event_category","threat_level")
     tfile = tfile_obj.values_list("agent_id", "event_time", "event_name", "full_log", "unused", "unused",
-                                  "event_issue_id", "event_id")
+                                  "event_issue_id", "event_id","event_category","unused")
     tlog = tlog_obj.values_list("agent_id", "event_time", "event_name", "comment", "srcip", "dstip", "event_issue_id",
-                                "event_id")
+                                "event_id","event_category","event_id")
     # 三张表联合查询
     qchain = tweb.union(tlog, tfile)
     result = qchain.order_by("-event_time")
@@ -326,9 +336,13 @@ def attack_event_query(request):
         y['server_ip'] = x[5]
         y['event_issue_id'] = x[6]
         y['hostname'] = THostAgents.objects.all().filter(agent_id=x[0]).values_list("host_name").first()
+        if x[8]=="web_event":
+            y['threat_level']=int(x[9])
+        elif x[8]=="log_analysisd":
+            y['threat_level']=3
+        elif x[8]=="file_integrity":
+            y['threat_level']=3
         attack_list.append(y)
-
-
 
     data = {
         "attack": attack_list,
@@ -353,20 +367,20 @@ def query_detail_data(request):
     tweb_obj = TWebEvent.objects.all()
     tfile_obj = TFileIntegrity.objects.all()
     tlog_obj = TLogAnalysisd.objects.all()
-    obj=None
-    y={}
-    if id  and id != "":
+    obj = None
+    y = {}
+    if id and id != "":
         tfile_obj = tfile_obj.filter(event_issue_id=id)
         tlog_obj = tlog_obj.filter(event_issue_id=id)
         tweb_obj = tweb_obj.filter(event_issue_id=id)
     if tfile_obj:
-        obj=tfile_obj.first()
-        y=model_to_dict(obj)
-        y['event_time']=y['event_time'].strftime("%Y-%m-%d %H:%M:%S")
+        obj = tfile_obj.first()
+        y = model_to_dict(obj)
+        y['event_time'] = y['event_time'].strftime("%Y-%m-%d %H:%M:%S")
     if tlog_obj:
-        obj=tlog_obj.first()
-        y=model_to_dict(obj)
-        y['event_time']=y['event_time'].strftime("%Y-%m-%d %H:%M:%S")
+        obj = tlog_obj.first()
+        y = model_to_dict(obj)
+        y['event_time'] = y['event_time'].strftime("%Y-%m-%d %H:%M:%S")
         # 查询城市
         y['city'] = ''
         if "." in y['srcip']:
@@ -380,8 +394,8 @@ def query_detail_data(request):
             except Exception as e:
                 pass
     if tweb_obj:
-        obj=tweb_obj.first()
-        y=model_to_dict(obj)
+        obj = tweb_obj.first()
+        y = model_to_dict(obj)
         y['event_time'] = y['event_time'].strftime("%Y-%m-%d %H:%M:%S")
         y['intercept_state'] = INTERCEPT_STATUS.get(y['intercept_state'], '')
         y['threat_level'] = THREAT_LEVEL.get(y['threat_level'], '')
@@ -413,16 +427,15 @@ def query_detail_data(request):
     data = json.dumps(y)
     return HttpResponse(data, content_type='application/json')
 
-def query_web_event_by_app_id(request):
 
+def query_web_event_by_app_id(request):
     # 当前页码数
     page = request.POST.get("page")
-    app_id=request.POST.get("app_id")
+    app_id = request.POST.get("app_id")
     page = int(page)
     print (app_id)
-    result = TWebEvent.objects.filter(agent_id=app_id).order_by("-event_time")
+    result = TWebEvent.objects.filter(app_id=app_id).order_by("-event_time")
     # 每页显示多少个数据
-
 
     page_size = 15
     # 最大分页数
@@ -431,36 +444,31 @@ def query_web_event_by_app_id(request):
         max_size = 1
     if page > max_size:
         page = max_size
+    if page < 1:
+        page = 1
     event_list = []
     for x in result[(page - 1) * page_size:(page) * page_size]:
         y = model_to_dict(x)
-        y['event_time']=y['event_time'].strftime("%Y-%m-%d %H:%M:%S")
-        if y['threat_level'] == 0:
-            y['threat_level']="高危"
-        else:
-            y['threat_level']="一般"
+        y['event_time'] = y['event_time'].strftime("%Y-%m-%d %H:%M:%S")
+        try:
+            y['attack_type'] = TEventKnowledge.objects.get(event_id=y['event_id']).event_name
+        except Exception as e:
+            y['attack_type'] = ''
 
-        print (y['status'])
-        if y['status'] == 0:
-            y['status']="未处理"
-        else:
-            y['status']="已处理"
-        print (y['status'])
-
-        for k, v in y.items():
-            if not y[k]:
-                y[k] = ''
-
+        # for k, v in y.items():
+        #     if not y[k]:
+        #         y[k] = ''
         event_list.append(y)
-
 
     data = {
         "event_list": event_list,
         "max_size": max_size,
         "page": page,
     }
+    # print (data)
 
     data = json.dumps(data)
+
     return HttpResponse(data, content_type='application/json')
 
 
@@ -541,58 +549,74 @@ def server_attack_trend(request):
     :param request:
     :return:
     '''
-    id=request.POST.get("id")
+    id = request.POST.get("id")
     tweb_obj = TWebEvent.objects.all().filter(agent_id=id)
     tfile_obj = TFileIntegrity.objects.all().filter(agent_id=id)
     tlog_obj = TLogAnalysisd.objects.all().filter(agent_id=id)
 
     # 统计今日、昨日、这周的攻击情况
-    date=datetime.today().day
+    date = datetime.today().day
     # dt_s = datetime.now().date()  # 2018-7-15
     # dt_e = (dt_s - timedelta(num))  # 2018-7-08
     dt_s = datetime.now().date()
-    time_list_d=OrderedDict()
-    time_list_y=OrderedDict()
-    time_list_w=OrderedDict()
-    num_list={}
-    for d in [0,1,6]:
-        for x in range(25):
-            time_list_d[str(x).zfill(2)+":00"]=0
-            time_list_y[str(x).zfill(2)+":00"]=0
-            time_list_w[str(x).zfill(2)+":00"]=0
+    time_list_d = OrderedDict()
+    time_list_y = OrderedDict()
+    time_list_w = OrderedDict()
+    num_list = {}
+    num=0
+    # dt_s=dt_s+timedelta(1)
+    for x in range(25):
+        time_list_d[str(x).zfill(2) + ":00"] = 0
+        time_list_y[str(x).zfill(2) + ":00"] = 0
+        time_list_w[str(x).zfill(2) + ":00"] = 0
+    for d in range(3):
+        dt_s = datetime.now().date()
+        if(num==0):
+            dt_s = (dt_s + timedelta(1))
+            dt_e = (dt_s - timedelta(1))
+        if(num==1):
+            dt_s = dt_s
+            dt_e = (dt_s - timedelta(1))
+        if (num==2):
+            dt_s = (dt_s + timedelta(1))
+            dt_e = (dt_s - timedelta(7))
 
-        dt_e = (dt_s - timedelta(d))
-        tweb_obj1=tweb_obj.filter(event_time__range=(dt_e, dt_s)).extra(select={"event_time":"DATE_FORMAT( event_time, '%%Y-%%m-%%d %%H')"})\
-                                .values('event_time').annotate(num=Count('event_time')).values('event_time','num').order_by('event_time')
-        tfile_obj1=tfile_obj.filter(event_time__range=(dt_e, dt_s)).extra(select={"event_time":"DATE_FORMAT( event_time, '%%Y-%%m-%%d %%H')"}) \
-                                .values('event_time').annotate(num=Count('event_time')).values('event_time','num').order_by('event_time')
-        tlog_obj1=tlog_obj.filter(event_time__range=(dt_e, dt_s)).extra(select={"event_time":"DATE_FORMAT( event_time, '%%Y-%%m-%%d %%H')"}) \
-                                .values('event_time').annotate(num=Count('event_time')).values('event_time','num').order_by('event_time')
-        union_obj=tweb_obj1.union(tfile_obj1,tlog_obj1)
-        if d==0:
-            for x in union_obj:
-                time1=x['event_time'].split(" ")[1]+":00"
-                time_list_d[time1]+=x['num']
-            num_list['tday']=time_list_d
-        if d==1:
-            for x in union_obj:
-                time1=x['event_time'].split(" ")[1]+":00"
-                time_list_y[time1]+=x['num']
-            num_list['yday']=time_list_y
-        if d==6:
-            for x in union_obj:
-                time1=x['event_time'].split(" ")[1]+":00"
-                time_list_w[time1]+=x['num']
-            num_list['week']=time_list_w
+        tweb_obj1 = tweb_obj.filter(event_time__range=(dt_e, dt_s)).extra(
+            select={"event_time": "DATE_FORMAT( event_time, '%%Y-%%m-%%d %%H')"}) \
+            .values('event_time').annotate(num=Count('event_time')).values('event_time', 'num').order_by('event_time')
+        tfile_obj1 = tfile_obj.filter(event_time__range=(dt_e, dt_s)).extra(
+            select={"event_time": "DATE_FORMAT( event_time, '%%Y-%%m-%%d %%H')"}) \
+            .values('event_time').annotate(num=Count('event_time')).values('event_time', 'num').order_by('event_time')
+        tlog_obj1 = tlog_obj.filter(event_time__range=(dt_e, dt_s)).extra(
+            select={"event_time": "DATE_FORMAT( event_time, '%%Y-%%m-%%d %%H')"}) \
+            .values('event_time').annotate(num=Count('event_time')).values('event_time', 'num').order_by('event_time')
+        union_obj = tweb_obj1.union(tfile_obj1, tlog_obj1)
 
+        if num == 0:
+            for x in union_obj:
+                time1 = x['event_time'].split(" ")[1] + ":00"
+                time_list_d[time1] += x['num']
+            num_list['tday'] = time_list_d
+        if num == 1:
+            for x in union_obj:
+                time1 = x['event_time'].split(" ")[1] + ":00"
+                time_list_y[time1] += x['num']
+            num_list['yday'] = time_list_y
+        if num == 2:
+            for x in union_obj:
+                time1 = x['event_time'].split(" ")[1] + ":00"
+                time_list_w[time1] += x['num']
+            num_list['week'] = time_list_w
+        num+=1
     # 攻击类型类型及数目
 
     # 攻击类型分析及被攻击网站列表
-    data={
-        "num_list":num_list
+    data = {
+        "num_list": num_list
     }
     data = json.dumps(data)
     return HttpResponse(data, content_type='application/json')
+
 
 @auth
 def web_attack_trend(request):
@@ -601,53 +625,55 @@ def web_attack_trend(request):
     :param request:
     :return:
     '''
-    id=request.POST.get("id")
+    id = request.POST.get("id")
     tweb_obj = TWebEvent.objects.all().filter(agent_id=id)
 
     # 统计今日、昨日、这周的攻击情况
-    date=datetime.today().day
+    date = datetime.today().day
     # dt_s = datetime.now().date()  # 2018-7-15
     # dt_e = (dt_s - timedelta(num))  # 2018-7-08
     dt_s = datetime.now().date()
-    time_list_d=OrderedDict()
-    time_list_y=OrderedDict()
-    time_list_w=OrderedDict()
-    num_list={}
-    for d in [0,1,6]:
+    time_list_d = OrderedDict()
+    time_list_y = OrderedDict()
+    time_list_w = OrderedDict()
+    num_list = {}
+    for d in [0, 1, 6]:
         for x in range(25):
-            time_list_d[str(x).zfill(2)+":00"]=0
-            time_list_y[str(x).zfill(2)+":00"]=0
-            time_list_w[str(x).zfill(2)+":00"]=0
+            time_list_d[str(x).zfill(2) + ":00"] = 0
+            time_list_y[str(x).zfill(2) + ":00"] = 0
+            time_list_w[str(x).zfill(2) + ":00"] = 0
 
         dt_e = (dt_s - timedelta(d))
-        tweb_obj1=tweb_obj.filter(event_time__range=(dt_e, dt_s)).extra(select={"event_time":"DATE_FORMAT( event_time, '%%Y-%%m-%%d %%H')"}) \
-            .values('event_time').annotate(num=Count('event_time')).values('event_time','num').order_by('event_time')
+        tweb_obj1 = tweb_obj.filter(event_time__range=(dt_e, dt_s)).extra(
+            select={"event_time": "DATE_FORMAT( event_time, '%%Y-%%m-%%d %%H')"}) \
+            .values('event_time').annotate(num=Count('event_time')).values('event_time', 'num').order_by('event_time')
 
-        union_obj=tweb_obj1
-        if d==0:
+        union_obj = tweb_obj1
+        if d == 0:
             for x in union_obj:
-                time1=x['event_time'].split(" ")[1]+":00"
-                time_list_d[time1]+=x['num']
-            num_list['tday']=time_list_d
-        if d==1:
+                time1 = x['event_time'].split(" ")[1] + ":00"
+                time_list_d[time1] += x['num']
+            num_list['tday'] = time_list_d
+        if d == 1:
             for x in union_obj:
-                time1=x['event_time'].split(" ")[1]+":00"
-                time_list_y[time1]+=x['num']
-            num_list['yday']=time_list_y
-        if d==6:
+                time1 = x['event_time'].split(" ")[1] + ":00"
+                time_list_y[time1] += x['num']
+            num_list['yday'] = time_list_y
+        if d == 6:
             for x in union_obj:
-                time1=x['event_time'].split(" ")[1]+":00"
-                time_list_w[time1]+=x['num']
-            num_list['week']=time_list_w
+                time1 = x['event_time'].split(" ")[1] + ":00"
+                time_list_w[time1] += x['num']
+            num_list['week'] = time_list_w
 
     # 攻击类型类型及数目
 
     # 攻击类型分析及被攻击网站列表
-    data={
-        "num_list":num_list
+    data = {
+        "num_list": num_list
     }
     data = json.dumps(data)
     return HttpResponse(data, content_type='application/json')
+
 
 @auth
 def query_threat_level(request):
@@ -667,7 +693,7 @@ def query_threat_level(request):
         aaa=Count('threat_level'))
     threat_level_dict = {}
     for item in threat_level_list:
-        threat_level_dict[item[0]] = item[1]
+        threat_level_dict[item[0]] =int(item[1])
 
     data['threat_level_dict'] = threat_level_dict
     data = json.dumps(data)
@@ -881,22 +907,25 @@ def query_attack_warn(request):
 def plugins_manage(request):
     id = request.POST.get("id")
 
-    result = TPlugins.objects.all().filter(agent_id=id)
+    result = TConfig.objects.all().filter(agent_id=id)
     data1 = {}
     for x in result:
         data1 = model_to_dict(x)
+        data1['config_time']=data1['config_time'].strftime("%Y-%m-%d %H:%M:%S")
     data = data1
     data = json.dumps(data)
     return HttpResponse(data, content_type='application/json')
 
 
 def plugins_update(request):
+
+    print ("进入 plugins_update")
     id = request.POST.get('id')
     algo = request.POST.get('algo')
     http = request.POST.get('http')
     glob = request.POST.get('glob')
 
-    plugin = TPlugins.objects.get(agent_id=id)
+    plugin = TConfig.objects.get(agent_id=id)
     plugin.algorithm_config = algo
     plugin.httpProtectConfig = http
     plugin.globalConfig = glob
@@ -906,9 +935,51 @@ def plugins_update(request):
     plugin.plugin_version = otherStyleTime
     plugin.save()
 
-    data = {"aaa": 132}
+    data = {"success": "ok"}
+    data = json.dumps(data)
     return HttpResponse(data, content_type='application/json')
 
+def black_white_list(request):
+    '''
+    黑白名单列表
+    :param request:
+    :return:
+    '''
+    agent_id = request.POST.get('agent_id')
+    config = TConfig.objects.get(agent_id=agent_id)
+    b_w_list=config.config
+    print (b_w_list)
+    # print (type(b_w_list))
+    # print (json.loads(b_w_list))
+    black_list=json.loads(b_w_list,encoding="utf-8")['ip.blacklist'].split(",")
+    white_list=json.loads(b_w_list,encoding="utf-8")['ip.whitelist'].split(",")
+    if "" in black_list:
+        black_list.remove("")
+    if "" in white_list:
+        white_list.remove("")
+    data = {"black_list": list(set(black_list)) ,"white_list":list(set(white_list))}
+    data = json.dumps(data)
+    return HttpResponse(data, content_type='application/json')
+
+
+def black_white_list_update(request):
+
+    agent_id = request.POST.get('agent_id')
+    white_list = request.POST.get('white_list')
+    black_list = request.POST.get('black_list')
+
+    white_list=",".join(eval(white_list))
+    black_list=",".join(eval(black_list))
+    w_b_list={"ip.blacklist".encode(encoding="utf-8"):black_list.encode(encoding="utf-8"),"ip.whitelist".encode(encoding="utf-8"):white_list.encode(encoding="utf-8")}
+    print (w_b_list)
+    config = TConfig.objects.get(agent_id=agent_id)
+    config.config_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    config.config=json.dumps(w_b_list)
+    config.save()
+
+    data = {}
+    data = json.dumps(data)
+    return HttpResponse(data, content_type='application/json')
 
 @auth
 def view_report(request):

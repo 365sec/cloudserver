@@ -1087,7 +1087,7 @@ function log_event_html(data) {
 
     iochtml = `
         
-        <h3>基本信息</h3>
+<!--        <h3>基本信息</h3>-->
         <table class="table table-bordered">
         <tbody>
         <tr>
@@ -1104,7 +1104,7 @@ function log_event_html(data) {
         </tr>
         </tbody>
         </table>
-        <h3>操作过程</h3>
+<!--        <h3>操作过程</h3>-->
         <table class="legend-table01" style="width: 70%;">
                                 <tbody>
                                 <tr>

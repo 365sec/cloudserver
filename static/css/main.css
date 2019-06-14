@@ -1751,11 +1751,19 @@ ul {
     display: inline-block;
     padding: 0 5px;
 }
+.label_custom.label-danger {
+    color: #fe0202;
+    border-color: #fe0202;
+}
 .label_custom.label_high {
      color: #fe0202;
      border-color: #fe0202;
 }
 .label_custom.label_norm {
+    color: #85d603;
+    border-color: #85d603;
+}
+.label_custom.label_info {
     color: #85d603;
     border-color: #85d603;
 }

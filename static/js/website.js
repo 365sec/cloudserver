@@ -124,10 +124,10 @@ $(document).on("click", ".detail-a-website", function () {
             $("#web_manager_lastbeat").html("").append(data['last_heartbeat']);
 
             // 安全分析
-            chart_attack_trend_web(data['agent_id']);
+            chart_attack_trend_web(data['app_id']);
 
             // 事件处理
-            event_treat_web(1,data['agent_id']);
+            event_treat_web(1,data['app_id']);
 
         }
     });
@@ -246,18 +246,29 @@ function event_treat_web(now_page,app_id){
             '<td>'+alarm_event_list_table_data[j]['attack_type']+'</td>'+
             '<td style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">'+alarm_event_list_table_data[j]['plugin_message']+'</td>';
         switch (alarm_event_list_table_data[j]['threat_level']) {
-            case '高危':
+            case 0:
+                alarm_event_list_table +='<td><span class="label label_custom label-danger" >严重</span></td>';
+                break;
+            case 1:
                 alarm_event_list_table +='<td><span class="label label_custom label_high" >高危</span></td>';
                 break;
-            case '一般':
+            case 2:
                 alarm_event_list_table +='<td><span class="label label_custom label_norm" >一般</span></td>';
                 break;
+            case 3:
+                alarm_event_list_table +='<td><span class="label label_custom label_info" >信息</span></td>';
+                break;
         }
-        alarm_event_list_table +='<td><a class="custom_a event_detail detail-a" href="javascript:void(0)" data-name="eyJzZXJ2ZXJfaG9zdG5hbWUiOiJXSU4tVjQ4U084Q1IzNEsiLCJldmVudF90eXBlIjoicmFzcF9hdHRhY2siLCJhdHRhY2tfc291cmNlIjoiMTcyLjE2LjM5LjE1IiwidGhyZWF0X2xldmVsIjoi6auY5Y2xIiwiYXR0YWNrX3R5cGUiOiJIVFRQ5Y2P6K6u5pS75Ye7IiwiY2l0eSI6IuWxgOWfn+e9kSIsInN5c3RlbV91c2VyIjoiQWRtaW5pc3RyYXRvciIsImV2ZW50X3RpbWUiOiIyMDE5LTA1LTE2IDIzOjQ5OjI0IiwiZXZlbnRfaWQiOjEwMTUsInBsdWdpbl9jb25maWRlbmNlIjo5MCwic2VydmVyX2lwIjoiMTcyLjE2LjM5LjI2IiwibWV0aG9kIjoiUFVUIiwicGx1Z2luX21lc3NhZ2UiOiLmraPlnKjlsJ3or5Xkvb/nlKhIVFRQIHB1dOaWueazlS4iLCJib2R5IjoiIiwic3RhY2tfdHJhY2UiOiJvcmcuYXBhY2hlLmNhdGFsaW5hLmNvcmUuQXBwbGljYXRpb25GaWx0ZXJDaGFpbi5kb0ZpbHRlcihBcHBsaWNhdGlvbkZpbHRlckNoYWluLmphdmEpXG5vcmcuYXBhY2hlLmNhdGFsaW5hLmNvcmUuU3RhbmRhcmRXcmFwcGVyVmFsdmUuaW52b2tlKFN0YW5kYXJkV3JhcHBlclZhbHZlLmphdmE6Mjc1KVxub3JnLmFwYWNoZS5jYXRhbGluYS5jb3JlLlN0YW5kYXJkQ29udGV4dFZhbHZlLmludm9rZShTdGFuZGFyZENvbnRleHRWYWx2ZS5qYXZhOjE2MSlcbm9yZy5hcGFjaGUuY2F0YWxpbmEuY29yZS5TdGFuZGFyZEhvc3RWYWx2ZS5pbnZva2UoU3RhbmRhcmRIb3N0VmFsdmUuamF2YToxNTUpXG5vcmcuYXBhY2hlLmNhdGFsaW5hLnZhbHZlcy5FcnJvclJlcG9ydFZhbHZlLmludm9rZShFcnJvclJlcG9ydFZhbHZlLmphdmE6MTAyKVxub3JnLmFwYWNoZS5jYXRhbGluYS5jb3JlLlN0YW5kYXJkRW5naW5lVmFsdmUuaW52b2tlKFN0YW5kYXJkRW5naW5lVmFsdmUuamF2YToxMDkpXG5vcmcuYXBhY2hlLmNhdGFsaW5hLmNvbm5lY3Rvci5Db3lvdGVBZGFwdGVyLnNlcnZpY2UoQ295b3RlQWRhcHRlci5qYXZhOjM2OClcbm9yZy5hcGFjaGUuY295b3RlLmh0dHAxMS5IdHRwMTFQcm9jZXNzb3IucHJvY2VzcyhIdHRwMTFQcm9jZXNzb3IuamF2YTo4NzcpXG5vcmcuYXBhY2hlLmNveW90ZS5odHRwMTEuSHR0cDExUHJvdG9jb2wkSHR0cDExQ29ubmVjdGlvbkhhbmRsZXIucHJvY2VzcyhIdHRwMTFQcm90b2NvbC5qYXZhOjY3MSlcbm9yZy5hcGFjaGUudG9tY2F0LnV0aWwubmV0LkpJb0VuZHBvaW50JFdvcmtlci5ydW4oSklvRW5kcG9pbnQuamF2YTo5MzApXG5qYXZhLmxhbmcuVGhyZWFkLnJ1bihUaHJlYWQuamF2YTo3NDQpXG4iLCJwcm9jZXNzX3BhdGgiOiJDOlxcUHJvZ3JhbSBGaWxlc1xcSmF2YVxcamRrMS43LjBfNDVcXGpyZVxcamF2YS5leGUiLCJzZXJ2ZXJfdHlwZSI6Impib3NzIGVhcCIsInBsdWdpbl9uYW1lIjoib2ZmaWNhbCIsInRhcmdldF9wb3J0Ijo5MDgwLCJhZ2VudF9pZCI6IjA2MTdmZDkyNzQ2MjUyNzEiLCJwYXRoIjoiL2Noa3Z1bG5fY3AudHh0Iiwic2VydmVyX3ZlcnNpb24iOiIxLjEuMS5HQSIsImludGVyY2VwdF9zdGF0ZSI6IuaLpuaIqiIsInRhcmdldCI6IjE3Mi4xNi4zOS4yNiIsInVybCI6Imh0dHA6Ly8xNzIuMTYuMzkuMjY6OTA4MC9jaGt2dWxuX2NwLnR4dCIsInVzZXJfYWdlbnQiOiJweXRob24tcmVxdWVzdHMvMi4yMS4wIiwiZXZlbnRfaXNzdWVfaWQiOiI1MWU5ZWUwOGJhY2Y0YTZiYWM1OWQwMDBiZDMxODU2YiIsInJlcXVlc3RfaWQiOiJmMDExN2Y4ZmIwMTk0ZTIxODZmNjVmOGUxZTM5YzBkYSIsImF0dGFja19wYXJhbXMiOiJ7fSIsInJlZmVyZXIiOiIiLCJhdHRhY2tfdHlwZTEiOiJyZXF1ZXN0In0=">查看报告</a></td>' ;
-        if(alarm_event_list_table_data[j]['status']=== '未处理'){
-            alarm_event_list_table +='<td><div class="deal_cls btn btn_untreated"  id = "btn_'+alarm_event_list_table_data[j]['event_issue_id']+'">'+alarm_event_list_table_data[j]['status']+'</div></td></tr>';
+        let b = new Base64();
+        // let str = b.encode(JSON.stringify(data[j]));
+        let aaa=JSON.stringify(alarm_event_list_table_data[j]);
+
+        let str = b.encode(aaa);
+        alarm_event_list_table +='<td><a class="custom_a event_detail detail-a" href="javascript:void(0)" data-name="'+str+'">查看报告</a></td>' ;
+        if(alarm_event_list_table_data[j]['status']=== 0){
+            alarm_event_list_table +='<td><div class="deal_cls btn btn_untreated"  id = "btn_'+alarm_event_list_table_data[j]['event_issue_id']+'">未处理</div></td></tr>';
         }else{
-            alarm_event_list_table +='<td><div class="btn" disabled id = "btn_'+alarm_event_list_table_data[j]['event_issue_id']+'">'+alarm_event_list_table_data[j]['status']+'</div></td></tr>';
+            alarm_event_list_table +='<td><div class="btn" disabled id = "btn_'+alarm_event_list_table_data[j]['event_issue_id']+'">已处理</div></td></tr>';
         }
         let page = '<ul role="menubar" aria-disabled="false" aria-label="Pagination" class="pagination b-pagination pagination-md justify-content-center">'+
             '<a href="javascript:void(0);" onclick="event_treat_web(' + (now_page - 1) +","+app_id+ ')">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp'+

@@ -100,6 +100,7 @@ $(document).on("click", ".manageDiv .card .btngroup .btn", function() {
 });
 
 //详情
+var agent_server_id;
 $(document).on("click", ".detail-a-server", function () {
     let data1 = $(this).attr("data-name");
     let b=new Base64();
@@ -120,16 +121,14 @@ $(document).on("click", ".detail-a-server", function () {
             $("#server_manager_eip").html("").append(data['extranet_ip']);
             $("#server_manager_cpu").html("").append(data['cpu']);
             $("#server_manager_memory").html("").append(data['memory']);
-            // for(let i=0;i<$('#server_detail_panel>li').length;i++){
-            //     $('#server_detail_panel>li:nth-child('+i+')').attr('data-agent-id',data['agent_id'])
-            // }
 
+            agent_server_id=data['agent_id'];
             // 安全分析
             chart_attack_trend_server(data['agent_id']);
             click_chart_attack_trend_server(data['agent_id']);
 
             // 事件处理
-            click_event_treat_server(1);
+            click_event_treat_server();
 
             //安全设置
             click_application_security();
@@ -138,7 +137,7 @@ $(document).on("click", ".detail-a-server", function () {
             click_server_website_list(1);
 
             // 黑白名单
-            click_black_white_list();
+            click_black_white_list(data['agent_id']);
 
             // 防御策略
             click_config_show(data['agent_id']);
@@ -234,60 +233,74 @@ function chart_attack_trend_server(agent_id){
 // 事件处理
 function click_event_treat_server(){
     $(document).on('click','#event_statistics_link',function () {
-        event_treat_server();
+        event_treat_server(1);
     })
 }
 function event_treat_server(now_page){
     console.log("事件处理");
-    max_size = 3;
-    if (now_page == null || now_page < 1) {
-        now_page = 1;
-    }
-    if (now_page > max_size) {
-        now_page = max_size;
-    }
-    let alarm_event_list_table_data = [['111','2019-04-29 17:30:36','发现未知Webshell','可疑进程 C:\\Windows\\System32\\WerFault.exe 创建二进制文件 c:\\windows\\temp\\wax7507.tmp','高危','未处理'],
-        ['222','2019-04-29 17:30:36','发现已知Webshell','可疑进程 C:\\Windows\\System32\\WerFault.exe 创建二进制文件 c:\\windows\\temp\\wax7507.tmp','一般','已处理'],
-        ['333','2019-04-29 17:30:36','发现已知Webshell','可疑进程 C:\\Windows\\System32\\WerFault.exe 创建二进制文件 c:\\windows\\temp\\wax7507.tmp','一般','已处理'],
-        ['444','2019-04-29 17:30:36','发现已知Webshell','可疑进程 C:\\Windows\\System32\\WerFault.exe 创建二进制文件 c:\\windows\\temp\\wax7507.tmp','一般','已处理'],
-        ['555','2019-04-29 17:30:36','发现已知Webshell','可疑进程 C:\\Windows\\System32\\WerFault.exe 创建二进制文件 c:\\windows\\temp\\wax7507.tmp','一般','未处理'],
-        ['666','2019-04-29 17:30:36','发现已知Webshell','可疑进程 C:\\Windows\\System32\\WerFault.exe 创建二进制文件 c:\\windows\\temp\\wax7507.tmp','一般','已处理'],
-        ['777','2019-04-29 17:30:36','发现已知Webshell','可疑进程 C:\\Windows\\System32\\WerFault.exe 创建二进制文件 c:\\windows\\temp\\wax7507.tmp','一般','已处理'],
-        ['888','2019-04-29 17:30:36','发现已知Webshell','可疑进程 C:\\Windows\\System32\\WerFault.exe 创建二进制文件 c:\\windows\\temp\\wax7507.tmp','一般','已处理'],
-        ['999','2019-04-29 17:30:36','发现已知Webshell','可疑进程 C:\\Windows\\System32\\WerFault.exe 创建二进制文件 c:\\windows\\temp\\wax7507.tmp','一般','已处理'],
-        ['000','2019-04-29 17:30:36','发现已知Webshell','可疑进程 C:\\Windows\\System32\\WerFault.exe 创建二进制文件 c:\\windows\\temp\\wax7507.tmp','一般','未处理'],
-        ['123','2019-04-29 17:30:36','发现已知Webshell','可疑进程 C:\\Windows\\System32\\WerFault.exe 创建二进制文件 c:\\windows\\temp\\wax7507.tmp','一般','已处理']
-    ];
-    let alarm_event_list_table = '';
-    for(let j=0,len = alarm_event_list_table_data.length;j<len;j++){
-        alarm_event_list_table +='<tr><td>'+alarm_event_list_table_data[j][1]+'</td>'+
-            '<td>'+alarm_event_list_table_data[j][2]+'</td>'+
-            '<td style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">'+alarm_event_list_table_data[j][3]+'</td>';
-        switch (alarm_event_list_table_data[j][4]) {
-            case '高危':
-                alarm_event_list_table +='<td><span class="label label_custom label_high" >'+alarm_event_list_table_data[j][4]+'</span></td>';
-                break;
-            case '一般':
-                alarm_event_list_table +='<td><span class="label label_custom label_norm" >'+alarm_event_list_table_data[j][4]+'</span></td>';
-                break;
-        }
-        alarm_event_list_table +='<td><a class="custom_a event_detail detail-a" href="javascript:void(0)" data-name="eyJzZXJ2ZXJfaG9zdG5hbWUiOiJXSU4tVjQ4U084Q1IzNEsiLCJldmVudF90eXBlIjoicmFzcF9hdHRhY2siLCJhdHRhY2tfc291cmNlIjoiMTcyLjE2LjM5LjE1IiwidGhyZWF0X2xldmVsIjoi6auY5Y2xIiwiYXR0YWNrX3R5cGUiOiJIVFRQ5Y2P6K6u5pS75Ye7IiwiY2l0eSI6IuWxgOWfn+e9kSIsInN5c3RlbV91c2VyIjoiQWRtaW5pc3RyYXRvciIsImV2ZW50X3RpbWUiOiIyMDE5LTA1LTE2IDIzOjQ5OjI0IiwiZXZlbnRfaWQiOjEwMTUsInBsdWdpbl9jb25maWRlbmNlIjo5MCwic2VydmVyX2lwIjoiMTcyLjE2LjM5LjI2IiwibWV0aG9kIjoiUFVUIiwicGx1Z2luX21lc3NhZ2UiOiLmraPlnKjlsJ3or5Xkvb/nlKhIVFRQIHB1dOaWueazlS4iLCJib2R5IjoiIiwic3RhY2tfdHJhY2UiOiJvcmcuYXBhY2hlLmNhdGFsaW5hLmNvcmUuQXBwbGljYXRpb25GaWx0ZXJDaGFpbi5kb0ZpbHRlcihBcHBsaWNhdGlvbkZpbHRlckNoYWluLmphdmEpXG5vcmcuYXBhY2hlLmNhdGFsaW5hLmNvcmUuU3RhbmRhcmRXcmFwcGVyVmFsdmUuaW52b2tlKFN0YW5kYXJkV3JhcHBlclZhbHZlLmphdmE6Mjc1KVxub3JnLmFwYWNoZS5jYXRhbGluYS5jb3JlLlN0YW5kYXJkQ29udGV4dFZhbHZlLmludm9rZShTdGFuZGFyZENvbnRleHRWYWx2ZS5qYXZhOjE2MSlcbm9yZy5hcGFjaGUuY2F0YWxpbmEuY29yZS5TdGFuZGFyZEhvc3RWYWx2ZS5pbnZva2UoU3RhbmRhcmRIb3N0VmFsdmUuamF2YToxNTUpXG5vcmcuYXBhY2hlLmNhdGFsaW5hLnZhbHZlcy5FcnJvclJlcG9ydFZhbHZlLmludm9rZShFcnJvclJlcG9ydFZhbHZlLmphdmE6MTAyKVxub3JnLmFwYWNoZS5jYXRhbGluYS5jb3JlLlN0YW5kYXJkRW5naW5lVmFsdmUuaW52b2tlKFN0YW5kYXJkRW5naW5lVmFsdmUuamF2YToxMDkpXG5vcmcuYXBhY2hlLmNhdGFsaW5hLmNvbm5lY3Rvci5Db3lvdGVBZGFwdGVyLnNlcnZpY2UoQ295b3RlQWRhcHRlci5qYXZhOjM2OClcbm9yZy5hcGFjaGUuY295b3RlLmh0dHAxMS5IdHRwMTFQcm9jZXNzb3IucHJvY2VzcyhIdHRwMTFQcm9jZXNzb3IuamF2YTo4NzcpXG5vcmcuYXBhY2hlLmNveW90ZS5odHRwMTEuSHR0cDExUHJvdG9jb2wkSHR0cDExQ29ubmVjdGlvbkhhbmRsZXIucHJvY2VzcyhIdHRwMTFQcm90b2NvbC5qYXZhOjY3MSlcbm9yZy5hcGFjaGUudG9tY2F0LnV0aWwubmV0LkpJb0VuZHBvaW50JFdvcmtlci5ydW4oSklvRW5kcG9pbnQuamF2YTo5MzApXG5qYXZhLmxhbmcuVGhyZWFkLnJ1bihUaHJlYWQuamF2YTo3NDQpXG4iLCJwcm9jZXNzX3BhdGgiOiJDOlxcUHJvZ3JhbSBGaWxlc1xcSmF2YVxcamRrMS43LjBfNDVcXGpyZVxcamF2YS5leGUiLCJzZXJ2ZXJfdHlwZSI6Impib3NzIGVhcCIsInBsdWdpbl9uYW1lIjoib2ZmaWNhbCIsInRhcmdldF9wb3J0Ijo5MDgwLCJhZ2VudF9pZCI6IjA2MTdmZDkyNzQ2MjUyNzEiLCJwYXRoIjoiL2Noa3Z1bG5fY3AudHh0Iiwic2VydmVyX3ZlcnNpb24iOiIxLjEuMS5HQSIsImludGVyY2VwdF9zdGF0ZSI6IuaLpuaIqiIsInRhcmdldCI6IjE3Mi4xNi4zOS4yNiIsInVybCI6Imh0dHA6Ly8xNzIuMTYuMzkuMjY6OTA4MC9jaGt2dWxuX2NwLnR4dCIsInVzZXJfYWdlbnQiOiJweXRob24tcmVxdWVzdHMvMi4yMS4wIiwiZXZlbnRfaXNzdWVfaWQiOiI1MWU5ZWUwOGJhY2Y0YTZiYWM1OWQwMDBiZDMxODU2YiIsInJlcXVlc3RfaWQiOiJmMDExN2Y4ZmIwMTk0ZTIxODZmNjVmOGUxZTM5YzBkYSIsImF0dGFja19wYXJhbXMiOiJ7fSIsInJlZmVyZXIiOiIiLCJhdHRhY2tfdHlwZTEiOiJyZXF1ZXN0In0=">查看报告</a></td>' ;
-        if(alarm_event_list_table_data[j][5]== '未处理'){
-            alarm_event_list_table +='<td><div class="deal_cls btn btn_untreated"  id = "btn_'+alarm_event_list_table_data[j][0]+'">'+alarm_event_list_table_data[j][5]+'</div></td></tr>';
-        }else{
-            alarm_event_list_table +='<td><div class="btn" disabled id = "btn_'+alarm_event_list_table_data[j][0]+'">'+alarm_event_list_table_data[j][5]+'</div></td></tr>';
-        }
-        let page = '<ul role="menubar" aria-disabled="false" aria-label="Pagination" class="pagination b-pagination pagination-md justify-content-center">'+
-            '<a href="javascript:void(0);" onclick="event_treat(' + (now_page - 1) + ')">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp'+
-            '<a href="javascript:void(0);">' + now_page + "/" + max_size + '</a>'+
-            '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp'+
-            '<a href="javascript:void(0);" onclick="event_treat(' + (now_page + 1) + ')">下一页</a>'+
-            '<input id = "agent_jump" value="'+now_page+'" />'+
-            '<a href="javascript:void(0);" onclick="event_treat()">跳转</a>'+
-            '</ul>';
-        $('.page').html(page);
-    }
-    $('#alarm_event_list_table>tbody').html(alarm_event_list_table);
+    $.ajax({
+        url: "attack/query/",
+        type: 'POST',
+        data: {
+            "agent_id":agent_server_id,
+            "page": now_page
+        },
+        //dataType: "json",
+        success: function (data_list) {
+            max_size = data_list['max_size'];
+            if (now_page == null || now_page < 1) {
+                now_page = 1;
+            }
+            if (now_page > max_size) {
+                now_page = max_size;
+            }
+            let alarm_event_list_table_data = data_list['attack'];
+            let alarm_event_list_table = '';
+            for(let j=0,len = alarm_event_list_table_data.length;j<len;j++) {
+                alarm_event_list_table += '<tr><td>' + alarm_event_list_table_data[j]['event_time'] + '</td>' +
+                    '<td>' + alarm_event_list_table_data[j]['event_name'] + '</td>' +
+                    '<td style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;title="' + alarm_event_list_table_data[j]['comment'] + '">' + alarm_event_list_table_data[j]['comment'] + '</td>';
+                // '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['comment'] + '">' + data[x]['comment'] + '</td>'
+                switch (alarm_event_list_table_data[j]['threat_level']) {
+                    case 0:
+                        alarm_event_list_table += '<td><span class="label label_custom label-danger" >严重</span></td>';
+                        break;
+                    case 1:
+                        alarm_event_list_table += '<td><span class="label label_custom label_high" >高危</span></td>';
+                        break;
+                    case 2:
+                        alarm_event_list_table += '<td><span class="label label_custom label_norm" >一般</span></td>';
+                        break;
+                    case 3:
+                        alarm_event_list_table += '<td><span class="label label_custom label_info" >信息</span></td>';
+                        break;
+                }
+                let b = new Base64();
+                // let str = b.encode(JSON.stringify(data[j]));
+                let aaa = JSON.stringify(alarm_event_list_table_data[j]);
+
+                let str = b.encode(aaa);
+                alarm_event_list_table += '<td><a class="custom_a event_detail detail-a" href="javascript:void(0)" data-name="' + str + '">查看报告</a></td>';
+                if (alarm_event_list_table_data[j]['status'] === 0) {
+                    alarm_event_list_table += '<td><div class="deal_cls btn btn_untreated"  id = "btn_' + alarm_event_list_table_data[j]['event_issue_id'] + '">未处理</div></td></tr>';
+                } else {
+                    alarm_event_list_table += '<td><div class="btn" disabled id = "btn_' + alarm_event_list_table_data[j]['event_issue_id'] + '">已处理</div></td></tr>';
+                }
+                let page = '<ul role="menubar" aria-disabled="false" aria-label="Pagination" class="pagination b-pagination pagination-md justify-content-center">' +
+                    '<a href="javascript:void(0);" onclick="event_treat_server(' + (now_page - 1) + "," + agent_server_id + ')">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp' +
+                    '<a href="javascript:void(0);">' + now_page + "/" + max_size + '</a>' +
+                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp' +
+                    '<a href="javascript:void(0);" onclick="event_treat_server(' + (now_page + 1) + "," + agent_server_id + ')">下一页</a>' +
+                    '<input id = "agent_jump" value="' + now_page + '" />' +
+                    '<a href="javascript:void(0);" onclick="event_treat_server_jump()">跳转</a>' +
+                    '</ul>';
+                $('.page').html(page);
+            }
+            $('#alarm_event_list_table>tbody').html(alarm_event_list_table);
+
+        }});
+
+
 }
 
 //事件处理弹窗
@@ -559,41 +572,58 @@ $(document).on("click", "#server_website_list_del", function() {
 });
 // 黑白名单
 
-function click_black_white_list(){
+function click_black_white_list(agent_id){
     $(document).on('click','#black_white_list_link',function () {
-        black_white_list();
+        black_white_list(agent_id);
     })
 }
-function black_white_list(){
-    let black_list_data = ['117.158.142.120','117.158.142.121','117.158.142.122','117.158.142.123'];
-    let white_list_data = ['117.158.142.127','117.158.142.126','117.158.142.125','117.158.142.124'];
-    let black_list_table = '';
-    for(let j=0,len = black_list_data.length;j<len;j++){
-        black_list_table +='<tr><td style="width: 46px;padding: 14px;">\n' +
-            '                   <div class="black_white_checkbox"><input class="regular_checkbox" name="black_list" type="checkbox" id="'+black_list_data[j]+'"> <label for="'+black_list_data[j]+'"></label> </div>' +
-            '               </td>' +
-            '<td>'+black_list_data[j]+'</td>'+
-            '<td><a class="black_list_release" id="'+black_list_data[j]+'">解除</a></td></tr>';
-        }
-    black_list_table +='</td>';
-    $('#black_list_table>tbody').html(black_list_table);
 
-    let white_list_table = '';
-    for(let j=0,len = white_list_data.length;j<len;j++){
-        white_list_table +='<tr><td style="width: 46px;padding: 14px;">\n' +
-            '                  <div class="black_white_checkbox"><input class="regular_checkbox" type="checkbox" name="white_list" id="'+white_list_data[j]+'"> <label for="'+white_list_data[j]+'"></label> </div>'+
-            '               </td>' +
-            '<td>'+white_list_data[j]+'</td>'+
-            '<td><a class="white_list_release" id="'+white_list_data[j]+'">解除</a></td></tr>';
-    }
-    white_list_table +='</td>';
-    $('#white_list_table>tbody').html(white_list_table);
+var b_w_list={"black_list":[],"white_list":[]};
+function black_white_list(agent_id) {
+    $.ajax({
+        url: "black_white_list",
+        type: 'POST',
+        data: {
+            "agent_id": agent_id,
+        },
+        // dataType: "json",
+        async: false,
+        success: function (data_list) {
+            let black_list_data = data_list['black_list'];
+            let white_list_data = data_list['white_list'];
+            b_w_list['black_list'] = data_list['black_list'];
+            b_w_list['white_list'] = data_list['white_list'];
+
+            let black_list_table = '';
+            for (let j = 0, len = black_list_data.length; j < len; j++) {
+                black_list_table += '<tr><td style="width: 46px;padding: 14px;">\n' +
+                    '                   <div class="black_white_checkbox"><input class="regular_checkbox" name="black_list" type="checkbox" id="' + black_list_data[j] + '"> <label for="' + black_list_data[j] + '"></label> </div>' +
+                    '               </td>' +
+                    '<td>' + black_list_data[j] + '</td>' +
+                    '<td><a class="black_list_release" id="' + black_list_data[j] + '">解除</a></td></tr>';
+            }
+            black_list_table += '</td>';
+            $('#black_list_table>tbody').html(black_list_table);
+
+            let white_list_table = '';
+            for(let j=0,len = white_list_data.length;j<len;j++){
+                white_list_table +='<tr><td style="width: 46px;padding: 14px;">\n' +
+                    '                  <div class="black_white_checkbox"><input class="regular_checkbox" type="checkbox" name="white_list" id="'+white_list_data[j]+'"> <label for="'+white_list_data[j]+'"></label> </div>'+
+                    '               </td>' +
+                    '<td>'+white_list_data[j]+'</td>'+
+                    '<td><a class="white_list_release" id="'+white_list_data[j]+'">解除</a></td></tr>';
+            }
+            white_list_table +='</td>';
+            $('#white_list_table>tbody').html(white_list_table);
+        }});
+
+
 }
 
 // 黑白名单展开收起
 function black_white_slide(obj) {
     var cont=$(obj).find('span').html();
-    if(cont == '收起'){
+    if(cont === '收起'){
         $(obj).find('span').html('展开');
     }else{
         $(obj).find('span').html('收起');
@@ -604,7 +634,7 @@ function black_white_slide(obj) {
     } else {
         iconChevron.addClass('iconRotate');
     }
-    let target = '#'+$(obj).attr('data-tip') + ' tbody'
+    let target = '#'+$(obj).attr('data-tip') + ' tbody';
     $(target).slideToggle();
 }
 
@@ -619,56 +649,18 @@ function checkall(obj) {
 
 // 添加黑名单
 $(document).on('click','#add_black',function () {
-    let id = $(this).attr("id");
+
     let html = `<div class="layout-title">添加黑名单</div>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
         <form action="post">
             <div style="font-size: 16px;text-align: center;line-height: 180px;">
                 <span class="red">*</span>
                 <label>ip地址</label>
-                <input type="text" placeholder="请输入IP或IP段,IP段中间用 “-”分隔" id="ip" name="ip" >
+                <input type="text" placeholder="请输入IP或IP段,IP段中间用 “-”分隔" id="black_ip" name="black_ip" />
             </div>
             
             <div class='layout-btn'>
-                <div class="btn layout-close" onclick="black_list_add(`+id+`)"">提交</div>
-                <div class="btn layout-close" onclick="javascript:void(0)">取消</div>
-            </div>
-        </form>`;
-    $('.shade>.layout').html(html);
-    actionIn(".layout", 'action_scale', .3, "");
-    $(".shade").css({
-        visibility: "visible"
-    });
-    event.stopPropagation(); //阻止事件向上冒泡
-});
-// 解除黑名单
-$(document).on('click','.black_list_release',function () {
-    let id = $(this).attr("id");
-    let html = `<div class="layout-title">操作确认：</div>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-        <form action="post">
-            <div style="font-size: 16px;text-align: center;line-height: 180px;"><span>确认要删除选中的数据吗？</span></div>
-            <div class='layout-btn'>
-                <div class="btn layout-close" onclick="black_list_release(`+id+`)"">确定</div>
-                <div class="btn layout-close" onclick="javascript:void(0)">取消</div>
-            </div>
-        </form>`;
-    $('.shade>.layout').html(html);
-    actionIn(".layout", 'action_scale', .3, "");
-    $(".shade").css({
-        visibility: "visible"
-    });
-    event.stopPropagation(); //阻止事件向上冒泡
-});
-// 批量解除黑名单
-$(document).on('click','#releaseall_black',function () {
-    let id = $(this).attr("id");
-    let html = `<div class="layout-title">操作确认：</div>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-        <form action="post">
-            <div style="font-size: 16px;text-align: center;line-height: 180px;"><span>确认要删除选中的数据吗？</span></div>
-            <div class='layout-btn'>
-                <div class="btn layout-close" onclick="black_list_releaseall(`+id+`)"">确定</div>
+                <div class="btn layout-close" onclick="white_black_list_add()"">提交</div>
                 <div class="btn layout-close" onclick="javascript:void(0)">取消</div>
             </div>
         </form>`;
@@ -680,19 +672,198 @@ $(document).on('click','#releaseall_black',function () {
     event.stopPropagation(); //阻止事件向上冒泡
 });
 
+function white_black_list_add() {
+
+    let add_black_ip= [];
+    let add_white_ip= [];
+    var reg=/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/;//正则表达式
+    if ($("#black_ip").val()) {
+        add_black_ip= $("#black_ip").val().split("-");
+        for (x in add_black_ip) {
+            ip=add_black_ip[x];
+            if(reg.test(ip)){
+                if( RegExp.$1<256 && RegExp.$2<256 && RegExp.$3<256 && RegExp.$4<256){
+                    console.log("IP正确！");
+
+                }else{
+                    console.log("存在错误ip");
+                    alert("存在错误ip");
+                    return
+                }
+            }
+            else {
+                alert("存在错误ip");
+                return;
+            }
+            }
+    }
+    if ($("#white_ip").val()) {
+        add_white_ip= $("#white_ip").val().split("-");
+        for (x in add_white_ip) {
+            ip=add_white_ip[x];
+            if(reg.test(ip)){
+                if( RegExp.$1<256 && RegExp.$2<256 && RegExp.$3<256 && RegExp.$4<256){
+                    console.log("IP正确！");
+                }else{
+                    console.log("存在错误ip");
+                    alert("存在错误ip");
+                    return
+                }
+            }
+            else {
+                alert("存在错误ip");
+                return;
+            }
+        }
+    }
+
+
+    let black_list=b_w_list['black_list'].concat(add_black_ip);
+    let white_list=b_w_list['white_list'].concat(add_white_ip);
+
+    black_list=JSON.stringify(black_list);
+    white_list=JSON.stringify(white_list);
+    // console.log(black_list);
+    $.ajax({
+        url:'black_white_lis_update',
+        type:'POST',
+        data:{
+            "agent_id":agent_server_id,
+            "black_list":black_list,
+            "white_list":white_list
+        },
+        success: function (data) {
+            alert("添加成功");
+            black_white_list(agent_server_id)
+        }
+    });
+}
+
+// 解除黑名单
+$(document).on('click','.black_list_release',function () {
+    let id = $(this).attr("id");
+    id=id.toString();
+    let html = `<div class="layout-title">操作确认：</div>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <form action="post">
+            <div style="font-size: 16px;text-align: center;line-height: 180px;"><span>确认要删除选中的数据吗？</span></div>
+            <div class='layout-btn'>
+                <div class="btn layout-close" onclick="white_black_list_release('`+id+`','black')">确定</div>
+                <div class="btn layout-close" onclick="javascript:void(0)">取消</div>
+            </div>
+        </form>`;
+    $('.shade>.layout').html(html);
+    actionIn(".layout", 'action_scale', .3, "");
+    $(".shade").css({
+        visibility: "visible"
+    });
+    event.stopPropagation(); //阻止事件向上冒泡
+});
+
+function white_black_list_release(id,type) {
+
+    let black_list=b_w_list['black_list'];
+    let white_list=b_w_list['white_list'];
+    if (type === 'white') {
+        white_list.splice(white_list.indexOf(id),1)
+    }
+    else if (type==='black') {
+        black_list.splice(black_list.indexOf(id),1)
+    }
+    black_list=JSON.stringify(black_list);
+    white_list=JSON.stringify(white_list);
+
+    $.ajax({
+        url:'black_white_lis_update',
+        type:'POST',
+        data:{
+            "agent_id":agent_server_id,
+            "black_list":black_list,
+            "white_list":white_list
+        },
+        success: function (data) {
+            alert("删除成功");
+            black_white_list(agent_server_id)
+        }
+    });
+}
+
+// 批量解除黑名单
+$(document).on('click','#releaseall_black',function () {
+    let id = $(this).attr("id");
+
+
+    let html = `<div class="layout-title">操作确认：</div>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        
+            <div style="font-size: 16px;text-align: center;line-height: 180px;"><span>确认要删除选中的数据吗？</span></div>
+            <div class='layout-btn'>
+                <div class="btn layout-close" onclick="white_black_list_releaseall('`+id+`','black')"">确定</div>
+                <div class="btn layout-close" onclick="javascript:void(0)">取消</div>
+            </div>
+        `;
+    $('.shade>.layout').html(html);
+    actionIn(".layout", 'action_scale', .3, "");
+    $(".shade").css({
+        visibility: "visible"
+    });
+    event.stopPropagation(); //阻止事件向上冒泡
+});
+
+
+function white_black_list_releaseall(id,type) {
+    let black_list=b_w_list['black_list'];
+    let white_list=b_w_list['white_list'];
+    if (type === 'black') {
+        for( let i=0;i<$('#black_list_table>tbody>tr').length;i++){
+            if($('#black_list_table>tbody>tr:nth-child('+i+')').find('input').prop('checked')){
+                let ip=$('#black_list_table>tbody>tr:nth-child('+i+')').find('input').attr('id')
+                black_list.splice(black_list.indexOf(id),1)
+            }
+
+        }
+    }
+    else if (type==='white') {
+        for( let i=0;i<$('#white_list_table>tbody>tr').length;i++){
+            if($('#white_list_table>tbody>tr:nth-child('+i+')').find('input').prop('checked')){
+                let ip=$('#white_list_table>tbody>tr:nth-child('+i+')').find('input').attr('id')
+                white_list.splice(white_list.indexOf(id),1)
+            }
+
+        }
+    }
+
+    black_list=JSON.stringify(black_list);
+    white_list=JSON.stringify(white_list);
+
+    $.ajax({
+        url:'black_white_lis_update',
+        type:'POST',
+        data:{
+            "agent_id":agent_server_id,
+            "black_list":black_list,
+            "white_list":white_list
+        },
+        success: function (data) {
+            alert("删除成功");
+            black_white_list(agent_server_id)
+        }
+    });
+
+}
+
 // 添加白名单
 $(document).on('click','#add_white',function () {
-    let id = $(this).attr("id");
     let html = `<div class="layout-title">操作确认：</div>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
         <form action="post">
             <div style="font-size: 16px;text-align: center;line-height: 180px;">
                 <span class="red">*</span>
                 <label>ip地址</label>
-                <input type="text" placeholder="请输入IP或IP段,IP段中间用 “-”分隔" id="ip" name="ip" >
+                <input type="text" placeholder="请输入IP或IP段,IP段中间用 “-”分隔" id="white_ip" name="white_ip" >
             </div>
             <div class='layout-btn'>
-                <div class="btn layout-close" onclick="white_list_add(`+id+`)"">确定</div>
+                <div class="btn layout-close" onclick="white_black_list_add()"">确定</div>
                 <div class="btn layout-close" onclick="javascript:void(0)">取消</div>
             </div>
         </form>`;
@@ -711,7 +882,7 @@ $(document).on('click','.white_list_release',function () {
         <form action="post">
             <div style="font-size: 16px;text-align: center;line-height: 180px;"><span>确认要删除选中的数据吗？</span></div>
             <div class='layout-btn'>
-                <div class="btn layout-close" onclick="white_list_release(`+id+`)"">确定</div>
+                <div class="btn layout-close" onclick="white_black_list_release('`+id+`','white')"">确定</div>
                 <div class="btn layout-close" onclick="javascript:void(0)">取消</div>
             </div>
         </form>`;
@@ -730,7 +901,7 @@ $(document).on('click','#releaseall_white',function () {
         <form action="post">
             <div style="font-size: 16px;text-align: center;line-height: 180px;"><span>确认要删除选中的数据吗？</span></div>
             <div class='layout-btn'>
-                <div class="btn layout-close" onclick="white_list_releaseall(`+id+`)"">确定</div>
+                <div class="btn layout-close" onclick="white_black_list_releaseall('`+id+`','white')"">确定</div>
                 <div class="btn layout-close" onclick="javascript:void(0)">取消</div>
             </div>
         </form>`;
@@ -765,9 +936,9 @@ function config_show(id) {
         async: false,
         dataType: "json",
         success: function (data_list) {
-            httpProtectConfig = data_list['httpprotectconfig'];
+            httpProtectConfig = data_list['httpProtectConfig'];
             algorithm_config = data_list['algorithm_config'];
-            globalConfig = data_list['globalconfig'];
+            globalConfig = data_list['globalConfig'];
             $("#input_httpProtec_config").val(httpProtectConfig);
             $("#input_algorithm_config").val(algorithm_config);
             $("#input_global_config").val(globalConfig);
@@ -855,6 +1026,7 @@ function algorithm_config_show(algorithm_config, id) {
     let dic = {};
     dic.sqli_userinput = "SQL注入";
     dic.sqli_policy = "SQL注入";
+    dic.sql_exception =  "SQL注入";
     dic.ssrf_userinput = "SSRF服务端请求伪造";
     dic.ssrf_aws = "SSRF服务端请求伪造";
     dic.ssrf_common = "SSRF服务端请求伪造";
@@ -1034,7 +1206,7 @@ function agent_manage_submit(id) {
         data: {"id": id, "algo": algo, "http": http, "glob": glob},
         // timeout:1000,
         success: function (data) {
-            // console.log(data);
+            alert('修改成功')
 
         }
     });
@@ -1062,5 +1234,5 @@ function formSubmit() {
 }
 //拦截记录忽略按钮切换
 $(document).on("click", ".btn-group button", function () {
-    $(this).addClass("active").siblings().removeClass("active");
-})
+        $(this).addClass("active").siblings().removeClass("active");
+    });

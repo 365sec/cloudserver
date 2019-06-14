@@ -29,12 +29,29 @@ class TAlgorithmConfig(models.Model):
         db_table = 't_algorithm_config'
 
 
+class TConfig(models.Model):
+    agent_id = models.CharField(primary_key=True, max_length=255)
+    plugin_version = models.CharField(max_length=255)
+    plugin_name = models.CharField(max_length=255, blank=True, null=True)
+    globalConfig = models.TextField( blank=True, null=True)  # Field name made lowercase.
+    httpProtectConfig = models.TextField( blank=True, null=True)  # Field name made lowercase.
+    algorithm_config = models.TextField(blank=True, null=True)
+    plugin_template = models.TextField(blank=True, null=True)
+    config_time = models.DateTimeField(blank=True, null=True)
+    config = models.CharField(max_length=2000, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 't_config'
+
+
 class TEventKnowledge(models.Model):
     event_id = models.IntegerField(primary_key=True)
     event_type = models.IntegerField()
     event_name = models.CharField(max_length=500)
     event_description = models.TextField(blank=True, null=True)
     event_advice = models.TextField(blank=True, null=True)
+    allow_search=models.IntegerField(blank=True,null=True)
 
     class Meta:
         managed = False
@@ -59,6 +76,7 @@ class TFileIntegrity(models.Model):
     owner_after = models.CharField(max_length=255, blank=True, null=True)
     full_log = models.CharField(max_length=4000, blank=True, null=True)
     unused = models.CharField(max_length=255, blank=True, null=True)
+    status = models.PositiveIntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -113,24 +131,11 @@ class TLogAnalysisd(models.Model):
     action = models.CharField(max_length=255, blank=True, null=True)
     protocol = models.CharField(max_length=255, blank=True, null=True)
     process_name = models.CharField(max_length=255, blank=True, null=True)
+    status = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 't_log_analysisd'
-
-
-class TPlugins(models.Model):
-    agent_id = models.CharField(primary_key=True, max_length=255)
-    plugin_version = models.CharField(max_length=255)
-    plugin_name = models.CharField(max_length=255, blank=True, null=True)
-    globalconfig = models.TextField(db_column='globalConfig', blank=True, null=True)  # Field name made lowercase.
-    httpprotectconfig = models.TextField(db_column='httpProtectConfig', blank=True, null=True)  # Field name made lowercase.
-    algorithm_config = models.TextField(blank=True, null=True)
-    plugin_template = models.TextField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 't_config'
 
 
 class TSecurityPolicyEvent(models.Model):
@@ -166,8 +171,8 @@ class TUsers(models.Model):
 
 class TWebAgents(models.Model):
     app_id = models.CharField(primary_key=True, max_length=100)
-    agent_id = models.CharField(max_length=50)
-    rasp_home = models.CharField(max_length=255)
+    agent_id = models.CharField(max_length=50, blank=True, null=True)
+    rasp_home = models.CharField(max_length=255, blank=True, null=True)
     sensor_type_id = models.CharField(max_length=50, blank=True, null=True)
     version = models.CharField(max_length=255, blank=True, null=True)
     language = models.CharField(max_length=255, blank=True, null=True)
@@ -217,7 +222,8 @@ class TWebEvent(models.Model):
     system_user = models.CharField(max_length=100, blank=True, null=True)
     process_path = models.CharField(max_length=500)
     attack_type = models.CharField(max_length=255, blank=True, null=True)
-    status = models.CharField(max_length=255, blank=True, null=True)
+    status = models.IntegerField(blank=True, null=True)
+    app_id = models.CharField(max_length=255)
 
     class Meta:
         managed = False
