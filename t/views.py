@@ -300,11 +300,11 @@ def attack_event_query(request):
 
     # 每张表需要查询的数据
     tweb = tweb_obj.values_list("agent_id", "event_time", "event_name", "plugin_message", "attack_source", "server_ip",
-                                "event_issue_id", "event_id","event_category","threat_level")
+                                "event_issue_id", "event_id","event_category","threat_level","status")
     tfile = tfile_obj.values_list("agent_id", "event_time", "event_name", "full_log", "unused", "unused",
-                                  "event_issue_id", "event_id","event_category","unused")
+                                  "event_issue_id", "event_id","event_category","unused","status")
     tlog = tlog_obj.values_list("agent_id", "event_time", "event_name", "comment", "srcip", "dstip", "event_issue_id",
-                                "event_id","event_category","event_id")
+                                "event_id","event_category","event_id","status")
     # 三张表联合查询
     qchain = tweb.union(tlog, tfile)
     result = qchain.order_by("-event_time")
@@ -342,6 +342,7 @@ def attack_event_query(request):
             y['threat_level']=3
         elif x[8]=="file_integrity":
             y['threat_level']=3
+        y['status']=x[10]
         attack_list.append(y)
 
     data = {
@@ -471,6 +472,30 @@ def query_web_event_by_app_id(request):
 
     return HttpResponse(data, content_type='application/json')
 
+def change_status(request):
+    id = request.POST.get("id")
+    obj = None
+
+    file_obj= TFileIntegrity.objects.all().filter(event_issue_id=id)
+    log_obj=TLogAnalysisd.objects.all().filter(event_issue_id=id)
+    web_obj=TWebEvent.objects.all().filter(event_issue_id=id)
+
+    if  file_obj.exists():
+        obj=file_obj.first()
+    if log_obj.exists():
+        obj=log_obj.first()
+    if web_obj.exists():
+        obj=web_obj.first()
+
+    obj.status=1
+    obj.save()
+    data = {
+
+    }
+
+    data = json.dumps(data)
+
+    return HttpResponse(data, content_type='application/json')
 
 @auth
 def attack_query_source(request):
@@ -563,6 +588,114 @@ def server_attack_trend(request):
     time_list_y = OrderedDict()
     time_list_w = OrderedDict()
     num_list = {}
+    # dt_s=dt_s+timedelta(1)
+    for x in range(25):
+        time_list_d[str(x).zfill(2) + ":00"] = 0
+        time_list_y[str(x).zfill(2) + ":00"] = 0
+        time_list_w[str(x).zfill(2) + ":00"] = 0
+    for d in range(3):
+        dt_s = datetime.now().date()
+        if(d==0):
+            dt_s = (dt_s + timedelta(1))
+            dt_e = (dt_s - timedelta(1))
+        if(d==1):
+            dt_s = dt_s
+            dt_e = (dt_s - timedelta(1))
+        if (d==2):
+            dt_s = (dt_s + timedelta(1))
+            dt_e = (dt_s - timedelta(7))
+
+        tweb_obj1 = tweb_obj.filter(event_time__range=(dt_e, dt_s)).extra(
+            select={"event_time": "DATE_FORMAT( event_time, '%%Y-%%m-%%d %%H')"}) \
+            .values('event_time').annotate(num=Count('event_time')).values('event_time', 'num').order_by('event_time')
+        tfile_obj1 = tfile_obj.filter(event_time__range=(dt_e, dt_s)).extra(
+            select={"event_time": "DATE_FORMAT( event_time, '%%Y-%%m-%%d %%H')"}) \
+            .values('event_time').annotate(num=Count('event_time')).values('event_time', 'num').order_by('event_time')
+        tlog_obj1 = tlog_obj.filter(event_time__range=(dt_e, dt_s)).extra(
+            select={"event_time": "DATE_FORMAT( event_time, '%%Y-%%m-%%d %%H')"}) \
+            .values('event_time').annotate(num=Count('event_time')).values('event_time', 'num').order_by('event_time')
+        union_obj = tweb_obj1.union(tfile_obj1, tlog_obj1)
+
+        if d == 0:
+            for x in union_obj:
+                time1 = x['event_time'].split(" ")[1] + ":00"
+                time_list_d[time1] += x['num']
+            num_list['tday'] = time_list_d
+        if d == 1:
+            for x in union_obj:
+                time1 = x['event_time'].split(" ")[1] + ":00"
+                time_list_y[time1] += x['num']
+            num_list['yday'] = time_list_y
+        if d == 2:
+            for x in union_obj:
+                time1 = x['event_time'].split(" ")[1] + ":00"
+                time_list_w[time1] += x['num']
+            num_list['week'] = time_list_w
+
+    tweb_obj1=tweb_obj.values_list("event_name").annotate(number=Count('event_name'))
+    tfile_obj1=tfile_obj.values_list("event_name").annotate(number=Count('event_name'))
+    tlog_obj1=tlog_obj.values_list("event_name").annotate(number=Count('event_name'))
+    union_obj2=tweb_obj1.union(tfile_obj1,tlog_obj1).order_by("-number")
+    # 攻击类型类型及数目
+    # union_obj3=union_obj2.values_list("event_name").annotate(number=Count('event_name'))
+    type_num=list(union_obj2)
+
+    # 攻击类型分析及被攻击网站列表
+    tweb_obj1=tweb_obj.values_list("target").annotate(number=Count('target'))
+    # tfile_obj1=tfile_obj.values_list("unused").annotate(number=Count('event_name'))
+    tlog_obj1=tlog_obj.values_list("dstip").annotate(number=Count('dstip'))
+    union_obj2=tweb_obj1.union(tlog_obj1).order_by("-number")
+    web_num=list(union_obj2)
+    # 攻击严重等级饼状图
+    tweb_obj1=tweb_obj.values_list("threat_level").annotate(number=Count('threat_level'))
+    tfile_obj1=tfile_obj.count()
+    tlog_obj1=tlog_obj.count()
+    # union_obj2=tweb_obj1.union(tlog_obj1).order_by("-number")
+    level_num=[]
+
+    level_num.append(["低息",tfile_obj1+tlog_obj1])
+    for x in list(tweb_obj1):
+        if x[0]==0:
+            level_num.append(["严重",x[1]])
+        if x[0]==1:
+            level_num.append(["高危",x[1]])
+        if x[0]==2:
+            level_num.append(["中危",x[1]])
+        if x[0]==3:
+            if "低息" in level_num[0]:
+                print (x[1])
+                level_num[0][1]+=x[1]
+
+
+    data = {
+        "num_list": num_list,
+        "type_num":type_num[0:10],
+        "web_num":web_num[0:10],
+         "level_num":level_num[0:10],
+    }
+    data = json.dumps(data)
+    return HttpResponse(data, content_type='application/json')
+
+
+@auth
+def web_attack_trend(request):
+    '''
+    网站安全分析
+    :param request:
+    :return:
+    '''
+    id = request.POST.get("id")
+    tweb_obj = TWebEvent.objects.all().filter(app_id=id)
+
+    # 统计今日、昨日、这周的攻击情况
+    date = datetime.today().day
+    # dt_s = datetime.now().date()  # 2018-7-15
+    # dt_e = (dt_s - timedelta(num))  # 2018-7-08
+    dt_s = datetime.now().date()
+    time_list_d = OrderedDict()
+    time_list_y = OrderedDict()
+    time_list_w = OrderedDict()
+    num_list = {}
     num=0
     # dt_s=dt_s+timedelta(1)
     for x in range(25):
@@ -584,13 +717,8 @@ def server_attack_trend(request):
         tweb_obj1 = tweb_obj.filter(event_time__range=(dt_e, dt_s)).extra(
             select={"event_time": "DATE_FORMAT( event_time, '%%Y-%%m-%%d %%H')"}) \
             .values('event_time').annotate(num=Count('event_time')).values('event_time', 'num').order_by('event_time')
-        tfile_obj1 = tfile_obj.filter(event_time__range=(dt_e, dt_s)).extra(
-            select={"event_time": "DATE_FORMAT( event_time, '%%Y-%%m-%%d %%H')"}) \
-            .values('event_time').annotate(num=Count('event_time')).values('event_time', 'num').order_by('event_time')
-        tlog_obj1 = tlog_obj.filter(event_time__range=(dt_e, dt_s)).extra(
-            select={"event_time": "DATE_FORMAT( event_time, '%%Y-%%m-%%d %%H')"}) \
-            .values('event_time').annotate(num=Count('event_time')).values('event_time', 'num').order_by('event_time')
-        union_obj = tweb_obj1.union(tfile_obj1, tlog_obj1)
+
+        union_obj = tweb_obj1
 
         if num == 0:
             for x in union_obj:
@@ -609,67 +737,29 @@ def server_attack_trend(request):
             num_list['week'] = time_list_w
         num+=1
     # 攻击类型类型及数目
+    # attack_source = attack.values_list('attack_source').annotate(number=Count('attack_source')).order_by('-number')
+    tweb_obj_type_num=tweb_obj.values_list("event_name").annotate(number=Count('event_name')).order_by('-number')
+
 
     # 攻击类型分析及被攻击网站列表
+    tweb_obj_web_num=tweb_obj.values_list("target").annotate(number=Count('target')).order_by('-number')
+    # 攻击严重等级饼状图
+    tweb_obj_level_num=tweb_obj.values_list("threat_level").annotate(number=Count('threat_level')).order_by("-number")
+    level_num=[]
+    for x in list(tweb_obj_level_num):
+        if x[0]==0:
+            level_num.append(["严重",x[1]])
+        if x[0]==1:
+            level_num.append(["高危",x[1]])
+        if x[0]==2:
+            level_num.append(["中危",x[1]])
+        if x[0]==3:
+            level_num.append(["低息",x[1]])
     data = {
-        "num_list": num_list
-    }
-    data = json.dumps(data)
-    return HttpResponse(data, content_type='application/json')
-
-
-@auth
-def web_attack_trend(request):
-    '''
-    网站安全分析
-    :param request:
-    :return:
-    '''
-    id = request.POST.get("id")
-    tweb_obj = TWebEvent.objects.all().filter(agent_id=id)
-
-    # 统计今日、昨日、这周的攻击情况
-    date = datetime.today().day
-    # dt_s = datetime.now().date()  # 2018-7-15
-    # dt_e = (dt_s - timedelta(num))  # 2018-7-08
-    dt_s = datetime.now().date()
-    time_list_d = OrderedDict()
-    time_list_y = OrderedDict()
-    time_list_w = OrderedDict()
-    num_list = {}
-    for d in [0, 1, 6]:
-        for x in range(25):
-            time_list_d[str(x).zfill(2) + ":00"] = 0
-            time_list_y[str(x).zfill(2) + ":00"] = 0
-            time_list_w[str(x).zfill(2) + ":00"] = 0
-
-        dt_e = (dt_s - timedelta(d))
-        tweb_obj1 = tweb_obj.filter(event_time__range=(dt_e, dt_s)).extra(
-            select={"event_time": "DATE_FORMAT( event_time, '%%Y-%%m-%%d %%H')"}) \
-            .values('event_time').annotate(num=Count('event_time')).values('event_time', 'num').order_by('event_time')
-
-        union_obj = tweb_obj1
-        if d == 0:
-            for x in union_obj:
-                time1 = x['event_time'].split(" ")[1] + ":00"
-                time_list_d[time1] += x['num']
-            num_list['tday'] = time_list_d
-        if d == 1:
-            for x in union_obj:
-                time1 = x['event_time'].split(" ")[1] + ":00"
-                time_list_y[time1] += x['num']
-            num_list['yday'] = time_list_y
-        if d == 6:
-            for x in union_obj:
-                time1 = x['event_time'].split(" ")[1] + ":00"
-                time_list_w[time1] += x['num']
-            num_list['week'] = time_list_w
-
-    # 攻击类型类型及数目
-
-    # 攻击类型分析及被攻击网站列表
-    data = {
-        "num_list": num_list
+        "num_list": num_list,
+        "type_num":list(tweb_obj_type_num)[0:10],
+        "web_num":list(tweb_obj_web_num)[0:10],
+        "level_num":level_num[0:10],
     }
     data = json.dumps(data)
     return HttpResponse(data, content_type='application/json')

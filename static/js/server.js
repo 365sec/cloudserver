@@ -125,6 +125,7 @@ $(document).on("click", ".detail-a-server", function () {
             agent_server_id=data['agent_id'];
             // 安全分析
             chart_attack_trend_server(data['agent_id']);
+
             click_chart_attack_trend_server(data['agent_id']);
 
             // 事件处理
@@ -163,7 +164,7 @@ function chart_attack_trend_server(agent_id){
         success: function (data_list) {
             data=data_list;
             console.log(data_list);
-            console.log((data_list['num_list']));
+
         }});
 
     let temp_tday = [];
@@ -189,22 +190,22 @@ function chart_attack_trend_server(agent_id){
     linechart(tday,'chart_attack_trend');
 
 
-    let attack = [["1", 3333],["没有攻击", 12273]];
+    let attack = data['level_num'];
     piechart(attack,'chart_attack_kind');
 
     // 攻击类型攻击次数
     let ana_attack = '';
-    for(let i = 0;i<12;i++){
-        ana_attack +='<tr><td>'+parseInt(Math.random()*500+1)+'</td>';
-        ana_attack +='<td>'+parseInt(Math.random()*500+1)+'</td></tr>';
+    for(x in data['type_num']){
+        ana_attack +='<tr><td>'+data['type_num'][x][0]+'</td>';
+        ana_attack +='<td>'+data['type_num'][x][1]+'</td></tr>';
     }
     $('#ana_attack').html(ana_attack);
 
     // 被攻击网站列表
     let web_attack = '';
-    for(let i = 0;i<12;i++){
-        web_attack +='<tr><td style="width: 70%">172.16.39.245'+parseInt(Math.random()*500+1)+'</td>';
-        web_attack +='<td>'+parseInt(Math.random()*500+1)+'</td></tr>';
+    for(x in data['web_num']){
+        web_attack +='<tr><td style="width: 70%">'+data['web_num'][x][0]+'</td>';
+        web_attack +='<td>'+data['web_num'][x][1]+'</td></tr>';
     }
     $('#web_attack').html(web_attack);
     // 安全分析服务器攻击趋势tab切换
@@ -280,7 +281,9 @@ function event_treat_server(now_page){
                 let aaa = JSON.stringify(alarm_event_list_table_data[j]);
 
                 let str = b.encode(aaa);
+                alarm_event_list_table_data[j]['event_issue_id']=alarm_event_list_table_data[j]['event_issue_id'].replace(".","__");
                 alarm_event_list_table += '<td><a class="custom_a event_detail detail-a" href="javascript:void(0)" data-name="' + str + '">查看报告</a></td>';
+
                 if (alarm_event_list_table_data[j]['status'] === 0) {
                     alarm_event_list_table += '<td><div class="deal_cls btn btn_untreated"  id = "btn_' + alarm_event_list_table_data[j]['event_issue_id'] + '">未处理</div></td></tr>';
                 } else {
@@ -305,29 +308,30 @@ function event_treat_server(now_page){
 
 //事件处理弹窗
 //打开事件处理弹窗
-$(document).on("click", ".btn_untreated", function() {
-    let id = $(this).attr("id");
-    let html = `<div class="layout-title">操作确认：</div>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-        <form action="post">
-            <div style="font-size: 16px;text-align: center;line-height: 180px;"><span>您确定要处理此事件吗？</span></div>
-            <div class='layout-btn'>
-                <div class="btn layout-close" onclick="treat(`+id+`)"">确定</div>
-                <div class="btn layout-close" onclick="javascript:void(0)">取消</div>
-            </div>
-        </form>`;
-    $('.shade>.layout').html(html);
-    actionIn(".layout", 'action_scale', .3, "");
-    $(".shade").css({
-        visibility: "visible"
-    });
-    event.stopPropagation(); //阻止事件向上冒泡
-});
+// $(document).on("click", ".btn_untreated", function() {
+//     let id = $(this).attr("id");
+//     console.log(id);
+//     let html = `<div class="layout-title">操作确认：</div>
+//         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+//         <form action="post">
+//             <div style="font-size: 16px;text-align: center;line-height: 180px;"><span>您确定要处理此事件吗？</span></div>
+//             <div class='layout-btn'>
+//                 <div class="btn layout-close" onclick="treat(`+id+`)"">确定</div>
+//                 <div class="btn layout-close" onclick="javascript:void(0)">取消</div>
+//             </div>
+//         </form>`;
+//     $('.shade>.layout').html(html);
+//     actionIn(".layout", 'action_scale', .3, "");
+//     $(".shade").css({
+//         visibility: "visible"
+//     });
+//     event.stopPropagation(); //阻止事件向上冒泡
+// });
 //事件处理事件
-function treat(obj) {
-    $(obj).attr('disabled','true');
-    $(obj).removeClass('btn_untreated');
-}
+// function treat(obj) {
+//     $(obj).attr('disabled','true');
+//     $(obj).removeClass('btn_untreated');
+// }
 
 // 安全设置
 function click_application_security(data){
@@ -815,19 +819,19 @@ function white_black_list_releaseall(id,type) {
     let black_list=b_w_list['black_list'];
     let white_list=b_w_list['white_list'];
     if (type === 'black') {
-        for( let i=0;i<$('#black_list_table>tbody>tr').length;i++){
+        for( let i=1;i<=$('#black_list_table>tbody>tr').length;i++){
             if($('#black_list_table>tbody>tr:nth-child('+i+')').find('input').prop('checked')){
-                let ip=$('#black_list_table>tbody>tr:nth-child('+i+')').find('input').attr('id')
-                black_list.splice(black_list.indexOf(id),1)
+                let ip=$('#black_list_table>tbody>tr:nth-child('+i+')').find('input').attr('id');
+                black_list.splice(black_list.indexOf(ip),1);
             }
 
         }
     }
     else if (type==='white') {
-        for( let i=0;i<$('#white_list_table>tbody>tr').length;i++){
+        for( let i=1;i<=$('#white_list_table>tbody>tr').length;i++){
             if($('#white_list_table>tbody>tr:nth-child('+i+')').find('input').prop('checked')){
-                let ip=$('#white_list_table>tbody>tr:nth-child('+i+')').find('input').attr('id')
-                white_list.splice(white_list.indexOf(id),1)
+                let ip=$('#white_list_table>tbody>tr:nth-child('+i+')').find('input').attr('id');
+                white_list.splice(white_list.indexOf(ip),1)
             }
 
         }
@@ -835,6 +839,7 @@ function white_black_list_releaseall(id,type) {
 
     black_list=JSON.stringify(black_list);
     white_list=JSON.stringify(white_list);
+
 
     $.ajax({
         url:'black_white_lis_update',

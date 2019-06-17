@@ -56,7 +56,7 @@ function website_click(page) {
                         let b = new Base64();
                         let data1 = b.encode(JSON.stringify(data[x]));
 
-                        html += '<td><a class="detail-a-website" href="javascript:void(0)" data-name="' + data1 + '"   >' + data[x]['register_ip'] + '</a> </td>';
+                        html += '<td><a class="detail-a-website" href="javascript:void(0)" data-name="' + data1 + '" >' + data[x]['register_ip'] + '</a> </td>';
                         // html += '<td>' + data[x]['register_ip'] + '</td>';
                         html += '<td>' + data[x]['remark'] + '</td>';
                         html += '<td>' + data[x]['hostname'] + '</td>';
@@ -74,11 +74,11 @@ function website_click(page) {
 
 
                     html += '<ul role="menubar" aria-disabled="false" aria-label="Pagination" class="pagination b-pagination pagination-md justify-content-center">';
-                    html += '<a href="javascript:void(0);" onclick="server_click(' + (now_page - 1) + ')">上一页</a>';
+                    html += '<a href="javascript:void(0);" onclick="website_click(' + (now_page - 1) + ')">上一页</a>';
                     html += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
                     html += '<a href="javascript:void(0);">' + now_page + "/" + max_size + '</a>';
                     html += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
-                    html += '<a href="javascript:void(0);" onclick="server_click(' + (now_page + 1) + ')">下一页</a>';
+                    html += '<a href="javascript:void(0);" onclick="website_click(' + (now_page + 1) + ')">下一页</a>';
                     //html += '<input id = "agent_jump" value="'+now_page+'" />';
                     //  html += '<a href="javascript:void(0);" onclick="agent_jump()">跳转</a>';
                     html += '</ul>';
@@ -134,19 +134,20 @@ $(document).on("click", ".detail-a-website", function () {
 });
 
 // 安全分析
-function chart_attack_trend_web(agent_id){
+function chart_attack_trend_web(app_id){
     // chart_attack_trend 服务器攻击趋势
     let data;
     $.ajax({
         url: "attack/web_trend/",
         type: 'POST',
         data: {
-            "id": agent_id
+            "id": app_id
         },
         // dataType: "json",
         async: false,
         success: function (data_list) {
             data=data_list;
+            console.log(data);
 
         }});
 
@@ -172,22 +173,23 @@ function chart_attack_trend_web(agent_id){
     let week = temp_week;
     linechart(tday,'chart_attack_trend_web');
 
-    let attack = [["1", 21273],["没有攻击", 12273]];
+    let attack = data['level_num'];
     piechart(attack,'chart_attack_kind_web');
 
     // 攻击类型攻击次数
     let ana_attack = '';
-    for(let i = 0;i<12;i++){
-        ana_attack +='<tr><td>'+parseInt(Math.random()*500+1)+'</td>';
-        ana_attack +='<td>'+parseInt(Math.random()*500+1)+'</td></tr>';
+
+    for(x in data['type_num']){
+        ana_attack +='<tr><td>'+data['type_num'][x][0]+'</td>';
+        ana_attack +='<td>'+data['type_num'][x][1]+'</td></tr>';
     }
     $('#ana_attack').html(ana_attack);
 
     // 被攻击网站列表
     let web_attack = '';
-    for(let i = 0;i<12;i++){
-        web_attack +='<tr><td style="width: 70%">172.16.39.245'+parseInt(Math.random()*500+1)+'</td>';
-        web_attack +='<td>'+parseInt(Math.random()*500+1)+'</td></tr>';
+    for(x in data['web_num']){
+        web_attack +='<tr><td style="width: 70%">'+data['web_num'][x][0]+'</td>';
+        web_attack +='<td>'+data['web_num'][x][1]+'</td></tr>';
     }
     $('#web_attack').html(web_attack);
     $(document).on('click','.web_detail_tab',function () {
@@ -264,6 +266,7 @@ function event_treat_web(now_page,app_id){
         let aaa=JSON.stringify(alarm_event_list_table_data[j]);
 
         let str = b.encode(aaa);
+        alarm_event_list_table_data[j]['event_issue_id']=alarm_event_list_table_data[j]['event_issue_id'].replace(".","__");
         alarm_event_list_table +='<td><a class="custom_a event_detail detail-a" href="javascript:void(0)" data-name="'+str+'">查看报告</a></td>' ;
         if(alarm_event_list_table_data[j]['status']=== 0){
             alarm_event_list_table +='<td><div class="deal_cls btn btn_untreated"  id = "btn_'+alarm_event_list_table_data[j]['event_issue_id']+'">未处理</div></td></tr>';
@@ -292,7 +295,7 @@ $(document).on("click", ".btn_untreated", function() {
         <form action="post">
             <div style="font-size: 16px;text-align: center;line-height: 180px;"><span>您确定要处理此事件吗？</span></div>
             <div class='layout-btn'>
-                <div class="btn layout-close" onclick="treat(`+id+`)"">确定</div>
+                <div class="btn layout-close" onclick="treat('`+id+`')">确定</div>
                 <div class="btn layout-close" onclick="javascript:void(0)">取消</div>
             </div>
         </form>`;
@@ -305,6 +308,25 @@ $(document).on("click", ".btn_untreated", function() {
 });
 //事件处理事件
 function treat(obj) {
-    $(obj).attr('disabled','true');
-    $(obj).removeClass('btn_untreated');
+    $('#'+obj).attr('disabled','true');
+    $('#'+obj).removeClass('btn_untreated');
+
+    let id = obj.split("btn_")[1];
+    id=id.replace("__",".");
+
+
+    $.ajax({
+        url: "attack/change_status/",
+        type: 'POST',
+        data: {
+            "id": id,
+        },
+        // dataType: "json",
+        async: false,
+        success: function (data_list) {
+            data=data_list;
+            console.log(data)
+
+        }});
+
 }

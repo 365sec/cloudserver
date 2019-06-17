@@ -1216,15 +1216,113 @@ function file_event_html(data) {
     /*
     * 渲染 file_event_html*/
     iochtml = `
-        <div>
+       
+                 </table>
+            
+            <!--        <h3>操作过程</h3>-->
+        <table class="legend-table01" style="width: 70%;">
+                                <tbody>
+                                <tr>
+                                    <td class="legend-table01-td1">
+                                        <!--第一个模态框-->
+                                        <div class="table-content-td-plain" >
+                                            <table class="text-legend-text">
+                                                <tbody>
+                                                <tr>
+                                                    <td class="td-01">操作类型</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                        <p>${data['event_name']}</p>
+                                                    </td>
+                                                </tr>
+                                              
+                                                
+                                            </tbody>
+                                            </table>
+                                        </div>
+                                        <!--三角-->
+                                        <div class="triangle-down" style="left: 7px;"></div>
+                                        <!--第一个模态框结束-->
+                                    </td>
+                                    </tr>
+                            </tbody>
+                            </table>
+                            <div class="u-legend pannel_background stagebg1">
+                                    <span class="log-alarmer"></span>
+                                    <span style="width: 47.8%;display: inline-block;text-align: right;color: #777;margin-top: 70px;"> 操作</span>
+                                    <span style="width: 34.3%;display: inline-block;text-align: right;color: #777;margin-top: 70px;"> 操作对象</span>
+                            </div>
+                            <table class="legend-table02" style="width: 100%;margin: 40px auto;min-height: 50px;vertical-align: top;text-align:
+                                   center;">
+                                <tbody>
+                                <tr>
+                                    <td class="legend-low">
+                                        <!--第3个模态框-->
+                                        <!--三角-->
+                                        <div class="triangle-top"></div>
+                                        <div class="table-content-td-plain-b" style="min-width: 205px;">
+                                            <table class="text-legend-text">
+                                                <tbody><tr>
+                                                    <td class="td-01" style="width: 40px;">主机</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                        <p>${data['host_name']}</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td-01" style="width: 40px;">用户</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                            <p>${data['system_user']}</p>
+                                                    </td>
+                                                </tr>
+                                                 <tr>
+                                                    <td class="td-01" style="width: 40px;">类型</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                            <p>文件完整性</p>
+                                                    </td>
+                                                </tr>
+                                            </tbody></table>
+                                        </div>
+                                        <!--第3个模态框结束-->
+                                    </td>
+                                    <td class="legend-low">
+
+                                        <!--第4个模态框-->
+                                        <!--三角-->
+                                        <div class="triangle-top"></div>
+                                        <div class="table-content-td-plain-b" style="margin-right: 0;">
+                                            <table class="text-legend-text">
+                                                <tbody>
+                                     
+                                               
+                                                <tr>
+                                                    <td class="td-01">文件路径</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                        <p>${data['file_path']}</p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            </table>
+                                        </div>
+                                        <!--第4个模态框结束-->
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                            </table>
+        
             <h3>基本信息</h3>
             <table class="table table-bordered">
             <tbody>
            
-              <tr>  <td>事件名称</td><td>${data['event_name']}</td> </tr>
+             
               <tr>  <td>事件时间</td><td>${data['event_time']}</td> </tr>
-              <tr>  <td>主机名称</td><td>${data['host_name']}</td> </tr>
-              <tr>  <td>主机名称</td><td>${data['host_name']}</td> </tr>
+             <!-- 
+              <tr>  <td>事件名称</td><td>${data['event_name']}</td> </tr>
+             <tr>  <td>主机名称</td><td>${data['host_name']}</td> </tr>
               <tr>  <td>系统用户</td><td>${data['system_user']}</td> </tr>
               <tr>  <td>文件路径</td><td>${data['file_path']}</td> </tr>
               <tr>  <td>原MD5</td><td>${data['md5_before']}</td> </tr>
@@ -1232,13 +1330,14 @@ function file_event_html(data) {
               <tr>  <td>原sha1</td><td>${data['sha1_before']}</td> </tr>
               <tr>  <td>现sha1</td><td>${data['sha1_after']}</td> </tr>
               <tr>  <td>原owner_before</td><td>${data['owner_before']}</td> </tr>
-              <tr>  <td>现owner_before</td><td>${data['owner_after']}</td> </tr>
+              <tr>  <td>现owner_before</td><td>${data['owner_after']}</td> </tr> 
+              -->
               <tr>  <td>事件内容</td><td>${data['full_log']}</td> </tr>
               
            
             </tbody>
-            </table>
-    </div>
+   
+   
         
   
 

@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^attack/server_trend/$', views.server_attack_trend),#服务安全事件
     url(r'^attack/web_trend/$', views.web_attack_trend),      #网站安全事件
     url(r'^attack/web_event/$', views.query_web_event_by_app_id),
+    url(r'^attack/change_status/$', views.change_status),  #改变事件是否状态 是否呗处理
     url(r'^query_threat_level$', views.query_threat_level),
     url(r'^query_attack_source$', views.query_attack_source),
     url(r'^query_attack_times$', views.query_attack_times),
