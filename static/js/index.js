@@ -47,6 +47,7 @@ $(function() {
     $('.d-secondNav').click(function() {
         dropSwift($(this), '.d-secondDrop');
     });
+
     function dropSwift(dom, drop) {
         dom.next().slideToggle();
         dom.parent().siblings().find(drop).slideUp();
@@ -68,7 +69,9 @@ $(document).on('click','.menu_button',function () {
         $('.nano-content').find('.slide_mark').removeClass('iconRotate')
     }
 })
-
+$(document).on('click','.side_close>.nano-content>.s-firstItem',function() {
+    $('.s-side').removeClass('side_close').addClass('side_open');
+});
 
 // 关闭弹窗
 $(document).on('click',".layout .close,.layout .layout-close",function (e) {

@@ -510,7 +510,7 @@ function get_baseline_li_html(data) {
 
     return html;
 }
-
+// 基线检查
 function base_check() {
     $.ajax({
         url: "baseline_check",
@@ -525,13 +525,18 @@ function base_check() {
 
             let setInte = setInterval(function () {
                 console.log("开始检查");
+                $('#accordion').css('display','none');
+                $('.loading_content').css('display','flex');
                 let status=get_base_line_status();
                 console.log("status ",status);
                 if (status === 0) {
                     get_base_line_status();
                     console.log("正在检查");
+
                 } else {
                     console.log("检查结束");
+                    $('#accordion').css('display','block');
+                    $('.loading_content').css('display','none');
                     server_checking(agent_server_id);
                     clearInterval(setInte);
 

@@ -179,7 +179,7 @@
                     <div class="u-css-examineTOP">
                         <!--标题-->
                         <div class="u-css-examineTITLE" >
-                            您上次基线检查是<div id="base_line_last_day"></div>天之前,待解决问题
+                            您上次基线检查是<span id="base_line_last_day"></span>天之前,待解决问题
                             <span id="base_line_countNum" style="color: red ;font-size: 20px;">120</span> 项
                             <span id="base_line_totalScore" style="color: red ;font-size: 20px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;74</span>分
                             <div id="start_server_check" class="btn" onclick="base_check()">一键检查</div>
@@ -189,6 +189,10 @@
                         <p class="u-css-examineP" style="width: 520px;">检查日期
                             <span id="last_check_time"> </span>
                         </p>
+                    </div>
+                    <div class="loading_content" style="display: none;">
+                        <div class="loading_circle"></div>
+                        加载中
                     </div>
                     <div class="panel-group" id="accordion">
                         <div class="panel panel-fst">
