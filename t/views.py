@@ -26,7 +26,7 @@ from t.models import TWebAgents as TAgents
 from t.models import TWebAgents
 from t.models import THostAgents
 from t.models import TWebEvent as TAttackEvent
-
+from t.models import TBaselineCheck
 from t.models import TWebEvent
 from t.models import TFileIntegrity
 from t.models import TLogAnalysisd
@@ -131,6 +131,11 @@ def agent_query(request):
 
 @auth
 def server_agent_query(request):
+    '''
+    查询服务端的 agent
+    :param request:
+    :return:
+    '''
     global SENSOR_TYPE
     # 当前页码数
     page = request.POST.get("page")
@@ -174,18 +179,25 @@ def server_agent_query(request):
 
 
 def web_agent_query(request):
+    '''
+    查询web_agent
+    :param request:
+    :return:
+    '''
     global SENSOR_TYPE
     # 当前页码数
     page = request.POST.get("page")
     page = int(page)
     result = None
+
     if request.session['superuser']:
         result = TWebAgents.objects.all().order_by("-online")
     else:
         username = request.session['username']
         result = TWebAgents.objects.filter(owner=username).order_by("-online")
     # 每页显示多少个数据
-
+    for x in result:
+        print (x)
     page_size = 15
     # 最大分页数
     max_size = (result.count() + page_size - 1) / page_size
@@ -427,6 +439,65 @@ def query_detail_data(request):
     # y['event_time']=y['event_time'].strftime("%Y-%m-%d %H:%M:%S")
     data = json.dumps(y)
     return HttpResponse(data, content_type='application/json')
+
+
+def query_web_agent_by_agent_id(request):
+    '''
+
+   查询web_agent
+   :param request:
+   :return:
+   '''
+    global SENSOR_TYPE
+    # 当前页码数
+    page = request.POST.get("page")
+    agent_id = request.POST.get("agent_id")
+    page = int(page)
+    result = None
+
+    if request.session['superuser']:
+        result = TWebAgents.objects.all().order_by("-online")
+    else:
+        username = request.session['username']
+        result = TWebAgents.objects.filter(owner=username).order_by("-online")
+    # 每页显示多少个数据
+    result=result.filter(agent_id=agent_id)
+    for x in result:
+        print (x)
+    page_size = 15
+    # 最大分页数
+    max_size = (result.count() + page_size - 1) / page_size
+    if max_size == 0:
+        max_size = 1
+    if page > max_size:
+        page = max_size
+    TAgents_list = []
+    for x in result[(page - 1) * page_size:(page) * page_size]:
+        y = model_to_dict(x)
+        hostname = THostAgents.objects.all().filter(agent_id=agent_id).first()
+        print (hostname)
+        if hostname.internal_ip:
+            y['register_ip'] = hostname.internal_ip
+        else:
+            y['register_ip'] = hostname.extranet_ip
+        y['hostname'] = hostname.host_name
+        y['sensor_type_id'] = SENSOR_TYPE.get(y['sensor_type_id'], '')
+        y['online'] = '在线' if y['online'] else '离线'
+        y['disabled'] = '是' if y['disabled'] else '否'
+        y['last_heartbeat'] = y['last_heartbeat'].strftime("%Y-%m-%d %H:%M:%S")
+
+        for k, v in y.items():
+            if not y[k]:
+                y[k] = ''
+        y = json.dumps(y)
+        print (y)
+        TAgents_list.append(y)
+    data = {
+        "agents": TAgents_list,
+        "max_size": max_size,
+        "page": page,
+    }
+    return HttpResponse(json.dumps(data), content_type='application/json')
 
 
 def query_web_event_by_app_id(request):
@@ -1195,4 +1266,38 @@ def view_report(request):
             "attack_target": attack_target_list,
             "attack_scan": attack_scan_list,
             }
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
+def baseline(request):
+
+    id=request.POST.get("agent_id")
+    result = TBaselineCheck.objects.all().get(agent_id=id)
+
+    print (model_to_dict(result))
+    data = model_to_dict(result)
+    data['last_day']=datetime.now()-data['last_check_time']
+    data['last_day']=data['last_day'].days
+    data['last_check_time']=data['last_check_time'].strftime("%Y-%m-%d %H:%M:%S")
+    data['result']=json.loads( data['result'])
+
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
+def baseline_check(request):
+    id=request.POST.get("agent_id")
+    result = TBaselineCheck.objects.all().get(agent_id=id)
+    dt=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    if (result.check_status==0 or result.check_status==3):
+        result.check_status=1
+        # result.last_check_time=dt
+        result.save()
+    data = {"success":"ok"}
+    return HttpResponse(json.dumps(data), content_type='application/json')
+def baseline_status(request):
+    id=request.POST.get("agent_id")
+    result = TBaselineCheck.objects.all().get(agent_id=id)
+    data = {}
+    if result.check_status==2:
+        data['success']=0
+    else:
+        data['success']=1
     return HttpResponse(json.dumps(data), content_type='application/json')

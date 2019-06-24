@@ -108,7 +108,7 @@ function attack_click(attack_page) {
                     html += '<table class="table table-bordered">';
                     html += '<thead>';
                     html += '<tr>';
-                    html += '<th>agent_id</th>';
+                    // html += '<th>agent_id</th>';
                     html += '<th>时间</th>';
                     html += '<th>事件名称</th>';
                     html += '<th style="min-width: 100px;">事件内容</th>';
@@ -123,7 +123,7 @@ function attack_click(attack_page) {
 
                         html += '<tr>';
 
-                        html += '<td >' + data[x]['agent_id'] + '</td>';
+                        // html += '<td >' + data[x]['agent_id'] + '</td>';
                         html += '<td>' + data[x]['event_time'] + '</td>';
                         html += '<td>' + data[x]['event_name'] + '</td>';
                         html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['comment'] + '">' + data[x]['comment'] + '</td>';
@@ -260,7 +260,7 @@ function attack_click_search(attack_page) {
             html += '<table class="table table-bordered">';
             html += '<thead>';
             html += '<tr>';
-            html += '<th>agent_id</th>';
+            // html += '<th>agent_id</th>';
             html += '<th>时间</th>';
             html += '<th>事件名称</th>';
             html += '<th style="min-width: 100px;">事件内容</th>';
@@ -276,7 +276,7 @@ function attack_click_search(attack_page) {
                 html += '<tr>';
 
 
-                html += '<td >' + data[x]['agent_id'] + '</td>';
+                // html += '<td >' + data[x]['agent_id'] + '</td>';
                 html += '<td>' + data[x]['event_time'] + '</td>';
                 html += '<td>' + data[x]['event_name'] + '</td>';
                 html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['comment'] + '">' + data[x]['comment'] + '</td>';
@@ -1091,15 +1091,15 @@ function log_event_html(data) {
         <table class="table table-bordered">
         <tbody>
         <tr>
+            <td>事件时间</td>
             <td>服务器名称</td>
             <td>类型</td>
-            <td>事件时间</td>
             <td>事件内容</td>
             </tr>
         <tr>
+            <td>${data['event_time']}</td>
             <td>${data['host_name']}</td>
             <td>${data['event_name']}</td>
-            <td>${data['event_time']}</td>
             <td>${data['comment']}</td>
         </tr>
         </tbody>

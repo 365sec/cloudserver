@@ -140,6 +140,9 @@ $(document).on("click", ".detail-a-server", function () {
             // 黑白名单
             click_black_white_list(data['agent_id']);
 
+            // 基线检查
+            click_baseline(data['agent_id']);
+
             // 防御策略
             click_config_show(data['agent_id']);
         }
@@ -294,7 +297,7 @@ function event_treat_server(now_page){
                     '<a href="javascript:void(0);">' + now_page + "/" + max_size + '</a>' +
                     '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp' +
                     '<a href="javascript:void(0);" onclick="event_treat_server(' + (now_page + 1) + "," + agent_server_id + ')">下一页</a>' +
-                    '<input id = "agent_jump" value="' + now_page + '" />' +
+                    '<input id = "event_treat_server_jump" value="' + now_page + '" />' +
                     '<a href="javascript:void(0);" onclick="event_treat_server_jump()">跳转</a>' +
                     '</ul>';
                 $('.page').html(page);
@@ -303,6 +306,13 @@ function event_treat_server(now_page){
 
         }});
 
+
+}
+
+function event_treat_server_jump() {
+
+       let page= $("#event_treat_server_jump").val();
+        event_treat_server(parseInt(page))
 
 }
 
@@ -442,6 +452,113 @@ function application_security(){
 // }
 
 // 基线检查
+function click_baseline(data){
+    $(document).on('click','#server_checking_link',function () {
+
+
+        server_checking(data);
+    })
+}
+
+function server_checking(data){
+    $.ajax({
+        url: "baseline",
+        type: 'POST',
+        data: {
+            "agent_id":agent_server_id,
+        },
+        //dataType: "json",
+        success: function (data_list) {
+            console.log(data_list);
+            //WEB文件扫描
+            let web_scan=data_list['result']['web_file_check']['result'];
+            $("#base_line_last_day").text("").append(data_list['last_day']);
+            $("#base_line_totalScore").text("").append(data_list['score']);
+            $("#last_check_time").text("").append(data_list['last_check_time']);
+            $("#base_line_web_num").text("0").append(web_scan['webshell'].length+web_scan['dark_chain'].length+web_scan['suspicious_links'].length);
+            $("#web_muma_num").text("网页木马 （").append(web_scan['webshell'].length).append(")");
+            $("#dark_chain_num").text("黑链暗链 （").append(web_scan['dark_chain'].length).append(")");
+            $("#suspicious_links_num").text("可疑外链 （").append(web_scan['suspicious_links'].length).append(")");
+            $("#webmuma_li").text("").append(get_baseline_li_html(web_scan['webshell']));
+            $("#suspicious_links_li").text("").append(get_baseline_li_html(web_scan['suspicious_links']));
+            $("#dark_chain_li").text("").append(get_baseline_li_html(web_scan['dark_chain']));
+        }})
+}
+
+function get_baseline_li_html(data) {
+    /*获得基线检查 网页木马的html
+    * */
+    let html =``;
+    for (x in data) {
+
+        html+=`
+            <li>
+                <div class="u-list-leftbox">
+                    <i class="iconfont">&#xe60f;</i>
+                </div>
+                <div class="u-list-leftbox   u-list-rightTEXT">
+                    <p class="u-css-examineP">
+                       ${data[x]}
+                    </p>
+                </div>
+                <button type="button" onclick="check_ignore(this);">忽略</button>
+                <button type="button" onclick="check_repair(this);">修复</button>
+            </li>
+            
+        `
+    };
+
+    return html;
+}
+
+function base_check() {
+    $.ajax({
+        url: "baseline_check",
+        type: 'POST',
+        data: {
+            "agent_id":agent_server_id,
+        },
+        //dataType: "json",
+        success: function (data_list) {
+
+            // console.log(data_list);
+
+            let setInte = setInterval(function () {
+                console.log("开始检查");
+                let status=get_base_line_status();
+                console.log("status ",status);
+                if (status === 0) {
+                    get_base_line_status();
+                    console.log("正在检查");
+                } else {
+                    console.log("检查结束");
+                    server_checking(agent_server_id);
+                    clearInterval(setInte);
+
+                }
+            },150);
+
+
+        }})
+}
+
+function get_base_line_status() {
+    let data;
+    $.ajax({
+        url: "baseline_status",
+        type: 'POST',
+        async:false,
+        data: {
+            "agent_id":agent_server_id,
+        },
+        success: function (data_list) {
+            // console.log(data_list);
+            data=data_list['success'];
+
+        }});
+
+    return data;
+}
 // 展开箭头的方向
 $(document).on('click','.panel-title>a',function(){
     let iconChevron = $(this).find('.slide_mark');
@@ -450,7 +567,7 @@ $(document).on('click','.panel-title>a',function(){
     } else {
         iconChevron.addClass('iconRotate');
     }
-})
+});
 // 批量操作确认弹框
 $(document).on('click','.check_box',function () {
     let html = `<div class="layout-title">操作确认：</div>
@@ -515,7 +632,23 @@ function click_server_website_list(data){
     })
 }
 function server_website_list(now_page){
-    console.log("网站详情");
+
+    console.log("网站详情 server");
+
+    $.ajax({
+        url: "attack/web_event_agent/",
+        type: 'POST',
+        data: {
+            "agent_id": agent_server_id,
+            "page": now_page
+        },
+        // dataType: "json",
+        async: false,
+        success: function (data_list) {
+            data = data_list['agents'];
+            console.log(data);
+
+        }});
     max_size = 3;
     if (now_page == null || now_page < 1) {
         now_page = 1;
@@ -523,33 +656,41 @@ function server_website_list(now_page){
     if (now_page > max_size) {
         now_page = max_size;
     }
-    let server_website_list_data = [['111','172.16.39.245',' ','未分组','2019-04-29 17:51:06'],
+
+    let server_website_list = '';
+    let server_website_list_data = [['111','172.16.39.24555',' ','未分组','2019-04-29 17:51:06'],
         ['222','172.16.39.245','','未分组','2019-04-29 17:51:06'],
         ['333','172.16.39.245','','未分组','2019-04-29 17:51:06'],
         ['444','172.16.39.245','','未分组','2019-04-29 17:51:06'],
         ['555','172.16.39.245','','未分组','2019-04-29 17:51:06'],
         ['666','172.16.39.245','','未分组','2019-04-29 17:51:06']
     ];
-    let server_website_list = '';
+    server_website_list_data=data;
+
     for(let j=0,len = server_website_list_data.length;j<len;j++){
-        server_website_list='<tr>' +
+        server_website_list_data[j]=JSON.parse(server_website_list_data[j]);
+        console.log(server_website_list_data[j]);
+        let b = new Base64();
+        let data1 = b.encode(JSON.stringify(server_website_list_data[j]));
+        // html += '<td><a class="detail-a-website" href="javascript:void(0)" data-name="' + data1 + '" >' + data[x]['register_ip'] + '</a> </td>';
+        server_website_list +='<tr>' +
                             ' <td style="width: 46px;padding: 14px;">' +
                             '    <div class="server_website_list_checkbox">' +
-                            '    <input class="regular_checkbox" id="'+server_website_list_data[j][0]+'" type="checkbox" name="server_website_list_checkall">' +
-                            '    <label for="'+server_website_list_data[j][0]+'"></label>' +
+                            '    <input class="regular_checkbox" id="'+server_website_list_data[j]['app_id']+'" type="checkbox" name="server_website_list_checkall">' +
+                            '    <label for="'+server_website_list_data[j]['app_id']+'"></label>' +
                             '    </div>' +
                             ' </td>' +
-                            '<td><a class="detail-a-website" href="javascript:void(0)" data-name="' + server_website_list_data[j][0] + '"   >' + server_website_list_data[j][1] + '</a></td>'+
-                            '<td>'+server_website_list_data[j][2]+'</td>'+
-                            '<td>'+server_website_list_data[j][3]+'</td>'+
-                            '<td>'+server_website_list_data[j][4]+'</td>';
+                            '<td><a class="detail-a-website" href="javascript:void(0)" data-name="' +data1 + '"   >' + server_website_list_data[j]['register_ip'] + '</a></td>'+
+                            '<td>'+server_website_list_data[j]['remark']+'</td>'+
+                            '<td>'+server_website_list_data[j]['owner']+'</td>'+
+                            '<td>'+server_website_list_data[j]['last_heartbeat']+'</td>';
         let page = '<ul role="menubar" aria-disabled="false" aria-label="Pagination" class="pagination b-pagination pagination-md justify-content-center">'+
-            '<a href="javascript:void(0);" onclick="event_treat(' + (now_page - 1) + ')">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp'+
+            '<a href="javascript:void(0);" onclick="server_website_list(' + (now_page - 1) + ')">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp'+
             '<a href="javascript:void(0);">' + now_page + "/" + max_size + '</a>'+
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp'+
-            '<a href="javascript:void(0);" onclick="event_treat(' + (now_page + 1) + ')">下一页</a>'+
+            '<a href="javascript:void(0);" onclick="server_website_list(' + (now_page + 1) + ')">下一页</a>'+
             '<input id = "agent_jump" value="'+now_page+'" />'+
-            '<a href="javascript:void(0);" onclick="event_treat()">跳转</a>'+
+            '<a href="javascript:void(0);" onclick="server_website_list_jump()">跳转</a>'+
             '</ul>';
         $('.page').html(page);
     }

@@ -29,10 +29,25 @@ class TAlgorithmConfig(models.Model):
         db_table = 't_algorithm_config'
 
 
+class TBaselineCheck(models.Model):
+    agent_id = models.CharField(primary_key=True, max_length=255)
+    check_status = models.IntegerField()
+    result = models.TextField(blank=True, null=True)
+    progress = models.CharField(max_length=255, blank=True, null=True)
+    last_check_time = models.DateTimeField(blank=True, null=True)
+    score = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 't_baseline_check'
+
+
 class TConfig(models.Model):
     agent_id = models.CharField(primary_key=True, max_length=255)
     plugin_version = models.CharField(max_length=255)
     plugin_name = models.CharField(max_length=255, blank=True, null=True)
+    # globalconfig = models.TextField(db_column='globalConfig', blank=True, null=True)  # Field name made lowercase.
+    # httpprotectconfig = models.TextField(db_column='httpProtectConfig', blank=True, null=True)  # Field name made lowercase.
     globalConfig = models.TextField( blank=True, null=True)  # Field name made lowercase.
     httpProtectConfig = models.TextField( blank=True, null=True)  # Field name made lowercase.
     algorithm_config = models.TextField(blank=True, null=True)
@@ -51,7 +66,7 @@ class TEventKnowledge(models.Model):
     event_name = models.CharField(max_length=500)
     event_description = models.TextField(blank=True, null=True)
     event_advice = models.TextField(blank=True, null=True)
-    allow_search=models.IntegerField(blank=True,null=True)
+    allow_search = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -131,7 +146,7 @@ class TLogAnalysisd(models.Model):
     action = models.CharField(max_length=255, blank=True, null=True)
     protocol = models.CharField(max_length=255, blank=True, null=True)
     process_name = models.CharField(max_length=255, blank=True, null=True)
-    status = models.IntegerField(blank=True, null=True)
+    status = models.PositiveIntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -222,7 +237,7 @@ class TWebEvent(models.Model):
     system_user = models.CharField(max_length=100, blank=True, null=True)
     process_path = models.CharField(max_length=500)
     attack_type = models.CharField(max_length=255, blank=True, null=True)
-    status = models.IntegerField(blank=True, null=True)
+    status = models.PositiveIntegerField(blank=True, null=True)
     app_id = models.CharField(max_length=255)
 
     class Meta:

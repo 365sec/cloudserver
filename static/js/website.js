@@ -278,12 +278,17 @@ function event_treat_web(now_page,app_id){
             '<a href="javascript:void(0);">' + now_page + "/" + max_size + '</a>'+
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp'+
             '<a href="javascript:void(0);" onclick="event_treat_web(' + (now_page + 1) +","+app_id+ ')">下一页</a>'+
-            '<input id = "agent_jump" value="'+now_page+'" />'+
+            '<input id = "event_treat_web_jump" value="'+now_page+'" />'+
             '<a href="javascript:void(0);" onclick="event_treat_web_jump()">跳转</a>'+
             '</ul>';
         $('.page').html(page);
     }
     $('#alarm_event_list_table>tbody').html(alarm_event_list_table);
+}
+
+function event_treat_web_jump() {
+   let page = $("#event_treat_web_jump").val();
+    event_treat_web(parseInt(page));
 }
 
 //事件处理弹窗

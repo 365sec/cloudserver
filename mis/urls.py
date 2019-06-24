@@ -16,7 +16,8 @@ urlpatterns = [
     url(r'^attack/query_source/$', views.attack_query_source),
     url(r'^attack/server_trend/$', views.server_attack_trend),#服务安全事件
     url(r'^attack/web_trend/$', views.web_attack_trend),      #网站安全事件
-    url(r'^attack/web_event/$', views.query_web_event_by_app_id),
+    url(r'^attack/web_event/$', views.query_web_event_by_app_id),# 查询某个服务上面的所有网站
+    url(r'^attack/web_event_agent/$', views.query_web_agent_by_agent_id),# 查询某个agent上面所有的网站agent
     url(r'^attack/change_status/$', views.change_status),  #改变事件是否状态 是否呗处理
     url(r'^query_threat_level$', views.query_threat_level),
     url(r'^query_attack_source$', views.query_attack_source),
@@ -27,6 +28,9 @@ urlpatterns = [
     url(r'^plugins_update$', views.plugins_update),# 防御策略更新
     url(r'^black_white_list$', views.black_white_list),  #黑白名单查询
     url(r'^black_white_lis_update$', views.black_white_list_update),#黑白名单更新
+    url(r'^baseline$', views.baseline),#安全基线扫描 展示
+    url(r'^baseline_check$', views.baseline_check),#执行安全基线扫描
+    url(r'^baseline_status$', views.baseline_status),#查看基线检查的状态
     url(r'^add_host$', views.add_host),
     url(r'^login$', login.login),
     url(r'^logout$', login.loginout),
