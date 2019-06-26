@@ -242,12 +242,15 @@ function click_event_treat_server(){
 }
 function event_treat_server(now_page){
     console.log("事件处理");
+    let query=$("#event_keyword").val();
+
     $.ajax({
         url: "attack/query/",
         type: 'POST',
         data: {
             "agent_id":agent_server_id,
-            "page": now_page
+            "page": now_page,
+            "attack_msg": query,
         },
         //dataType: "json",
         success: function (data_list) {
@@ -512,6 +515,8 @@ function get_baseline_li_html(data) {
 }
 // 基线检查
 function base_check() {
+    $('#accordion').css('display','none');
+    $('.loading_content').css('display','flex');
     $.ajax({
         url: "baseline_check",
         type: 'POST',
@@ -520,9 +525,7 @@ function base_check() {
         },
         //dataType: "json",
         success: function (data_list) {
-
-            // console.log(data_list);
-
+             // console.log(data_list);
             let setInte = setInterval(function () {
                 console.log("开始检查");
                 $('#accordion').css('display','none');
@@ -541,7 +544,7 @@ function base_check() {
                     clearInterval(setInte);
 
                 }
-            },150);
+            },1500);
 
 
         }})

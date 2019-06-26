@@ -236,6 +236,7 @@ def web_agent_query(request):
 
 @auth
 def attack_event_query(request):
+    #attack/query
     # 当前页码数
     page = request.POST.get("page")
     page = int(page)
@@ -955,10 +956,7 @@ def query_attack_source_map(request):
 @auth
 def query_attack_times(request):
     data = {}
-    attack = TAttackEvent.objects
-
     filter_condition = {}
-    result = None
     if not request.session['superuser']:
         username = request.session['username']
         result = TAgents.objects.filter(owner=username)
@@ -969,23 +967,26 @@ def query_attack_times(request):
     num = 15
     dt_s = datetime.now().date()  # 2018-7-15
     dt_e = (dt_s - timedelta(num))  # 2018-7-08
-    filter_condition['event_time__range'] = [dt_e + timedelta(1), dt_s + timedelta(1)]
-    attrack_time = attack.filter(**filter_condition)
-    attrack_time_dic = OrderedDict()
-    end_data = datetime.now().date()
-    for x in range(num):
-        start_time = (end_data - timedelta(1))
-        # print (str(end_data))
-        attrack_time_dic[str(end_data)] = attrack_time.filter(
-            event_time__range=[start_time + timedelta(1), end_data + timedelta(1)]).count()
-        end_data = (end_data - timedelta(1))
-    attrack_time_dic_list = []
-    # print(attrack_time_dic)
 
-    for x in attrack_time_dic:
-        attrack_time_dic_list.append([x, attrack_time_dic[x]])
-
-    data['attrack_time_dic'] = attrack_time_dic_list
+    num=dt_s-dt_e
+    tobj=   TWebEvent.objects.all()
+    time_num = tobj.filter(event_time__range=(dt_e, dt_s)).extra(
+        select={"event_time": "DATE_FORMAT( event_time, '%%Y-%%m-%%d')"}) \
+        .values('event_time').annotate(num=Count('event_time')).values('event_time', 'num').order_by('event_time')
+    attack_time_dic_list=[]
+    for x in time_num:
+        attack_time_dic_list.append((x['event_time'],x['num']))
+    attack_time_dic_list1 = []
+    # dt_s = (dt_e - timedelta(num))  # 2018-7-08
+    for x in range(num.days):
+        time1 = (dt_s - timedelta(num.days - x)).strftime("%Y-%m-%d")
+        if attack_time_dic_list and attack_time_dic_list[0][0] == time1:
+            attack_time_dic_list1.append([time1, attack_time_dic_list[0][1]])
+            attack_time_dic_list.pop(0)
+        else:
+            attack_time_dic_list1.append([time1, 0])
+    attack_time_dic_list1.reverse()
+    data['attrack_time_dic'] = attack_time_dic_list1
 
     data = json.dumps(data)
 
@@ -1080,7 +1081,7 @@ def plugins_manage(request):
 
 def plugins_update(request):
 
-    print ("进入 plugins_update")
+    # ("进入 plugins_update")
     id = request.POST.get('id')
     algo = request.POST.get('algo')
     http = request.POST.get('http')
@@ -1109,9 +1110,6 @@ def black_white_list(request):
     agent_id = request.POST.get('agent_id')
     config = TConfig.objects.get(agent_id=agent_id)
     b_w_list=config.config
-    print (b_w_list)
-    # print (type(b_w_list))
-    # print (json.loads(b_w_list))
     black_list=json.loads(b_w_list,encoding="utf-8")['ip.blacklist'].split(",")
     white_list=json.loads(b_w_list,encoding="utf-8")['ip.whitelist'].split(",")
     if "" in black_list:
@@ -1128,7 +1126,6 @@ def black_white_list_update(request):
     agent_id = request.POST.get('agent_id')
     white_list = request.POST.get('white_list')
     black_list = request.POST.get('black_list')
-
     white_list=",".join(eval(white_list))
     black_list=",".join(eval(black_list))
     w_b_list={"ip.blacklist".encode(encoding="utf-8"):black_list.encode(encoding="utf-8"),"ip.whitelist".encode(encoding="utf-8"):white_list.encode(encoding="utf-8")}
@@ -1137,7 +1134,6 @@ def black_white_list_update(request):
     config.config_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     config.config=json.dumps(w_b_list)
     config.save()
-
     data = {}
     data = json.dumps(data)
     return HttpResponse(data, content_type='application/json')
@@ -1152,9 +1148,7 @@ def view_report(request):
         dt_s = datetime.strptime(attack_time_range.split(" ~ ")[0], "%Y-%m-%d")
         dt_e = datetime.strptime(attack_time_range.split(" ~ ")[1], "%Y-%m-%d")
     num = dt_e - dt_s
-
     attack_time_range = TAttackEvent.objects.filter(event_time__range=(dt_s, dt_e))
-
     attack = attack_time_range
     # 统计攻击源
     attack_source = attack.values_list('attack_source').annotate(number=Count('attack_source')).order_by('-number')
@@ -1188,15 +1182,13 @@ def view_report(request):
     # 主要攻击时间段及总体趋势
     # 统计前num天的攻击次数，攻击趋势分析
     date = dt_s
-    cursor = connection.cursor()
-    cursor.execute(
-        "SELECT DATE_FORMAT( event_time, '%%Y-%%m-%%d' ) AS dataTime, "
-        "COUNT(1) AS countNumber FROM`t_attack_event`"
-        "WHERE event_time between '%s' and '%s' GROUP BY dataTime  " % (
-            dt_s, dt_e))
-    attack_time_dic_list = cursor.fetchall()
-    attack_time_dic_list = list(attack_time_dic_list)
-
+    tobj=   TWebEvent.objects.all()
+    time_num = tobj.filter(event_time__range=(dt_s, dt_e)).extra(
+        select={"event_time": "DATE_FORMAT( event_time, '%%Y-%%m-%%d')"}) \
+        .values('event_time').annotate(num=Count('event_time')).values('event_time', 'num').order_by('event_time')
+    attack_time_dic_list=[]
+    for x in time_num:
+        attack_time_dic_list.append((x['event_time'],x['num']))
     attack_time_dic_list1 = []
     # dt_s = (dt_e - timedelta(num))  # 2018-7-08
     for x in range(num.days):
@@ -1207,6 +1199,10 @@ def view_report(request):
         else:
             attack_time_dic_list1.append([time1, 0])
     attack_time_dic_list = attack_time_dic_list1
+
+
+
+
 
     # 资产统计 系统、服务器类型
     attack_server = attack.values_list('server_type').annotate(number=Count('server_type')).order_by('-number')
@@ -1273,7 +1269,7 @@ def baseline(request):
     id=request.POST.get("agent_id")
     result = TBaselineCheck.objects.all().get(agent_id=id)
 
-    print (model_to_dict(result))
+    # print (model_to_dict(result))
     data = model_to_dict(result)
     data['last_day']=datetime.now()-data['last_check_time']
     data['last_day']=data['last_day'].days
@@ -1288,10 +1284,10 @@ def baseline_check(request):
     dt=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     if (result.check_status==0 or result.check_status==3):
         result.check_status=1
-        # result.last_check_time=dt
         result.save()
     data = {"success":"ok"}
     return HttpResponse(json.dumps(data), content_type='application/json')
+
 def baseline_status(request):
     id=request.POST.get("agent_id")
     result = TBaselineCheck.objects.all().get(agent_id=id)

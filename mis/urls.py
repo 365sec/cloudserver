@@ -7,7 +7,7 @@ from t import link
 from t import login
 
 urlpatterns = [
-    url(r'^data_count$', views.view_report),
+    url(r'^data_count$', views.view_report),# 统计信息界面展示
     url(r'^agent/query/$', views.agent_query),
     url(r'^server_agent/query/$', views.server_agent_query),# 查询服务agent
     url(r'^web_agent/query/$', views.web_agent_query),    #查询网络agent
