@@ -544,6 +544,21 @@ def query_web_event_by_app_id(request):
 
     return HttpResponse(data, content_type='application/json')
 
+def change_web_event_remark(request):
+
+    id = request.POST.get("id")
+    remark=request.POST.get("remark")
+
+    web_obj=TWebAgents.objects.all().filter(event_issue_id=id).first()
+    web_obj.remark=remark
+    web_obj.save()
+    data = {
+    }
+
+    data = json.dumps(data)
+
+    return HttpResponse(data, content_type='application/json')
+
 def change_status(request):
     id = request.POST.get("id")
     obj = None
@@ -564,9 +579,7 @@ def change_status(request):
     data = {
 
     }
-
     data = json.dumps(data)
-
     return HttpResponse(data, content_type='application/json')
 
 @auth
@@ -999,7 +1012,6 @@ def query_attack_type(request):
     attack = TAttackEvent.objects
 
     filter_condition = {}
-    result = None
     if not request.session['superuser']:
         username = request.session['username']
         result = TAgents.objects.filter(owner=username)
@@ -1011,9 +1023,7 @@ def query_attack_type(request):
     result = TEventKnowledge.objects.all()
     for x in result:
         attack_type[str(x.event_id)] = x.event_name
-
     num = 12
-
     attrack_times = attack.filter(~Q(event_id__in=[0, 999]), **filter_condition).values_list('event_id').annotate(
         Count('event_id'))
     attrack_times1 = sorted(attrack_times, key=lambda item: item[1], reverse=True)
@@ -1199,9 +1209,6 @@ def view_report(request):
         else:
             attack_time_dic_list1.append([time1, 0])
     attack_time_dic_list = attack_time_dic_list1
-
-
-
 
 
     # 资产统计 系统、服务器类型
