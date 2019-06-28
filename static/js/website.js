@@ -59,7 +59,7 @@ function website_click(page) {
                         html += '<td><a class="detail-a-website" href="javascript:void(0)" data-name="' + data1 + '" >' + data[x]['register_ip'] + '</a> </td>';
                         // html += '<td>' + data[x]['register_ip'] + '</td>';
                         html += '<td style="position: relative">' +
-                                    '<div class="web_tip_text">' + data[x]['remark'] + '</div>'+
+                                    '<input class="web_tip_text" placeholder="双击编辑">' + data[x]['remark'] + '</input>'+
                                     '<div class="web_tip_edit">'+
                                         '<input type="text" class="web_tip_edit_box" value="' + data[x]['remark'] + '" />'+
                                         '<div  class="web_tip_edit_btn">'+
@@ -110,7 +110,7 @@ function tip_edit(){
         $(this).next().css('display','flex');
         $(this).next().find('input').focus();
         $(this).css('display','none')
-        value = $(this).text();
+        value = $(this).val();
         $(document).bind('click', function(e) {
             if(content.next().css('display')== 'none'){
                 return;
@@ -129,14 +129,14 @@ function tip_edit(){
         });
     });
     $(document).on('click','.web_tip_edit_cancel',function(){
-        $(this).parent().parent().prev().text(value);
+        $(this).parent().parent().prev().val(value);
         $(this).parent().prev().val(value);
         $(this).parent().parent().css('display','none')
         $(this).parent().parent().prev().css('display','block');
     });
     $(document).on('click','.web_tip_edit_save',function(){
         value = $(this).parent().prev().val();
-        $(this).parent().parent().prev().text(value);
+        $(this).parent().parent().prev().val(value);
         $(this).parent().parent().css('display','none')
         $(this).parent().parent().prev().css('display','block');
     });
