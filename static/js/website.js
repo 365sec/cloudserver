@@ -59,7 +59,7 @@ function website_click(page) {
                         html += '<td><a class="detail-a-website" href="javascript:void(0)" data-name="' + data1 + '" >' + data[x]['register_ip'] + '</a> </td>';
                         // html += '<td>' + data[x]['register_ip'] + '</td>';
                         html += '<td style="position: relative">' +
-                                    '<input class="web_tip_text" placeholder="双击编辑">' + data[x]['remark'] + '</input>'+
+                                    '<input class="web_tip_text" placeholder="点击编辑" value="' + data[x]['remark'] + '"/>'+
                                     '<div class="web_tip_edit">'+
                                         '<input type="text" class="web_tip_edit_box" value="' + data[x]['remark'] + '" />'+
                                         '<div  class="web_tip_edit_btn">'+
@@ -105,40 +105,29 @@ function website_click(page) {
 
 function tip_edit(){
     let value;
-    $(document).on('dblclick','.web_tip_text',function(){
+    $(document).on('click','.web_tip_text',function(){
         let content = $(this);
         $(this).next().css('display','flex');
         $(this).next().find('input').focus();
         $(this).css('display','none')
         value = $(this).val();
-        $(document).bind('click', function(e) {
-            if(content.next().css('display')== 'none'){
-                return;
-            }
-            var e = e || window.event; //浏览器兼容性
-            var elem = e.target || e.srcElement;
-            while (elem) { //循环判断至跟节点，防止点击的是div子元素
-                if (elem.className && elem.className == 'web_tip_edit') {
-                    return;
-                }
-                elem = elem.parentNode;
-            }
-            content.next().find('input').val(value);
-            content.next().css('display', 'none'); //点击的不是div或其子元素
+        $(document).one('click',function(){
+            content.next().hide();
             content.css('display','block');
+        })
+        $('.web_tip_edit_box').unbind('click').bind('click',function(){
+            event.stopPropagation();
         });
     });
     $(document).on('click','.web_tip_edit_cancel',function(){
         $(this).parent().parent().prev().val(value);
         $(this).parent().prev().val(value);
-        $(this).parent().parent().css('display','none')
-        $(this).parent().parent().prev().css('display','block');
     });
     $(document).on('click','.web_tip_edit_save',function(){
         value = $(this).parent().prev().val();
         $(this).parent().parent().prev().val(value);
-        $(this).parent().parent().css('display','none')
-        $(this).parent().parent().prev().css('display','block');
+
+        console.log(value)
     });
 
 }

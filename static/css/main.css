@@ -77,8 +77,8 @@ b {
 }
 
 .modal-open .modal {
-    /*overflow-x: hidden;*/
-    /*overflow-y: hidden;*/
+    overflow-x: hidden;
+    overflow-y: hidden;
     /*position: absolute;*/
     top: 10%;
     bottom: 10%;
@@ -756,7 +756,9 @@ td {
     margin-bottom: 0;
     color: #757575;
 }
-
+.myTabContent{
+    overflow: scroll;
+}
 
 .form > div {
     margin-bottom: 10px;
