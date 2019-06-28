@@ -157,7 +157,7 @@ function attrack_recent_warning(data) {
     for (x in data) {
 
         table += '<tr>';
-        table += '<td style="min-width: 135px;">';
+        table += '<td style="min-width: 140px;">';
         table += data[x]['event_time'];
         table += '</td>';
         table += '<td>';
@@ -177,9 +177,9 @@ function attrack_recent_warning(data) {
                     <table class="table">
                       <thead>
                         <tr>
-                          <th>时间</th>
-                          <th>攻击IP</th>
-                          <th>攻击事件</th>
+                          <th width="24%">时间</th>
+                          <th width="15%">攻击IP</th>
+                          <th width="24%">攻击事件</th>
                           <th>描述</th>
                         </tr>
                       </thead>
@@ -372,8 +372,8 @@ function attack_threat_level_charts(data,div) {
         series: [{
             name: '威胁指数',
             type: 'pie',
-            radius: '65%',
-            center: ['50%', '60%'],
+            radius: '60%',
+            // center: ['50%', '60%'],
             clockwise: false,
             data: [{
                 value: data[0],
@@ -389,23 +389,33 @@ function attack_threat_level_charts(data,div) {
                 name: '低危'
             }],
             label: {
-                normal: {
-                    textStyle: {
+                // textStyle: {
+                //     fontSize: 14,
+                //     align:'center',
+                // },
+                formatter: '{a|{b}}\n{b|({c})}',
+                rich:{
+                    a:{
                         fontSize: 14,
+                        align: 'center'
+                    },
+                    b:{
+                        fontSize: 12,
+                        align: 'center'
                     }
                 }
             },
             grid: {
-                left: '0',
+                left: '5%',
                 top: '0',
-                right: '0',
+                right: '5%',
                 bottom: '0',
                 containLabel: true
             },
             labelLine: {
                 normal: {
                     show: true,
-                    length: 20,
+                    length: 15,
                     length2: 10
                 }
             },

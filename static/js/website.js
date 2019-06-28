@@ -58,7 +58,16 @@ function website_click(page) {
 
                         html += '<td><a class="detail-a-website" href="javascript:void(0)" data-name="' + data1 + '" >' + data[x]['register_ip'] + '</a> </td>';
                         // html += '<td>' + data[x]['register_ip'] + '</td>';
-                        html += '<td>' + data[x]['remark'] + '</td>';
+                        html += '<td style="position: relative">' +
+                                    '<div class="web_tip_text">' + data[x]['remark'] + '</div>'+
+                                    '<div class="web_tip_edit">'+
+                                        '<input type="text" class="web_tip_edit_box" value="' + data[x]['remark'] + '" />'+
+                                        '<div  class="web_tip_edit_btn">'+
+                                            '<i class="iconfont web_tip_edit_cancel">&#xe646;</i>'+
+                                            '<i class="iconfont web_tip_edit_save">&#xe65c;</i>'+
+                                        '</div>'+
+                                    '</div>'+
+                            '</td>';
                         html += '<td>' + data[x]['hostname'] + '</td>';
                         html += '<td>' + data[x]['server_type']+'-'+data[x]['server_version'] +'</td>';
                         html += '<td>' + data[x]['language'] + '</td>';
@@ -83,6 +92,7 @@ function website_click(page) {
                     //  html += '<a href="javascript:void(0);" onclick="agent_jump()">跳转</a>';
                     html += '</ul>';
                     div_container.append(html);
+                    tip_edit();
                 }
             });
             $(".container1").css('background-color', '#f0f2f5');
@@ -91,15 +101,48 @@ function website_click(page) {
 
     });
 }
-//添加主机弹窗
-//打开弹窗
-$(document).on("click", ".manageDiv .card .btngroup .btn", function() {
-    actionIn(".layout", 'action_scale', .3, "");
-    $(".shade").css({
-        visibility: "visible"
+// 标签编辑
+
+function tip_edit(){
+    let value;
+    $(document).on('dblclick','.web_tip_text',function(){
+        let content = $(this);
+        $(this).next().css('display','flex');
+        $(this).next().find('input').focus();
+        $(this).css('display','none')
+        value = $(this).text();
+        $(document).bind('click', function(e) {
+            if(content.next().css('display')== 'none'){
+                return;
+            }
+            var e = e || window.event; //浏览器兼容性
+            var elem = e.target || e.srcElement;
+            while (elem) { //循环判断至跟节点，防止点击的是div子元素
+                if (elem.className && elem.className == 'web_tip_edit') {
+                    return;
+                }
+                elem = elem.parentNode;
+            }
+            content.next().find('input').val(value);
+            content.next().css('display', 'none'); //点击的不是div或其子元素
+            content.css('display','block');
+        });
     });
-    event.stopPropagation(); //阻止事件向上冒泡
-});
+    $(document).on('click','.web_tip_edit_cancel',function(){
+        $(this).parent().parent().prev().text(value);
+        $(this).parent().prev().val(value);
+        $(this).parent().parent().css('display','none')
+        $(this).parent().parent().prev().css('display','block');
+    });
+    $(document).on('click','.web_tip_edit_save',function(){
+        value = $(this).parent().prev().val();
+        $(this).parent().parent().prev().text(value);
+        $(this).parent().parent().css('display','none')
+        $(this).parent().parent().prev().css('display','block');
+    });
+
+}
+
 
 //详情
 $(document).on("click", ".detail-a-website", function () {

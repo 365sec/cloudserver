@@ -1,11 +1,11 @@
 @font-face {
     font-family: 'iconfont';  /* project id 1075499 */
-    src: url('//at.alicdn.com/t/font_1075499_5zqckt7amnu.eot');
-    src: url('//at.alicdn.com/t/font_1075499_5zqckt7amnu.eot?#iefix') format('embedded-opentype'),
-    url('//at.alicdn.com/t/font_1075499_5zqckt7amnu.woff2') format('woff2'),
-    url('//at.alicdn.com/t/font_1075499_5zqckt7amnu.woff') format('woff'),
-    url('//at.alicdn.com/t/font_1075499_5zqckt7amnu.ttf') format('truetype'),
-    url('//at.alicdn.com/t/font_1075499_5zqckt7amnu.svg#iconfont') format('svg');
+    src: url('//at.alicdn.com/t/font_1075499_vox8qvb9ja.eot');
+    src: url('//at.alicdn.com/t/font_1075499_vox8qvb9ja.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_1075499_vox8qvb9ja.woff2') format('woff2'),
+    url('//at.alicdn.com/t/font_1075499_vox8qvb9ja.woff') format('woff'),
+    url('//at.alicdn.com/t/font_1075499_vox8qvb9ja.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_1075499_vox8qvb9ja.svg#iconfont') format('svg');
 }
 .iconfont1{
     font-family:"iconfont" !important;
@@ -119,17 +119,13 @@ td {
 #main{
     display: flex;
     height: 100%;
-
+    overflow: hidden;
 }
 #main_right{
     height: 100vh;
     position: relative;
     width: 100%;
-    overflow-y: scroll;
-}
-.tanzhen{
-    height: calc(100vh - 84px);
-    margin-bottom: 48px;
+
 }
 .setup .lang-selector {
     border: 1px solid #dedede;
@@ -490,15 +486,19 @@ td {
 .setup {
     margin-bottom: 0px !important;
     box-sizing: border-box;
+    overflow-y: scroll;
+    height: 100%;
 }
 
-#div_container {
-    height: 100%;
+.container1 {
+    min-height: calc(100vh - 48px);
+    padding-bottom: 36px;
+    background: rgb(240, 242, 245);
 }
 
 .footer {
     position: relative;
-    margin-top: -48px;
+    top: -36px;
     height: 48px;
     clear:both;
     background: #fff;
@@ -506,8 +506,7 @@ td {
 
 .overviewDiv{
     display: block;
-    height: calc(100vh - 84px);
-    margin-bottom: 48px;
+    height: calc(100vh - 36px - 60px);
 }
 .row .col-4 > div {
     height: 100%;
@@ -614,6 +613,9 @@ td {
     background: none;
     border-left: 0;
     border-right: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .chart-table thead{
     border: 1px solid rgba(233, 233, 233, 1);
@@ -624,10 +626,12 @@ td {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    width: 220px;
+    min-width: 150px;
     height: 38px;
 }
-
+#attrack_recent_warning_dic_div table{
+    table-layout: fixed;
+}
 
 #attrack_recent_warning_dic_div table thead tr th:first-child {
    /* min-width: 150px;*/
@@ -749,7 +753,6 @@ td {
 .tab-content, .tabs-content {
     background-color: transparent;
     height: calc(100% - 42px);
-    overflow-y: scroll;
     margin-bottom: 0;
     color: #757575;
 }
@@ -887,7 +890,6 @@ a:not([href]):not([tabindex]), a:not([href]):not([tabindex]):focus, a:not([href]
 }
 .container1 .card{
     margin: 20px;
-    margin-bottom: 68px;
     padding: 10px 20px;
     z-index: 1;
     width: auto;
@@ -914,6 +916,7 @@ a:not([href]):not([tabindex]), a:not([href]):not([tabindex]):focus, a:not([href]
 .page{
     overflow-y: scroll;
     justify-content: normal!important;
+    align-items: center;
 }
 .manageDiv .card .btngroup{
     display: flex;
@@ -1017,6 +1020,7 @@ a:not([href]):not([tabindex]), a:not([href]):not([tabindex]):focus, a:not([href]
 #table_div div .pagination,.card .pagination{
     padding-top: 10px;
     text-align: center;
+    width: 100%;
 }
 
 .tab{
@@ -1041,6 +1045,7 @@ pre{
     margin: 0;
     padding: 0;
 }
+
 code {
     padding-left:0px;
     font-size: 12px;
@@ -1217,7 +1222,6 @@ code {
 }
 .tab-content > .tab-pane {
     padding: 24px;
-    margin-bottom: 48px;
 }
 
 .ioc_body{
@@ -2140,4 +2144,33 @@ ul {
         -webkit-transform: rotate(360deg);
         transform: rotate(360deg);
     }
+}
+.web_tip_edit{
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: none;
+}
+.web_tip_edit input{
+    height: 26px;
+    line-height: inherit;
+    width: 80%;
+}
+.web_tip_edit i{
+    color: #999;
+}
+.web_tip_edit,.web_tip_edit_btn{
+    display: flex;
+}
+.web_tip_edit{
+    display: none;
+}
+.web_tip_text{
+    width: 100%;
+    height: 100%;
+}
+.web_tip_edit_btn{
+    position: absolute;
+    right: 10px;
 }

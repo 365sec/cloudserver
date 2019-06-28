@@ -89,15 +89,7 @@ function server_click(page) {
 
     });
 }
-//添加主机弹窗
-//打开弹窗
-$(document).on("click", ".manageDiv .card .btngroup .btn", function() {
-    actionIn(".layout", 'action_scale', .3, "");
-    $(".shade").css({
-        visibility: "visible"
-    });
-    event.stopPropagation(); //阻止事件向上冒泡
-});
+
 
 //详情
 var agent_server_id;
