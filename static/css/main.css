@@ -1073,8 +1073,6 @@ code {
     border: 1px dotted #40c9b8;
     background-color: #e5f8f6;
     color: #777;
-    min-width: 200px;
-    min-height: 60px;
     margin: 0px auto;
 }
 
@@ -1236,7 +1234,7 @@ code {
 
 .legend-low{
     width: 34%;
-    padding: 0 2%;
+    padding: 0 3%;
 }
 
 /*攻击追溯*/

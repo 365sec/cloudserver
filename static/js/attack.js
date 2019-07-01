@@ -1148,7 +1148,7 @@ function log_event_html(data) {
         </tbody>
         </table>
 <!--        <h3>操作过程</h3>-->
-        <table class="legend-table01" style="width: 70%;">
+        <table class="legend-table01" style="width: 40%;">
                                 <tbody>
                                 <tr>
                                     <td class="legend-table01-td1">
@@ -1186,7 +1186,7 @@ function log_event_html(data) {
                                     <span style="width: 47.8%;display: inline-block;text-align: right;color: #777;margin-top: 70px;"> 网络流量</span>
                                     <span style="width: 34.3%;display: inline-block;text-align: right;color: #777;margin-top: 70px;"> 应用</span>
                             </div>
-                            <table class="legend-table02" style="width: 100%;margin: 40px auto;min-height: 50px;vertical-align: top;text-align:
+                            <table class="legend-table02" style="width: 70%;margin: 40px auto;min-height: 50px;vertical-align: top;text-align:
                                    center;">
                                 <tbody>
                                 <tr>
@@ -1285,7 +1285,7 @@ function file_event_html(data) {
                  </table>
             
             <!--        <h3>操作过程</h3>-->
-        <table class="legend-table01" style="width: 70%;">
+        <table class="legend-table01" style="width: 40%;">
                                 <tbody>
                                 <tr>
                                     <td class="legend-table01-td1">
@@ -1317,7 +1317,7 @@ function file_event_html(data) {
                                     <span style="width: 47.8%;display: inline-block;text-align: right;color: #777;margin-top: 70px;"> 操作</span>
                                     <span style="width: 34.3%;display: inline-block;text-align: right;color: #777;margin-top: 70px;"> 操作对象</span>
                             </div>
-                            <table class="legend-table02" style="width: 100%;margin: 40px auto;min-height: 50px;vertical-align: top;text-align:
+                            <table class="legend-table02" style="width: 70%;margin: 40px auto;min-height: 50px;vertical-align: top;text-align:
                                    center;">
                                 <tbody>
                                 <tr>
@@ -1328,7 +1328,7 @@ function file_event_html(data) {
                                         <div class="table-content-td-plain-b" style="min-width: 205px;">
                                             <table class="text-legend-text">
                                                 <tbody><tr>
-                                                    <td class="td-01" style="width: 40px;">主机</td>
+                                                    <td class="td-01">主机</td>
                                                     <td class="td-02">:</td>
                                                     <td class="td-03">
                                                         <p>${data['host_name']}</p>
