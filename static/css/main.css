@@ -679,11 +679,11 @@ td {
 }
 .table th:first-child {
     border-left: 1px solid rgba(233, 233, 233, 1);
-    border-radius: 4px;
+    /*border-radius: 4px;*/
 }
 .table th:last-child {
     border-right: 1px solid rgba(233, 233, 233, 1);
-    border-radius: 4px;
+    /*border-radius: 4px;*/
 }
 
 .table-bordered>tbody>tr> td ,.table-bordered th{
@@ -1740,6 +1740,9 @@ ul {
     font-weight:normal;
 }
 .table > thead > tr > th{
+    background-color: #002430;
+    color: #fff;
+    height: 35px;
     border-bottom:none;
     border-right:none;
     border-left:none;

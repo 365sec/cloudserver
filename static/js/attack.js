@@ -1242,9 +1242,6 @@ function file_event_html(data) {
     /*
     * 渲染 file_event_html*/
     iochtml = `
-
-
-            <h3>基本信息</h3>
                <table class="table table-bordered">
                     <tbody>
                    
