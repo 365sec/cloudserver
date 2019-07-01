@@ -2155,7 +2155,7 @@ ul {
 
 .web_tip_text{
     width: 100%;
-    height: auto;
+    height: 24px;
     border: none;
     line-height: inherit;
     padding: 0;
