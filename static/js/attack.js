@@ -112,24 +112,36 @@ function attack_click(attack_page) {
                     html += '<th>时间</th>';
                     html += '<th>事件名称</th>';
                     html += '<th style="min-width: 100px;">事件内容</th>';
-                    html += '<th>源ip</th>';
-                    html += '<th>目的ip</th>';
+                    // html += '<th>源ip</th>';
+                    // html += '<th>目的ip</th>';
+                    html += '<th>严重等级</th>';
                     html += '<th>服务器名称</th>';
+                    html += '<th>拦截状态</th>';
                     html += '<th>操作</th>';
                     html += '</tr>';
                     html += '</thead>';
                     html += '<tbody>';
                     for (x in data) {
+                        let threat_level;
+                        switch (data[x]['threat_level']) {
+                            case 0: threat_level="<span class=\"label label_custom label-danger\" >严重</span>";break;
+                            case 1: threat_level="<span class=\"label label_custom label_high\" >高危</span>";break;
+                            case 2: threat_level="<span class=\"label label_custom label_norm\" >一般</span>";break;
+                            case 3: threat_level="<span class=\"label label_custom label_info\" >信息</span>";break;
 
+
+                        }
                         html += '<tr>';
 
                         // html += '<td >' + data[x]['agent_id'] + '</td>';
                         html += '<td>' + data[x]['event_time'] + '</td>';
                         html += '<td>' + data[x]['event_name'] + '</td>';
                         html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['comment'] + '">' + data[x]['comment'] + '</td>';
-                        html += '<td>' + data[x]['attack_source'] + '</td>';
-                        html += '<td>' + data[x]['server_ip'] + '</td>';
+                        html += '<td>' + threat_level + '</td>';
+                        // html += '<td>' + data[x]['threat_level'] + '</td>';
+                        // html += '<td>' + data[x]['server_ip'] + '</td>';
                         html += '<td>' + data[x]['hostname'] + '</td>';
+                        html += '<td>' + data[x]['intercept_state'] + '</td>';
                         // html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['url'] + '">' + data[x]['url'] + '</td>';
                         // html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['plugin_message'] + '">' + data[x]['plugin_message'] + '</td>';
                         // html += '<td>' + data[x]['intercept_state'] + '</td>';
@@ -477,6 +489,14 @@ function get_attack_body(ip, attack_source) {
 
             for (x in data_list['list']) {
                 let temp_data = data_list['list'][x];
+                let temp_data3=temp_data[3];
+                if (Array.isArray(temp_data[3]))
+                {
+                    // temp_data3="主机名（"+temp_data3[0]+") 用户（"+temp_data3[1]+"）正在进行 "+temp_data3[2]+"";
+                    temp_data3=`主机 <span class="hostname event_detail_attack_detail_table_span label label-info">${temp_data3[0]}</span> 使用用户 ${temp_data3[1]} 正在进行${temp_data3[2]}`;
+                // <span class="ip event_detail_attack_detail_table_span label label-info">${temp_data[2]}</span>
+
+                }
                 temp_html += `
                     <tr>
                         <td style="width: 10%; text-align: right;">${temp_data[0].split(" ")[0]}<br>${temp_data[0].split(" ")[1]}</td>
@@ -487,11 +507,12 @@ function get_attack_body(ip, attack_source) {
                         <td style="width: 50%;">
                             <span class="ip event_detail_attack_detail_table_span label label-info">${temp_data[2]}</span>
                             <span class="ipAddr">（${temp_data[1]}）</span>
-                            ${temp_data[3]}
+                            ${temp_data3}
                             &nbsp;<span class="span_gray">${temp_data[4]}  </span>
                             <!--<span class="event_log_detail" id="1664393756_2018-05-23">&gt;&gt;详情</span>-->
                         </td>
-                    </tr>`;
+                    </tr>
+                    `;
             }
             // $("#remain_num").text("").append(data_list['all_num']- data_list["remain"]+"/"+ data_list['all_num']);
 
@@ -573,6 +594,11 @@ function append_attack_body_more(ip, last, attack_source) {
 
             for (x in data_list['list']) {
                 let temp_data = data_list['list'][x];
+                let temp_data3=temp_data[3];
+                if (Array.isArray(temp_data[3]))
+                {
+                    temp_data3=`主机名（${temp_data3[0]}) 用户（${temp_data3[1]}）正在进行${temp_data3[2]}`;
+                }
                 temp_html += `
                     <tr>
                         <td style="width: 10%; text-align: right;">${temp_data[0].split(" ")[0]}<br>${temp_data[0].split(" ")[1]}</td>
@@ -583,7 +609,7 @@ function append_attack_body_more(ip, last, attack_source) {
                         <td style="width: 50%;">
                             <span class="ip event_detail_attack_detail_table_span label label-info">${temp_data[2]}</span>
                             <span class="ipAddr">（${temp_data[1]}）</span>
-                            ${temp_data[3]}
+                            ${temp_data3}
                             &nbsp;<span class="span_gray">${temp_data[4]}  </span>
                             <!--<span class="event_log_detail" id="1664393756_2018-05-23">&gt;&gt;详情</span>-->
                         </td>
@@ -1216,6 +1242,31 @@ function file_event_html(data) {
     /*
     * 渲染 file_event_html*/
     iochtml = `
+
+
+            <h3>基本信息</h3>
+               <table class="table table-bordered">
+                    <tbody>
+                   
+                     
+                      <tr>  <td>事件时间</td> <td>事件内容</td></tr>
+                      <tr> <td>${data['event_time']}</td> <td>${data['full_log']}</td> </tr>
+                     <!-- 
+                      <tr>  <td>事件名称</td><td>${data['event_name']}</td> </tr>
+                     <tr>  <td>主机名称</td><td>${data['host_name']}</td> </tr>
+                      <tr>  <td>系统用户</td><td>${data['system_user']}</td> </tr>
+                      <tr>  <td>文件路径</td><td>${data['file_path']}</td> </tr>
+                      <tr>  <td>原MD5</td><td>${data['md5_before']}</td> </tr>
+                      <tr>  <td>现MD5</td><td>${data['md5_after']}</td> </tr> 
+                      <tr>  <td>原sha1</td><td>${data['sha1_before']}</td> </tr>
+                      <tr>  <td>现sha1</td><td>${data['sha1_after']}</td> </tr>
+                      <tr>  <td>原owner_before</td><td>${data['owner_before']}</td> </tr>
+                      <tr>  <td>现owner_before</td><td>${data['owner_after']}</td> </tr> 
+                      -->
+
+                      
+                   
+                    </tbody>
        
                  </table>
             
@@ -1232,7 +1283,7 @@ function file_event_html(data) {
                                                     <td class="td-01">操作类型</td>
                                                     <td class="td-02">:</td>
                                                     <td class="td-03">
-                                                        <p>${data['event_name']}</p>
+                                                        <p>${data['operator_type']}</p>
                                                     </td>
                                                 </tr>
                                               
@@ -1314,32 +1365,7 @@ function file_event_html(data) {
                             </tbody>
                             </table>
         
-            <h3>基本信息</h3>
-            <table class="table table-bordered">
-            <tbody>
-           
-             
-              <tr>  <td>事件时间</td><td>${data['event_time']}</td> </tr>
-             <!-- 
-              <tr>  <td>事件名称</td><td>${data['event_name']}</td> </tr>
-             <tr>  <td>主机名称</td><td>${data['host_name']}</td> </tr>
-              <tr>  <td>系统用户</td><td>${data['system_user']}</td> </tr>
-              <tr>  <td>文件路径</td><td>${data['file_path']}</td> </tr>
-              <tr>  <td>原MD5</td><td>${data['md5_before']}</td> </tr>
-              <tr>  <td>现MD5</td><td>${data['md5_after']}</td> </tr> 
-              <tr>  <td>原sha1</td><td>${data['sha1_before']}</td> </tr>
-              <tr>  <td>现sha1</td><td>${data['sha1_after']}</td> </tr>
-              <tr>  <td>原owner_before</td><td>${data['owner_before']}</td> </tr>
-              <tr>  <td>现owner_before</td><td>${data['owner_after']}</td> </tr> 
-              -->
-              <tr>  <td>事件内容</td><td>${data['full_log']}</td> </tr>
-              
-           
-            </tbody>
-   
-   
         
-  
 
         `;
 

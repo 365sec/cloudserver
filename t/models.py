@@ -92,6 +92,7 @@ class TFileIntegrity(models.Model):
     full_log = models.CharField(max_length=4000, blank=True, null=True)
     unused = models.CharField(max_length=255, blank=True, null=True)
     status = models.PositiveIntegerField(blank=True, null=True)
+    operator_type = models.PositiveIntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -147,6 +148,7 @@ class TLogAnalysisd(models.Model):
     protocol = models.CharField(max_length=255, blank=True, null=True)
     process_name = models.CharField(max_length=255, blank=True, null=True)
     status = models.PositiveIntegerField(blank=True, null=True)
+    unused = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False
@@ -239,6 +241,7 @@ class TWebEvent(models.Model):
     attack_type = models.CharField(max_length=255, blank=True, null=True)
     status = models.PositiveIntegerField(blank=True, null=True)
     app_id = models.CharField(max_length=255)
+    unused = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False

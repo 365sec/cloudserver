@@ -59,10 +59,10 @@
         <ul id="server_detail_panel" class="custom_nav nav nav-tabs ul-tabs">
             <li class="tab-oblique active" id="security_analysis_link"><a class="tab-col" data-toggle="tab" href="#security_analysis" aria-expanded="true"><i class="iconfont">&#xe662;</i><span> 安全分析</span></a></li>
             <li class="tab-oblique"  id="event_statistics_link"><a class="tab-col" data-toggle="tab" href="#event_statistics"><i class="iconfont">&#xe73c;</i><span> 事件处理</span></a></li>
-            <li class="tab-oblique"  id="application_security_link"><a class="tab-col" data-toggle="tab" href="#application_security"><i class="iconfont">&#xe6ee;</i><span>  安全设置</span></a></li>
+{#            <li class="tab-oblique"  id="application_security_link"><a class="tab-col" data-toggle="tab" href="#application_security"><i class="iconfont">&#xe6ee;</i><span>  安全设置</span></a></li>#}
 {#            <li class="tab-oblique"><a class="tab-col" data-toggle="tab" href="#security_settings"><i class="iconfont">&#xe615;</i><span>  常用开关</span></a></li>#}
             <li class="tab-oblique"  id="server_checking_link"><a class="tab-col" data-toggle="tab" href="#server_checking"><i class="iconfont">&#xe626;</i><span>  基线检查</span></a></li>
-            <li class="tab-oblique"  id="resources_overview_link"><a class="tab-col" data-toggle="tab" href="#resources_overview"><i class="iconfont">&#xe623;</i> <span> 资源监控</span></a></li>
+{#            <li class="tab-oblique"  id="resources_overview_link"><a class="tab-col" data-toggle="tab" href="#resources_overview"><i class="iconfont">&#xe623;</i> <span> 资源监控</span></a></li>#}
             <li class="tab-oblique"  id="server_website_list_link"><a class="tab-col" data-toggle="tab" href="#server_website_list"><i class="iconfont">&#xe6f5;</i><span>  网站详情</span></a></li>
             <li class="tab-oblique"  id="black_white_list_link"><a class="tab-col" data-toggle="tab" href="#black_white_list"><i class="iconfont">&#xe62d;</i> <span> 黑白名单</span></a></li>
             <li class="tab-oblique"  id="config_show_link"><a class="tab-col" data-toggle="tab" href="#config_show"><i class="iconfont">&#xe792;</i> <span> 防御策略</span></a></li>
@@ -180,8 +180,8 @@
                         <!--标题-->
                         <div class="u-css-examineTITLE" >
                             您上次基线检查是<span id="base_line_last_day"></span>天之前,待解决问题
-                            <span id="base_line_countNum" style="color: red ;font-size: 20px;">120</span> 项
-                            <span id="base_line_totalScore" style="color: red ;font-size: 20px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;74</span>分
+                            <span id="base_line_countNum" style="color: red ;font-size: 20px;"></span> 项
+                            <span id="base_line_totalScore" style="color: red ;font-size: 20px;">&nbsp;&nbsp;&nbsp;&nbsp;</span>分
                             <div id="start_server_check" class="btn" onclick="base_check()">一键检查</div>
                         </div>
 
@@ -274,173 +274,173 @@
                                         </div>
 
                                     </div>
-                                    <div class="panel panel-sec">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title" class="u-css-List-titleBOX">
-                                                <a data-toggle="collapse" data-parent="#accordion" href="#dark_chain_a">
-                                                    <i class="iconfont gray">&#xe60c;</i>
-                                                    <div class="u-list-leftbox   u-list-rightTEXT">
-                                                        <p class="u-css-examineP">已忽略（0）
-                                                        </p>
-                                                    </div>
-                                                </a>
-                                            </h4>
-                                        </div>
-                                        <div id = 'dark_chain_a' class="panel-collapse collapse webscran_contant">
-                                            <ul id="dark_chain__li">
-
-                                            </ul>
-                                        </div>
-
-                                    </div>
-                                    <div class="panel panel-sec">
-                                    <div class="panel-heading">
-                                        <h4 class="panel-title" class="u-css-List-titleBOX">
-                                            <a data-toggle="collapse" data-parent="#accordion" href="#webmuma">
-                                                <i class="iconfont gray">&#xe60e;</i>
-                                                <div class="u-list-leftbox   u-list-rightTEXT">
-                                                    <p class="u-css-examineP" >已隔离（0）
-                                                    </p>
-                                                </div>
-                                            </a>
-                                        </h4>
-                                    </div>
-
-                                </div>
-                                    <div class="panel panel-sec">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title" class="u-css-List-titleBOX">
-                                                <a data-toggle="collapse" data-parent="#accordion" href="#webmuma">
-                                                    <i class="iconfont gray">&#xe614;</i>
-                                                    <div class="u-list-leftbox   u-list-rightTEXT">
-                                                        <p class="u-css-examineP" > 信任域（0）
-                                                        </p>
-                                                    </div>
-                                                </a>
-                                            </h4>
-                                        </div>
-
-                                    </div>
-
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel panel-fst">
-                            <div class="panel-heading">
-                                <h4 class="panel-title u-css-List-titleBOX">
-                                    <a data-toggle="collapse" data-parent="#accordion"
-                                       href="#sysopt">
-                                        <div class="u-list-leftbox">
-                                            <i class="iconfont">&#xe6ee;</i>
-                                        </div>
-                                        <div class="u-list-leftbox   u-list-rightTEXT">
-                                            <p class="u-css-examineP" >系统服务优化
-                                                <span class="label label-red ">36</span>
-                                            </p>
-                                            <p class="u-css-examineP" style="font-size: 12px;">通过禁止操作系统中无用的服务，降低资源占用，提升系统的安全性</p>
-                                        </div>
-                                        <button type="button" class="check_box" data-tip="improve_all">一键优化</button>
-                                        <i class="iconfont slide_mark slide_down">&#xe64a;</i>
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="sysopt" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    <div class="panel panel-sec">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title" class="u-css-List-titleBOX">
-                                                <a data-toggle="collapse" data-parent="#accordion">
-                                                    <i class="iconfont blue">&#xe60d;</i>
-                                                    <div class="u-list-leftbox   u-list-rightTEXT">
-                                                        <p class="u-css-examineP" >提供自动分布事件功能服务
-                                                        </p>
-                                                    </div>
-                                                    <button type="button" onclick="check_ignore(this);">忽略</button>
-                                                    <button type="button" onclick="check_repair(this);">修复</button>
-                                                </a>
-                                            </h4>
-                                        </div>
-                                    </div>
-                                    <div class="panel panel-sec">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title" class="u-css-List-titleBOX">
-                                                <a data-toggle="collapse" data-parent="#accordion">
-                                                    <i class="iconfont blue">&#xe60d;</i>
-                                                    <div class="u-list-leftbox   u-list-rightTEXT">
-                                                        <p class="u-css-examineP" >共享文件、打印和登录到网络服务）
-                                                        </p>
-                                                    </div>
-                                                    <button type="button" onclick="check_ignore(this);">忽略</button>
-                                                    <button type="button" onclick="check_repair(this);">修复</button>
-                                                </a>
-                                            </h4>
-                                        </div>
-
-                                    </div>
-                                    <div class="panel panel-sec">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title" class="u-css-List-titleBOX">
-                                                <a data-toggle="collapse" data-parent="#accordion">
-                                                    <i class="iconfont blue">&#xe60d;</i>
-                                                    <div class="u-list-leftbox   u-list-rightTEXT">
-                                                        <p class="u-css-examineP" >远程修改注册表设置服务
-                                                        </p>
-                                                    </div>
-                                                    <button type="button" onclick="check_ignore(this);">忽略</button>
-                                                    <button type="button" onclick="check_repair(this);">修复</button>
-                                                </a>
-                                            </h4>
-                                        </div>
-
-                                    </div>
-                                    <div class="panel panel-sec">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title" class="u-css-List-titleBOX">
-                                                <a data-toggle="collapse" data-parent="#accordion">
-                                                    <i class="iconfont green">&#xe614;</i>
-                                                    <div class="u-list-leftbox   u-list-rightTEXT">
-                                                        <p class="u-css-examineP" >为Internet连接共享和Windows防火墙提供第三方协议插件服务
-                                                        </p>
-                                                    </div>
-                                                </a>
-                                            </h4>
-                                        </div>
-
-                                    </div>
-                                    <div class="panel panel-sec">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title" class="u-css-List-titleBOX">
-                                                <a data-toggle="collapse" data-parent="#accordion">
-                                                    <i class="iconfont green">&#xe614;</i>
-                                                    <div class="u-list-leftbox   u-list-rightTEXT">
-                                                        <p class="u-css-examineP" >管理基于 Windows 的程序的音频设备。
-                                                        </p>
-                                                    </div>
-                                                </a>
-                                            </h4>
-                                        </div>
-
-                                    </div>
-                                    <div class="panel panel-sec">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title" class="u-css-List-titleBOX">
-                                                <a data-toggle="collapse" data-parent="#accordion">
-                                                    <i class="iconfont green">&#xe614;</i>
-                                                    <div class="u-list-leftbox   u-list-rightTEXT">
-                                                        <p class="u-css-examineP" > 理基于组件对象模型 (COM+) 的组件的配置和跟踪服务
-                                                        </p>
-                                                    </div>
-                                                </a>
-                                            </h4>
-                                        </div>
-
-                                    </div>
+{#                                    <div class="panel panel-sec">#}
+{#                                        <div class="panel-heading">#}
+{#                                            <h4 class="panel-title" class="u-css-List-titleBOX">#}
+{#                                                <a data-toggle="collapse" data-parent="#accordion" href="#dark_chain_a">#}
+{#                                                    <i class="iconfont gray">&#xe60c;</i>#}
+{#                                                    <div class="u-list-leftbox   u-list-rightTEXT">#}
+{#                                                        <p class="u-css-examineP">已忽略（0）#}
+{#                                                        </p>#}
+{#                                                    </div>#}
+{#                                                </a>#}
+{#                                            </h4>#}
+{#                                        </div>#}
+{#                                        <div id = 'dark_chain_a' class="panel-collapse collapse webscran_contant">#}
+{#                                            <ul id="dark_chain__li">#}
+{##}
+{#                                            </ul>#}
+{#                                        </div>#}
+{##}
+{#                                    </div>#}
+{#                                    <div class="panel panel-sec">#}
+{#                                    <div class="panel-heading">#}
+{#                                        <h4 class="panel-title" class="u-css-List-titleBOX">#}
+{#                                            <a data-toggle="collapse" data-parent="#accordion" href="#webmuma">#}
+{#                                                <i class="iconfont gray">&#xe60e;</i>#}
+{#                                                <div class="u-list-leftbox   u-list-rightTEXT">#}
+{#                                                    <p class="u-css-examineP" >已隔离（0）#}
+{#                                                    </p>#}
+{#                                                </div>#}
+{#                                            </a>#}
+{#                                        </h4>#}
+{#                                    </div>#}
+{##}
+{#                                </div>#}
+{#                                    <div class="panel panel-sec">#}
+{#                                        <div class="panel-heading">#}
+{#                                            <h4 class="panel-title" class="u-css-List-titleBOX">#}
+{#                                                <a data-toggle="collapse" data-parent="#accordion" href="#webmuma">#}
+{#                                                    <i class="iconfont gray">&#xe614;</i>#}
+{#                                                    <div class="u-list-leftbox   u-list-rightTEXT">#}
+{#                                                        <p class="u-css-examineP" > 信任域（0）#}
+{#                                                        </p>#}
+{#                                                    </div>#}
+{#                                                </a>#}
+{#                                            </h4>#}
+{#                                        </div>#}
+{##}
+{#                                    </div>#}
 
 
                                 </div>
                             </div>
                         </div>
+{#                        <div class="panel panel-fst">#}
+{#                            <div class="panel-heading">#}
+{#                                <h4 class="panel-title u-css-List-titleBOX">#}
+{#                                    <a data-toggle="collapse" data-parent="#accordion"#}
+{#                                       href="#sysopt">#}
+{#                                        <div class="u-list-leftbox">#}
+{#                                            <i class="iconfont">&#xe6ee;</i>#}
+{#                                        </div>#}
+{#                                        <div class="u-list-leftbox   u-list-rightTEXT">#}
+{#                                            <p class="u-css-examineP" >系统服务优化#}
+{#                                                <span class="label label-red ">36</span>#}
+{#                                            </p>#}
+{#                                            <p class="u-css-examineP" style="font-size: 12px;">通过禁止操作系统中无用的服务，降低资源占用，提升系统的安全性</p>#}
+{#                                        </div>#}
+{#                                        <button type="button" class="check_box" data-tip="improve_all">一键优化</button>#}
+{#                                        <i class="iconfont slide_mark slide_down">&#xe64a;</i>#}
+{#                                    </a>#}
+{#                                </h4>#}
+{#                            </div>#}
+{#                            <div id="sysopt" class="panel-collapse collapse">#}
+{#                                <div class="panel-body">#}
+{#                                    <div class="panel panel-sec">#}
+{#                                        <div class="panel-heading">#}
+{#                                            <h4 class="panel-title" class="u-css-List-titleBOX">#}
+{#                                                <a data-toggle="collapse" data-parent="#accordion">#}
+{#                                                    <i class="iconfont blue">&#xe60d;</i>#}
+{#                                                    <div class="u-list-leftbox   u-list-rightTEXT">#}
+{#                                                        <p class="u-css-examineP" >提供自动分布事件功能服务#}
+{#                                                        </p>#}
+{#                                                    </div>#}
+{#                                                    <button type="button" onclick="check_ignore(this);">忽略</button>#}
+{#                                                    <button type="button" onclick="check_repair(this);">修复</button>#}
+{#                                                </a>#}
+{#                                            </h4>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <div class="panel panel-sec">#}
+{#                                        <div class="panel-heading">#}
+{#                                            <h4 class="panel-title" class="u-css-List-titleBOX">#}
+{#                                                <a data-toggle="collapse" data-parent="#accordion">#}
+{#                                                    <i class="iconfont blue">&#xe60d;</i>#}
+{#                                                    <div class="u-list-leftbox   u-list-rightTEXT">#}
+{#                                                        <p class="u-css-examineP" >共享文件、打印和登录到网络服务）#}
+{#                                                        </p>#}
+{#                                                    </div>#}
+{#                                                    <button type="button" onclick="check_ignore(this);">忽略</button>#}
+{#                                                    <button type="button" onclick="check_repair(this);">修复</button>#}
+{#                                                </a>#}
+{#                                            </h4>#}
+{#                                        </div>#}
+{##}
+{#                                    </div>#}
+{#                                    <div class="panel panel-sec">#}
+{#                                        <div class="panel-heading">#}
+{#                                            <h4 class="panel-title" class="u-css-List-titleBOX">#}
+{#                                                <a data-toggle="collapse" data-parent="#accordion">#}
+{#                                                    <i class="iconfont blue">&#xe60d;</i>#}
+{#                                                    <div class="u-list-leftbox   u-list-rightTEXT">#}
+{#                                                        <p class="u-css-examineP" >远程修改注册表设置服务#}
+{#                                                        </p>#}
+{#                                                    </div>#}
+{#                                                    <button type="button" onclick="check_ignore(this);">忽略</button>#}
+{#                                                    <button type="button" onclick="check_repair(this);">修复</button>#}
+{#                                                </a>#}
+{#                                            </h4>#}
+{#                                        </div>#}
+{##}
+{#                                    </div>#}
+{#                                    <div class="panel panel-sec">#}
+{#                                        <div class="panel-heading">#}
+{#                                            <h4 class="panel-title" class="u-css-List-titleBOX">#}
+{#                                                <a data-toggle="collapse" data-parent="#accordion">#}
+{#                                                    <i class="iconfont green">&#xe614;</i>#}
+{#                                                    <div class="u-list-leftbox   u-list-rightTEXT">#}
+{#                                                        <p class="u-css-examineP" >为Internet连接共享和Windows防火墙提供第三方协议插件服务#}
+{#                                                        </p>#}
+{#                                                    </div>#}
+{#                                                </a>#}
+{#                                            </h4>#}
+{#                                        </div>#}
+{##}
+{#                                    </div>#}
+{#                                    <div class="panel panel-sec">#}
+{#                                        <div class="panel-heading">#}
+{#                                            <h4 class="panel-title" class="u-css-List-titleBOX">#}
+{#                                                <a data-toggle="collapse" data-parent="#accordion">#}
+{#                                                    <i class="iconfont green">&#xe614;</i>#}
+{#                                                    <div class="u-list-leftbox   u-list-rightTEXT">#}
+{#                                                        <p class="u-css-examineP" >管理基于 Windows 的程序的音频设备。#}
+{#                                                        </p>#}
+{#                                                    </div>#}
+{#                                                </a>#}
+{#                                            </h4>#}
+{#                                        </div>#}
+{##}
+{#                                    </div>#}
+{#                                    <div class="panel panel-sec">#}
+{#                                        <div class="panel-heading">#}
+{#                                            <h4 class="panel-title" class="u-css-List-titleBOX">#}
+{#                                                <a data-toggle="collapse" data-parent="#accordion">#}
+{#                                                    <i class="iconfont green">&#xe614;</i>#}
+{#                                                    <div class="u-list-leftbox   u-list-rightTEXT">#}
+{#                                                        <p class="u-css-examineP" > 理基于组件对象模型 (COM+) 的组件的配置和跟踪服务#}
+{#                                                        </p>#}
+{#                                                    </div>#}
+{#                                                </a>#}
+{#                                            </h4>#}
+{#                                        </div>#}
+{##}
+{#                                    </div>#}
+{##}
+{##}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
                         <div class="panel panel-fst">
                             <div class="panel-heading">
                                 <h4 class="panel-title u-css-List-titleBOX">
@@ -637,188 +637,188 @@
                                   </div>
                               </div>
                           </div>
-                        <div class="panel panel-fst">
-                              <div class="panel-heading">
-                                  <h4 class="panel-title u-css-List-titleBOX">
-                                      <a data-toggle="collapse" data-parent="#accordion"
-                                         href="#jhrw">
-                                          <div class="u-list-leftbox">
-                                              <i class="iconfont">&#xe6ab;</i>
-                                          </div>
-                                          <div class="u-list-leftbox   u-list-rightTEXT">
-                                              <p class="u-css-examineP" >计划任务
-                                                  <span class="label label-red ">69</span>
-                                              </p>
-                                              <p class="u-css-examineP" style="font-size: 12px;">通过合理的优化操作系统的计划任务，减少非必要的系统资源使用，提升操作系统的性能</p>
-                                          </div>
-                                          <button type="button" onclick="javascript:void (0)">手动处置</button>
-                                          <i class="iconfont slide_mark slide_down">&#xe64a;</i>
-                                      </a>
-                                  </h4>
-                              </div>
-                              <div id="jhrw" class="panel-collapse collapse">
-                                  <div class="panel-body">
-                                      <div class="panel panel-sec">
-                                          <div class="panel-heading">
-                                              <h4 class="panel-title" class="u-css-List-titleBOX">
-                                                  <a data-toggle="collapse" data-parent="#accordion">
-                                                      <i class="iconfont oriange">&#xe60f;</i>
-                                                      <div class="u-list-leftbox   u-list-rightTEXT">
-                                                          <p class="u-css-examineP" >Optimize Start Menu Cache Files-S-1-5-21-2742133701-2744016258-1186818610-500 这一空闲任务将重新组织用于显示“开始”菜单的缓存文件。只有在这些缓存文件的排列顺序不理想时，才会启用这个任务。
-                                                          </p>
-                                                      </div>
-                                                      <button type="button" onclick="check_del(this);">删除</button>
-                                                  </a>
-                                              </h4>
-                                          </div>
-                                      </div>
-                                      <div class="panel panel-sec">
-                                          <div class="panel-heading">
-                                              <h4 class="panel-title" class="u-css-List-titleBOX">
-                                                  <a data-toggle="collapse" data-parent="#accordion">
-                                                      <i class="iconfont oriange">&#xe60f;</i>
-                                                      <div class="u-list-leftbox   u-list-rightTEXT">
-                                                          <p class="u-css-examineP" >Optimize Start Menu Cache Files-S-1-5-21-2742133701-2744016258-1186818610-500 这一空闲任务将重新组织用于显示“开始”菜单的缓存文件。只有在这些缓存文件的排列顺序不理想时，才会启用这个任务。
-                                                          </p>
-                                                      </div>
-                                                      <button type="button" onclick="check_del(this);">删除</button>
-                                                  </a>
-                                              </h4>
-                                          </div>
-                                      </div>
-                                      <div class="panel panel-sec">
-                                          <div class="panel-heading">
-                                              <h4 class="panel-title" class="u-css-List-titleBOX">
-                                                  <a data-toggle="collapse" data-parent="#accordion">
-                                                      <i class="iconfont oriange">&#xe60f;</i>
-                                                      <div class="u-list-leftbox   u-list-rightTEXT">
-                                                          <p class="u-css-examineP" >Optimize Start Menu Cache Files-S-1-5-21-2742133701-2744016258-1186818610-500 这一空闲任务将重新组织用于显示“开始”菜单的缓存文件。只有在这些缓存文件的排列顺序不理想时，才会启用这个任务。
-                                                          </p>
-                                                      </div>
-                                                      <button type="button" onclick="check_del(this);">删除</button>
-                                                  </a>
-                                              </h4>
-                                          </div>
-                                      </div>
-
-                                  </div>
-                              </div>
-                          </div>
-                        <div class="panel panel-fst">
-                              <div class="panel-heading">
-                                  <h4 class="panel-title u-css-List-titleBOX">
-                                      <a data-toggle="collapse" data-parent="#accordion"
-                                         href="#bdsm">
-                                          <div class="u-list-leftbox">
-                                              <i class="iconfont">&#xe673;</i>
-                                          </div>
-                                          <div class="u-list-leftbox   u-list-rightTEXT">
-                                              <p class="u-css-examineP" >补丁扫描
-                                                  <span class="label label-red ">69</span>
-                                              </p>
-                                              <p class="u-css-examineP" style="font-size: 12px;">漏洞是指操作系统或软件中存在的缺陷，安装补丁可以有效防止他人利用漏洞入侵您的服务器</p>
-                                          </div>
-                                          <button type="button" onclick="javascript:void(0)">客户端修复</button>
-                                          <i class="iconfont slide_mark slide_down">&#xe64a;</i>
-                                      </a>
-                                  </h4>
-                              </div>
-                              <div id="bdsm" class="panel-collapse collapse">
-                                  <div class="panel-body">
-                                      <div class="panel panel-sec">
-                                          <div class="panel-heading">
-                                              <h4 class="panel-title" class="u-css-List-titleBOX">
-                                                  <a data-toggle="collapse" data-parent="#accordion">
-                                                      <i class="iconfont blue">&#xe60d;</i>
-                                                      <div class="u-list-leftbox   u-list-rightTEXT">
-                                                          <p class="u-css-examineP" >在HTTP.sys中的漏洞可能允许远程执行代码 MS15-034
-                                                          </p>
-                                                      </div>
-                                                      <button type="button" disabled>修复时间较长，建议到客户端修复</button>
-                                                  </a>
-                                              </h4>
-                                          </div>
-                                      </div>
-                                      <div class="panel panel-sec">
-                                          <div class="panel-heading">
-                                              <h4 class="panel-title" class="u-css-List-titleBOX">
-                                                  <a data-toggle="collapse" data-parent="#accordion">
-                                                      <i class="iconfont blue">&#xe60d;</i>
-                                                      <div class="u-list-leftbox   u-list-rightTEXT">
-                                                          <p class="u-css-examineP" >锁定和解锁任务栏中的窗口从一个 Win32 应用程序后出现问题
-                                                          </p>
-                                                      </div>
-                                                      <button type="button" disabled>修复时间较长，建议到客户端修复</button>
-                                                  </a>
-                                              </h4>
-                                          </div>
-
-                                      </div>
-                                      <div class="panel panel-sec">
-                                          <div class="panel-heading">
-                                              <h4 class="panel-title" class="u-css-List-titleBOX">
-                                                  <a data-toggle="collapse" data-parent="#accordion">
-                                                      <i class="iconfont blue">&#xe60d;</i>
-                                                      <div class="u-list-leftbox   u-list-rightTEXT">
-                                                          <p class="u-css-examineP" >黑屏后快速地在 Windows 8.1 锁定屏幕上的向上和向下刷漏洞更新
-                                                          </p>
-                                                      </div>
-                                                      <button type="button" disabled>修复时间较长，建议到客户端修复</button>
-                                                  </a>
-                                              </h4>
-                                          </div>
-
-                                      </div>
-                                      <div class="panel panel-sec">
-                                          <div class="panel-heading">
-                                              <h4 class="panel-title" class="u-css-List-titleBOX">
-                                                  <a data-toggle="collapse" data-parent="#accordion">
-                                                      <i class="iconfont green">&#xe60c;</i>
-                                                      <div class="u-list-leftbox   u-list-rightTEXT">
-                                                          <p class="u-css-examineP" >Microsoft 脚本引擎、Internet Explorer、Microsoft 图形组件、Windows Server、Windows 内核、Windows 数据中心网络以及 Windows 应用平台和框架的安全更新
-                                                          </p>
-                                                      </div>
-                                                      <button type="button" disabled>修复时间较长，建议到客户端修复</button>
-                                                  </a>
-                                              </h4>
-                                          </div>
-
-                                      </div>
-                                      <div class="panel panel-sec">
-                                          <div class="panel-heading">
-                                              <h4 class="panel-title" class="u-css-List-titleBOX">
-                                                  <a data-toggle="collapse" data-parent="#accordion">
-                                                      <i class="iconfont green">&#xe60c;</i>
-                                                      <div class="u-list-leftbox   u-list-rightTEXT">
-                                                          <p class="u-css-examineP" >管理基于 Windows 的程序的音频设备。
-                                                          </p>
-                                                      </div>
-                                                      <button type="button" disabled>修复时间较长，建议到客户端修复</button>
-                                                  </a>
-                                              </h4>
-                                          </div>
-
-                                      </div>
-                                      <div class="panel panel-sec">
-                                          <div class="panel-heading">
-                                              <h4 class="panel-title" class="u-css-List-titleBOX">
-                                                  <a data-toggle="collapse" data-parent="#accordion">
-                                                      <i class="iconfont green">&#xe60c;</i>
-                                                      <div class="u-list-leftbox   u-list-rightTEXT">
-                                                          <p class="u-css-examineP" > 2018 年 1 月 9 日：Adobe Flash Player 的安全更新
-                                                          </p>
-                                                      </div>
-                                                      <button type="button" disabled>修复时间较长，建议到客户端修复</button>
-                                                  </a>
-                                              </h4>
-                                          </div>
-
-                                      </div>
-
-
-                                  </div>
-                              </div>
-                          </div>
+{#                        <div class="panel panel-fst">#}
+{#                              <div class="panel-heading">#}
+{#                                  <h4 class="panel-title u-css-List-titleBOX">#}
+{#                                      <a data-toggle="collapse" data-parent="#accordion"#}
+{#                                         href="#jhrw">#}
+{#                                          <div class="u-list-leftbox">#}
+{#                                              <i class="iconfont">&#xe6ab;</i>#}
+{#                                          </div>#}
+{#                                          <div class="u-list-leftbox   u-list-rightTEXT">#}
+{#                                              <p class="u-css-examineP" >计划任务#}
+{#                                                  <span class="label label-red ">69</span>#}
+{#                                              </p>#}
+{#                                              <p class="u-css-examineP" style="font-size: 12px;">通过合理的优化操作系统的计划任务，减少非必要的系统资源使用，提升操作系统的性能</p>#}
+{#                                          </div>#}
+{#                                          <button type="button" onclick="javascript:void (0)">手动处置</button>#}
+{#                                          <i class="iconfont slide_mark slide_down">&#xe64a;</i>#}
+{#                                      </a>#}
+{#                                  </h4>#}
+{#                              </div>#}
+{#                              <div id="jhrw" class="panel-collapse collapse">#}
+{#                                  <div class="panel-body">#}
+{#                                      <div class="panel panel-sec">#}
+{#                                          <div class="panel-heading">#}
+{#                                              <h4 class="panel-title" class="u-css-List-titleBOX">#}
+{#                                                  <a data-toggle="collapse" data-parent="#accordion">#}
+{#                                                      <i class="iconfont oriange">&#xe60f;</i>#}
+{#                                                      <div class="u-list-leftbox   u-list-rightTEXT">#}
+{#                                                          <p class="u-css-examineP" >Optimize Start Menu Cache Files-S-1-5-21-2742133701-2744016258-1186818610-500 这一空闲任务将重新组织用于显示“开始”菜单的缓存文件。只有在这些缓存文件的排列顺序不理想时，才会启用这个任务。#}
+{#                                                          </p>#}
+{#                                                      </div>#}
+{#                                                      <button type="button" onclick="check_del(this);">删除</button>#}
+{#                                                  </a>#}
+{#                                              </h4>#}
+{#                                          </div>#}
+{#                                      </div>#}
+{#                                      <div class="panel panel-sec">#}
+{#                                          <div class="panel-heading">#}
+{#                                              <h4 class="panel-title" class="u-css-List-titleBOX">#}
+{#                                                  <a data-toggle="collapse" data-parent="#accordion">#}
+{#                                                      <i class="iconfont oriange">&#xe60f;</i>#}
+{#                                                      <div class="u-list-leftbox   u-list-rightTEXT">#}
+{#                                                          <p class="u-css-examineP" >Optimize Start Menu Cache Files-S-1-5-21-2742133701-2744016258-1186818610-500 这一空闲任务将重新组织用于显示“开始”菜单的缓存文件。只有在这些缓存文件的排列顺序不理想时，才会启用这个任务。#}
+{#                                                          </p>#}
+{#                                                      </div>#}
+{#                                                      <button type="button" onclick="check_del(this);">删除</button>#}
+{#                                                  </a>#}
+{#                                              </h4>#}
+{#                                          </div>#}
+{#                                      </div>#}
+{#                                      <div class="panel panel-sec">#}
+{#                                          <div class="panel-heading">#}
+{#                                              <h4 class="panel-title" class="u-css-List-titleBOX">#}
+{#                                                  <a data-toggle="collapse" data-parent="#accordion">#}
+{#                                                      <i class="iconfont oriange">&#xe60f;</i>#}
+{#                                                      <div class="u-list-leftbox   u-list-rightTEXT">#}
+{#                                                          <p class="u-css-examineP" >Optimize Start Menu Cache Files-S-1-5-21-2742133701-2744016258-1186818610-500 这一空闲任务将重新组织用于显示“开始”菜单的缓存文件。只有在这些缓存文件的排列顺序不理想时，才会启用这个任务。#}
+{#                                                          </p>#}
+{#                                                      </div>#}
+{#                                                      <button type="button" onclick="check_del(this);">删除</button>#}
+{#                                                  </a>#}
+{#                                              </h4>#}
+{#                                          </div>#}
+{#                                      </div>#}
+{##}
+{#                                  </div>#}
+{#                              </div>#}
+{#                          </div>#}
+{#                        <div class="panel panel-fst">#}
+{#                              <div class="panel-heading">#}
+{#                                  <h4 class="panel-title u-css-List-titleBOX">#}
+{#                                      <a data-toggle="collapse" data-parent="#accordion"#}
+{#                                         href="#bdsm">#}
+{#                                          <div class="u-list-leftbox">#}
+{#                                              <i class="iconfont">&#xe673;</i>#}
+{#                                          </div>#}
+{#                                          <div class="u-list-leftbox   u-list-rightTEXT">#}
+{#                                              <p class="u-css-examineP" >补丁扫描#}
+{#                                                  <span class="label label-red ">69</span>#}
+{#                                              </p>#}
+{#                                              <p class="u-css-examineP" style="font-size: 12px;">漏洞是指操作系统或软件中存在的缺陷，安装补丁可以有效防止他人利用漏洞入侵您的服务器</p>#}
+{#                                          </div>#}
+{#                                          <button type="button" onclick="javascript:void(0)">客户端修复</button>#}
+{#                                          <i class="iconfont slide_mark slide_down">&#xe64a;</i>#}
+{#                                      </a>#}
+{#                                  </h4>#}
+{#                              </div>#}
+{#                              <div id="bdsm" class="panel-collapse collapse">#}
+{#                                  <div class="panel-body">#}
+{#                                      <div class="panel panel-sec">#}
+{#                                          <div class="panel-heading">#}
+{#                                              <h4 class="panel-title" class="u-css-List-titleBOX">#}
+{#                                                  <a data-toggle="collapse" data-parent="#accordion">#}
+{#                                                      <i class="iconfont blue">&#xe60d;</i>#}
+{#                                                      <div class="u-list-leftbox   u-list-rightTEXT">#}
+{#                                                          <p class="u-css-examineP" >在HTTP.sys中的漏洞可能允许远程执行代码 MS15-034#}
+{#                                                          </p>#}
+{#                                                      </div>#}
+{#                                                      <button type="button" disabled>修复时间较长，建议到客户端修复</button>#}
+{#                                                  </a>#}
+{#                                              </h4>#}
+{#                                          </div>#}
+{#                                      </div>#}
+{#                                      <div class="panel panel-sec">#}
+{#                                          <div class="panel-heading">#}
+{#                                              <h4 class="panel-title" class="u-css-List-titleBOX">#}
+{#                                                  <a data-toggle="collapse" data-parent="#accordion">#}
+{#                                                      <i class="iconfont blue">&#xe60d;</i>#}
+{#                                                      <div class="u-list-leftbox   u-list-rightTEXT">#}
+{#                                                          <p class="u-css-examineP" >锁定和解锁任务栏中的窗口从一个 Win32 应用程序后出现问题#}
+{#                                                          </p>#}
+{#                                                      </div>#}
+{#                                                      <button type="button" disabled>修复时间较长，建议到客户端修复</button>#}
+{#                                                  </a>#}
+{#                                              </h4>#}
+{#                                          </div>#}
+{##}
+{#                                      </div>#}
+{#                                      <div class="panel panel-sec">#}
+{#                                          <div class="panel-heading">#}
+{#                                              <h4 class="panel-title" class="u-css-List-titleBOX">#}
+{#                                                  <a data-toggle="collapse" data-parent="#accordion">#}
+{#                                                      <i class="iconfont blue">&#xe60d;</i>#}
+{#                                                      <div class="u-list-leftbox   u-list-rightTEXT">#}
+{#                                                          <p class="u-css-examineP" >黑屏后快速地在 Windows 8.1 锁定屏幕上的向上和向下刷漏洞更新#}
+{#                                                          </p>#}
+{#                                                      </div>#}
+{#                                                      <button type="button" disabled>修复时间较长，建议到客户端修复</button>#}
+{#                                                  </a>#}
+{#                                              </h4>#}
+{#                                          </div>#}
+{##}
+{#                                      </div>#}
+{#                                      <div class="panel panel-sec">#}
+{#                                          <div class="panel-heading">#}
+{#                                              <h4 class="panel-title" class="u-css-List-titleBOX">#}
+{#                                                  <a data-toggle="collapse" data-parent="#accordion">#}
+{#                                                      <i class="iconfont green">&#xe60c;</i>#}
+{#                                                      <div class="u-list-leftbox   u-list-rightTEXT">#}
+{#                                                          <p class="u-css-examineP" >Microsoft 脚本引擎、Internet Explorer、Microsoft 图形组件、Windows Server、Windows 内核、Windows 数据中心网络以及 Windows 应用平台和框架的安全更新#}
+{#                                                          </p>#}
+{#                                                      </div>#}
+{#                                                      <button type="button" disabled>修复时间较长，建议到客户端修复</button>#}
+{#                                                  </a>#}
+{#                                              </h4>#}
+{#                                          </div>#}
+{##}
+{#                                      </div>#}
+{#                                      <div class="panel panel-sec">#}
+{#                                          <div class="panel-heading">#}
+{#                                              <h4 class="panel-title" class="u-css-List-titleBOX">#}
+{#                                                  <a data-toggle="collapse" data-parent="#accordion">#}
+{#                                                      <i class="iconfont green">&#xe60c;</i>#}
+{#                                                      <div class="u-list-leftbox   u-list-rightTEXT">#}
+{#                                                          <p class="u-css-examineP" >管理基于 Windows 的程序的音频设备。#}
+{#                                                          </p>#}
+{#                                                      </div>#}
+{#                                                      <button type="button" disabled>修复时间较长，建议到客户端修复</button>#}
+{#                                                  </a>#}
+{#                                              </h4>#}
+{#                                          </div>#}
+{##}
+{#                                      </div>#}
+{#                                      <div class="panel panel-sec">#}
+{#                                          <div class="panel-heading">#}
+{#                                              <h4 class="panel-title" class="u-css-List-titleBOX">#}
+{#                                                  <a data-toggle="collapse" data-parent="#accordion">#}
+{#                                                      <i class="iconfont green">&#xe60c;</i>#}
+{#                                                      <div class="u-list-leftbox   u-list-rightTEXT">#}
+{#                                                          <p class="u-css-examineP" > 2018 年 1 月 9 日：Adobe Flash Player 的安全更新#}
+{#                                                          </p>#}
+{#                                                      </div>#}
+{#                                                      <button type="button" disabled>修复时间较长，建议到客户端修复</button>#}
+{#                                                  </a>#}
+{#                                              </h4>#}
+{#                                          </div>#}
+{##}
+{#                                      </div>#}
+{##}
+{##}
+{#                                  </div>#}
+{#                              </div>#}
+{#                          </div>#}
                     </div>
                 </div>
                 <div id="resources_overview" class="tab-pane fade">

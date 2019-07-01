@@ -69,7 +69,7 @@ def add_host(request):
             plugin.httpProtectConfig = readConfig("data/rasp_config/httpProtectConfig.conf")
             plugin.plugin_template = readConfig("data/rasp_config/plugin_template.conf")
             plugin.save()
-            refresh_agent_id()
+            # refresh_agent_id()
     except Exception as e:
         data = {
             "code": 1,
@@ -196,8 +196,8 @@ def web_agent_query(request):
         username = request.session['username']
         result = TWebAgents.objects.filter(owner=username).order_by("-online")
     # 每页显示多少个数据
-    for x in result:
-        print (x)
+    # for x in result:
+    #     print (x)
     page_size = 15
     # 最大分页数
     max_size = (result.count() + page_size - 1) / page_size
@@ -209,7 +209,7 @@ def web_agent_query(request):
     for x in result[(page - 1) * page_size:(page) * page_size]:
         y = model_to_dict(x)
         hostname = THostAgents.objects.all().filter(agent_id=y['agent_id']).first()
-        print (hostname)
+        # print (hostname)
         if hostname.internal_ip:
             y['register_ip'] = hostname.internal_ip
         else:
@@ -224,7 +224,7 @@ def web_agent_query(request):
             if not y[k]:
                 y[k] = ''
         y = json.dumps(y)
-        print (y)
+        # print (y)
         TAgents_list.append(y)
     data = {
         "agents": TAgents_list,
@@ -268,6 +268,12 @@ def attack_event_query(request):
     attack_type = request.POST.get("attack_type")
     event_dic = {}
     event_div_arr = []
+
+    not_allow_search=TEventKnowledge.objects.filter(~Q(allow_search=1)).values("event_id")
+    not_allow_search_list=[]
+    for x in not_allow_search:
+        not_allow_search_list.append(x['event_id'])
+
     for x in TEventKnowledge.objects.filter(allow_search=1).order_by("event_id"):
         event_div_arr.append(x.event_name)
         event_dic[x.event_name] = x.event_id
@@ -310,16 +316,21 @@ def attack_event_query(request):
     #     result = TAttackEvent.objects.filter(msg_filter, **filter_condition).order_by('-event_time')
     # else:
     #     result = TAttackEvent.objects.filter(**filter_condition).order_by('-event_time')
+    # 过滤不被允许查询的结果
+    for x in not_allow_search_list:
+        tlog_obj=tlog_obj.filter(~Q(event_id=x))
+        tfile_obj=tfile_obj.filter(~Q(event_id=x))
+        tweb_obj=tweb_obj.filter(~Q(event_id=x))
 
     # 每张表需要查询的数据
     tweb = tweb_obj.values_list("agent_id", "event_time", "event_name", "plugin_message", "attack_source", "server_ip",
-                                "event_issue_id", "event_id","event_category","threat_level","status")
+                                "event_issue_id", "event_id","event_category","threat_level","status",'intercept_state')
     tfile = tfile_obj.values_list("agent_id", "event_time", "event_name", "full_log", "unused", "unused",
-                                  "event_issue_id", "event_id","event_category","unused","status")
+                                  "event_issue_id", "event_id","event_category","unused","status","unused")
     tlog = tlog_obj.values_list("agent_id", "event_time", "event_name", "comment", "srcip", "dstip", "event_issue_id",
-                                "event_id","event_category","event_id","status")
+                                "event_id","event_category","event_id","status","unused")
     # 三张表联合查询
-    qchain = tweb.union(tlog, tfile)
+    qchain = tweb.union(tlog, tfile,all=True)
     result = qchain.order_by("-event_time")
 
     max_lenth = result.count()
@@ -348,7 +359,7 @@ def attack_event_query(request):
         y['attack_source'] = x[4]
         y['server_ip'] = x[5]
         y['event_issue_id'] = x[6]
-        y['hostname'] = THostAgents.objects.all().filter(agent_id=x[0]).values_list("host_name").first()
+        y['hostname'] = THostAgents.objects.all().filter(agent_id=x[0]).values_list("host_name").first()[0]
         if x[8]=="web_event":
             y['threat_level']=int(x[9])
         elif x[8]=="log_analysisd":
@@ -356,6 +367,9 @@ def attack_event_query(request):
         elif x[8]=="file_integrity":
             y['threat_level']=3
         y['status']=x[10]
+        if not x[11]:
+            x[11]="log"
+        y['intercept_state']=INTERCEPT_STATUS[x[11]]
         attack_list.append(y)
 
     data = {
@@ -425,17 +439,17 @@ def query_detail_data(request):
         y['plugin_message'] = y['plugin_message'].replace('"', '&quot;')
 
         # 查询城市
-        y['city'] = ''
+        y['city'] = ip_to_address(y['attack_source'])
 
-        str_ip = y['attack_source'].split(".")[0]
-        if str_ip == "172" or str_ip == "192" or str_ip == "10":
-            y['city'] = "局域网"
-        elif str_ip == "127" or str_ip == "" or str_ip == "::1":
-            y['city'] = "本机"
-        try:
-            y['city'] = ip_to_address(y['attack_source'])
-        except Exception as e:
-            pass
+        # str_ip = y['attack_source'].split(".")[0]
+        # if str_ip == "172" or str_ip == "192" or str_ip == "10":
+        #     y['city'] = "局域网"
+        # elif str_ip == "127" or str_ip == "" or str_ip == "::1":
+        #     y['city'] = "本机"
+        # try:
+        #     y['city'] = ip_to_address(y['attack_source'])
+        # except Exception as e:
+        #     pass
 
     # y['event_time']=y['event_time'].strftime("%Y-%m-%d %H:%M:%S")
     data = json.dumps(y)
@@ -527,10 +541,6 @@ def query_web_event_by_app_id(request):
             y['attack_type'] = TEventKnowledge.objects.get(event_id=y['event_id']).event_name
         except Exception as e:
             y['attack_type'] = ''
-
-        # for k, v in y.items():
-        #     if not y[k]:
-        #         y[k] = ''
         event_list.append(y)
 
     data = {
@@ -546,10 +556,9 @@ def query_web_event_by_app_id(request):
 
 def change_web_event_remark(request):
 
-    id = request.POST.get("id")
-    remark=request.POST.get("remark")
-
-    web_obj=TWebAgents.objects.all().filter(event_issue_id=id).first()
+    id = request.POST.get("app_id")
+    remark=request.POST.get("new_remark")
+    web_obj=TWebAgents.objects.all().filter(app_id=id).first()
     web_obj.remark=remark
     web_obj.save()
     data = {
@@ -613,7 +622,10 @@ def attack_query_source(request):
     intercept_state = None
 
     result = TAttackEvent.objects.all().values_list('event_time', 'attack_source', 'plugin_message',
-                                                    'intercept_state').filter(server_ip=ip, attack_source=attack_source)
+                                                    'intercept_state','unused','event_name').filter(server_ip=ip, attack_source=attack_source)
+    log_obj=TLogAnalysisd.objects.all().values_list('event_time','srcip','event_name','unused','host_name','system_user').filter(dstip=ip, srcip=attack_source)
+    result=result.union(log_obj,all=True).order_by('event_time')
+    # result=log_obj
     num = result.count()
     last_next = last + 10
     if last + 10 > num:
@@ -637,7 +649,12 @@ def attack_query_source(request):
             except Exception as e:
                 print(e)
         list_x.append(x[1])
-        list_x.append(x[2].replace('<', '&lt').replace('>', '&gt'))
+        x2=x[2]
+        if x[4]:
+            x2=[x[4],x[5],x[2]]
+            list_x.append(x2)
+        else:
+            list_x.append(x2.replace('<', '&lt').replace('>', '&gt'))
         list_x.append(INTERCEPT_STATUS.get(x[3], ''))
         list_x_all.append(list_x)
 
@@ -699,7 +716,7 @@ def server_attack_trend(request):
         tlog_obj1 = tlog_obj.filter(event_time__range=(dt_e, dt_s)).extra(
             select={"event_time": "DATE_FORMAT( event_time, '%%Y-%%m-%%d %%H')"}) \
             .values('event_time').annotate(num=Count('event_time')).values('event_time', 'num').order_by('event_time')
-        union_obj = tweb_obj1.union(tfile_obj1, tlog_obj1)
+        union_obj = tweb_obj1.union(tfile_obj1, tlog_obj1,all=True)
 
         if d == 0:
             for x in union_obj:
@@ -720,7 +737,7 @@ def server_attack_trend(request):
     tweb_obj1=tweb_obj.values_list("event_name").annotate(number=Count('event_name'))
     tfile_obj1=tfile_obj.values_list("event_name").annotate(number=Count('event_name'))
     tlog_obj1=tlog_obj.values_list("event_name").annotate(number=Count('event_name'))
-    union_obj2=tweb_obj1.union(tfile_obj1,tlog_obj1).order_by("-number")
+    union_obj2=tweb_obj1.union(tfile_obj1,tlog_obj1,all=True).order_by("-number")
     # 攻击类型类型及数目
     # union_obj3=union_obj2.values_list("event_name").annotate(number=Count('event_name'))
     type_num=list(union_obj2)
@@ -729,7 +746,7 @@ def server_attack_trend(request):
     tweb_obj1=tweb_obj.values_list("target").annotate(number=Count('target'))
     # tfile_obj1=tfile_obj.values_list("unused").annotate(number=Count('event_name'))
     tlog_obj1=tlog_obj.values_list("dstip").annotate(number=Count('dstip'))
-    union_obj2=tweb_obj1.union(tlog_obj1).order_by("-number")
+    union_obj2=tweb_obj1.union(tlog_obj1,all=True).order_by("-number")
     web_num=list(union_obj2)
     # 攻击严重等级饼状图
     tweb_obj1=tweb_obj.values_list("threat_level").annotate(number=Count('threat_level'))
@@ -1274,33 +1291,43 @@ def view_report(request):
 def baseline(request):
 
     id=request.POST.get("agent_id")
-    result = TBaselineCheck.objects.all().get(agent_id=id)
+    result = TBaselineCheck.objects.all().filter(agent_id=id).first()
+    online=THostAgents.objects.get(agent_id=id).online
+    print ("baseline ",online)
+    data={}
+    if  result:
+        # print (model_to_dict(result))
 
-    # print (model_to_dict(result))
-    data = model_to_dict(result)
-    data['last_day']=datetime.now()-data['last_check_time']
-    data['last_day']=data['last_day'].days
-    data['last_check_time']=data['last_check_time'].strftime("%Y-%m-%d %H:%M:%S")
-    data['result']=json.loads( data['result'])
-
+        data = model_to_dict(result)
+        data['last_day']=datetime.now()-data['last_check_time']
+        data['last_day']=data['last_day'].days
+        data['last_check_time']=data['last_check_time'].strftime("%Y-%m-%d %H:%M:%S")
+        data['result']=json.loads( data['result'])
+    data['online']=online
     return HttpResponse(json.dumps(data), content_type='application/json')
 
 def baseline_check(request):
     id=request.POST.get("agent_id")
-    result = TBaselineCheck.objects.all().get(agent_id=id)
-    dt=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    if (result.check_status==0 or result.check_status==3):
-        result.check_status=1
-        result.save()
-    data = {"success":"ok"}
+    data={}
+    result = TBaselineCheck.objects.all().filter(agent_id=id).first()
+    if result:
+        dt=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        online=THostAgents.objects.get(agent_id=id).online
+
+        if  online==1:
+            if (result.check_status==0 or result.check_status==3):
+                result.check_status=1
+                result.save()
+            data = {"success":"ok"}
+        if online==0:
+            data = {"success":"error"}
+        print (online)
     return HttpResponse(json.dumps(data), content_type='application/json')
 
 def baseline_status(request):
     id=request.POST.get("agent_id")
     result = TBaselineCheck.objects.all().get(agent_id=id)
     data = {}
-    if result.check_status==2:
-        data['success']=0
-    else:
-        data['success']=1
+    data['success']=result.check_status
+
     return HttpResponse(json.dumps(data), content_type='application/json')

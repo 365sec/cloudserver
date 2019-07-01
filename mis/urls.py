@@ -13,7 +13,7 @@ urlpatterns = [
     url(r'^web_agent/query/$', views.web_agent_query),    #查询网络agent
     url(r'^attack/query/$', views.attack_event_query),   #过滤
     url(r'^attack/query_detail_data/$', views.query_detail_data),#根据ID查询相应表的单条数据
-    url(r'^attack/query_source/$', views.attack_query_source),
+    url(r'^attack/query_source/$', views.attack_query_source),#追踪溯源 查询
     url(r'^attack/server_trend/$', views.server_attack_trend),#服务安全事件
     url(r'^attack/web_trend/$', views.web_attack_trend),      #网站安全事件
     url(r'^attack/web_event/$', views.query_web_event_by_app_id),# 查询某个服务上面的所有网站
@@ -21,7 +21,7 @@ urlpatterns = [
     url(r'^attack/web_event_agent/$', views.query_web_agent_by_agent_id),# 查询某个agent上面所有的网站agent
     url(r'^attack/change_status/$', views.change_status),  #改变事件是否状态 是否呗处理
     url(r'^query_threat_level$', views.query_threat_level),
-    url(r'^query_attack_source$', views.query_attack_source),
+    url(r'^query_attack_source$', views.query_attack_source),#
     url(r'^query_attack_times$', views.query_attack_times),
     url(r'^query_attack_type$', views.query_attack_type),
     url(r'^query_attack_warn', views.query_attack_warn),

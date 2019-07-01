@@ -31,7 +31,7 @@ function server_click(page) {
                     div_container.text("");
                     let html = '<h1 class="page-title" ><i class="iconfont">&#xe73b;</i>服务器管理</h1>';
                     html += '<div class="card">';
-                    html += '<div class = "btngroup"><div  class="btn" onclick="javascript:void(0)" >添加主机</div></div>'
+                    html += '<div class = "btngroup"><div  class="btn" onclick="javascript:void(0)" >添加主机</div></div>';
                     html += '<div class="card-body">';
                     html += '<table class="table table-bordered">';
                     html += '<thead>';
@@ -428,23 +428,6 @@ function application_security(){
     });
 }
 
-// // 常用开关
-// function toogle(th){
-//     var ele = $(th).find(".btn_fath");
-//     if(ele.attr("data-state") == "on"){
-//         ele.animate({left: "-57px"}, 300, function(){
-//             ele.attr("data-state", "off");
-//             //关闭执行
-//         });
-//         $(th).removeClass("on").addClass("off");
-//     }else if(ele.attr("data-state") == "off"){
-//         ele.animate({left: '-3px'}, 300, function(){
-//             $(this).attr("data-state", "on");
-//             //开启执行
-//         });
-//         $(th).removeClass("off").addClass("on");
-//     }
-// }
 
 // 基线检查
 function click_baseline(data){
@@ -456,6 +439,27 @@ function click_baseline(data){
 }
 
 function server_checking(data){
+    let status=get_base_line_status();
+    if (status === 2) {
+        $('#accordion').css('display','none');
+        $('.loading_content').css('display','flex');
+        let setInte = setInterval(function () {
+            console.log("开始检查");
+            let status=get_base_line_status();
+            console.log("status ",status);
+            if (status === 2|| status===1) {
+                get_base_line_status();
+                console.log("正在检查");
+
+            } else if(status===3) {
+                console.log("检查结束");
+                $('#accordion').css('display','block');
+                $('.loading_content').css('display','none');
+                server_checking(agent_server_id);
+                clearInterval(setInte);
+            }
+        },1500);
+    }
     $.ajax({
         url: "baseline",
         type: 'POST',
@@ -466,18 +470,26 @@ function server_checking(data){
         success: function (data_list) {
             console.log(data_list);
             //WEB文件扫描
-            let web_scan=data_list['result']['web_file_check']['result'];
-            $("#base_line_last_day").text("").append(data_list['last_day']);
-            $("#base_line_totalScore").text("").append(data_list['score']);
-            $("#last_check_time").text("").append(data_list['last_check_time']);
-            $("#base_line_web_num").text("0").append(web_scan['webshell'].length+web_scan['dark_chain'].length+web_scan['suspicious_links'].length);
-            $("#web_muma_num").text("网页木马 （").append(web_scan['webshell'].length).append(")");
-            $("#dark_chain_num").text("黑链暗链 （").append(web_scan['dark_chain'].length).append(")");
-            $("#suspicious_links_num").text("可疑外链 （").append(web_scan['suspicious_links'].length).append(")");
-            $("#webmuma_li").text("").append(get_baseline_li_html(web_scan['webshell']));
-            $("#suspicious_links_li").text("").append(get_baseline_li_html(web_scan['suspicious_links']));
-            $("#dark_chain_li").text("").append(get_baseline_li_html(web_scan['dark_chain']));
-        }})
+            if (data_list['online']===1) {
+                let web_scan=data_list['result']['web_file_check']['result'];
+                $("#base_line_last_day").text("").append(data_list['last_day']);
+                $("#base_line_totalScore").text("").append(data_list['score']);
+                $("#last_check_time").text("").append(data_list['last_check_time']);
+                $("#base_line_web_num").text("0").append(web_scan['webshell'].length+web_scan['dark_chain'].length+web_scan['suspicious_links'].length);
+                $("#web_muma_num").text("网页木马 （").append(web_scan['webshell'].length).append(")");
+                $("#dark_chain_num").text("黑链暗链 （").append(web_scan['dark_chain'].length).append(")");
+                $("#suspicious_links_num").text("可疑外链 （").append(web_scan['suspicious_links'].length).append(")");
+                $("#webmuma_li").text("").append(get_baseline_li_html(web_scan['webshell']));
+                $("#suspicious_links_li").text("").append(get_baseline_li_html(web_scan['suspicious_links']));
+                $("#dark_chain_li").text("").append(get_baseline_li_html(web_scan['dark_chain']));
+            }
+            else {
+                alert("服务器不在线");
+                $("#start_server_check").hide();
+            }
+
+
+        }});
 }
 
 function get_baseline_li_html(data) {
@@ -517,26 +529,33 @@ function base_check() {
         },
         //dataType: "json",
         success: function (data_list) {
-             // console.log(data_list);
-            let setInte = setInterval(function () {
-                console.log("开始检查");
-                $('#accordion').css('display','none');
-                $('.loading_content').css('display','flex');
-                let status=get_base_line_status();
-                console.log("status ",status);
-                if (status === 0) {
-                    get_base_line_status();
-                    console.log("正在检查");
+             console.log(data_list);
+            if (data_list['success'] === 'ok') {
+                let setInte = setInterval(function () {
+                    console.log("开始检查");
+                    $('#accordion').css('display','none');
+                    $('.loading_content').css('display','flex');
+                    let status=get_base_line_status();
+                    console.log("status ",status);
+                    if (status === 2|| status===1) {
+                        get_base_line_status();
+                        console.log("正在检查");
 
-                } else {
-                    console.log("检查结束");
-                    $('#accordion').css('display','block');
-                    $('.loading_content').css('display','none');
-                    server_checking(agent_server_id);
-                    clearInterval(setInte);
+                    } else if(status===3) {
+                        console.log("检查结束");
+                        $('#accordion').css('display','block');
+                        $('.loading_content').css('display','none');
+                        server_checking(agent_server_id);
+                        clearInterval(setInte);
+                    }
+                },1500);
+            }
+            else if (data_list['success'] === 'error') {
+                alert("当前主机不在线");
+                $('#accordion').css('display','block');
+                $('.loading_content').css('display','none');
+            }
 
-                }
-            },1500);
 
 
         }})
@@ -634,7 +653,7 @@ function click_server_website_list(data){
 function server_website_list(now_page){
 
     console.log("网站详情 server");
-
+    let max_size;
     $.ajax({
         url: "attack/web_event_agent/",
         type: 'POST',
@@ -646,10 +665,8 @@ function server_website_list(now_page){
         async: false,
         success: function (data_list) {
             data = data_list['agents'];
-            console.log(data);
-
+            max_size=data_list['max_size'];
         }});
-    max_size = 3;
     if (now_page == null || now_page < 1) {
         now_page = 1;
     }
@@ -658,18 +675,12 @@ function server_website_list(now_page){
     }
 
     let server_website_list = '';
-    let server_website_list_data = [['111','172.16.39.24555',' ','未分组','2019-04-29 17:51:06'],
-        ['222','172.16.39.245','','未分组','2019-04-29 17:51:06'],
-        ['333','172.16.39.245','','未分组','2019-04-29 17:51:06'],
-        ['444','172.16.39.245','','未分组','2019-04-29 17:51:06'],
-        ['555','172.16.39.245','','未分组','2019-04-29 17:51:06'],
-        ['666','172.16.39.245','','未分组','2019-04-29 17:51:06']
-    ];
+    let server_website_list_data;
     server_website_list_data=data;
 
     for(let j=0,len = server_website_list_data.length;j<len;j++){
         server_website_list_data[j]=JSON.parse(server_website_list_data[j]);
-        console.log(server_website_list_data[j]);
+        // console.log(server_website_list_data[j]);
         let b = new Base64();
         let data1 = b.encode(JSON.stringify(server_website_list_data[j]));
         // html += '<td><a class="detail-a-website" href="javascript:void(0)" data-name="' + data1 + '" >' + data[x]['register_ip'] + '</a> </td>';
@@ -797,7 +808,7 @@ $(document).on('click','#add_black',function () {
 
     let html = `<div class="layout-title">添加黑名单</div>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-        <form action="post">
+       
             <div style="font-size: 16px;text-align: center;line-height: 180px;">
                 <span class="red">*</span>
                 <label>ip地址</label>
@@ -808,7 +819,7 @@ $(document).on('click','#add_black',function () {
                 <div class="btn layout-close" onclick="white_black_list_add()"">提交</div>
                 <div class="btn layout-close" onclick="javascript:void(0)">取消</div>
             </div>
-        </form>`;
+         `;
     $('.shade>.layout').html(html);
     actionIn(".layout", 'action_scale', .3, "");
     $(".shade").css({
@@ -1361,7 +1372,7 @@ function agent_manage_submit(id) {
 
 }
 
-function formSubmit() {
+function host_add() {
     $.ajax({
         type: "post",
         //async : false, //同步请求

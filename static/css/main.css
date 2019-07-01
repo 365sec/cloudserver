@@ -2184,3 +2184,12 @@ ul {
     position: absolute;
     right: 0;
 }
+#attack_body .ip{
+    background: #5bc0de;
+}
+#attack_body .user{
+     background: #34a856;
+ }
+#attack_body .hostname{
+    background: #34a856;
+}
