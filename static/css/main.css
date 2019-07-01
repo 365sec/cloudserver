@@ -2152,31 +2152,7 @@ ul {
         transform: rotate(360deg);
     }
 }
-.web_tip_edit{
-    width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: none;
-    position: relative;
-}
-.web_tip_edit input{
-    height: 26px;
-    line-height: inherit;
-    width: calc(100% - 44px);
-}
-.web_tip_edit i{
-    color: #999;
-}
-.web_tip_edit,.web_tip_edit_btn{
-    display: flex;
-}
-.web_tip_edit_btn{
-    cursor: pointer;
-}
-.web_tip_edit{
-    display: none;
-}
+
 .web_tip_text{
     width: 100%;
     height: auto;
@@ -2184,10 +2160,14 @@ ul {
     line-height: inherit;
     padding: 0;
     margin: 0;
+    font-size: 13px;
+    box-sizing: border-box;
+    border: none;
 }
-.web_tip_edit_btn{
-    position: absolute;
-    right: 0;
+.web_tip_text:focus{
+    border: 1px solid #aaa;
+    border-radius: 4px;
+
 }
 #attack_body .ip{
     background: #5bc0de;

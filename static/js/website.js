@@ -58,15 +58,8 @@ function website_click(page) {
 
                         html += '<td><a class="detail-a-website" href="javascript:void(0)" data-name="' + data1 + '" >' + data[x]['register_ip'] + '</a> </td>';
                         // html += '<td>' + data[x]['register_ip'] + '</td>';
-                        html += '<td style="position: relative">' +
+                        html += '<td style="width: 200px">' +
                                     '<input class="web_tip_text" placeholder="点击编辑" data-id="'+data[x]['app_id']+'" value="' + data[x]['remark'] + '"/>'+
-                                    '<div class="web_tip_edit">'+
-                                        '<input type="text" class="web_tip_edit_box"  value="' + data[x]['remark'] + '" />'+
-                                        '<div  class="web_tip_edit_btn">'+
-                                            '<i class="iconfont web_tip_edit_cancel">&#xe646;</i>'+
-                                            '<i class="iconfont web_tip_edit_save">&#xe65c;</i>'+
-                                        '</div>'+
-                                    '</div>'+
                             '</td>';
                         html += '<td>' + data[x]['hostname'] + '</td>';
                         html += '<td>' + data[x]['server_type']+'-'+data[x]['server_version'] +'</td>';
@@ -92,9 +85,6 @@ function website_click(page) {
                     //  html += '<a href="javascript:void(0);" onclick="agent_jump()">跳转</a>';
                     html += '</ul>';
                     div_container.append(html);
-                    let app_id=data[x]['app_id'];
-                    let old_ramrk=data[x]['remark'];
-                    tip_edit(app_id,old_ramrk);
                 }
             });
             $(".container1").css('background-color', '#f0f2f5');
@@ -104,53 +94,17 @@ function website_click(page) {
     });
 }
 // 标签编辑
-
-function tip_edit(app_id,old_ramrk){
-
-    $(document).on('click','.web_tip_text',function(){
-        let content = $(this);
-        $(this).next().css('display','flex');
-        $(this).next().find('input').focus();
-        $(this).css('display','none');
-        $(document).one('click',function(){
-            content.next().css('display','none');
-            content.css('display','block');
-            content.next().find('input').val(old_ramrk);
-        });
-        $('.web_tip_edit_box').unbind('click').bind('click',function(){
-            event.stopPropagation();
-        });
-    });
-    $(document).on('click','.web_tip_edit_cancel',function(){
-        $(this).parent().parent().prev().val(old_ramrk);
-        $(this).parent().prev().val(old_ramrk);
-    });
-    $(document).on('click','.web_tip_edit_save',function(){
-        let value = $(this).parent().prev().val();
-        $(this).parent().parent().prev().val(value);
-        update_remark(app_id,value);
-        // console.log(value)
-    });
-
-}
-
-function update_remark(app_id,new_remark) {
-    $.ajax({
-        url:"attack/web_remark/",
-        type:'POST',
-        async:false,
-        data:{
-            "app_id":app_id,
-            "new_remark":new_remark
-        },
-        //dataType:"json",
-        success:function(data_list){
-
-        }})
-
-}
-
-
+$(document).on('keydown','.web_tip_text',function () {
+    var event = window.event || arguments.callee.caller.arguments[0];
+    if (event.keyCode == 13){
+        $(this).blur();
+    }
+});
+$(document).on('change ','.web_tip_text',function () {
+    console.log($(this).val())
+    console.log($(this).attr('data-id'));
+    // 操作
+});
 //详情
 $(document).on("click", ".detail-a-website", function () {
     let data1 = $(this).attr("data-name");
