@@ -36,13 +36,14 @@ function server_click(page) {
                     html += '<table class="table table-bordered">';
                     html += '<thead>';
                     html += '<tr>';
+                    html += '<th>AGENT_ID</th>';
                     html += '<th>服务器名称</th>';
                     html += '<th>操作系统</th>';
                     html += '<th>IP地址</th>';
                     html += '<th>外网IP</th>';
                     html += '<th>服务器状态</th>';
                     html += '<th>所属分组</th>';
-                    html += '<th>风险评估</th>';
+                    html += '<th>标记</th>';
                     html += '</tr>';
                     html += '</thead>';
                     html += '<tbody>';
@@ -52,7 +53,7 @@ function server_click(page) {
                         let agent_id = data[x]['agent_id'];
                         let b = new Base64();
                         let data1 = b.encode(JSON.stringify(data[x]));
-
+                        html += '<td>' + data[x]['agent_id'] + '</td>';
                         html += '<td><a class="detail-a-server" href="javascript:void(0)" data-name="' + data1 + '"   >' + data[x]['host_name'] + '</a> </td>';
                         html += '<td>' + data[x]['os'] + '</td>';
                         html += '<td>' + data[x]['internal_ip'] + '</td>';
@@ -1382,6 +1383,7 @@ function host_add() {
         success: function (data) {
             if (!data['code']) {
                 $("#agent-id").html(data['agent_id'])
+                server_click(1)
             } else {
                 alert('添加主机失败。');
             }
@@ -1389,6 +1391,44 @@ function host_add() {
     });
     //document.getElementById("myForm").submit();
 }
+
+
+//添加主机弹窗
+//打开弹窗
+$(document).on("click", ".manageDiv .card .btngroup .btn", function() {
+    let html = `<div class="layout-title">添加主机</div>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+    
+            <div style="font-size: 16px;text-align: center;line-height: 180px;">
+                <span class="red">*</span>
+                <label>标记</label>
+                <input type="text" placeholder="" id='host_add' name="black_ip" />
+            </div>
+            
+            <div class='layout-btn'>
+                <div class="btn layout-close" onclick="host_add()"">提交</div>
+                <div class="btn layout-close" onclick="javascript:void(0)">取消</div>
+            </div>
+            `;
+    $('.shade>.layout').html(html);
+    actionIn(".layout", 'action_scale', .3, "");
+    $(".shade").css({
+        visibility: "visible"
+    });
+    event.stopPropagation(); //阻止事件向上冒泡
+});
+
+// 关闭弹窗
+$(document).on('click',".layout .close,.layout .layout-close",function (e) {
+    $('.shade>.layout').html('');
+    actionIn(".layout", 'action_scale_out', .3, "");
+    $(".shade").css({
+        visibility: "hidden"
+    });
+    event.stopPropagation(); //阻止事件向上冒泡
+
+});
+
 //拦截记录忽略按钮切换
 $(document).on("click", ".btn-group button", function () {
         $(this).addClass("active").siblings().removeClass("active");

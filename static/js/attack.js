@@ -132,21 +132,12 @@ function attack_click(attack_page) {
 
                         }
                         html += '<tr>';
-
-                        // html += '<td >' + data[x]['agent_id'] + '</td>';
                         html += '<td>' + data[x]['event_time'] + '</td>';
                         html += '<td>' + data[x]['event_name'] + '</td>';
                         html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['comment'] + '">' + data[x]['comment'] + '</td>';
                         html += '<td>' + threat_level + '</td>';
-                        // html += '<td>' + data[x]['threat_level'] + '</td>';
-                        // html += '<td>' + data[x]['server_ip'] + '</td>';
                         html += '<td>' + data[x]['hostname'] + '</td>';
                         html += '<td>' + data[x]['intercept_state'] + '</td>';
-                        // html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['url'] + '">' + data[x]['url'] + '</td>';
-                        // html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['plugin_message'] + '">' + data[x]['plugin_message'] + '</td>';
-                        // html += '<td>' + data[x]['intercept_state'] + '</td>';
-                        // html += '<td>' + data[x]['server_type'] + '</td>';
-                        //html+='<td><a class="modal-a" href="#myModal" data-toggle="modal" data-target="#myModal"  >详情</a> </td>';
 
                         let b = new Base64();
                         let str = b.encode(JSON.stringify(data[x]));
@@ -193,8 +184,6 @@ function attack_click(attack_page) {
                     }, function (start, end, label) {
                         beginTimeStore = start;
                         endTimeStore = end;
-                        // console.log(this.startDate.format(this.locale.format));
-                        // console.log(this.endDate.format(this.locale.format));
                         if (!this.startDate) {
                             this.element.val('');
                         } else {
@@ -267,7 +256,6 @@ function attack_click_search(attack_page) {
 
             let html = "<div>";
 
-
             html += '<div class="card-body">';
             html += '<table class="table table-bordered">';
             html += '<thead>';
@@ -276,30 +264,34 @@ function attack_click_search(attack_page) {
             html += '<th>时间</th>';
             html += '<th>事件名称</th>';
             html += '<th style="min-width: 100px;">事件内容</th>';
-            html += '<th>源ip</th>';
-            html += '<th>目的ip</th>';
+            // html += '<th>源ip</th>';
+            // html += '<th>目的ip</th>';
+            html += '<th>严重等级</th>';
             html += '<th>服务器名称</th>';
+            html += '<th>拦截状态</th>';
             html += '<th>操作</th>';
             html += '</tr>';
             html += '</thead>';
             html += '<tbody>';
             for (x in data) {
+                let threat_level;
+                switch (data[x]['threat_level']) {
+                    case 0: threat_level="<span class=\"label label_custom label-danger\" >严重</span>";break;
+                    case 1: threat_level="<span class=\"label label_custom label_high\" >高危</span>";break;
+                    case 2: threat_level="<span class=\"label label_custom label_norm\" >一般</span>";break;
+                    case 3: threat_level="<span class=\"label label_custom label_info\" >信息</span>";break;
 
+
+                }
                 html += '<tr>';
 
 
-                // html += '<td >' + data[x]['agent_id'] + '</td>';
                 html += '<td>' + data[x]['event_time'] + '</td>';
                 html += '<td>' + data[x]['event_name'] + '</td>';
                 html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['comment'] + '">' + data[x]['comment'] + '</td>';
-                html += '<td>' + data[x]['attack_source'] + '</td>';
-                html += '<td>' + data[x]['server_ip'] + '</td>';
+                html += '<td>' + threat_level + '</td>';
                 html += '<td>' + data[x]['hostname'] + '</td>';
-                // html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['url'] + '">' + data[x]['url'] + '</td>';
-                // html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['plugin_message'] + '">' + data[x]['plugin_message'] + '</td>';
-                // html += '<td>' + data[x]['intercept_state'] + '</td>';
-                // html += '<td>' + data[x]['server_type'] + '</td>';
-                //html+='<td><a class="modal-a" href="#myModal" data-toggle="modal" data-target="#myModal"  >详情</a> </td>';
+                html += '<td>' + data[x]['intercept_state'] + '</td>';
 
                 let b = new Base64();
                 let str = b.encode(JSON.stringify(data[x]));
@@ -493,9 +485,24 @@ function get_attack_body(ip, attack_source) {
                 if (Array.isArray(temp_data[3]))
                 {
                     // temp_data3="主机名（"+temp_data3[0]+") 用户（"+temp_data3[1]+"）正在进行 "+temp_data3[2]+"";
-                    temp_data3=`主机 <span class="hostname event_detail_attack_detail_table_span label label-info">${temp_data3[0]}</span> 使用用户 ${temp_data3[1]} 正在进行${temp_data3[2]}`;
+                    temp_data3=`主机 <span class="hostname event_detail_attack_detail_table_span label label-info">${temp_data3[0]}</span> 
+                使用账户 <span class="user event_detail_attack_detail_table_span label label-info">${temp_data3[1]}</span> 正在进行${temp_data3[2]}`;
                 // <span class="ip event_detail_attack_detail_table_span label label-info">${temp_data[2]}</span>
 
+                }
+                let block_status=temp_data[4];
+                let block_html;
+                if  (block_status==="拦截")
+                {
+                    block_html=`<span class="span_gray" style="color: red;">${block_status}  </span>`
+                }
+                else if(block_status==="记录")
+                {
+                    block_html=`<span class="span_gray" style="color: green;">${block_status}  </span>`
+                }
+                else
+                {
+                    block_html=``;
                 }
                 temp_html += `
                     <tr>
@@ -507,8 +514,8 @@ function get_attack_body(ip, attack_source) {
                         <td style="width: 50%;">
                             <span class="ip event_detail_attack_detail_table_span label label-info">${temp_data[2]}</span>
                             <span class="ipAddr">（${temp_data[1]}）</span>
-                            ${temp_data3}
-                            &nbsp;<span class="span_gray">${temp_data[4]}  </span>
+                            ${temp_data3} &nbsp;&nbsp;
+                            &nbsp;${block_html}
                             <!--<span class="event_log_detail" id="1664393756_2018-05-23">&gt;&gt;详情</span>-->
                         </td>
                     </tr>
@@ -599,6 +606,16 @@ function append_attack_body_more(ip, last, attack_source) {
                 {
                     temp_data3=`主机名（${temp_data3[0]}) 用户（${temp_data3[1]}）正在进行${temp_data3[2]}`;
                 }
+                let block_status=temp_data[4];
+                let block_html;
+                if  (block_status==="拦截")
+                {
+                    block_html=`<span class="span_gray" style="color: red;">${block_status}  </span>`
+                }
+                else if(block_status==="记录")
+                {
+                    block_html=`<span class="span_gray" style="color: green;">${block_status}  </span>`
+                }
                 temp_html += `
                     <tr>
                         <td style="width: 10%; text-align: right;">${temp_data[0].split(" ")[0]}<br>${temp_data[0].split(" ")[1]}</td>
@@ -609,8 +626,8 @@ function append_attack_body_more(ip, last, attack_source) {
                         <td style="width: 50%;">
                             <span class="ip event_detail_attack_detail_table_span label label-info">${temp_data[2]}</span>
                             <span class="ipAddr">（${temp_data[1]}）</span>
-                            ${temp_data3}
-                            &nbsp;<span class="span_gray">${temp_data[4]}  </span>
+                            ${temp_data3} &nbsp;&nbsp;
+                            ${block_html}
                             <!--<span class="event_log_detail" id="1664393756_2018-05-23">&gt;&gt;详情</span>-->
                         </td>
                     </tr>`;

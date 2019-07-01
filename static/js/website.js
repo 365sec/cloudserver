@@ -32,7 +32,7 @@ function website_click(page) {
                     div_container.text("");
                     let html = '<h1 class="page-title" ><i class="iconfont">&#xe73b;</i>网站管理</h1>';
                     html += '<div class="card">';
-                    html += '<div class = "btngroup"><div  class="btn" onclick="javascript:void(0)" >添加主机</div></div>';
+                    // html += '<div class = "btngroup"><div  class="btn" onclick="javascript:void(0)" >添加主机</div></div>';
                     html += '<div class="card-body">';
                     html += '<table class="table table-bordered">';
                     html += '<thead>';

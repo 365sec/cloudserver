@@ -18,7 +18,9 @@
 .my-md-5 {
     margin-top: 0rem !important;
 }
-
+body{
+    overflow-y: hidden;
+}
 a {
     color: #458df9;
 }

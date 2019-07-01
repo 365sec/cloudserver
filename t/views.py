@@ -22,7 +22,6 @@ import geoip2.database
 from common.scan import get_scan
 from common.common import readConfig, ip_to_address
 
-from t.models import TWebAgents as TAgents
 from t.models import TWebAgents
 from t.models import THostAgents
 from t.models import TWebEvent as TAttackEvent
@@ -36,6 +35,7 @@ from t.models import TConfig
 from t.models import TUsers
 from t.auth import auth
 from t.login import AGENT_ID
+from t.login import refresh_agent_id
 
 SENSOR_TYPE = {'10001': 'Java Rasp探针', '10002': 'PHP Rasp探针', '20001': 'IIS探针'}
 INTERCEPT_STATUS = {'block': '拦截', 'log': '记录', 'ignore': '忽略'}
@@ -50,7 +50,7 @@ def add_host(request):
     remark_message = request.POST.get('remarkmsg')
     try:
         with transaction.atomic():
-            agent = TAgents()
+            agent = THostAgents()
             agent.disabled = 0
             agent.online = 0
             agent.agent_id = AGENT_ID
@@ -68,8 +68,16 @@ def add_host(request):
             plugin.globalConfig = readConfig("data/rasp_config/globalConfig.conf")
             plugin.httpProtectConfig = readConfig("data/rasp_config/httpProtectConfig.conf")
             plugin.plugin_template = readConfig("data/rasp_config/plugin_template.conf")
+            plugin.config = readConfig("data/rasp_config/config.conf")
             plugin.save()
-            # refresh_agent_id()
+            # 在t_baseline_check中添加记录
+            t_baseline_check=TBaselineCheck()
+            t_baseline_check.agent_id = AGENT_ID
+            t_baseline_check.check_status = 0
+            t_baseline_check.result = readConfig("data/base_line/result.conf")
+            t_baseline_check.save()
+
+            refresh_agent_id()
     except Exception as e:
         data = {
             "code": 1,
@@ -159,7 +167,8 @@ def server_agent_query(request):
     for x in result[(page - 1) * page_size:(page) * page_size]:
         y = model_to_dict(x)
         # print (y)
-        y['last_hearbeat'] = y['last_hearbeat'].strftime("%Y-%m-%d %H:%M:%S")
+        if y['last_hearbeat']:
+            y['last_hearbeat'] = y['last_hearbeat'].strftime("%Y-%m-%d %H:%M:%S")
         # y['sensor_type_id'] = SENSOR_TYPE.get(y['sensor_type_id'], '')
         y['online'] = '在线' if y['online'] else '离线'
         y['disabled'] = '是' if y['disabled'] else '否'
@@ -218,7 +227,8 @@ def web_agent_query(request):
         y['sensor_type_id'] = SENSOR_TYPE.get(y['sensor_type_id'], '')
         y['online'] = '在线' if y['online'] else '离线'
         y['disabled'] = '是' if y['disabled'] else '否'
-        y['last_heartbeat'] = y['last_heartbeat'].strftime("%Y-%m-%d %H:%M:%S")
+        if y['last_heartbeat']:
+            y['last_heartbeat'] = y['last_heartbeat'].strftime("%Y-%m-%d %H:%M:%S")
 
         for k, v in y.items():
             if not y[k]:
