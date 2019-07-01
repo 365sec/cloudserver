@@ -59,8 +59,8 @@ function website_click(page) {
                         html += '<td><a class="detail-a-website" href="javascript:void(0)" data-name="' + data1 + '" >' + data[x]['register_ip'] + '</a> </td>';
                         // html += '<td>' + data[x]['register_ip'] + '</td>';
                         html += '<td style="width: 200px">' +
-                                    '<input class="web_tip_text" placeholder="点击编辑" data-id="'+data[x]['app_id']+'" value="' + data[x]['remark'] + '"/>'+
-                            '</td>';
+                                    '<input class="web_tip_text" placeholder="点击编辑" data-type="web"  data-id="'+data[x]['app_id']+'" value="' + data[x]['remark'] + '"/>'+
+                                '</td>';
                         html += '<td>' + data[x]['hostname'] + '</td>';
                         html += '<td>' + data[x]['server_type']+'-'+data[x]['server_version'] +'</td>';
                         html += '<td>' + data[x]['language'] + '</td>';
@@ -93,17 +93,37 @@ function website_click(page) {
 
     });
 }
+
+
+function update_remark(id,remark,data_type) {
+    $.ajax({
+        url:"attack/web_remark/",
+        type:'POST',
+        async:false,
+        data:{
+            "app_id":id,
+            "new_remark":remark,
+            "data_type":data_type,
+        },
+        //dataType:"json",
+        success:function(data_list){
+
+        }})
+
+}
 // 标签编辑
 $(document).on('keydown','.web_tip_text',function () {
     var event = window.event || arguments.callee.caller.arguments[0];
-    if (event.keyCode == 13){
+    if (event.keyCode === 13){
         $(this).blur();
     }
 });
 $(document).on('change ','.web_tip_text',function () {
-    console.log($(this).val())
-    console.log($(this).attr('data-id'));
+    let remark=$(this).val();
+    let id=$(this).attr('data-id');
+    let data_type=$(this).attr('data-type');
     // 操作
+    update_remark(id,remark,data_type)
 });
 //详情
 $(document).on("click", ".detail-a-website", function () {
@@ -211,7 +231,7 @@ function chart_attack_trend_web(app_id){
                 data = week;
                 break;
         }
-        let linechart = echarts.init(document.getElementById('chart_attack_trend_web'))
+        let linechart = echarts.init(document.getElementById('chart_attack_trend_web'));
         let option = linechart.getOption();
         option.series[0].data = data;
         linechart.setOption(option);

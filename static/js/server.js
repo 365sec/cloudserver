@@ -23,6 +23,7 @@ function server_click(page) {
                 //dataType: "json",
                 success: function (data_list) {
                     data = data_list['agents'];
+                    console.log(data);
                     let now_page = data_list['page'];
                     let max_size = data_list['max_size'];
                     // data = data.replace(/}{/g, "}****{").split("****");
@@ -64,7 +65,12 @@ function server_click(page) {
                             html += '<td><img src = "/static/images/offline.png" style="width: 12px;">' + data[x]['online'] + '</td>';
                         }
                         html += '<td>' + data[x]['own_user'] + '</td>';
-                        html += '<td>' + data[x]['remark'] + '</td>';
+                        html += '<td>' +
+                            '<input class="web_tip_text" placeholder="点击编辑" data-type="server" data-id="'+data[x]['agent_id']+'" value="' + data[x]['remark'] + '"/>'+
+                            '</td>';
+                        // '<td style="width: 200px">' +
+                        // '<input class="web_tip_text" placeholder="点击编辑" data-id="'+data[x]['app_id']+'" value="' + data[x]['remark'] + '"/>'+
+                        // '</td>'
                         html += '</tr>';
                     }
                     html += '</tbody>';
@@ -1352,7 +1358,6 @@ function agent_manage_global_change(name, id) {
 
 function agent_manage_submit(id) {
     // console.log(id);
-
     let algo = $("#input_algorithm_config").val();
     let http = $("#input_httpProtec_config").val();
     let glob = $("#input_global_config").val();
@@ -1368,21 +1373,36 @@ function agent_manage_submit(id) {
 
         }
     });
-
     $("#setting").modal("hide");
-
 }
+
+function get_host_gent_id() {
+    $.ajax({
+        type: "post",
+        //async : false, //同步请求
+        url: "get_host_agent_id",
+        data: {"remarkmsg": $("#host_add").val()},
+        // timeout:1000,
+        success: function (data) {
+            if (data['agent_id']) {
+                $("#AGENT_ID").append(data['agent_id']);
+
+            } else {
+                alert('查询AGRNT_ID失败。');
+            }
+        }
+})}
 
 function host_add() {
     $.ajax({
         type: "post",
         //async : false, //同步请求
         url: "add_host",
-        data: {"remarkmsg": $("#remarkmsg").html()},
+        data: {"remarkmsg": $("#host_add").val()},
         // timeout:1000,
         success: function (data) {
             if (!data['code']) {
-                $("#agent-id").html(data['agent_id'])
+
                 server_click(1)
             } else {
                 alert('添加主机失败。');
@@ -1396,9 +1416,10 @@ function host_add() {
 //添加主机弹窗
 //打开弹窗
 $(document).on("click", ".manageDiv .card .btngroup .btn", function() {
+    get_host_gent_id();
     let html = `<div class="layout-title">添加主机</div>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-    
+            <div id="AGENT_ID">当前添加主机AGENT_ID为：</div>
             <div style="font-size: 16px;text-align: center;line-height: 180px;">
                 <span class="red">*</span>
                 <label>标记</label>

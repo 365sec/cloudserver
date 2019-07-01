@@ -34,7 +34,7 @@ from t.models import TEventKnowledge
 from t.models import TConfig
 from t.models import TUsers
 from t.auth import auth
-from t.login import AGENT_ID
+from t.login import get_agent_id
 from t.login import refresh_agent_id
 
 SENSOR_TYPE = {'10001': 'Java Rasp探针', '10002': 'PHP Rasp探针', '20001': 'IIS探针'}
@@ -42,25 +42,30 @@ INTERCEPT_STATUS = {'block': '拦截', 'log': '记录', 'ignore': '忽略'}
 THREAT_LEVEL = {0: '严重', 1: '高危', 2: '中危', 3: '低危'}
 
 
+def get_host_agent_id(request):
+    data={"agent_id":get_agent_id()}
+
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
 def add_host(request):
     is_login = request.session.get('is_login', False)
     if not is_login:
         return redirect('/login')
 
     remark_message = request.POST.get('remarkmsg')
+    print (remark_message)
     try:
         with transaction.atomic():
             agent = THostAgents()
             agent.disabled = 0
             agent.online = 0
-            agent.agent_id = AGENT_ID
+            agent.agent_id = get_agent_id()
             agent.remark = remark_message
             agent.owner = request.session['username']
             agent.save()
-
             # 在t_plugins中增加记录
             plugin = TConfig()
-            plugin.agent_id = AGENT_ID
+            plugin.agent_id = get_agent_id()
             plugin.plugin_name = "offical"
             timeArray = time.localtime()
             plugin.plugin_version = time.strftime("%Y%m%d-%H%M%S", timeArray)
@@ -72,7 +77,7 @@ def add_host(request):
             plugin.save()
             # 在t_baseline_check中添加记录
             t_baseline_check=TBaselineCheck()
-            t_baseline_check.agent_id = AGENT_ID
+            t_baseline_check.agent_id = get_agent_id()
             t_baseline_check.check_status = 0
             t_baseline_check.result = readConfig("data/base_line/result.conf")
             t_baseline_check.save()
@@ -88,7 +93,7 @@ def add_host(request):
     data = {
         "code": 0,
         "message": 'sucessful.',
-        'agent_id': AGENT_ID
+        'agent_id': get_agent_id()
     }
     return HttpResponse(json.dumps(data), content_type='application/json')
 
@@ -257,7 +262,7 @@ def attack_event_query(request):
 
     if not request.session['superuser']:
         username = request.session['username']
-        result = TAgents.objects.filter(owner=username)
+        result = TWebAgents.objects.filter(owner=username)
         agent_ids = [x.agent_id for x in result]
         filter_condition['agent_id__in'] = agent_ids
 
@@ -568,9 +573,15 @@ def change_web_event_remark(request):
 
     id = request.POST.get("app_id")
     remark=request.POST.get("new_remark")
-    web_obj=TWebAgents.objects.all().filter(app_id=id).first()
-    web_obj.remark=remark
-    web_obj.save()
+    data_type=request.POST.get("data_type")
+    if data_type=="web":
+        web_obj=TWebAgents.objects.all().filter(app_id=id).first()
+        web_obj.remark=remark
+        web_obj.save()
+    elif data_type=="server":
+        server_obj=THostAgents.objects.all().filter(agent_id=id).first()
+        server_obj.remark=remark
+        server_obj.save()
     data = {
     }
 
@@ -886,7 +897,7 @@ def query_threat_level(request):
     result = None
     if not request.session['superuser']:
         username = request.session['username']
-        result = TAgents.objects.filter(owner=username)
+        result = TWebAgents.objects.filter(owner=username)
         agent_ids = [x.agent_id for x in result]
         filter_condition['agent_id__in'] = agent_ids
 
@@ -915,7 +926,7 @@ def query_attack_source(request):
     result = None
     if not request.session['superuser']:
         username = request.session['username']
-        result = TAgents.objects.filter(owner=username)
+        result = TWebAgents.objects.filter(owner=username)
         agent_ids = [x.agent_id for x in result]
         filter_condition['agent_id__in'] = agent_ids
 
@@ -999,7 +1010,7 @@ def query_attack_times(request):
     filter_condition = {}
     if not request.session['superuser']:
         username = request.session['username']
-        result = TAgents.objects.filter(owner=username)
+        result = TWebAgents.objects.filter(owner=username)
         agent_ids = [x.agent_id for x in result]
         filter_condition['agent_id__in'] = agent_ids
 
@@ -1041,7 +1052,7 @@ def query_attack_type(request):
     filter_condition = {}
     if not request.session['superuser']:
         username = request.session['username']
-        result = TAgents.objects.filter(owner=username)
+        result = TWebAgents.objects.filter(owner=username)
         agent_ids = [x.agent_id for x in result]
         filter_condition['agent_id__in'] = agent_ids
 
@@ -1077,7 +1088,7 @@ def query_attack_warn(request):
     result = None
     if not request.session['superuser']:
         username = request.session['username']
-        result = TAgents.objects.filter(owner=username)
+        result = TWebAgents.objects.filter(owner=username)
         agent_ids = [x.agent_id for x in result]
         filter_condition['agent_id__in'] = agent_ids
 

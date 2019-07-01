@@ -13,6 +13,11 @@ AGENT_ID = None
 def refresh_agent_id():
     global AGENT_ID
     AGENT_ID = hashlib.md5(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))).hexdigest()[8:-8]
+    print (AGENT_ID)
+
+def get_agent_id():
+    global AGENT_ID
+    return AGENT_ID
 
 @require_http_methods(['GET'])
 def index(request):

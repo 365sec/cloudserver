@@ -33,6 +33,7 @@ urlpatterns = [
     url(r'^baseline_check$', views.baseline_check),#执行安全基线扫描
     url(r'^baseline_status$', views.baseline_status),#查看基线检查的状态
     url(r'^add_host$', views.add_host),
+    url(r'^get_host_agent_id$', views.get_host_agent_id),
     url(r'^login$', login.login),
     url(r'^logout$', login.loginout),
     url(r'^index$', login.index),
