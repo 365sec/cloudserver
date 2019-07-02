@@ -477,25 +477,25 @@ function server_checking(data){
         success: function (data_list) {
             console.log(data_list);
             //WEB文件扫描
-            if (data_list['online']===1) {
-                let web_scan=data_list['result']['web_file_check']['result'];
-                $("#base_line_last_day").text("").append(data_list['last_day']);
-                $("#base_line_totalScore").text("").append(data_list['score']);
-                $("#last_check_time").text("").append(data_list['last_check_time']);
-                $("#base_line_web_num").text("0").append(web_scan['webshell'].length+web_scan['dark_chain'].length+web_scan['suspicious_links'].length);
-                $("#web_muma_num").text("网页木马 （").append(web_scan['webshell'].length).append(")");
-                $("#dark_chain_num").text("黑链暗链 （").append(web_scan['dark_chain'].length).append(")");
-                $("#suspicious_links_num").text("可疑外链 （").append(web_scan['suspicious_links'].length).append(")");
-                $("#webmuma_li").text("").append(get_baseline_li_html(web_scan['webshell']));
-                $("#suspicious_links_li").text("").append(get_baseline_li_html(web_scan['suspicious_links']));
-                $("#dark_chain_li").text("").append(get_baseline_li_html(web_scan['dark_chain']));
-            }
-            else {
-                alert("服务器不在线");
+            if (data_list['online']!==1) {
                 $("#start_server_check").hide();
             }
 
-
+            let web_scan=data_list['result']['web_file_check']['result'];
+            $("#base_line_last_day").text("").append(data_list['last_day']);
+            $("#base_line_totalScore").text("").append(data_list['score']);
+            $("#last_check_time").text("").append(data_list['last_check_time']);
+            $("#base_line_web_num").text("0").append(web_scan['webshell'].length+web_scan['dark_chain'].length+web_scan['suspicious_links'].length);
+            $("#web_muma_num").text("网页木马 （").append(web_scan['webshell'].length).append(")");
+            $("#dark_chain_num").text("黑链暗链 （").append(web_scan['dark_chain'].length).append(")");
+            $("#suspicious_links_num").text("可疑外链 （").append(web_scan['suspicious_links'].length).append(")");
+            $("#webmuma_li").text("").append(get_baseline_li_html(web_scan['webshell']));
+            $("#suspicious_links_li").text("").append(get_baseline_li_html(web_scan['suspicious_links']));
+            $("#dark_chain_li").text("").append(get_baseline_li_html(web_scan['dark_chain']));
+            if (data_list['last_check_time']===null)
+            {
+                $("#server_checking").hide()
+            }
         }});
 }
 
@@ -558,7 +558,9 @@ function base_check() {
                 },1500);
             }
             else if (data_list['success'] === 'error') {
-                alert("当前主机不在线");
+                // alert("当前主机不在线");
+                console.log("alert当前主机不在线;")
+                base_check();
                 $('#accordion').css('display','block');
                 $('.loading_content').css('display','none');
             }
@@ -568,6 +570,7 @@ function base_check() {
         }})
 }
 
+//得到后台的状态
 function get_base_line_status() {
     let data;
     $.ajax({
