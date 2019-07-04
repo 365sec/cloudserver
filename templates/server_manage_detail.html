@@ -61,7 +61,7 @@
             <li class="tab-oblique"  id="event_statistics_link"><a class="tab-col" data-toggle="tab" href="#event_statistics"><i class="iconfont">&#xe73c;</i><span> 事件处理</span></a></li>
 {#            <li class="tab-oblique"  id="application_security_link"><a class="tab-col" data-toggle="tab" href="#application_security"><i class="iconfont">&#xe6ee;</i><span>  安全设置</span></a></li>#}
 {#            <li class="tab-oblique"><a class="tab-col" data-toggle="tab" href="#security_settings"><i class="iconfont">&#xe615;</i><span>  常用开关</span></a></li>#}
-            <li class="tab-oblique"  id="server_checking_link"><a class="tab-col" data-toggle="tab" href="#server_checking"><i class="iconfont">&#xe626;</i><span>  基线检查</span></a></li>
+            <li class="tab-oblique"  id="server_checking_link"><a class="tab-col" data-toggle="tab" href="#server_checkingserver_checking"><i class="iconfont">&#xe626;</i><span>  基线检查</span></a></li>
 {#            <li class="tab-oblique"  id="resources_overview_link"><a class="tab-col" data-toggle="tab" href="#resources_overview"><i class="iconfont">&#xe623;</i> <span> 资源监控</span></a></li>#}
             <li class="tab-oblique"  id="server_website_list_link"><a class="tab-col" data-toggle="tab" href="#server_website_list"><i class="iconfont">&#xe6f5;</i><span>  网站详情</span></a></li>
             <li class="tab-oblique"  id="black_white_list_link"><a class="tab-col" data-toggle="tab" href="#black_white_list"><i class="iconfont">&#xe62d;</i> <span> 黑白名单</span></a></li>
@@ -175,7 +175,7 @@
                     </table>
                 </div>
                 <!--   安全基线检查-->
-                <div id="server_checking" class="tab-pane fade">
+                <div id="server_checkingserver_checking" class="tab-pane fade">
                     <div class="u-css-examineTOP">
                         <!--标题-->
                         <div class="u-css-examineTITLE" >
@@ -451,6 +451,7 @@
                                         </div>
                                         <div class="u-list-leftbox   u-list-rightTEXT">
                                             <p class="u-css-examineP" >账户安全检查
+                                                <span class="label label-red " id="base_line_user_num"></span>
 <!--                                                <span class="label label-red ">6</span>-->
                                             </p>
                                             <p class="u-css-examineP" style="font-size: 12px;">扫及时发现存在问题的用户账户，降低用户账户被盗的可能性</p>
@@ -466,56 +467,70 @@
                                       <div class="panel panel-sec">
                                           <div class="panel-heading">
                                               <h4 class="panel-title" class="u-css-List-titleBOX">
-                                                  <a data-toggle="collapse" data-parent="#accordion" href="#webmuma">
+                                                  <a data-toggle="collapse" data-parent="#accordion" href="#hidden_account">
                                                       <i class="iconfont gray">&#xe60b;</i>
                                                       <div class="u-list-leftbox   u-list-rightTEXT">
-                                                          <p class="u-css-examineP" >隐藏账户检查  (0)
+                                                          <p id="hidden_account_num" class="u-css-examineP" >隐藏账户检查  (0)
                                                           </p>
                                                       </div>
                                                   </a>
                                               </h4>
                                           </div>
+                                          <div id = 'hidden_account' class="panel-collapse collapse webscran_contant">
+                                              <ul id="hidden_account_li">
 
+                                              </ul>
+                                          </div>
                                       </div>
                                       <div class="panel panel-sec">
                                           <div class="panel-heading">
                                               <h4 class="panel-title" class="u-css-List-titleBOX">
-                                                  <a data-toggle="collapse" data-parent="#accordion" href="#webmuma">
+                                                  <a data-toggle="collapse" data-parent="#accordion" href="#clone_account">
                                                       <i class="iconfont gray">&#xe60b;</i>
                                                       <div class="u-list-leftbox   u-list-rightTEXT">
-                                                          <p class="u-css-examineP" >克隆账户检查  (0)
+                                                          <p id="clone_account_num" class="u-css-examineP" >克隆账户检查  (0)
                                                           </p>
                                                       </div>
                                                   </a>
                                               </h4>
                                           </div>
+                                          <div id = 'clone_account' class="panel-collapse collapse webscran_contant">
+                                              <ul id="clone_account_li">
 
-                                      </div>
-                                      <div class="panel panel-sec">
-                                          <div class="panel-heading">
-                                              <h4 class="panel-title" class="u-css-List-titleBOX">
-                                                  <a data-toggle="collapse" data-parent="#accordion" href="#webmuma">
-                                                      <i class="iconfont gray">&#xe60d;</i>
-                                                      <div class="u-list-leftbox   u-list-rightTEXT">
-                                                          <p class="u-css-examineP" >已登录账户检查
-                                                          </p>
-                                                      </div>
-                                                  </a>
-                                              </h4>
+                                              </ul>
                                           </div>
 
                                       </div>
+{#                                      <div class="panel panel-sec">#}
+{#                                          <div class="panel-heading">#}
+{#                                              <h4 class="panel-title" class="u-css-List-titleBOX">#}
+{#                                                  <a data-toggle="collapse" data-parent="#accordion" href="#webmuma">#}
+{#                                                      <i class="iconfont gray">&#xe60d;</i>#}
+{#                                                      <div class="u-list-leftbox   u-list-rightTEXT">#}
+{#                                                          <p class="u-css-examineP" >已登录账户检查#}
+{#                                                          </p>#}
+{#                                                      </div>#}
+{#                                                  </a>#}
+{#                                              </h4>#}
+{#                                          </div>#}
+{##}
+{#                                      </div>#}
                                       <div class="panel panel-sec">
                                           <div class="panel-heading">
                                               <h4 class="panel-title" class="u-css-List-titleBOX">
-                                                  <a data-toggle="collapse" data-parent="#accordion" href="#webmuma">
+                                                  <a data-toggle="collapse" data-parent="#accordion" href="#weak_password_account">
                                                       <i class="iconfont gray">&#xe60c;</i>
                                                       <div class="u-list-leftbox   u-list-rightTEXT">
-                                                          <p class="u-css-examineP" >弱密码账户检查  (0)
+                                                          <p id="weak_password_account_num"  class="u-css-examineP" >弱密码账户检查  (0)
                                                           </p>
                                                       </div>
                                                   </a>
                                               </h4>
+                                          </div>
+                                          <div id = 'weak_password_account' class="panel-collapse collapse webscran_contant">
+                                              <ul id="weak_password_account_li">
+
+                                              </ul>
                                           </div>
 
                                       </div>

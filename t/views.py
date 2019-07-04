@@ -1320,11 +1320,13 @@ def baseline(request):
         # print (model_to_dict(result))
 
         data = model_to_dict(result)
-        data['last_day']=datetime.now()-data['last_check_time']
-        data['last_day']=data['last_day'].days
-        data['last_check_time']=data['last_check_time'].strftime("%Y-%m-%d %H:%M:%S")
+        if data.get('last_check_time',None):
+            data['last_day']=datetime.now()-data['last_check_time']
+            data['last_day']=data['last_day'].days
+            data['last_check_time']=data['last_check_time'].strftime("%Y-%m-%d %H:%M:%S")
         data['result']=json.loads( data['result'])
     data['online']=online
+    # print (data)
     return HttpResponse(json.dumps(data), content_type='application/json')
 
 def baseline_check(request):
