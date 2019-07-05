@@ -1322,8 +1322,17 @@ def baseline(request):
         data = model_to_dict(result)
         if data.get('last_check_time',None):
             data['last_day']=datetime.now()-data['last_check_time']
-            data['last_day']=data['last_day'].days
-            data['last_check_time']=data['last_check_time'].strftime("%Y-%m-%d %H:%M:%S")
+            aaa=data['last_day']
+            if(data['last_day'].days <1 ):
+                print (type(data['last_day']))
+                data['last_day']=data['last_day']/3600
+                print (data['last_day'])
+                data['last_day']=str(data['last_day']).split(":")[2].split(".")[0]+"小时之前"
+            elif(data['last_day']/3600 < 1):
+                data['last_day']=str(data['last_day'].seconds)+"秒之前"
+            else:
+                data['last_day']=str(data['last_day'].days)+"天之前"
+        data['last_check_time']=data['last_check_time'].strftime("%Y-%m-%d %H:%M:%S")
         data['result']=json.loads( data['result'])
     data['online']=online
     # print (data)

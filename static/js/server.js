@@ -483,9 +483,12 @@ function server_checking(data){
             $("#base_line_last_day").text("").append(data_list['last_day']);
             $("#base_line_totalScore").text("").append(data_list['score']);
             $("#last_check_time").text("").append(data_list['last_check_time']);
+
+
             //WEB文件扫描
             let web_scan=data_list['result']['web_file_check']['result'];
-            $("#base_line_web_num").text("0").append(web_scan['webshell'].length+web_scan['dark_chain'].length+web_scan['suspicious_links'].length);
+            let web_all_num=web_scan['webshell'].length+web_scan['dark_chain'].length+web_scan['suspicious_links'].length;
+            $("#base_line_web_num").text("0").append(web_all_num);
             $("#web_muma_num").text("网页木马 （").append(web_scan['webshell'].length).append(")");
             $("#dark_chain_num").text("黑链暗链 （").append(web_scan['dark_chain'].length).append(")");
             $("#suspicious_links_num").text("可疑外链 （").append(web_scan['suspicious_links'].length).append(")");
@@ -494,13 +497,19 @@ function server_checking(data){
             $("#dark_chain_li").text("").append(get_baseline_li_html(web_scan['dark_chain']));
             //账户安全发现
             let user_scan=data_list['result']['account_security_check']['result'];
-            $("#base_line_user_num").text("0").append(user_scan['clone_account'].length+user_scan['hidden_account'].length+user_scan['weak_password_account'].length);
+            let user_all_num=user_scan['clone_account'].length+user_scan['hidden_account'].length+user_scan['weak_password_account'].length;
+            $("#base_line_user_num").text("0").append(user_all_num);
             $("#clone_account_num").text("克隆账户检查（").append(user_scan['clone_account'].length).append("）");
             $("#hidden_account_num").text("隐藏账户检查（").append(user_scan['hidden_account'].length).append("）");
             $("#weak_password_account_num").text("弱密码账户检查（").append(user_scan['weak_password_account'].length).append("）");
             $("#clone_account_li").text("").append(get_baseline_li_html(user_scan['clone_account']));
             $("#hidden_account_li").text("").append(get_baseline_li_html(user_scan['hidden_account']));
             $("#weak_password_account_li").text("").append(get_baseline_li_html(user_scan['weak_password_account']));
+            //系统配置检测
+            // let sys_scan=data_list['re']
+
+
+            $("#base_line_countNum").text("").append(web_all_num+user_all_num);
             console.log(data_list['last_check_time']);
             if (data_list['last_check_time']===null)
             {
