@@ -34,7 +34,7 @@ function website_click(page) {
                     html += '<div class="card">';
                     // html += '<div class = "btngroup"><div  class="btn" onclick="javascript:void(0)" >添加主机</div></div>';
                     html += '<div class="card-body">';
-                    html += '<table class="table table-bordered">';
+                    html += '<table class="table table-bordered table-striped table-hover">';
                     html += '<thead>';
                     html += '<tr>';
                     // html += '<th>AGENT_ID</th>';

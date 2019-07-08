@@ -34,7 +34,7 @@ function server_click(page) {
                     html += '<div class="card">';
                     html += '<div class = "btngroup"><div  class="btn" onclick="javascript:void(0)" >添加主机</div></div>';
                     html += '<div class="card-body">';
-                    html += '<table class="table table-bordered">';
+                    html += '<table class="table table-bordered table-striped table-hover">';
                     html += '<thead>';
                     html += '<tr>';
                     html += '<th>AGENT_ID</th>';
@@ -55,7 +55,13 @@ function server_click(page) {
                         let b = new Base64();
                         let data1 = b.encode(JSON.stringify(data[x]));
                         html += '<td>' + data[x]['agent_id'] + '</td>';
-                        html += '<td><a class="detail-a-server" href="javascript:void(0)" data-name="' + data1 + '"   >' + data[x]['host_name'] + '</a> </td>';
+                        html += '<td>' +
+                            // '<img src="/static/images/os_linux_off.png" style="width: 20px"/>' +
+                            // '<img src="/static/images/os_linux_on.png" style="width: 20px"/>' +
+                            // '<img src="/static/images/os_windows_off.png" style="width: 20px"/>' +
+                            '<img src="/static/images/os_windows_on.png" style="width: 20px"/>' +
+
+                            '<a class="detail-a-server" href="javascript:void(0)" data-name="' + data1 + '"   >' + data[x]['host_name'] + '</a> </td>';
                         html += '<td>' + data[x]['os'] + '</td>';
                         html += '<td>' + data[x]['internal_ip'] + '</td>';
                         html += '<td>' + data[x]['extranet_ip'] + '</td>';
@@ -290,9 +296,9 @@ function event_treat_server(now_page){
                 alarm_event_list_table += '<td><a class="custom_a event_detail detail-a" href="javascript:void(0)" data-name="' + str + '">查看报告</a></td>';
 
                 if (alarm_event_list_table_data[j]['status'] === 0) {
-                    alarm_event_list_table += '<td><div class="deal_cls btn btn_untreated"  id = "btn_' + alarm_event_list_table_data[j]['event_issue_id'] + '">未处理</div></td></tr>';
+                    alarm_event_list_table += '<td><div class="deal_cls btn btn_untreated btn-xs"  id = "btn_' + alarm_event_list_table_data[j]['event_issue_id'] + '">未处理</div></td></tr>';
                 } else {
-                    alarm_event_list_table += '<td><div class="btn" disabled id = "btn_' + alarm_event_list_table_data[j]['event_issue_id'] + '">已处理</div></td></tr>';
+                    alarm_event_list_table += '<td><div class="btn btn-xs" disabled id = "btn_' + alarm_event_list_table_data[j]['event_issue_id'] + '">已处理</div></td></tr>';
                 }
                 let page = '<ul role="menubar" aria-disabled="false" aria-label="Pagination" class="pagination b-pagination pagination-md justify-content-center">' +
                     '<a href="javascript:void(0);" onclick="event_treat_server(' + (now_page - 1) + "," + agent_server_id + ')">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp' +
@@ -535,8 +541,8 @@ function get_baseline_li_html(data) {
                        ${data[x]}
                     </p>
                 </div>
-                <button type="button" onclick="check_ignore(this);">忽略</button>
-                <button type="button" onclick="check_repair(this);">修复</button>
+<!--                <button type="button" onclick="check_ignore(this);">忽略</button>-->
+<!--                <button type="button" onclick="check_repair(this);">修复</button>-->
             </li>
             
         `

@@ -22,7 +22,8 @@ body{
     overflow-y: hidden;
 }
 a {
-    color: #458df9;
+    /*color: #458df9;*/
+    color: #00a5e3;
 }
 
 a,
@@ -648,24 +649,29 @@ td {
 
 .btn {
     height: 32px;
-    background-color: rgba(24, 144, 255, 1);
+    background-color: #333;
     font-size: 14px;
     font-weight: normal;
     color: #fff;
 }
 .btn:hover{
-    background-color: #0044cc;
+    background-color: #333;
     color: #fff;
 }
 .table-bordered{
-    border: none;
-    border-collapse: separate;
+    border-collapse: collapse;
+    /*border-collapse: separate;*/
     border-spacing: 0;
     border: none;
     border-top: 1px solid rgba(232, 232, 232, 1);
     border-radius: 4px;
 }
-
+.table-striped tbody tr:nth-of-type(2n){
+    background-color: #fff;
+}
+.table-hover>tbody>tr:hover {
+    background-color: #edfcfa!important;
+}
 .table thead th {
     font-size: 14px;
     border: none;
@@ -689,11 +695,14 @@ td {
 }
 
 .table-bordered>tbody>tr> td ,.table-bordered th{
+    color: #666;
+    font-size: 13px;
     border: none;
     height: 45px;
     line-height: 25px;
     padding-top: 10px;
-    border-bottom: 1px solid #dee2e6;
+    /*border-bottom: 1px solid #dee2e6;*/
+    border: 1px solid #ddd;
 }
 .table-bordered td pre{
      border: none;
@@ -756,7 +765,7 @@ td {
     background-color: transparent;
     height: calc(100% - 42px);
     margin-bottom: 0;
-    color: #757575;
+    color: #666;
 }
 .myTabContent{
     overflow: scroll;
@@ -1533,6 +1542,12 @@ ul {
     background-color: #292929;
     color: #ddd;
     position: relative;
+    height: 100vh;
+    overflow-y: scroll;
+}
+.s-side-scrollhidden{
+    overflow: hidden;
+    height: 100vh;
 }
 .tran{
     transition: all 0.5s ;
@@ -1756,10 +1771,9 @@ ul {
     font-weight: normal;
     margin-right: 3px;
     margin-left: 3px;
-    margin-bottom: 8px;
     background: transparent;
     display: inline-block;
-    padding: 0 5px;
+    padding-top: 6px;
 }
 .label_custom.label-danger {
     color: #fe0202;
@@ -1983,7 +1997,7 @@ ul {
     font-weight: bold;
     line-height: 25px;
 }
-.black_white_checkbox{
+.black_white_checkbox,.server_website_list_checkbox{
     width:14px;
     height: 14px;
 }
@@ -2152,7 +2166,7 @@ ul {
 }
 
 .web_tip_text{
-    width: 100%;
+    width: 200px;
     height: 24px;
     line-height: inherit;
     padding: 0;
@@ -2160,6 +2174,7 @@ ul {
     font-size: 13px;
     box-sizing: border-box;
     border: none;
+    background-color: inherit;
 }
 .web_tip_text:focus{
     border: 1px solid #aaa;
@@ -2174,4 +2189,12 @@ ul {
  }
 #attack_body .hostname{
     background: #34a856;
+}
+.btn-xs{
+    height: auto;
+    font-size: 12px;
+    margin-bottom: 3px;
+}
+#server_checkingserver_checking button[type="button"]{
+    opacity: 0;
 }

@@ -105,7 +105,7 @@ function attack_click(attack_page) {
 
 
                     html += '<div class="card-body">';
-                    html += '<table class="table table-bordered">';
+                    html += '<table class="table table-bordered table-striped table-hover">';
                     html += '<thead>';
                     html += '<tr>';
                     // html += '<th>agent_id</th>';
@@ -113,10 +113,10 @@ function attack_click(attack_page) {
                     html += '<th>事件名称</th>';
                     html += '<th style="min-width: 100px;">事件内容</th>';
                     // html += '<th>源ip</th>';
-                    // html += '<th>目的ip</th>';
-                    html += '<th>严重等级</th>';
                     html += '<th>服务器名称</th>';
                     html += '<th>拦截状态</th>';
+                    // html += '<th>目的ip</th>';
+                    html += '<th>严重等级</th>';
                     html += '<th>操作</th>';
                     html += '</tr>';
                     html += '</thead>';
@@ -135,9 +135,9 @@ function attack_click(attack_page) {
                         html += '<td>' + data[x]['event_time'] + '</td>';
                         html += '<td>' + data[x]['event_name'] + '</td>';
                         html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['comment'] + '">' + data[x]['comment'] + '</td>';
-                        html += '<td>' + threat_level + '</td>';
                         html += '<td>' + data[x]['hostname'] + '</td>';
                         html += '<td>' + data[x]['intercept_state'] + '</td>';
+                        html += '<td>' + threat_level + '</td>';
 
                         let b = new Base64();
                         let str = b.encode(JSON.stringify(data[x]));
