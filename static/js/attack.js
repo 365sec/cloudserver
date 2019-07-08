@@ -427,14 +427,16 @@ function get_iochtml(data) {
     详情页面显示部分
     * */
     console.log(data);
+    let agent_id=data['agent_id'];
+    console.log(agent_id);
     if (data['event_category'] === "web_event") {
         web_event_html(data);
         //追踪溯源部分
-        get_attack_body(data['server_ip'], data['attack_source']);
+        get_attack_body(data['server_ip'], data['attack_source'],agent_id);
     } else if (data['event_category'] === "log_analysisd") {
         log_event_html(data);
         //追踪溯源部分
-        get_attack_body(data['dstip'], data['srcip']);
+        get_attack_body(data['dstip'], data['srcip'],agent_id);
     } else if (data['event_category'] === "file_integrity") {
         $("#attack_back").remove();
         file_event_html(data)
@@ -444,7 +446,7 @@ function get_iochtml(data) {
 }
 
 
-function get_attack_body(ip, attack_source) {
+function get_attack_body(ip, attack_source,agent_id) {
     /*
     * 追踪溯源部分 生成
     * */
@@ -452,6 +454,7 @@ function get_attack_body(ip, attack_source) {
     parm['ip'] = ip;
     parm['last'] = 0;
     parm['attack_source'] = attack_source;
+    parm['agent_id'] = agent_id;
     let temp_html = ``;
 
     $.ajax({
@@ -528,7 +531,7 @@ function get_attack_body(ip, attack_source) {
 
 
             if (data_list["remain"] !== 0) {
-                append_attack_body(ip, data_list['last_next'], attack_source);
+                append_attack_body(ip, data_list['last_next'], attack_source,agent_id);
             } else {
                 append_attack_body_end()
             }
@@ -540,7 +543,7 @@ function get_attack_body(ip, attack_source) {
     //return temp_html;
 }
 
-function append_attack_body(ip, last, attack_source) {
+function append_attack_body(ip, last, attack_source,agent_id) {
     //let  temp_list=  append_attack_body_more(ip,last,attack_source);
     let last_next = 10;
     let html;
@@ -559,7 +562,7 @@ function append_attack_body(ip, last, attack_source) {
         if (scrollTop + windowHeight >= docHeight && loadflag) {
             if (remian_next >= 0) {
 
-                temp_list = append_attack_body_more(ip, last_next, attack_source);
+                temp_list = append_attack_body_more(ip, last_next, attack_source,agent_id);
                 remian_next = temp_list[2];
                 last_next = temp_list[0];
                 html = temp_list[1];
@@ -578,12 +581,13 @@ function append_attack_body(ip, last, attack_source) {
 
 }
 
-function append_attack_body_more(ip, last, attack_source) {
+function append_attack_body_more(ip, last, attack_source,agent_id) {
 
     let parm = {};
     parm['ip'] = ip;
     parm['last'] = last;
     parm['attack_source'] = attack_source;
+    parm['agent_id'] = agent_id;
     console.log(parm);
     let temp_html = ``;
     let more_html = ``;
@@ -1258,28 +1262,18 @@ function log_event_html(data) {
 function file_event_html(data) {
     /*
     * 渲染 file_event_html*/
+    let operate_type;
+    if (data['operator_type'] === "注册表修改") {
+        operate_type="注册表路径"
+    }
+    else {
+        operate_type="文件路径"
+    }
     iochtml = `
                <table class="table table-bordered">
                     <tbody>
-                   
-                     
                       <tr>  <td>事件时间</td> <td>事件内容</td></tr>
                       <tr> <td>${data['event_time']}</td> <td>${data['full_log']}</td> </tr>
-                     <!-- 
-                      <tr>  <td>事件名称</td><td>${data['event_name']}</td> </tr>
-                     <tr>  <td>主机名称</td><td>${data['host_name']}</td> </tr>
-                      <tr>  <td>系统用户</td><td>${data['system_user']}</td> </tr>
-                      <tr>  <td>文件路径</td><td>${data['file_path']}</td> </tr>
-                      <tr>  <td>原MD5</td><td>${data['md5_before']}</td> </tr>
-                      <tr>  <td>现MD5</td><td>${data['md5_after']}</td> </tr> 
-                      <tr>  <td>原sha1</td><td>${data['sha1_before']}</td> </tr>
-                      <tr>  <td>现sha1</td><td>${data['sha1_after']}</td> </tr>
-                      <tr>  <td>原owner_before</td><td>${data['owner_before']}</td> </tr>
-                      <tr>  <td>现owner_before</td><td>${data['owner_after']}</td> </tr> 
-                      -->
-
-                      
-                   
                     </tbody>
        
                  </table>
@@ -1363,7 +1357,7 @@ function file_event_html(data) {
                                      
                                                
                                                 <tr>
-                                                    <td class="td-01">文件路径</td>
+                                                    <td class="td-01">${operate_type}</td>
                                                     <td class="td-02">:</td>
                                                     <td class="td-03">
                                                         <p>${data['file_path']}</p>

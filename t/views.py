@@ -624,9 +624,13 @@ def attack_query_source(request):
     last = int(last)
     # 查询的被攻击的id
     ip = request.POST.get("ip")
+    agent_id = request.POST.get("agent_id")
 
     attack_source = request.POST.get('attack_source')
 
+    print (ip)
+    print (attack_source)
+    print (agent_id)
     # 剩下还有多少条
     remain = 0
     # 总共条数
@@ -643,8 +647,8 @@ def attack_query_source(request):
     intercept_state = None
 
     result = TAttackEvent.objects.all().values_list('event_time', 'attack_source', 'plugin_message',
-                                                    'intercept_state','unused','event_name').filter(server_ip=ip, attack_source=attack_source)
-    log_obj=TLogAnalysisd.objects.all().values_list('event_time','srcip','event_name','unused','host_name','system_user').filter(dstip=ip, srcip=attack_source)
+                                                    'intercept_state','unused','event_name').filter( attack_source=attack_source,agent_id=agent_id)
+    log_obj=TLogAnalysisd.objects.all().values_list('event_time','srcip','event_name','unused','host_name','system_user').filter(dstip=ip, srcip=attack_source,agent_id=agent_id)
     result=result.union(log_obj,all=True).order_by('event_time')
     # result=log_obj
     num = result.count()
@@ -1324,12 +1328,18 @@ def baseline(request):
             data['last_day']=datetime.now()-data['last_check_time']
             aaa=data['last_day']
             if(data['last_day'].days <1 ):
-                print (type(data['last_day']))
-                data['last_day']=data['last_day']/3600
-                print (data['last_day'])
-                data['last_day']=str(data['last_day']).split(":")[2].split(".")[0]+"小时之前"
-            elif(data['last_day']/3600 < 1):
-                data['last_day']=str(data['last_day'].seconds)+"秒之前"
+
+                time_delta = data['last_day']
+                # print (type(data['last_day']))
+                # data['last_day']=data['last_day'].seconds/3600
+                # print (data['last_day'])
+                data['last_day']=str(time_delta.seconds/3600)+"小时之前"
+                if(time_delta.seconds/3600 < 1):
+                    if time_delta.seconds/60 < 1:
+                        data['last_day']="1分钟之前"
+                    else:
+                        data['last_day']=str(time_delta.seconds/60)+"分钟之前"
+
             else:
                 data['last_day']=str(data['last_day'].days)+"天之前"
         data['last_check_time']=data['last_check_time'].strftime("%Y-%m-%d %H:%M:%S")
