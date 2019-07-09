@@ -549,7 +549,12 @@ function print_report() {
     $('.download').hide();
     $('.search_btngroup').hide();
     $('.footer').hide();
-    $('#main_right').css('overflow-y','initial')
+
+    // body滚动条
+    $('body').css('overflow-y','scroll');
+    $('#main').css('overflow','unset');
+    $('.setup').css('overflow-y','unset');
+    // $('#main_right').css('overflow-y','initial')
     window.print();
     $('.header-top').show();
     $('.footer').show();
@@ -557,7 +562,10 @@ function print_report() {
     $('.download').show();
     $('.search_btngroup').show();
     $('.s-side').show();
-    $('#main_right').css('overflow-y','scroll')
+    $('body').css('overflow-y','hidden');
+    $('#main').css('overflow','hidden');
+    $('.setup').css('overflow-y','scroll');
+    // $('#main_right').css('overflow-y','scroll')
 }
 function download_report() {
     $('.s-side').hide();
@@ -566,7 +574,10 @@ function download_report() {
     $('.download').hide();
     $('.search_btngroup').hide();
     $('.footer').hide();
-    $('#main_right').css('overflow-y','initial')
+    // body滚动条
+    $('body').css('overflow-y','scroll');
+    $('#main').css('overflow','unset');
+    $('.setup').css('overflow-y','unset');
 
     html2canvas($(document.body),{
         background: '#f7f7f7',
@@ -614,5 +625,7 @@ function download_report() {
     $('.download').show();
     $('.search_btngroup').show();
     $('.s-side').show();
-    $('#main_right').css('overflow-y','scroll')
+    $('body').css('overflow-y','hidden');
+    $('#main').css('overflow','hidden');
+    $('.setup').css('overflow-y','scroll');
 }

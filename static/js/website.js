@@ -293,9 +293,9 @@ function event_treat_web(now_page,app_id){
         alarm_event_list_table_data[j]['event_issue_id']=alarm_event_list_table_data[j]['event_issue_id'].replace(".","__");
         alarm_event_list_table +='<td><a class="custom_a event_detail detail-a" href="javascript:void(0)" data-name="'+str+'">查看报告</a></td>' ;
         if(alarm_event_list_table_data[j]['status']=== 0){
-            alarm_event_list_table +='<td><div class="deal_cls btn btn_untreated"  id = "btn_'+alarm_event_list_table_data[j]['event_issue_id']+'">未处理</div></td></tr>';
+            alarm_event_list_table +='<td><div class="deal_cls btn btn_untreated btn-xs"  id = "btn_'+alarm_event_list_table_data[j]['event_issue_id']+'">未处理</div></td></tr>';
         }else{
-            alarm_event_list_table +='<td><div class="btn" disabled id = "btn_'+alarm_event_list_table_data[j]['event_issue_id']+'">已处理</div></td></tr>';
+            alarm_event_list_table +='<td><div class="btn btn-xs" disabled id = "btn_'+alarm_event_list_table_data[j]['event_issue_id']+'">已处理</div></td></tr>';
         }
         let page = '<ul role="menubar" aria-disabled="false" aria-label="Pagination" class="pagination b-pagination pagination-md justify-content-center">'+
             '<a href="javascript:void(0);" onclick="event_treat_web(' + (now_page - 1) +","+app_id+ ')">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp'+

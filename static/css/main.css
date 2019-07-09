@@ -717,6 +717,7 @@ td {
      white-space: -pre-wrap;
      white-space: -o-pre-wrap;
      word-wrap: break-word;
+     background-color: inherit;
 }
 .table-bordered td>img{
     margin-bottom: 3px;
@@ -1473,10 +1474,7 @@ text-align:center;
     padding-top:50px;
     margin-bottom:20px
 }
-.report_title>div {
-    line-height:24px;
-    margin-bottom:5px
-}
+
 .report_title>div:last-child {
     margin-bottom:20px
 }
@@ -1501,7 +1499,7 @@ text-align:center;
 }
 .bar_size{
     width: 100%;
-    height: 390px;
+    height: 385px;
 }
 .pie_size{
     width: 100%;

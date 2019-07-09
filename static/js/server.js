@@ -217,11 +217,12 @@ function chart_attack_trend_server(agent_id){
     let week = temp_week;
     linechart(tday,'chart_attack_trend');
 
-
+    // 服务器被攻击类型分析
     let attack = data['level_num'];
     piechart(attack,'chart_attack_kind');
 
     // 攻击类型攻击次数
+    // 事件类型	次数
     let ana_attack = '';
     for(x in data['type_num']){
         ana_attack +='<tr><td>'+data['type_num'][x][0]+'</td>';
