@@ -27,6 +27,9 @@ $(document).on("click", ".nano-content li>div", function () {
         case "website":
             website_click();
             break;
+        case "user":
+            user_click();
+            break;
         default:
     }
 });

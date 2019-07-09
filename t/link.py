@@ -72,3 +72,6 @@ def website_manage_detail(request):
 
 def manage(request):
     return render(request, 'manage.html', {})
+
+def user(request):
+    return render(request, 'user.html', {})

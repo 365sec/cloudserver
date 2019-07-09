@@ -49,8 +49,28 @@ function server_click(page) {
                     html += '</thead>';
                     html += '<tbody>';
                     for (x in data) {
-                        html += '<tr>';
+                        let server_img;
                         data[x] = JSON.parse(data[x]);
+                        console.log(data[x]['os']);
+                        console.log(typeof data[x]['os']);
+                        if (data[x]['online']==="在线")
+                        {
+                            if (data[x]['os'].toLowerCase().indexOf("windows") !== -1){
+                                server_img='<img src="/static/images/os_windows_on.png" style="width: 20px"/>';
+                            }else{
+                                server_img='<img src="/static/images/os_linux_on.png" style="width: 20px"/>';
+                            }
+                        }
+                        else
+                        {
+                            if (data[x]['os'].toLowerCase().indexOf("windows") !== -1){
+                                server_img='<img src="/static/images/os_windows_off.png" style="width: 20px"/>';
+                            }else{
+                                server_img='<img src="/static/images/os_linux_off.png" style="width: 20px"/>';
+                            }
+                        }
+                        html += '<tr>';
+
                         let agent_id = data[x]['agent_id'];
                         let b = new Base64();
                         let data1 = b.encode(JSON.stringify(data[x]));
@@ -59,7 +79,7 @@ function server_click(page) {
                             // '<img src="/static/images/os_linux_off.png" style="width: 20px"/>' +
                             // '<img src="/static/images/os_linux_on.png" style="width: 20px"/>' +
                             // '<img src="/static/images/os_windows_off.png" style="width: 20px"/>' +
-                            '<img src="/static/images/os_windows_on.png" style="width: 20px"/>' +
+                            server_img +
 
                             '<a class="detail-a-server" href="javascript:void(0)" data-name="' + data1 + '"   >' + data[x]['host_name'] + '</a> </td>';
                         html += '<td>' + data[x]['os'] + '</td>';

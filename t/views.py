@@ -1373,3 +1373,53 @@ def baseline_status(request):
     data['success']=result.check_status
 
     return HttpResponse(json.dumps(data), content_type='application/json')
+
+def user_query(request):
+
+    '''
+    查询用户
+    :param request:
+    :return:
+    '''
+    global SENSOR_TYPE
+    # 当前页码数
+    page = request.POST.get("page")
+    page = int(page)
+    username = request.session['username']
+
+    user = TUsers.objects.all().filter(username=username).first()
+    if user.superuser==1:
+        result=TUsers.objects.all()
+    else:
+        result=user
+    # 每页显示多少个数据
+
+    page_size = 15
+    # 最大分页数
+    max_size = (result.count() + page_size - 1) / page_size
+    if max_size == 0:
+        max_size = 1
+    if page > max_size:
+        page = max_size
+    user_list = []
+    for x in result[(page - 1) * page_size:(page) * page_size]:
+        y = model_to_dict(x)
+        # y = json.dumps(y)
+        y['password']=""
+        if not y['phone']:
+            y['phone']=""
+        if not y['email']:
+            y['email']=""
+        if y['superuser']==1:
+            y['superuser']="管理员"
+        else:
+            y['superuser']="普通用户"
+        user_list.append(y)
+
+    data = {
+        "is_superuser":user.superuser,
+        "user": user_list,
+        "max_size": max_size,
+        "page": page,
+    }
+    return HttpResponse(json.dumps(data), content_type='application/json')

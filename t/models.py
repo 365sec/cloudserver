@@ -207,6 +207,17 @@ class TWebAgents(models.Model):
         managed = False
         db_table = 't_web_agents'
 
+class TUsers(models.Model):
+    username = models.CharField(primary_key=True, max_length=255)
+    password = models.CharField(max_length=255)
+    phone = models.CharField(max_length=255, blank=True, null=True)
+    email = models.CharField(max_length=255, blank=True, null=True)
+    superuser = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 't_users'
+
 
 class TWebEvent(models.Model):
     event_issue_id = models.CharField(primary_key=True, max_length=100)
@@ -246,3 +257,5 @@ class TWebEvent(models.Model):
     class Meta:
         managed = False
         db_table = 't_web_event'
+
+

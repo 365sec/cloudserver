@@ -34,6 +34,7 @@ urlpatterns = [
     url(r'^baseline_status$', views.baseline_status),#查看基线检查的状态
     url(r'^add_host$', views.add_host),
     url(r'^get_host_agent_id$', views.get_host_agent_id),
+    url(r'^user/query/$', views.user_query),
     url(r'^login$', login.login),
     url(r'^logout$', login.loginout),
     url(r'^index$', login.index),
@@ -47,8 +48,8 @@ urlpatterns = [
     # url(r'^agent_detail$', link.agent_detail),
     url(r'^server_manage_detail$', link.server_manage_detail),
     url(r'^website_manage_detail$', link.website_manage_detail),
-
     url(r'^manage$', link.manage),
+    url(r'^user$', link.user),
     url(r'', login.index),
 ]
 
