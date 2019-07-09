@@ -281,7 +281,7 @@ function event_treat_server(now_page){
                         alarm_event_list_table += '<td><span class="label label_custom label_high" >高危</span></td>';
                         break;
                     case 2:
-                        alarm_event_list_table += '<td><span class="label label_custom label_norm" >一般</span></td>';
+                        alarm_event_list_table += '<td><span class="label label_custom label_norm" >中危</span></td>';
                         break;
                     case 3:
                         alarm_event_list_table += '<td><span class="label label_custom label_info" >信息</span></td>';
