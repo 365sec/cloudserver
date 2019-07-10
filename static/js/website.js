@@ -204,7 +204,7 @@ function chart_attack_trend_web(app_id){
     let ana_attack = '';
 
     for(x in data['type_num']){
-        ana_attack +='<tr><td>'+data['type_num'][x][0]+'</td>';
+        ana_attack +='<tr><td width="60%">'+data['type_num'][x][0]+'</td>';
         ana_attack +='<td>'+data['type_num'][x][1]+'</td></tr>';
     }
     $('#ana_attack').html(ana_attack);
@@ -212,7 +212,7 @@ function chart_attack_trend_web(app_id){
     // 被攻击网站列表
     let web_attack = '';
     for(x in data['web_num']){
-        web_attack +='<tr><td style="width: 70%">'+data['web_num'][x][0]+'</td>';
+        web_attack +='<tr><td style="width: 60%">'+data['web_num'][x][0]+'</td>';
         web_attack +='<td>'+data['web_num'][x][1]+'</td></tr>';
     }
     $('#web_attack').html(web_attack);

@@ -32,7 +32,7 @@ function server_click(page) {
                     div_container.text("");
                     let html = '<h1 class="page-title" ><i class="iconfont">&#xe73b;</i>服务器管理</h1>';
                     html += '<div class="card">';
-                    html += '<div class = "btngroup"><div  class="btn" onclick="javascript:void(0)" >添加主机</div></div>';
+                    html += '<div class = "btngroup"><div  class="btn" onclick="javascript:void(0)" data-toggle="modal" data-target="#add_host">添加主机</div></div>';
                     html += '<div class="card-body">';
                     html += '<table class="table table-bordered table-striped table-hover">';
                     html += '<thead>';
@@ -117,12 +117,43 @@ function server_click(page) {
                 }
             });
             $(".container1").css('background-color', '#f0f2f5');
-
+            // 添加主机模态框
+            add_host_modal();
         }
 
     });
 }
-
+// 添加主机模态框
+function add_host_modal() {
+    get_host_gent_id();
+    let html = `<div class="modal fade" id="add_host" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">添加主机</h4>
+            </div>
+            <div id="AGENT_ID">当前添加主机AGENT_ID为：b4d9256ad4027516</div>
+            <div style="width: 100%;height: calc(100% - 109px);display: flex;align-items: center;justify-content: center;line-height: 50px">
+                <table>
+                    <tbody>
+                    <tr>
+                        <td style="text-align: right;padding-right: 20px; width: 38%"><span class="red">*</span>
+                            <span>标记</span>
+                        </td>
+                        <td><input type="text" placeholder="" id='' name="" /></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">提交</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+            `;
+    $('#model_div').append(html);
+}
 
 //详情
 var agent_server_id;
@@ -225,7 +256,7 @@ function chart_attack_trend_server(agent_id){
     // 事件类型	次数
     let ana_attack = '';
     for(x in data['type_num']){
-        ana_attack +='<tr><td>'+data['type_num'][x][0]+'</td>';
+        ana_attack +='<tr><td width="60%">'+data['type_num'][x][0]+'</td>';
         ana_attack +='<td>'+data['type_num'][x][1]+'</td></tr>';
     }
     $('#ana_attack').html(ana_attack);
@@ -233,7 +264,7 @@ function chart_attack_trend_server(agent_id){
     // 被攻击网站列表
     let web_attack = '';
     for(x in data['web_num']){
-        web_attack +='<tr><td style="width: 70%">'+data['web_num'][x][0]+'</td>';
+        web_attack +='<tr><td style="width: 60%">'+data['web_num'][x][0]+'</td>';
         web_attack +='<td>'+data['web_num'][x][1]+'</td></tr>';
     }
     $('#web_attack').html(web_attack);
@@ -767,23 +798,37 @@ function server_website_list(now_page){
 // 打开网站详情删除弹窗
 $(document).on("click", "#server_website_list_del", function() {
     let id = $(this).attr("id");
-    let html = `<div class="layout-title">操作确认：</div>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-        <form action="post">
-            <div style="font-size: 16px;text-align: center;line-height: 180px;"><span>您确定要删除该该网站信息吗？</span></div>
-            <div class='layout-btn'>
-                <div class="btn layout-close" onclick="server_website__del(`+id+`)"">确定</div>
-                <div class="btn layout-close" onclick="javascript:void(0)">取消</div>
+    let html = `<div class="modal fade" id="del_web_infor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">操作确认</h4>
             </div>
-        </form>`;
-    $('.shade>.layout').html(html);
-    actionIn(".layout", 'action_scale', .3, "");
-    $(".shade").css({
-        visibility: "visible"
-    });
-    event.stopPropagation(); //阻止事件向上冒泡
+            <div style="width: 100%;height: calc(100% - 109px);display: flex;align-items: center;justify-content: center;line-height: 50px">
+                <table>
+                    <tbody>
+                    <tr>
+                        <td style="text-align: right;padding-right: 20px; width: 38%">
+                            <span>您确定要删除该该网站信息吗？</span>
+                        </td>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="server_website__del(`+id+`)">提交</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+            `;
+    $('#model_div').append(html);
+    $('#del_web_infor').modal("show");
 });
+
+
 // 黑白名单
+
 
 function click_black_white_list(agent_id){
     $(document).on('click','#black_white_list_link',function () {
@@ -828,6 +873,7 @@ function black_white_list(agent_id) {
             }
             white_list_table +='</td>';
             $('#white_list_table>tbody').html(white_list_table);
+            add_black_modal();
         }});
 
 
@@ -860,29 +906,38 @@ function checkall(obj) {
     }
 }
 
-// 添加黑名单
-$(document).on('click','#add_black',function () {
 
-    let html = `<div class="layout-title">添加黑名单</div>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-       
-            <div style="font-size: 16px;text-align: center;line-height: 180px;">
-                <span class="red">*</span>
-                <label>ip地址</label>
-                <input type="text" placeholder="请输入IP或IP段,IP段中间用 “-”分隔" id="black_ip" name="black_ip" />
+$(document).on('click','#add_black',function () {
+    let html = `<div class="modal fade" id="add_black_list" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">添加黑名单</h4>
             </div>
-            
-            <div class='layout-btn'>
-                <div class="btn layout-close" onclick="white_black_list_add()"">提交</div>
-                <div class="btn layout-close" onclick="javascript:void(0)">取消</div>
+            <div style="width: 100%;height: calc(100% - 109px);display: flex;align-items: center;justify-content: center;line-height: 50px">
+                <table>
+                    <tbody>
+                    <tr>
+                        <td style="text-align: right;padding-right: 20px; width: 38%">
+                            <span class="red">*</span>
+                            <label>ip地址</label>
+                        </td>
+                        <td>
+                            <input type="text" placeholder="请输入IP或IP段,IP段中间用 “-”分隔" id="black_ip" name="black_ip" />
+                            </td>
+                    </tbody>
+                </table>
             </div>
-         `;
-    $('.shade>.layout').html(html);
-    actionIn(".layout", 'action_scale', .3, "");
-    $(".shade").css({
-        visibility: "visible"
-    });
-    event.stopPropagation(); //阻止事件向上冒泡
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="white_black_list_add()">提交</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+            `;
+    $('#model_div').append(html);
+    $('#add_black_list').modal("show");
 });
 
 function white_black_list_add() {
@@ -897,7 +952,7 @@ function white_black_list_add() {
             if(reg.test(ip)){
                 if( RegExp.$1<256 && RegExp.$2<256 && RegExp.$3<256 && RegExp.$4<256){
                     console.log("IP正确！");
-
+                    $("#add_black_list").modal("hide");
                 }else{
                     console.log("存在错误ip");
                     alert("存在错误ip");
@@ -917,6 +972,7 @@ function white_black_list_add() {
             if(reg.test(ip)){
                 if( RegExp.$1<256 && RegExp.$2<256 && RegExp.$3<256 && RegExp.$4<256){
                     console.log("IP正确！");
+                    $("#add_white_list").modal("hide");
                 }else{
                     console.log("存在错误ip");
                     alert("存在错误ip");
@@ -951,26 +1007,35 @@ function white_black_list_add() {
         }
     });
 }
-
 // 解除黑名单
 $(document).on('click','.black_list_release',function () {
     let id = $(this).attr("id");
     id=id.toString();
-    let html = `<div class="layout-title">操作确认：</div>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-        <form action="post">
-            <div style="font-size: 16px;text-align: center;line-height: 180px;"><span>确认要删除选中的数据吗？</span></div>
-            <div class='layout-btn'>
-                <div class="btn layout-close" onclick="white_black_list_release('`+id+`','black')">确定</div>
-                <div class="btn layout-close" onclick="javascript:void(0)">取消</div>
+    let html = `<div class="modal fade" id="black_release_list" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">操作确认:</h4>
             </div>
-        </form>`;
-    $('.shade>.layout').html(html);
-    actionIn(".layout", 'action_scale', .3, "");
-    $(".shade").css({
-        visibility: "visible"
-    });
-    event.stopPropagation(); //阻止事件向上冒泡
+            <div style="width: 100%;height: calc(100% - 109px);display: flex;align-items: center;justify-content: center;line-height: 50px">
+                <table>
+                    <tbody>
+                    <tr>
+                        <td style="text-align: right;padding-right: 20px; width: 38%">
+                            <span >确认要删除选中的数据吗</span>
+                        </td>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="white_black_list_release('`+id+`','black')">提交</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->`;
+    $('#model_div').append(html);
+    $("#black_release_list").modal("show");
 });
 
 function white_black_list_release(id,type) {
@@ -997,6 +1062,7 @@ function white_black_list_release(id,type) {
         success: function (data) {
             alert("删除成功");
             black_white_list(agent_server_id)
+            $('#black_release_list').modal('hide');
         }
     });
 }
@@ -1004,23 +1070,32 @@ function white_black_list_release(id,type) {
 // 批量解除黑名单
 $(document).on('click','#releaseall_black',function () {
     let id = $(this).attr("id");
+    let html = `<div class="modal fade" id="releaseall_black_list" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">操作确认:</h4>
+                </div>
+            <div style="width: 100%;height: calc(100% - 109px);display: flex;align-items: center;justify-content: center;line-height: 50px">
+                <table>
+                    <tbody>
+                        <tr>
+                        <td style="text-align: right;padding-right: 20px; width: 38%">
+                        <span >确认要删除选中的数据吗</span>
+                        </td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="white_black_list_releaseall('`+id+`','black')">提交</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+                </div><!-- /.modal-content -->
+        </div><!-- /.modal -->`;
+    $('#model_div').append(html);
+    $("#releaseall_black_list").modal("show");
 
-
-    let html = `<div class="layout-title">操作确认：</div>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-        
-            <div style="font-size: 16px;text-align: center;line-height: 180px;"><span>确认要删除选中的数据吗？</span></div>
-            <div class='layout-btn'>
-                <div class="btn layout-close" onclick="white_black_list_releaseall('`+id+`','black')"">确定</div>
-                <div class="btn layout-close" onclick="javascript:void(0)">取消</div>
-            </div>
-        `;
-    $('.shade>.layout').html(html);
-    actionIn(".layout", 'action_scale', .3, "");
-    $(".shade").css({
-        visibility: "visible"
-    });
-    event.stopPropagation(); //阻止事件向上冒泡
 });
 
 
@@ -1061,6 +1136,7 @@ function white_black_list_releaseall(id,type) {
         success: function (data) {
             alert("删除成功");
             black_white_list(agent_server_id)
+            $("#releaseall_black_list").modal("hide");
         }
     });
 
@@ -1068,63 +1144,94 @@ function white_black_list_releaseall(id,type) {
 
 // 添加白名单
 $(document).on('click','#add_white',function () {
-    let html = `<div class="layout-title">操作确认：</div>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-        <form action="post">
-            <div style="font-size: 16px;text-align: center;line-height: 180px;">
-                <span class="red">*</span>
-                <label>ip地址</label>
-                <input type="text" placeholder="请输入IP或IP段,IP段中间用 “-”分隔" id="white_ip" name="white_ip" >
+    let html = `<div class="modal fade" id="add_white_list" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">添加白名单</h4>
             </div>
-            <div class='layout-btn'>
-                <div class="btn layout-close" onclick="white_black_list_add()"">确定</div>
-                <div class="btn layout-close" onclick="javascript:void(0)">取消</div>
+            <div style="width: 100%;height: calc(100% - 109px);display: flex;align-items: center;justify-content: center;line-height: 50px">
+                <table>
+                    <tbody>
+                    <tr>
+                        <td style="text-align: right;padding-right: 20px; width: 38%">
+                            <span class="red">*</span>
+                            <label>ip地址</label>
+                        </td>
+                        <td>
+                            <input type="text" placeholder="请输入IP或IP段,IP段中间用 “-”分隔" id="black_ip" name="black_ip" />
+                            </td>
+                    </tbody>
+                </table>
             </div>
-        </form>`;
-    $('.shade>.layout').html(html);
-    actionIn(".layout", 'action_scale', .3, "");
-    $(".shade").css({
-        visibility: "visible"
-    });
-    event.stopPropagation(); //阻止事件向上冒泡
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="white_black_list_add()">提交</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+            `;
+    $('#model_div').append(html);
+    $('#add_white_list').modal("show");
 });
 // 解除白名单
 $(document).on('click','.white_list_release',function () {
     let id = $(this).attr("id");
-    let html = `<div class="layout-title">操作确认：</div>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-        <form action="post">
-            <div style="font-size: 16px;text-align: center;line-height: 180px;"><span>确认要删除选中的数据吗？</span></div>
-            <div class='layout-btn'>
-                <div class="btn layout-close" onclick="white_black_list_release('`+id+`','white')"">确定</div>
-                <div class="btn layout-close" onclick="javascript:void(0)">取消</div>
+    let html = `<div class="modal fade" id="white_release_list" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">操作确认:</h4>
             </div>
-        </form>`;
-    $('.shade>.layout').html(html);
-    actionIn(".layout", 'action_scale', .3, "");
-    $(".shade").css({
-        visibility: "visible"
-    });
-    event.stopPropagation(); //阻止事件向上冒泡
+            <div style="width: 100%;height: calc(100% - 109px);display: flex;align-items: center;justify-content: center;line-height: 50px">
+                <table>
+                    <tbody>
+                    <tr>
+                        <td style="text-align: right;padding-right: 20px; width: 38%">
+                            <span >确认要删除选中的数据吗</span>
+                        </td>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="white_black_list_release('`+id+`','white')">提交</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->`;
+    $('#model_div').append(html);
+    $("#white_release_list").modal("show");
 });
 // 批量解除白名单
 $(document).on('click','#releaseall_white',function () {
     let id = $(this).attr("id");
-    let html = `<div class="layout-title">操作确认：</div>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-        <form action="post">
-            <div style="font-size: 16px;text-align: center;line-height: 180px;"><span>确认要删除选中的数据吗？</span></div>
-            <div class='layout-btn'>
-                <div class="btn layout-close" onclick="white_black_list_releaseall('`+id+`','white')"">确定</div>
-                <div class="btn layout-close" onclick="javascript:void(0)">取消</div>
-            </div>
-        </form>`;
-    $('.shade>.layout').html(html);
-    actionIn(".layout", 'action_scale', .3, "");
-    $(".shade").css({
-        visibility: "visible"
-    });
-    event.stopPropagation(); //阻止事件向上冒泡
+    let html = `<div class="modal fade" id="releaseall_white_list" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">操作确认:</h4>
+                </div>
+            <div style="width: 100%;height: calc(100% - 109px);display: flex;align-items: center;justify-content: center;line-height: 50px">
+                <table>
+                    <tbody>
+                        <tr>
+                        <td style="text-align: right;padding-right: 20px; width: 38%">
+                        <span >确认要删除选中的数据吗</span>
+                        </td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="white_black_list_releaseall('`+id+`','white')">提交</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+                </div><!-- /.modal-content -->
+        </div><!-- /.modal -->`;
+    $('#model_div').append(html);
+    $("#releaseall_white_list").modal("show");
 });
 
 
@@ -1465,28 +1572,8 @@ function host_add() {
 
 //添加主机弹窗
 //打开弹窗
-$(document).on("click", ".manageDiv .card .btngroup .btn", function() {
-    get_host_gent_id();
-    let html = `<div class="layout-title">添加主机</div>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-            <div id="AGENT_ID">当前添加主机AGENT_ID为：</div>
-            <div style="font-size: 16px;text-align: center;line-height: 180px;">
-                <span class="red">*</span>
-                <label>标记</label>
-                <input type="text" placeholder="" id='host_add' name="black_ip" />
-            </div>
-            
-            <div class='layout-btn'>
-                <div class="btn layout-close" onclick="host_add()"">提交</div>
-                <div class="btn layout-close" onclick="javascript:void(0)">取消</div>
-            </div>
-            `;
-    $('.shade>.layout').html(html);
-    actionIn(".layout", 'action_scale', .3, "");
-    $(".shade").css({
-        visibility: "visible"
-    });
-    event.stopPropagation(); //阻止事件向上冒泡
+$(function() {
+
 });
 
 // 关闭弹窗

@@ -78,10 +78,10 @@
 
                     </div>
                     <div class="pull-right" style="width:33%;height:400px;position:relative;margin-top: 20px">
-                        <table style = 'width: 100%;font-size: 15px;'>
+                        <table class="chart-table-title">
                             <thead >
                                 <tr>
-                                    <th>事件类型</th>
+                                    <th width="60%">事件类型</th>
                                     <th>次数</th>
                                 </tr>
                             </thead></table>
@@ -98,10 +98,10 @@
                             </div>
                         </div>
                         <div class="pull-right" style="width:49%;height:300px;position:relative;margin-top: 20px">
-                            <table style = 'width: 100%;font-size: 15px;'>
+                            <table class=" chart-table-title">
                                 <thead >
                                 <tr>
-                                    <th style="width: 70%">被攻击网站名称</th>
+                                    <th style="width: 60%">被攻击网站名称</th>
                                     <th>攻击次数</th>
                                 </tr>
                                 </thead></table>
@@ -848,7 +848,7 @@
                               <div class="table_select_div">
                                   <div style="display: flex;justify-content: space-between;">
   <!--                                    批量删除-->
-                                    <div class="btn" id="server_website_list_del">删除</div>
+                                    <div class="btn" id="server_website_list_del" >删除</div>
                                     <div class="search_btngroup">
                                         <input type="text" class="form-control" name="keyword" id="website_keyword" placeholder="查询" value="">
                                         <div id="websiteBtn" class="btn" onclick="server_website_list(1)">&nbsp;查询</div>
@@ -887,8 +887,8 @@
                             <div class="table_select_div">
                                 <div style="display: flex;justify-content: space-between;">
                                     <div>
-                                        <div class="btn" id="add_black">添加黑名单</div>
-                                        <div class="btn" id="releaseall_black">解除</div>
+                                        <div class="btn" id="add_black" >添加黑名单</div>
+                                        <div class="btn" id="releaseall_black" >解除</div>
                                     </div>
                                     <div data-tip="black_list_table" onclick="black_white_slide(this)">
                                         <span>收起</span>

@@ -1,13 +1,13 @@
 @font-face {
     font-family: 'iconfont';  /* project id 1075499 */
-    src: url('//at.alicdn.com/t/font_1075499_vox8qvb9ja.eot');
-    src: url('//at.alicdn.com/t/font_1075499_vox8qvb9ja.eot?#iefix') format('embedded-opentype'),
-    url('//at.alicdn.com/t/font_1075499_vox8qvb9ja.woff2') format('woff2'),
-    url('//at.alicdn.com/t/font_1075499_vox8qvb9ja.woff') format('woff'),
-    url('//at.alicdn.com/t/font_1075499_vox8qvb9ja.ttf') format('truetype'),
-    url('//at.alicdn.com/t/font_1075499_vox8qvb9ja.svg#iconfont') format('svg');
+    src: url('//at.alicdn.com/t/font_1075499_rn8tn3cgbir.eot');
+    src: url('//at.alicdn.com/t/font_1075499_rn8tn3cgbir.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_1075499_rn8tn3cgbir.woff2') format('woff2'),
+    url('//at.alicdn.com/t/font_1075499_rn8tn3cgbir.woff') format('woff'),
+    url('//at.alicdn.com/t/font_1075499_rn8tn3cgbir.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_1075499_rn8tn3cgbir.svg#iconfont') format('svg');
 }
-.iconfont1{
+.iconfont{
     font-family:"iconfont" !important;
     font-size:16px;font-style:normal;
     -webkit-font-smoothing: antialiased;
@@ -79,41 +79,44 @@ b {
     width: 50px;
 }
 
-.modal-open .modal {
-    overflow-x: hidden;
-    overflow-y: hidden;
-    /*position: absolute;*/
-    top: 10%;
-    bottom: 10%;
-    left: 15%;
-    right: 15%;
+.modal-dialog{
+    top: 200px;
 }
-.modal-open .modal.fade .modal-dialog{
-    transform: none;
-    height:100%;
-    width: 100%;
-    margin: 0;
-}
-.modal-dialog .modal-content{
-    height: 100%;
-    background-color: #f5f5f5;
-}
-.modal-body {
-    height: calc(100% - 98px);
-    padding: 10px;
-    padding-bottom: 0;
-}
-.modal-content .modal-header{
-    padding: 10px;
-}
-.modal-content .modal-header .close{
-    margin: -18px;
-}
+/*.modal-open #myModal.modal {*/
+/*    overflow-x: hidden;*/
+/*    overflow-y: hidden;*/
+/*    !*position: absolute;*!*/
+/*    top: 10%;*/
+/*    bottom: 10%;*/
+/*    left: 15%;*/
+/*    right: 15%;*/
+/*}*/
+/*.modal-open #myModal.modal.fade .modal-dialog{*/
+/*    transform: none;*/
+/*    height:100%;*/
+/*    width: 100%;*/
+/*    margin: 0;*/
+/*}*/
+/*#myModal .modal-dialog .modal-content{*/
+/*    height: 100%;*/
+/*    background-color: #f5f5f5;*/
+/*}*/
+/*#myModal .modal-body {*/
+/*    height: calc(100% - 98px);*/
+/*    padding: 10px;*/
+/*    padding-bottom: 0;*/
+/*}*/
+/*#myModal .modal-content .modal-header{*/
+/*    padding: 10px;*/
+/*}*/
+/*#myModal .modal-content .modal-header .close{*/
+/*    margin: -18px;*/
+/*}*/
 
 
-#model-body td {
-    word-break: keep-all;
-}
+/*#myModal #model-body td {*/
+/*    word-break: keep-all;*/
+/*}*/
 
 .event-detail p,
 td {
@@ -369,6 +372,7 @@ td {
     color: #757575;
     line-height: 22px;
     font-weight: 400;
+    padding: 20px;
 }
 
 .setup .bottom1 {
@@ -505,8 +509,14 @@ td {
     height: 48px;
     clear:both;
     background: #fff;
+    border-top: 1px solid rgba(0, 40, 100, .12);
+    font-size: .875rem;
+    padding: 1.25rem 0;
+    color: #9aa0ac;
 }
-
+.footer a:not(.btn) {
+    color: #6e7687;
+}
 .overviewDiv{
     display: block;
     height: calc(100vh - 36px - 60px);
@@ -646,7 +656,9 @@ td {
 #attrack_recent_warning_dic_div table thead tr th:nth-child(3) {
     min-width: 120px;
 }
-
+.btn + .btn {
+    margin-left: 5px;
+}
 .btn {
     height: 32px;
     background-color: #333;
@@ -893,7 +905,7 @@ a:not([href]):not([tabindex]), a:not([href]):not([tabindex]):focus, a:not([href]
     padding-left: 20px;
     height: 40px;
     line-height: 40px!important;
-
+    font-size: 1.5rem;
 }
 .attackDiv{
     position: relative;
@@ -901,6 +913,18 @@ a:not([href]):not([tabindex]), a:not([href]):not([tabindex]):focus, a:not([href]
 .attackDiv #time{
 
     z-index: 2;
+}
+.card{
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 40, 100, .12);
+    border-radius: 3px;
 }
 .container1 .card{
     margin: 20px;
@@ -1031,12 +1055,14 @@ a:not([href]):not([tabindex]), a:not([href]):not([tabindex]):focus, a:not([href]
     opacity: .7;
     color: #4d4d4d;
 }
-#table_div div .pagination,.card .pagination{
+.pagination{
     padding-top: 10px;
     text-align: center;
     width: 100%;
 }
-
+.footer a:not(.btn) {
+    color: #6e7687;
+}
 .tab{
     height: 32px;
     background-color: #2d7ba4;
@@ -1265,9 +1291,6 @@ code {
     margin:0 .5em;
     line-height:21px;
 }
-.text-muted{
-    color:#a6a6a6;
-}
 .custom_checkbox_holder{
     text-align:center;
     width:45px;
@@ -1286,6 +1309,9 @@ text-align:center;
     border-bottom:none;
     border-right:none;
     border-left:none;
+}
+#attrack_recent_warning_dic_div .table > thead > tr > th{
+    color: #333;
 }
 #right_content_main h5{
     font-weight:bold;
@@ -1526,6 +1552,7 @@ text-align:center;
 .search_btngroup{
     display: flex;
     justify-content: flex-end;
+    margin-bottom: 10px;
 }
 .datasel{
     position: relative;;
@@ -1542,10 +1569,17 @@ ul {
     position: relative;
     height: 100vh;
     overflow-y: scroll;
+    -ms-overflow-style: none;
+    width: calc(100vw + 18px);
 }
+.s-side::-webkit-scrollbar {
+    display: none;
+}
+
+
 .s-side-scrollhidden{
-    overflow: hidden;
-    height: 100vh;
+    overflow: -moz-hidden-unscrollable;
+    height: 100%;
 }
 .tran{
     transition: all 0.5s ;
@@ -1643,7 +1677,18 @@ ul {
 }
 .nav-link{
     line-height: 45px;
-
+    padding: 0 .75rem;
+    min-width: 2rem;
+    transition: color .3s;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
 }
 .nav-link:hover{
     color: #00a5e3;
@@ -1654,6 +1699,7 @@ ul {
 }
 .side_open ul li>ul{
     opacity: 1;
+    padding-inline-start: 0;
 
 }
 .side_open > ul > li >div> a>span{
@@ -1668,10 +1714,11 @@ ul {
 }
 .side_open > ul > li >div> a{
     padding-left: 24px;
-    transition: all 0.5s;
-    -moz-transition: all 0.5s; /* Firefox 4 */
-    -webkit-transition: all 0.5s; /* Safari 和 Chrome */
-    -o-transition: all 0.5s; /* Opera */
+    transition: opacity 0.5s;
+    -moz-transition: opacity 0.5s; /* Firefox 4 */
+    -webkit-transition: opacity 0.5s; /* Safari 和 Chrome */
+    -o-transition: opacity 0.5s; /* Opera */
+    text-decoration: none;
 }
 
 .side_close .logodiv{
@@ -1738,6 +1785,7 @@ ul {
 
 .text-muted{
     color:#a6a6a6;
+    text-align: right;
 }
 .custom_checkbox_holder{
     text-align:center;
@@ -2195,4 +2243,20 @@ ul {
 }
 #server_checkingserver_checking button[type="button"]{
     opacity: 0;
+}
+
+#web_attack.table td,#ana_attack.table td{
+    border-top: 1px solid #dee2e6;
+    text-align: center;
+}
+.chart-table-title{
+     width: calc(100% - 18px);
+     font-size: 15px;
+ }
+.chart-table-title th{
+    font-weight: 400;
+    text-align: center!important;
+}
+#AGENT_ID{
+    padding-left: 15px;
 }
