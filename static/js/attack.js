@@ -66,7 +66,8 @@ function attack_click(attack_page) {
                     html_select += `<div class="search_button datesel">
                                 <span class="btnvalue">日期选择: </span>
                                 <input type="text" id="attack_time" >
-                                <i class="glyphicon glyphicon-calendar datesel_icon fa fa-calendar"></i>
+                                <label for="attack_time" class="datesel_icon"><i class="fa fa-calendar"></i></label>
+                                
                             </div>
                             `;
                     html_select += '<div class="search_button"><span class="btnvalue">攻击类型: </span>';

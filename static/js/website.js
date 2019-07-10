@@ -319,21 +319,32 @@ function event_treat_web_jump() {
 //打开事件处理弹窗
 $(document).on("click", ".btn_untreated", function() {
     let id = $(this).attr("id");
-    let html = `<div class="layout-title">操作确认：</div>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-        <form action="post">
-            <div style="font-size: 16px;text-align: center;line-height: 180px;"><span>您确定要处理此事件吗？</span></div>
-            <div class='layout-btn'>
-                <div class="btn layout-close" onclick="treat('`+id+`')">确定</div>
-                <div class="btn layout-close" onclick="javascript:void(0)">取消</div>
+    let html = `<div class="modal fade" id="event_treat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">操作确认:</h4>
             </div>
-        </form>`;
-    $('.shade>.layout').html(html);
-    actionIn(".layout", 'action_scale', .3, "");
-    $(".shade").css({
-        visibility: "visible"
-    });
-    event.stopPropagation(); //阻止事件向上冒泡
+            <div style="width: 100%;height: calc(100% - 109px);display: flex;align-items: center;justify-content: center;line-height: 50px">
+                <table>
+                    <tbody>
+                    <tr>
+                        <td style="text-align: right;padding-right: 20px; width: 38%">
+                            <span>您确定要处理此事件吗？</span>
+                        </td>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="treat('`+id+`')">提交</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+        `;
+    $('#model_div').append(html);
+    $('#event_treat').modal("show");
 });
 //事件处理事件
 function treat(obj) {
@@ -355,7 +366,7 @@ function treat(obj) {
         success: function (data_list) {
             data=data_list;
             console.log(data)
-
+            $('#event_treat').modal("hide");
         }});
 
 }

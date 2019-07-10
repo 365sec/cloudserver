@@ -19991,8 +19991,8 @@ a.tag-addon:hover {
 
 @font-face {
     font-family: feather;
-    src: url(/static/fonts/feather-webfont.cc5143b.eot);
-    src: url(/static/fonts/feather-webfont.cc5143b.eot) format("embedded-opentype"), url(/static/fonts/feather-webfont.2cf523c.woff) format("woff"), url(/static/fonts/feather-webfont.b8e9cbc.ttf) format("truetype"), url(/static/img/feather-webfont.4a878d5.svg#feather) format("svg")
+    src: url(/static/css/fonts/feather-webfont.cc5143b.eot);
+    src: url(/static/css/fonts/feather-webfont.cc5143b.eot) format("embedded-opentype"), url(/static/css/fonts/feather-webfont.2cf523c.woff) format("woff"), url(/static/css/fonts/feather-webfont.b8e9cbc.ttf) format("truetype"), url(/static/img/feather-webfont.4a878d5.svg#feather) format("svg")
 }
 
 .fe {

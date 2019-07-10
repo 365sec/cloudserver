@@ -1,7 +1,7 @@
 // 一级
 $(document).on("click", ".nano-content li>div", function () {
     $(this).children().addClass("active");
-    $(this).parents().siblings().find('.active').removeClass("active");
+    $(this).parents().siblings().find('.nav-link.active').removeClass("active");
     $(this).siblings().find('.active').removeClass("active");
     let value = $(this).children().attr("data-value");
     // console.log(value);
