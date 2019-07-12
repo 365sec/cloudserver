@@ -73,30 +73,7 @@ class TEventKnowledge(models.Model):
         db_table = 't_event_knowledge'
 
 
-class TFileIntegrity(models.Model):
-    event_issue_id = models.CharField(primary_key=True, max_length=100)
-    agent_id = models.CharField(max_length=100, blank=True, null=True)
-    event_category = models.CharField(max_length=50)
-    event_time = models.DateTimeField(blank=True, null=True)
-    event_id = models.IntegerField(blank=True, null=True)
-    event_name = models.CharField(max_length=255, blank=True, null=True)
-    host_name = models.CharField(max_length=255, blank=True, null=True)
-    system_user = models.CharField(max_length=255, blank=True, null=True)
-    file_path = models.CharField(max_length=255, blank=True, null=True)
-    md5_before = models.CharField(max_length=255, blank=True, null=True)
-    md5_after = models.CharField(max_length=255, blank=True, null=True)
-    sha1_before = models.CharField(max_length=255, blank=True, null=True)
-    sha1_after = models.CharField(max_length=255, blank=True, null=True)
-    owner_before = models.CharField(max_length=255, blank=True, null=True)
-    owner_after = models.CharField(max_length=255, blank=True, null=True)
-    full_log = models.CharField(max_length=4000, blank=True, null=True)
-    unused = models.CharField(max_length=255, blank=True, null=True)
-    status = models.PositiveIntegerField(blank=True, null=True)
-    operator_type = models.PositiveIntegerField(blank=True, null=True)
 
-    class Meta:
-        managed = False
-        db_table = 't_file_integrity'
 
 
 class THostAgents(models.Model):
@@ -154,6 +131,31 @@ class TLogAnalysisd(models.Model):
         managed = False
         db_table = 't_log_analysisd'
 
+class TFileIntegrity(models.Model):
+    event_issue_id = models.CharField(primary_key=True, max_length=100)
+    agent_id = models.CharField(max_length=100, blank=True, null=True)
+    event_category = models.CharField(max_length=50)
+    event_time = models.DateTimeField(blank=True, null=True)
+    event_id = models.IntegerField(blank=True, null=True)
+    event_name = models.CharField(max_length=255, blank=True, null=True)
+    host_name = models.CharField(max_length=255, blank=True, null=True)
+    system_user = models.CharField(max_length=255, blank=True, null=True)
+    file_path = models.CharField(max_length=255, blank=True, null=True)
+    md5_before = models.CharField(max_length=255, blank=True, null=True)
+    md5_after = models.CharField(max_length=255, blank=True, null=True)
+    sha1_before = models.CharField(max_length=255, blank=True, null=True)
+    sha1_after = models.CharField(max_length=255, blank=True, null=True)
+    owner_before = models.CharField(max_length=255, blank=True, null=True)
+    owner_after = models.CharField(max_length=255, blank=True, null=True)
+    full_log = models.CharField(max_length=4000, blank=True, null=True)
+    unused = models.CharField(max_length=255, blank=True, null=True)
+    status = models.PositiveIntegerField(blank=True, null=True)
+    operator_type = models.CharField(max_length=255, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 't_file_integrity'
+
 
 class TSecurityPolicyEvent(models.Model):
     event_id = models.CharField(primary_key=True, max_length=100)
@@ -172,18 +174,6 @@ class TSecurityPolicyEvent(models.Model):
     class Meta:
         managed = False
         db_table = 't_security_policy_event'
-
-
-class TUsers(models.Model):
-    username = models.CharField(primary_key=True, max_length=255)
-    password = models.CharField(max_length=255)
-    phone = models.CharField(max_length=255, blank=True, null=True)
-    email = models.CharField(max_length=255, blank=True, null=True)
-    superuser = models.IntegerField()
-
-    class Meta:
-        managed = False
-        db_table = 't_users'
 
 
 class TWebAgents(models.Model):

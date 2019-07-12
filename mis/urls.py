@@ -34,7 +34,11 @@ urlpatterns = [
     url(r'^baseline_status$', views.baseline_status),#查看基线检查的状态
     url(r'^add_host$', views.add_host),
     url(r'^get_host_agent_id$', views.get_host_agent_id),
-    url(r'^user/query/$', views.user_query),
+    url(r'^user/query/$', views.user_query),#管理员查询
+    url(r'^user/query_one/$', views.user_query_one),#个人信息查询
+    url(r'^user/user_update/$', views.user_update),#个人信息查询
+    url(r'^user/user_update_pwd/$', views.user_update_pwd),#个人密码修改
+    url(r'^user/user_add/$', views.user_add),#添加用户
     url(r'^login$', login.login),
     url(r'^logout$', login.loginout),
     url(r'^index$', login.index),

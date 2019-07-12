@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding:utf-8 -*-
 from __future__ import unicode_literals
 
 from itertools import chain
@@ -603,8 +603,9 @@ def change_status(request):
         obj=log_obj.first()
     if web_obj.exists():
         obj=web_obj.first()
-
-    obj.status=1
+    print model_to_dict(obj)
+    print (obj.status)
+    obj.status = 1
     obj.save()
     data = {
 
@@ -778,27 +779,27 @@ def server_attack_trend(request):
     tfile_obj1=tfile_obj.count()
     tlog_obj1=tlog_obj.count()
     # union_obj2=tweb_obj1.union(tlog_obj1).order_by("-number")
-    level_num=[]
 
-    level_num.append(["低息",tfile_obj1+tlog_obj1])
+    level_num_list=[["严重",0],["高危",0],["中危",0],["信息",0]]
+    level_num_list[3][1]=tfile_obj1+tlog_obj1
     for x in list(tweb_obj1):
+        print (x)
         if x[0]==0:
-            level_num.append(["严重",x[1]])
+            level_num_list[0][1]+=x[1]
         if x[0]==1:
-            level_num.append(["高危",x[1]])
+            level_num_list[1][1]+=x[1]
         if x[0]==2:
-            level_num.append(["中危",x[1]])
+            level_num_list[2][1]+=x[1]
         if x[0]==3:
-            if "低息" in level_num[0]:
-                print (x[1])
-                level_num[0][1]+=x[1]
+            level_num_list[3][1]+=x[1]
+
 
 
     data = {
         "num_list": num_list,
         "type_num":type_num[0:10],
         "web_num":web_num[0:10],
-         "level_num":level_num[0:10],
+         "level_num":level_num_list[0:10],
     }
     data = json.dumps(data)
     return HttpResponse(data, content_type='application/json')
@@ -881,7 +882,8 @@ def web_attack_trend(request):
         if x[0]==2:
             level_num.append(["中危",x[1]])
         if x[0]==3:
-            level_num.append(["低息",x[1]])
+            level_num.append(["信息",x[1]])
+
     data = {
         "num_list": num_list,
         "type_num":list(tweb_obj_type_num)[0:10],
@@ -1330,9 +1332,6 @@ def baseline(request):
             if(data['last_day'].days <1 ):
 
                 time_delta = data['last_day']
-                # print (type(data['last_day']))
-                # data['last_day']=data['last_day'].seconds/3600
-                # print (data['last_day'])
                 data['last_day']=str(time_delta.seconds/3600)+"小时之前"
                 if(time_delta.seconds/3600 < 1):
                     if time_delta.seconds/60 < 1:
@@ -1375,7 +1374,6 @@ def baseline_status(request):
     return HttpResponse(json.dumps(data), content_type='application/json')
 
 def user_query(request):
-
     '''
     查询用户
     :param request:
@@ -1385,15 +1383,15 @@ def user_query(request):
     # 当前页码数
     page = request.POST.get("page")
     page = int(page)
+    print '[*]'+str(request.session)
     username = request.session['username']
 
     user = TUsers.objects.all().filter(username=username).first()
     if user.superuser==1:
-        result=TUsers.objects.all()
+        result=TUsers.objects.all().order_by('-superuser')
     else:
         result=user
     # 每页显示多少个数据
-
     page_size = 15
     # 最大分页数
     max_size = (result.count() + page_size - 1) / page_size
@@ -1421,5 +1419,93 @@ def user_query(request):
         "user": user_list,
         "max_size": max_size,
         "page": page,
+    }
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
+def user_query_one(request):
+    '''
+    查询用户
+    :param request:
+    :return:
+    '''
+    global SENSOR_TYPE
+    # 当前页码数
+    username = request.session['username']
+    user = TUsers.objects.all().filter(username=username).first()
+    y = model_to_dict(user)
+    y['password']=""
+    if not y['phone']:
+        y['phone']=""
+    if not y['email']:
+        y['email']=""
+    if y['superuser']==1:
+        y['superuser']="管理员"
+    else:
+        y['superuser']="普通用户"
+
+
+    data = {
+        "is_superuser":user.superuser,
+        "user": y,
+    }
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
+def user_update(request):
+    '''
+    用户更新
+    :param request:
+    :return:
+    '''
+    global SENSOR_TYPE
+    # 当前页码数
+    phone = request.POST.get("phone")
+    email = request.POST.get("email")
+    username = request.session['username']
+    user = TUsers.objects.all().filter(username=username).first()
+    user.phone=phone
+    user.email=email
+    user.save()
+    data = {
+        "success":"ok",
+    }
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
+def user_update_pwd(request):
+    username = request.session['username']
+    old_password = request.POST.get("old_password")
+    new_password = request.POST.get("new_password")
+    m2 = hashlib.md5()
+    m2.update(old_password)
+    u = TUsers.objects.filter(username=username).first()
+    msg=""
+    if u.password == m2.hexdigest():
+        new_m2=hashlib.md5()
+        new_m2.update(new_password)
+        u.password=new_m2.hexdigest()
+        u.save()
+        msg="修改成功"
+    else:
+        msg="旧密码错误"
+    data = {
+        "msg":msg,
+    }
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
+def user_add(request):
+    username = request.POST.get("username")
+    password = request.POST.get("password")
+
+    obj1=TUsers.objects.all().filter(username=username)
+    if obj1.exists():
+        msg="用户已经存在"
+    else:
+        m2 = hashlib.md5()
+        m2.update(password)
+        password=m2.hexdigest()
+        obj=TUsers(username=username,password=password,superuser=0)
+        obj.save()
+        msg="添加成功"
+    data = {
+        "msg":msg,
     }
     return HttpResponse(json.dumps(data), content_type='application/json')

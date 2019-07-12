@@ -36,19 +36,89 @@ function personal_infor_click() {
 }
 function personal_infor_load() {
     // 个人信息执行
+    $.ajax({
+        url: "user/query_one/",
+        type: 'POST',
+        data: {
+
+        },
+        //dataType: "json",
+        success: function (data_list) {
+            console.log(data_list);
+            let data=data_list['user'];
+            $("#user_name").html("").append(data['username']);
+            $("#user_phone").val(data['phone']);
+            $("#user_email").val(data['email']);
+            $("#user_type").html("").append(data['superuser']);
+        }
+    });
+
 
 }
-// 修改密码
+//用户信息修改
+function user_update() {
+    let phone=$("#user_phone").val();
+    let email=$("#user_email").val();
+    $.ajax({
+        url: "user/user_update/",
+        type: 'POST',
+        data: {
+            "phone":phone,
+            "email":email
+        },
+        //dataType: "json",
+        success: function (data_list) {
+            console.log(data_list);
+            if (data_list['success'] === 'ok')
+            {
+                alert("修改成功")
+            }
+            else {
+                alert("修改失败")
+            }
+        }
+    });
+}
+// 修改密码样式
 function pwd_change_click() {
     $(document).on('click','#pwd_change_link',function () {
         pwd_change_load();
     })
 }
 function pwd_change_load() {
-    // 修改密码
-
+    $("#old_password").val("");
+    $("#new_password").val("");
+    $("#new_password_").val("");
 }
-// 会员用户管理
+
+function pwd_update() {
+    // 修改密码
+    let old_password=$("#old_password").val();
+    let new_password=$("#new_password").val();
+    let new_password_=$("#new_password_").val();
+    if (new_password !== new_password_) {
+        alert("输入两次密码不一致");
+        return ;
+    }
+    $.ajax({
+        url: "user/user_update_pwd/",
+        type: 'POST',
+        data: {
+            "old_password":old_password,
+            "new_password":new_password,
+        },
+        //dataType: "json",
+        success: function (data_list) {
+            if (data_list['msg']=== "旧密码错误") {
+                $("#oid_pwd_msg").append(data_list['msg']);
+            } else {
+                alert(data_list['msg']);
+            }
+
+        }
+    });
+}
+// 管理员用户管理
 function user_admin_click() {
     $(document).on('click','#user_admin_link',function () {
         user_admin_load(1);
@@ -74,7 +144,7 @@ function user_admin_load(page) {
             if (is_superuser === 1) {
                 $('#user_admin_link').remove();
                 $('#super_user_admin').remove();
-                $("#user_admin_panel_content_wrapper .tab-content").children().removeClass('active in')
+                $("#user_admin_panel_content_wrapper .tab-content").children().removeClass('active in');
                 let html_tab = '<li class="tab-oblique active" id="user_admin_link"><a class="tab-col" data-toggle="tab" href="#super_user_admin" aria-expanded="true"><i class="iconfont">&#xe650;</i><span> 用户管理</span></a></li>';
                 $('#user_admin_panel').prepend(html_tab);
                 let html_content = `<div id="super_user_admin" class="tab-pane fade active in">
@@ -85,7 +155,7 @@ function user_admin_load(page) {
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                    <h4 class="modal-title" id="myModalLabel">添加用户</h4>
+                                    <h4 class="modal-title" id="myModalLabel" >添加用户</h4>
                                 </div>
                                 <div style="width: 100%;height: calc(100% - 109px);display: flex;align-items: center;justify-content: center;line-height: 50px">
                                 <table>
@@ -94,18 +164,18 @@ function user_admin_load(page) {
                                         <td style="text-align: right;padding-right: 20px; width: 38%"><span class="red">*</span>
                                             <span>用户名</span>
                                             </td>
-                                        <td><input type="text" placeholder="" id='' name="" /></td></tr>
+                                        <td><input type="text" placeholder="" id='user_add_name' name="" /></td></tr>
                                     <tr>
                                         <td style="text-align: right;padding-right: 20px"><span class="red">*</span>
                                             <span>密码</span>
                                         </td>
-                                        <td><input type="text" placeholder="" id='' name="" /></td></tr>
+                                        <td><input type="text" placeholder="" id='user_add_password' name="" /></td></tr>
                                     </tbody>
                                 </table>
                                 </div>
                                 <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="user_add()">提交</button>
                                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                                    <button type="button" class="btn btn-primary">提交更改</button>
                                 </div>
                             </div><!-- /.modal-content -->
                         </div><!-- /.modal -->
@@ -117,9 +187,7 @@ function user_admin_load(page) {
                 let div_container = $("#user_admin_main");
                 div_container.text("");
                 let html = '';
-                if (is_superuser === 1) {
-                    html += '<div class = "search_btngroup"><div  class="btn"  data-toggle="modal" data-target="#add_user">添加用户</div></div>';
-                }
+                html += '<div class = "search_btngroup"><div  class="btn" data-toggle="modal" href="#add_user">添加用户</div></div>';
                 html += '<table class="table table-bordered table-striped table-hover">';
                 html += '<thead>';
                 html += '<tr>';
@@ -127,9 +195,6 @@ function user_admin_load(page) {
                 html += '<th>电话</th>';
                 html += '<th>邮件</th>';
                 html += '<th>用户类型</th>';
-                if (is_superuser === 1) {
-                    html += '<th>操作</th>';
-                }
                 html += '</tr>';
                 html += '</thead>';
                 html += '<tbody>';
@@ -139,10 +204,6 @@ function user_admin_load(page) {
                     html += '<td>' + data[x]['phone'] + '</td>';
                     html += '<td>' + data[x]['email'] + '</td>';
                     html += '<td>' + data[x]['superuser'] + '</td>';
-                    if (is_superuser === 1) {
-                        html += '<td> <a href="#">更新</a></td>';
-                    }
-                    html += '</tr>';
                 }
                 html += '</tbody>';
                 html += '</table>';
@@ -164,3 +225,29 @@ function user_admin_load(page) {
     $(".container1").css('background-color', '#f0f2f5');
 }
 
+//添加用户
+function user_add() {
+
+    console.log("222222222");
+    let username=$("#user_add_name").val();
+    let password=$("#user_add_password").val();
+
+    $.ajax({
+        url: "user/user_add/",
+        type: 'POST',
+        data: {
+            "username":username,
+            "password":password,
+        },
+        //dataType: "json",
+        success: function (data_list) {
+            alert(data_list['msg']);
+            user_admin_load(1);
+
+        },
+        error:function () {
+            alert("添加失败");
+            // $('#add_user').modal('hide');
+        }
+    });
+}

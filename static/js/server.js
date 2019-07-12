@@ -223,6 +223,19 @@ function chart_attack_trend_server(agent_id){
         success: function (data_list) {
             data=data_list;
             console.log(data_list);
+            let server_id_nowcount=0;
+            let server_id_allcount=0;
+            for (x in data['num_list']['day'])
+            {
+                server_id_nowcount+=data['num_list']['day'][x];
+            }
+            for(x in data['level_num'] )
+            {
+                server_id_allcount+=data['level_num'][x][1];
+            }
+            $("#server_id_nowcount").html("").append(server_id_nowcount);
+            $("#server_id_allcount").html("").append(server_id_allcount);
+
 
         }});
 

@@ -172,6 +172,19 @@ function chart_attack_trend_web(app_id){
         success: function (data_list) {
             data=data_list;
             console.log(data);
+            let web_id_nowcount=0;
+            let web_id_allcount=0;
+            for (x in data['num_list']['day'])
+            {
+                web_id_nowcount+=data['num_list']['day'][x];
+            }
+            for(x in data['level_num'] )
+            {
+                web_id_allcount+=data['level_num'][x][1];
+            }
+            $("#web_id_nowcount").html("").append(web_id_nowcount);
+            $("#web_id_allcount").html("").append(web_id_allcount);
+
 
         }});
 
