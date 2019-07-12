@@ -53,7 +53,7 @@ def add_host(request):
         return redirect('/login')
 
     remark_message = request.POST.get('remarkmsg')
-    print (remark_message)
+    # print (remark_message)
     try:
         with transaction.atomic():
             agent = THostAgents()
@@ -276,7 +276,7 @@ def attack_event_query(request):
         tfile_obj = tfile_obj.filter(agent_id=agent_id)
         tlog_obj = tlog_obj.filter(agent_id=agent_id)
         tweb_obj = tweb_obj.filter(agent_id=agent_id)
-        print (agent_id)
+        # print (agent_id)
 
 
     # 关于攻击类型的过滤,在搜索界面展示的下拉框
@@ -492,8 +492,8 @@ def query_web_agent_by_agent_id(request):
         result = TWebAgents.objects.filter(owner=username).order_by("-online")
     # 每页显示多少个数据
     result=result.filter(agent_id=agent_id)
-    for x in result:
-        print (x)
+
+
     page_size = 15
     # 最大分页数
     max_size = (result.count() + page_size - 1) / page_size
@@ -505,7 +505,7 @@ def query_web_agent_by_agent_id(request):
     for x in result[(page - 1) * page_size:(page) * page_size]:
         y = model_to_dict(x)
         hostname = THostAgents.objects.all().filter(agent_id=agent_id).first()
-        print (hostname)
+        # print (hostname)
         if hostname.internal_ip:
             y['register_ip'] = hostname.internal_ip
         else:
@@ -520,7 +520,7 @@ def query_web_agent_by_agent_id(request):
             if not y[k]:
                 y[k] = ''
         y = json.dumps(y)
-        print (y)
+        # print (y)
         TAgents_list.append(y)
     data = {
         "agents": TAgents_list,
@@ -535,7 +535,7 @@ def query_web_event_by_app_id(request):
     page = request.POST.get("page")
     app_id = request.POST.get("app_id")
     page = int(page)
-    print (app_id)
+    # print (app_id)
     result = TWebEvent.objects.filter(app_id=app_id).order_by("-event_time")
     # 每页显示多少个数据
 
@@ -603,8 +603,8 @@ def change_status(request):
         obj=log_obj.first()
     if web_obj.exists():
         obj=web_obj.first()
-    print model_to_dict(obj)
-    print (obj.status)
+    # print model_to_dict(obj)
+    # print (obj.status)
     obj.status = 1
     obj.save()
     data = {
@@ -629,9 +629,9 @@ def attack_query_source(request):
 
     attack_source = request.POST.get('attack_source')
 
-    print (ip)
-    print (attack_source)
-    print (agent_id)
+    # print (ip)
+    # print (attack_source)
+    # print (agent_id)
     # 剩下还有多少条
     remain = 0
     # 总共条数
@@ -783,7 +783,7 @@ def server_attack_trend(request):
     level_num_list=[["严重",0],["高危",0],["中危",0],["信息",0]]
     level_num_list[3][1]=tfile_obj1+tlog_obj1
     for x in list(tweb_obj1):
-        print (x)
+        # print (x)
         if x[0]==0:
             level_num_list[0][1]+=x[1]
         if x[0]==1:
@@ -1183,7 +1183,7 @@ def black_white_list_update(request):
     white_list=",".join(eval(white_list))
     black_list=",".join(eval(black_list))
     w_b_list={"ip.blacklist".encode(encoding="utf-8"):black_list.encode(encoding="utf-8"),"ip.whitelist".encode(encoding="utf-8"):white_list.encode(encoding="utf-8")}
-    print (w_b_list)
+    # print (w_b_list)
     config = TConfig.objects.get(agent_id=agent_id)
     config.config_time=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     config.config=json.dumps(w_b_list)
@@ -1320,7 +1320,7 @@ def baseline(request):
     id=request.POST.get("agent_id")
     result = TBaselineCheck.objects.all().filter(agent_id=id).first()
     online=THostAgents.objects.get(agent_id=id).online
-    print ("baseline ",online)
+    # print ("baseline ",online)
     data={}
     if  result:
         # print (model_to_dict(result))
@@ -1362,7 +1362,7 @@ def baseline_check(request):
             data = {"success":"ok"}
         if online==0:
             data = {"success":"error"}
-        print (online)
+        # print (online)
     return HttpResponse(json.dumps(data), content_type='application/json')
 
 def baseline_status(request):
@@ -1383,7 +1383,7 @@ def user_query(request):
     # 当前页码数
     page = request.POST.get("page")
     page = int(page)
-    print '[*]'+str(request.session)
+    # print '[*]'+str(request.session)
     username = request.session['username']
 
     user = TUsers.objects.all().filter(username=username).first()
