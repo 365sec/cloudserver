@@ -1622,7 +1622,7 @@ ul {
 
 .s-firstDrop {
     background-color: #0d0d0d;
-
+    padding: 0;
 
 }
 .s-firstDrop > li {
@@ -1677,12 +1677,11 @@ ul {
     color: #00a5e3;
 }
 .side_open{
-    width: 200px;
+    width: 180px;
 
 }
 .side_open ul li>ul{
     opacity: 1;
-    padding-inline-start: 0;
 
 }
 .side_open > ul > li >div> a>span{

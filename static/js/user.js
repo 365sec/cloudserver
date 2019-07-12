@@ -149,8 +149,51 @@ function user_admin_load(page) {
                 $('#user_admin_panel').prepend(html_tab);
                 let html_content = `<div id="super_user_admin" class="tab-pane fade active in">
                     <div id="user_admin_main">
-                    </div>
-                    <div class="modal fade" id="add_user" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    </div></div>
+                    `;
+                $('#user_admin_panel_content_wrapper .tab-content').prepend(html_content);
+                let now_page = data_list['page'];
+                let max_size = data_list['max_size'];
+                let div_container = $("#user_admin_main");
+                div_container.text("");
+                let html = '';
+                html += '<div class = "search_btngroup"><div  class="btn add_user_btn">添加用户</div></div>';
+                html += '<table class="table table-bordered table-striped table-hover">';
+                html += '<thead>';
+                html += '<tr>';
+                html += '<th>用户名</th>';
+                html += '<th>电话</th>';
+                html += '<th>邮件</th>';
+                html += '<th>用户类型</th>';
+                html += '</tr>';
+                html += '</thead>';
+                html += '<tbody>';
+                for (x in data) {
+                    html += '<tr>';
+                    html += '<td>' + data[x]['username'] + '</td>';
+                    html += '<td>' + data[x]['phone'] + '</td>';
+                    html += '<td>' + data[x]['email'] + '</td>';
+                    html += '<td>' + data[x]['superuser'] + '</td>';
+                }
+                html += '</tbody>';
+                html += '</table>';
+                html += '<ul role="menubar" aria-disabled="false" aria-label="Pagination" class="pagination b-pagination pagination-md justify-content-center">';
+                html += '<a href="javascript:void(0);" onclick="user_click(' + (now_page - 1) + ')">上一页</a>';
+                html += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
+                html += '<a href="javascript:void(0);">' + now_page + "/" + max_size + '</a>';
+                html += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
+                html += '<a href="javascript:void(0);" onclick="user_click(' + (now_page + 1) + ')">下一页</a>';
+                //html += '<input id = "agent_jump" value="'+now_page+'" />';
+                //  html += '<a href="javascript:void(0);" onclick="agent_jump()">跳转</a>';
+                html += '</ul>';
+                div_container.append(html);
+            }
+        }
+    });
+    $(".container1").css('background-color', '#f0f2f5');
+}
+$(document).on('click','.add_user_btn',function () {
+    let html1 = `<div class="modal fade" id="add_user" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -174,57 +217,14 @@ function user_admin_load(page) {
                                 </table>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="user_add()">提交</button>
+                                    <button type="button" class="btn btn-primary" onclick="user_add()">提交</button>
                                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                                 </div>
                             </div><!-- /.modal-content -->
-                        </div><!-- /.modal -->
-                    </div>
-                </div>`;
-                $('#user_admin_panel_content_wrapper .tab-content').prepend(html_content);
-                let now_page = data_list['page'];
-                let max_size = data_list['max_size'];
-                let div_container = $("#user_admin_main");
-                div_container.text("");
-                let html = '';
-                html += '<div class = "search_btngroup"><div  class="btn" data-toggle="modal" href="#add_user">添加用户</div></div>';
-                html += '<table class="table table-bordered table-striped table-hover">';
-                html += '<thead>';
-                html += '<tr>';
-                html += '<th>用户名</th>';
-                html += '<th>电话</th>';
-                html += '<th>邮件</th>';
-                html += '<th>用户类型</th>';
-                html += '</tr>';
-                html += '</thead>';
-                html += '<tbody>';
-                for (x in data) {
-                    html += '<tr>';
-                    html += '<td>' + data[x]['username'] + '</td>';
-                    html += '<td>' + data[x]['phone'] + '</td>';
-                    html += '<td>' + data[x]['email'] + '</td>';
-                    html += '<td>' + data[x]['superuser'] + '</td>';
-                }
-                html += '</tbody>';
-                html += '</table>';
-
-
-                html += '<ul role="menubar" aria-disabled="false" aria-label="Pagination" class="pagination b-pagination pagination-md justify-content-center">';
-                html += '<a href="javascript:void(0);" onclick="user_click(' + (now_page - 1) + ')">上一页</a>';
-                html += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
-                html += '<a href="javascript:void(0);">' + now_page + "/" + max_size + '</a>';
-                html += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
-                html += '<a href="javascript:void(0);" onclick="user_click(' + (now_page + 1) + ')">下一页</a>';
-                //html += '<input id = "agent_jump" value="'+now_page+'" />';
-                //  html += '<a href="javascript:void(0);" onclick="agent_jump()">跳转</a>';
-                html += '</ul>';
-                div_container.append(html);
-            }
-        }
-    });
-    $(".container1").css('background-color', '#f0f2f5');
-}
-
+                        </div><!-- /.modal -->`;
+    $('#model_div').text('').append(html1);
+    $('#add_user').modal('show');
+})
 //添加用户
 function user_add() {
 

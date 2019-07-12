@@ -152,7 +152,7 @@ function add_host_modal() {
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
             `;
-    $('#model_div').append(html);
+    $('#model_div').text('').append(html);
 }
 
 //详情
@@ -808,7 +808,7 @@ $(document).on("click", "#server_website_list_del", function() {
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
             `;
-    $('#model_div').append(html);
+    $('#model_div').text('').append(html);
     $('#del_web_infor').modal("show");
 });
 
@@ -921,7 +921,7 @@ $(document).on('click','#add_black',function () {
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
             `;
-    $('#model_div').append(html);
+    $('#model_div').text('').append(html);
     $('#add_black_list').modal("show");
 });
 
@@ -952,7 +952,7 @@ $(document).on('click','.black_list_release',function () {
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->`;
-    $('#model_div').append(html);
+    $('#model_div').text('').append(html);
     $("#black_release_list").modal("show");
 });
 
@@ -982,7 +982,7 @@ $(document).on('click','#releaseall_black',function () {
                 </div>
                 </div><!-- /.modal-content -->
         </div><!-- /.modal -->`;
-    $('#model_div').append(html);
+    $('#model_div').text('').append(html);
     $("#releaseall_black_list").modal("show");
 
 });
@@ -1017,7 +1017,7 @@ $(document).on('click','#add_white',function () {
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
             `;
-    $('#model_div').append(html);
+    $('#model_div').text('').append(html);
     $('#add_white_list').modal("show");
 });
 
@@ -1047,7 +1047,7 @@ $(document).on('click','.white_list_release',function () {
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->`;
-    $('#model_div').append(html);
+    $('#model_div').text('').append(html);
     $("#white_release_list").modal("show");
 });
 
@@ -1078,7 +1078,7 @@ $(document).on('click','#releaseall_white',function () {
                 </div>
                 </div><!-- /.modal-content -->
         </div><!-- /.modal -->`;
-    $('#model_div').append(html);
+    $('#model_div').text('').append(html);
     $("#releaseall_white_list").modal("show");
 });
 
@@ -1564,21 +1564,18 @@ function host_add() {
 
 
 //添加主机弹窗
-//打开弹窗
-$(function() {
-
-});
-
-// 关闭弹窗
-$(document).on('click',".layout .close,.layout .layout-close",function (e) {
-    $('.shade>.layout').html('');
-    actionIn(".layout", 'action_scale_out', .3, "");
-    $(".shade").css({
-        visibility: "hidden"
-    });
-    event.stopPropagation(); //阻止事件向上冒泡
-
-});
+// //打开弹窗
+//
+// // 关闭弹窗
+// $(document).on('click',".layout .close,.layout .layout-close",function (e) {
+//     $('.shade>.layout').html('');
+//     actionIn(".layout", 'action_scale_out', .3, "");
+//     $(".shade").css({
+//         visibility: "hidden"
+//     });
+//     event.stopPropagation(); //阻止事件向上冒泡
+//
+// });
 
 //拦截记录忽略按钮切换
 $(document).on("click", ".btn-group button", function () {
