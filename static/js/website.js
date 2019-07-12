@@ -356,12 +356,13 @@ $(document).on("click", ".btn_untreated", function() {
         </div><!-- /.modal-content -->
         </div><!-- /.modal -->
         `;
-    $('#model_div').append(html);
+    $('#model_div').text('').append(html);
     $('#event_treat').modal("show");
 });
 //事件处理事件
 function treat(obj) {
     $('#'+obj).attr('disabled','true');
+    $('#'+obj).text('已处理');
     $('#'+obj).removeClass('btn_untreated');
 
     let id = obj.split("btn_")[1];
