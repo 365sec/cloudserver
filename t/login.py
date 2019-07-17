@@ -46,7 +46,7 @@ def login(request):
             request.session['username'] = username
             request.session['superuser'] = u.superuser
             request.session['is_login'] = True
-            request.session.set_expiry(1800)
+            #request.session.set_expiry(1800)
             return redirect('/index')
 
     return render(request, 'login.html', {})

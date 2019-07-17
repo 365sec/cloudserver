@@ -394,9 +394,9 @@ function attack_threat_level_charts(data,div) {
         series: [{
             name: '威胁指数',
             type: 'pie',
-            radius: '80%',
+            radius: '60%',
             // center: ['50%', '60%'],
-            clockwise: false,
+            clockwise: true,
             data: [{
                 value: data[0],
                 name: '严重'
@@ -415,10 +415,10 @@ function attack_threat_level_charts(data,div) {
                 //     fontSize: 14,
                 //     align:'center',
                 // },
-                formatter: '{a|{b}}\n{b|({c})}',
+                formatter: '{a|{b}}{b|({c})}',
                 rich:{
                     a:{
-                        fontSize: 14,
+                        fontSize: 12,
                         align: 'center'
                     },
                     b:{

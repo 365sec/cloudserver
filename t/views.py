@@ -374,7 +374,10 @@ def attack_event_query(request):
         y['attack_source'] = x[4]
         y['server_ip'] = x[5]
         y['event_issue_id'] = x[6]
-        y['hostname'] = THostAgents.objects.all().filter(agent_id=x[0]).values_list("host_name").first()[0]
+        try:
+            y['hostname'] = THostAgents.objects.all().filter(agent_id=x[0]).values_list("host_name").first()[0]
+        except Exception, e:
+            continue
         if x[8]=="web_event":
             y['threat_level']=int(x[9])
         elif x[8]=="log_analysisd":
@@ -649,7 +652,7 @@ def attack_query_source(request):
 
     result = TAttackEvent.objects.all().values_list('event_time', 'attack_source', 'plugin_message',
                                                     'intercept_state','unused','event_name').filter( attack_source=attack_source,agent_id=agent_id)
-    log_obj=TLogAnalysisd.objects.all().values_list('event_time','srcip','event_name','unused','host_name','system_user').filter(dstip=ip, srcip=attack_source,agent_id=agent_id)
+    log_obj=TLogAnalysisd.objects.all().values_list('event_time','srcip','event_name','unused','host_name','dstuser').filter(dstip=ip, srcip=attack_source,agent_id=agent_id)
     result=result.union(log_obj,all=True).order_by('event_time')
     # result=log_obj
     num = result.count()
@@ -1341,7 +1344,10 @@ def baseline(request):
 
             else:
                 data['last_day']=str(data['last_day'].days)+"天之前"
-        data['last_check_time']=data['last_check_time'].strftime("%Y-%m-%d %H:%M:%S")
+        if data['last_check_time']:
+            data['last_check_time']=data['last_check_time'].strftime("%Y-%m-%d %H:%M:%S")
+        else:
+            data['last_check_time'] = ""
         data['result']=json.loads( data['result'])
     data['online']=online
     # print (data)
