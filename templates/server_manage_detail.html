@@ -198,7 +198,7 @@
                                         </div>
                                         <div class="u-list-leftbox   u-list-rightTEXT">
                                             <p class="u-css-examineP" style="color: #666;margin-bottom: 2px;font-size: 15px;">WEB文件扫描
-                                                <span class="label label-red " id="base_line_web_num"></span>
+                                                <span class="label label-red " id="web_file_check_num"></span>
                                             </p>
                                             <p class="u-css-examineP" style="font-size: 12px;">扫描网站文件中的网页木马、可疑外链、暗链黑链等</p>
                                         </div>
@@ -213,17 +213,17 @@
                                         <div class="panel-heading">
                                             <h4 class="panel-title" class="u-css-List-titleBOX">
                                                 <a data-toggle="collapse" data-parent="#accordion_webscran" href="#webmuma">
-                                                    <i class="iconfont red">&#xe60b;</i>
+                                                    <i class="iconfont ">&#xe60b;</i>
                                                     <div class="u-list-leftbox   u-list-rightTEXT">
-                                                        <p id="web_muma_num" class="u-css-examineP">网页木马</p>
+                                                        <p id="webshell" class="u-css-examineP">网页木马<span></span></p>
                                                     </div>
                                                     <button type="button" class="check_box" data-tip="treat_all">全部处理</button>
-                                                    <i class="iconfont slide_mark slide_down">&#xe64a;</i>
+                                                    <i class="iconfont slide_mark slide_down" style="display: none">&#xe64a;</i>
                                                 </a>
                                             </h4>
                                         </div>
                                         <div id = 'webmuma' class="panel-collapse collapse webscran_contant">
-                                            <ul id="webmuma_li">
+                                            <ul id="webshell_li">
 
                                             </ul>
                                         </div>
@@ -232,13 +232,13 @@
                                         <div class="panel-heading">
                                             <h4 class="panel-title" class="u-css-List-titleBOX">
                                                 <a data-toggle="collapse" data-parent="#accordion_webscran" href="#suspicious_links_a">
-                                                    <i class="iconfont gray">&#xe60b;</i>
+                                                    <i class="iconfont">&#xe60b;</i>
                                                     <div class="u-list-leftbox   u-list-rightTEXT">
-                                                        <p  id="suspicious_links_num" class="u-css-examineP">可疑外链</p>
+                                                        <p  id="suspicious_links" class="u-css-examineP">可疑外链<span></span></p>
 
                                                     </div>
                                                     <button type="button" class="check_box" data-tip="treat_all">全部处理</button>
-                                                    <i class="iconfont slide_mark slide_down">&#xe64a;</i>
+                                                    <i class="iconfont slide_mark slide_down" style="display: none">&#xe64a;</i>
                                                 </a>
                                             </h4>
                                         </div>
@@ -253,10 +253,13 @@
                                         <div class="panel-heading">
                                             <h4 class="panel-title" class="u-css-List-titleBOX">
                                                 <a data-toggle="collapse" data-parent="#accordion_webscran" href="#dark_chain_a">
-                                                    <i class="iconfont gray">&#xe60b;</i>
+                                                    <i class="iconfont">&#xe60b;</i>
                                                     <div class="u-list-leftbox   u-list-rightTEXT">
-                                                        <p id="dark_chain_num" class="u-css-examineP">黑链暗链</p>
+                                                        <p id="dark_chain" class="u-css-examineP">黑链暗链<span></span></p>
+
                                                     </div>
+                                                    <button type="button" class="check_box" data-tip="treat_all">全部处理</button>
+                                                    <i class="iconfont slide_mark slide_down" style="display: none">&#xe64a;</i>
                                                 </a>
                                             </h4>
                                         </div>
@@ -444,7 +447,7 @@
                                         </div>
                                         <div class="u-list-leftbox   u-list-rightTEXT">
                                             <p class="u-css-examineP" >账户安全检查
-                                                <span class="label label-red " id="base_line_user_num"></span>
+                                                <span class="label label-red " id="account_security_check_num"></span>
 <!--                                                <span class="label label-red ">6</span>-->
                                             </p>
                                             <p class="u-css-examineP" style="font-size: 12px;">扫及时发现存在问题的用户账户，降低用户账户被盗的可能性</p>
@@ -460,16 +463,17 @@
                                       <div class="panel panel-sec">
                                           <div class="panel-heading">
                                               <h4 class="panel-title" class="u-css-List-titleBOX">
-                                                  <a data-toggle="collapse" data-parent="#according_acc_safe_checking" href="#hidden_account">
-                                                      <i class="iconfont gray">&#xe60b;</i>
+                                                  <a data-toggle="collapse" data-parent="#according_acc_safe_checking" href="#hidden_account_content">
+                                                      <i class="iconfont">&#xe60b;</i>
                                                       <div class="u-list-leftbox   u-list-rightTEXT">
-                                                          <p id="hidden_account_num" class="u-css-examineP" >隐藏账户检查  (0)
-                                                          </p>
+                                                          <p id="hidden_account" class="u-css-examineP" >隐藏账户检查<span></span></p>
                                                       </div>
+                                                      <button type="button" class="check_box" data-tip="treat_all">全部处理</button>
+                                                      <i class="iconfont slide_mark slide_down" style="display: none">&#xe64a;</i>
                                                   </a>
                                               </h4>
                                           </div>
-                                          <div id = 'hidden_account' class="panel-collapse collapse webscran_contant">
+                                          <div id = 'hidden_account_content' class="panel-collapse collapse webscran_contant">
                                               <ul id="hidden_account_li">
 
                                               </ul>
@@ -478,16 +482,17 @@
                                       <div class="panel panel-sec">
                                           <div class="panel-heading">
                                               <h4 class="panel-title" class="u-css-List-titleBOX">
-                                                  <a data-toggle="collapse" data-parent="#according_acc_safe_checking" href="#clone_account">
-                                                      <i class="iconfont gray">&#xe60b;</i>
+                                                  <a data-toggle="collapse" data-parent="#according_acc_safe_checking" href="#clone_account_content">
+                                                      <i class="iconfont">&#xe60b;</i>
                                                       <div class="u-list-leftbox   u-list-rightTEXT">
-                                                          <p id="clone_account_num" class="u-css-examineP" >克隆账户检查  (0)
-                                                          </p>
+                                                          <p id="clone_account" class="u-css-examineP" >克隆账户检查<span></span></p>
                                                       </div>
+                                                      <button type="button" class="check_box" data-tip="treat_all">全部处理</button>
+                                                      <i class="iconfont slide_mark slide_down" style="display: none">&#xe64a;</i>
                                                   </a>
                                               </h4>
                                           </div>
-                                          <div id = 'clone_account' class="panel-collapse collapse webscran_contant">
+                                          <div id = 'clone_account_content' class="panel-collapse collapse webscran_contant">
                                               <ul id="clone_account_li">
 
                                               </ul>
@@ -511,16 +516,17 @@
                                       <div class="panel panel-sec">
                                           <div class="panel-heading">
                                               <h4 class="panel-title" class="u-css-List-titleBOX">
-                                                  <a data-toggle="collapse" data-parent="#according_acc_safe_checking" href="#weak_password_account">
-                                                      <i class="iconfont gray">&#xe60c;</i>
+                                                  <a data-toggle="collapse" data-parent="#according_acc_safe_checking" href="#weak_password_account_content">
+                                                      <i class="iconfont">&#xe60c;</i>
                                                       <div class="u-list-leftbox   u-list-rightTEXT">
-                                                          <p id="weak_password_account_num"  class="u-css-examineP" >弱密码账户检查  (0)
-                                                          </p>
+                                                          <p id="weak_password_account"  class="u-css-examineP" >弱密码账户检查<span></span></p>
                                                       </div>
+                                                      <button type="button" class="check_box" data-tip="treat_all">全部处理</button>
+                                                      <i class="iconfont slide_mark slide_down" style="display: none">&#xe64a;</i>
                                                   </a>
                                               </h4>
                                           </div>
-                                          <div id = 'weak_password_account' class="panel-collapse collapse webscran_contant">
+                                          <div id = 'weak_password_account_content' class="panel-collapse collapse webscran_contant">
                                               <ul id="weak_password_account_li">
 
                                               </ul>

@@ -222,7 +222,7 @@ function chart_attack_trend_server(agent_id){
         async: false,
         success: function (data_list) {
             data=data_list;
-            console.log(data_list);
+            // console.log(data_list);
             let server_id_nowcount=0;
             let server_id_allcount=0;
             for (x in data['num_list']['day'])
@@ -528,32 +528,63 @@ function server_checking(data){
             $("#base_line_totalScore").text("").append(data_list['score']);
             $("#last_check_time").text("").append(data_list['last_check_time']);
 
+            for(result in data_list['result']){
+                // 一级
+                let datas = data_list['result'][result]['result'];
+                let all_num =0;
+                // console.log(data_list['result'][result]['result']);
+                for(data in datas){
+                    // 二级
+
+                    console.log(data,datas[data]);
+                    if(datas[data].length){
+                        all_num += datas[data].length;
+                        $("#"+data).children().text('（'+datas[data].length+'）');
+                        $("#"+data).parent().siblings().first().addClass('red');
+                        $("#"+data).parent().siblings().first().html('&#xe60b;');
+                        $('#'+data).parent().siblings().last().css('display','block');
+                        $('#'+data+"_li").text("").append(get_baseline_li_html(datas[data]));
+                    }else{
+                        $("#"+data).children().text('（0）');
+                        $("#"+data).parent().siblings().first().html('&#xe60c;');
+                        $("#"+data).parent().siblings().first().addClass('grey');
+                    }
+                }
+                console.log(all_num);
+                if(all_num){
+                    $("#"+result+'_num').text("").append(all_num);
+                }
+            }
 
             //WEB文件扫描
-            let web_scan=data_list['result']['web_file_check']['result'];
-            let web_all_num=web_scan['webshell'].length+web_scan['dark_chain'].length+web_scan['suspicious_links'].length;
-            $("#base_line_web_num").text("0").append(web_all_num);
-            $("#web_muma_num").text("网页木马 （").append(web_scan['webshell'].length).append(")");
-            $("#dark_chain_num").text("黑链暗链 （").append(web_scan['dark_chain'].length).append(")");
-            $("#suspicious_links_num").text("可疑外链 （").append(web_scan['suspicious_links'].length).append(")");
-            $("#webmuma_li").text("").append(get_baseline_li_html(web_scan['webshell']));
-            $("#suspicious_links_li").text("").append(get_baseline_li_html(web_scan['suspicious_links']));
-            $("#dark_chain_li").text("").append(get_baseline_li_html(web_scan['dark_chain']));
-            //账户安全发现
-            let user_scan=data_list['result']['account_security_check']['result'];
-            let user_all_num=user_scan['clone_account'].length+user_scan['hidden_account'].length+user_scan['weak_password_account'].length;
-            $("#base_line_user_num").text("0").append(user_all_num);
-            $("#clone_account_num").text("克隆账户检查（").append(user_scan['clone_account'].length).append("）");
-            $("#hidden_account_num").text("隐藏账户检查（").append(user_scan['hidden_account'].length).append("）");
-            $("#weak_password_account_num").text("弱密码账户检查（").append(user_scan['weak_password_account'].length).append("）");
-            $("#clone_account_li").text("").append(get_baseline_li_html(user_scan['clone_account']));
-            $("#hidden_account_li").text("").append(get_baseline_li_html(user_scan['hidden_account']));
-            $("#weak_password_account_li").text("").append(get_baseline_li_html(user_scan['weak_password_account']));
+            // let web_scan=data_list['result']['web_file_check']['result'];
+            // let web_all_num=web_scan['webshell'].length+web_scan['dark_chain'].length+web_scan['suspicious_links'].length;
+            // $("#base_line_web_num").text("0").append(web_all_num);
+            // $("#web_muma_num").text("网页木马 （").append(web_scan['webshell'].length).append(")");
+            // if(!web_scan['webshell'].length){
+            //     $("#web_muma_num").parent().last().css('display','none');
+            //
+            // }
+            // $("#dark_chain_num").text("黑链暗链 （").append(web_scan['dark_chain'].length).append(")");
+            // $("#suspicious_links_num").text("可疑外链 （").append(web_scan['suspicious_links'].length).append(")");
+            // $("#webmuma_li").text("").append(get_baseline_li_html(web_scan['webshell']));
+            // $("#suspicious_links_li").text("").append(get_baseline_li_html(web_scan['suspicious_links']));
+            // $("#dark_chain_li").text("").append(get_baseline_li_html(web_scan['dark_chain']));
+            // 账户安全发现
+            // let user_scan=data_list['result']['account_security_check']['result'];
+            // let user_all_num=user_scan['clone_account'].length+user_scan['hidden_account'].length+user_scan['weak_password_account'].length;
+            // $("#base_line_user_num").text("0").append(user_all_num);
+            // $("#clone_account_num").text("克隆账户检查（").append(user_scan['clone_account'].length).append("）");
+            // $("#hidden_account_num").text("隐藏账户检查（").append(user_scan['hidden_account'].length).append("）");
+            // $("#weak_password_account_num").text("弱密码账户检查（").append(user_scan['weak_password_account'].length).append("）");
+            // $("#clone_account_li").text("").append(get_baseline_li_html(user_scan['clone_account']));
+            // $("#hidden_account_li").text("").append(get_baseline_li_html(user_scan['hidden_account']));
+            // $("#weak_password_account_li").text("").append(get_baseline_li_html(user_scan['weak_password_account']));
             //系统配置检测
             // let sys_scan=data_list['re']
 
 
-            $("#base_line_countNum").text("").append(web_all_num+user_all_num);
+            // $("#base_line_countNum").text("").append(web_all_num+user_all_num);
             console.log(data_list['last_check_time']);
             if (data_list['last_check_time']===null)
             {
@@ -562,6 +593,10 @@ function server_checking(data){
             }
         }});
 }
+// 一级点击关闭所有二级
+$(document).on('click','.panel-fst',function () {
+   $(this).find('.panel-sec').find('.collapse').removeClass('in');
+});
 
 function get_baseline_li_html(data) {
     /*获得基线检查 网页木马的html
@@ -572,7 +607,7 @@ function get_baseline_li_html(data) {
         html+=`
             <li>
                 <div class="u-list-leftbox">
-                    <i class="iconfont">&#xe60f;</i>
+                    <i class="iconfont red">&#xe60f;</i>
                 </div>
                 <div class="u-list-leftbox   u-list-rightTEXT">
                     <p class="u-css-examineP">

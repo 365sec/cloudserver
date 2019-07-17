@@ -163,13 +163,13 @@ function attrack_recent_warning(data) {
     for (x in data) {
 
         table += '<tr>';
-        table += '<td width="24%">';
+        table += '<td>';
         table += data[x]['event_time'];
         table += '</td>';
-        table += '<td width="15%">';
+        table += '<td>';
         table += data[x]['attack_source'];
         table += '</td>';
-        table += '<td width="24%">';
+        table += '<td>';
         table += data[x]['event_id'];
         table += '</td>';
         table += '<td title="' + data[x]['plugin_message'] + '" ><div>';
@@ -179,9 +179,9 @@ function attrack_recent_warning(data) {
 
     }
 
-    html = `        <div class=" table-thead">
-                    <table class="table">
-                        <thead>
+    html = `        
+                    <table class="table table-bordered table-striped table-hover">
+                       <thead>
                             <tr>
                               <th width="24%">时间</th>
                               <th width="15%">攻击IP</th>
@@ -189,23 +189,16 @@ function attrack_recent_warning(data) {
                               <th>描述</th>
                             </tr>
                         </thead>
-                    </table>
-                    </div>
-                    <div class="table-tbody">
-                    <table class="table table-bordered table-striped table-hover">
-                      
                       <tbody>
                       ` + table + `
                       </tbody>
                     </table>
-                    </div>
                 `;
     recent_div.append(html);
-    console.log($('.table-tbody').get(0));
-    console.log($('.table-tbody').get(0).scrollHeight,$('.table-tbody').get(0).clientHeight);
-    if($('.table-tbody').get(0).scrollHeight > $('.table-tbody').get(0).clientHeight){
-        $('.table-thead').css('padding-right','18px')
-    }
+    // 超出滚动
+    // if($('.table-tbody').get(0).scrollHeight > $('.table-tbody').get(0).clientHeight){
+    //     $('.table-thead').css('padding-right','18px')
+    // }
 }
 
 var mycharts_attrack_type_times;

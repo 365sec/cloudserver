@@ -872,13 +872,7 @@ a:not([href]):not([tabindex]), a:not([href]):not([tabindex]):focus, a:not([href]
     border: 1px solid #ddd;
     height: calc(100% - 13px)!important;
 }
-.table-tbody{
-    overflow-y: auto;
-    height: 391px;
-}
-.table-thead{
-    background-color: #002430;
-}
+
 .h350{
     height: 350px;
 }
@@ -1880,6 +1874,9 @@ text-align:center;
 }
 .u-css-List-titleBOX{
     width: 100%;
+}
+.panel-body {
+     padding: 0;
 }
 .panel-group{
     border-top: 1px solid #ececec;
