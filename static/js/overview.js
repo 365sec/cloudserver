@@ -17,13 +17,18 @@ function overview_click() {
 }
 
 function overviewFlash() {
+    // 危险等级分布
     query_threat_level();
+    //首页地图
     query_attack_source(1);
+    //外部威胁趋势
     query_attack_times();
+    // 攻击类型排行
     query_attack_type();
+    // 最近告警内容
     query_attack_warn();
 }
-
+// 危险等级分布
 function query_threat_level() {
     $.ajax({
         url: "query_threat_level",
@@ -51,6 +56,7 @@ function query_attack_source(show_continuous) {
         //dataType: "json",
         success: function (data_list) {
             if(show_continuous) {
+                // 攻击IP排行
                 attack_source_charts(data_list['attrack_source_dic']);
             }
             chart_map(data_list['attack_source_map']);
@@ -157,38 +163,49 @@ function attrack_recent_warning(data) {
     for (x in data) {
 
         table += '<tr>';
-        table += '<td style="min-width: 140px;">';
+        table += '<td width="24%">';
         table += data[x]['event_time'];
         table += '</td>';
-        table += '<td>';
+        table += '<td width="15%">';
         table += data[x]['attack_source'];
         table += '</td>';
-        table += '<td>';
+        table += '<td width="24%">';
         table += data[x]['event_id'];
         table += '</td>';
-        table += '<td title="' + data[x]['plugin_message'] + '"><div>';
+        table += '<td title="' + data[x]['plugin_message'] + '" ><div>';
         table += data[x]['plugin_message'];
         table += '</div></td>';
         table += '</tr>';
 
     }
 
-    html = `
+    html = `        <div class=" table-thead">
                     <table class="table">
-                      <thead>
-                        <tr>
-                          <th width="24%">时间</th>
-                          <th width="15%">攻击IP</th>
-                          <th width="24%">攻击事件</th>
-                          <th>描述</th>
-                        </tr>
-                      </thead>
+                        <thead>
+                            <tr>
+                              <th width="24%">时间</th>
+                              <th width="15%">攻击IP</th>
+                              <th width="24%">攻击事件</th>
+                              <th>描述</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    </div>
+                    <div class="table-tbody">
+                    <table class="table table-bordered table-striped table-hover">
+                      
                       <tbody>
                       ` + table + `
                       </tbody>
                     </table>
+                    </div>
                 `;
     recent_div.append(html);
+    console.log($('.table-tbody').get(0));
+    console.log($('.table-tbody').get(0).scrollHeight,$('.table-tbody').get(0).clientHeight);
+    if($('.table-tbody').get(0).scrollHeight > $('.table-tbody').get(0).clientHeight){
+        $('.table-thead').css('padding-right','18px')
+    }
 }
 
 var mycharts_attrack_type_times;
@@ -226,14 +243,16 @@ function attrack_type_times(data,div) {
             trigger: 'axis',
             axisPointer: {
                 type: 'shadow'
-            }
+            },
+            formatter:'{b}<br>次数：{c}',
+
         },
         grid: {
             left: '5%',
             top: '5%',
-            right: '0%',
+            right: '20%',
             bottom: '0%',
-            containLabel: true
+            containLabel: false
         },
         xAxis: {
             type: 'value',
@@ -250,9 +269,21 @@ function attrack_type_times(data,div) {
                 show: false
             }
         },
+        label:{
+            show:true,
+            position: 'right',
+            formatter:'{b}',
+            color: '#000'
+        },
         yAxis: {
             type: 'category',
+            show:false,
             data: data_list_type,
+            // axisLabel:{
+            //     textStyle:{
+            //         align:'left',
+            //     }
+            // },
             axisTick: {
                 show: false
             }, splitLine: {
@@ -263,10 +294,11 @@ function attrack_type_times(data,div) {
         },
         series: [
             {
-                barMaxWidth:30,
+                // barMaxWidth:30,
                 name: '次数',
                 type: 'bar',
-                data: data_list_type_dic
+                data: data_list_type_dic,
+                barWidth: 20,
             }
         ]
     };
@@ -299,21 +331,21 @@ function attrack_time_charts(data,div) {
 
     option = {
         // Make gradient line here
-        color: "#C23531",
-        visualMap: [{
-            show: false,
-            type: 'continuous',
-            seriesIndex: 0,
-            min: 0,
-            max: 400
-        }, {
-            show: false,
-            type: 'continuous',
-            seriesIndex: 1,
-            dimension: 0,
-            min: 0,
-            max: dateList.length - 1
-        }],
+        // color: "#C23531",
+        // visualMap: [{
+        //     show: false,
+        //     type: 'continuous',
+        //     seriesIndex: 0,
+        //     min: 0,
+        //     max: 400
+        // }, {
+        //     show: false,
+        //     type: 'continuous',
+        //     seriesIndex: 1,
+        //     dimension: 0,
+        //     min: 0,
+        //     max: dateList.length - 1
+        // }],
 
         tooltip: {
             trigger: 'axis'
@@ -331,23 +363,20 @@ function attrack_time_charts(data,div) {
             },
         }],
         grid: {
-            left: '0%',
+            left: '5%',
             top: '13%',
-            right: '0%',
-            bottom: '0%',
+            right: '5%',
+            bottom: '5%',
             containLabel: true
         },
         series: [{
-            type: 'line',
+            type: 'bar',
             showSymbol: false,
             name: "事件",
             data: valueList,
             itemStyle: {
                 normal: {
                     color: '#2D7BA4',
-                    lineStyle: {
-                        color: '#2D7BA4'
-                    }
                 }
             }
         }]
@@ -355,7 +384,7 @@ function attrack_time_charts(data,div) {
 
     mycharts_attrack_time.setOption(option)
 }
-
+// 危险等级分布
 function attack_threat_level_charts(data,div) {
     // console.log(data)
     if (mycharts_attack_threat_level != null
@@ -372,7 +401,7 @@ function attack_threat_level_charts(data,div) {
         series: [{
             name: '威胁指数',
             type: 'pie',
-            radius: '60%',
+            radius: '80%',
             // center: ['50%', '60%'],
             clockwise: false,
             data: [{
@@ -406,19 +435,19 @@ function attack_threat_level_charts(data,div) {
                 }
             },
             grid: {
-                left: '5%',
-                top: '0',
+                left: '8%',
+                top: '5%',
                 right: '5%',
-                bottom: '0',
+                bottom: '5%',
                 containLabel: true
             },
-            labelLine: {
-                normal: {
-                    show: true,
-                    length: 15,
-                    length2: 10
-                }
-            },
+            // labelLine: {
+            //     normal: {
+            //         show: true,
+            //         length: 15,
+            //         length2: 10
+            //     }
+            // },
             itemStyle: {
                 normal: {
                     borderWidth: 1,
@@ -440,7 +469,7 @@ function attack_threat_level_charts(data,div) {
 
     mycharts_attack_threat_level.setOption(option)
 }
-
+// 首页地图
 var map_flag = 1;
 
 function chart_map(attack_source_data) {
@@ -483,10 +512,10 @@ function chart_map(attack_source_data) {
             formatter: '{b}'
         },
         grid: {
-            left: '0',
-            top: '0',
-            right: '0',
-            bottom: '0',
+            left: '5%',
+            top: '5%',
+            right: '5%',
+            bottom: '5%',
             containLabel: true
         },
         // legend: {
@@ -511,7 +540,7 @@ function chart_map(attack_source_data) {
         },
         geo: {
             map: geo_map,
-            zoom: 1.2,
+            zoom: 1,
             label: {
                 emphasis: {
                     show: false
@@ -585,15 +614,17 @@ function attack_source_charts(data) {
         tooltip: {
             trigger: 'axis',
             axisPointer: {
-                type: 'shadow'
-            }
+                type: 'shadow',
+
+            },
+            formatter:'{b}<br>次数：{c}',
         },
         grid: {
             left: '5%',
-            top: '5%',
-            right: '0%',
-            bottom: '0%',
-            containLabel: true
+            top: '3%',
+            right: '10%',
+            bottom: '3%',
+            containLabel: false
         },
         xAxis: {
             type: 'value',
@@ -610,8 +641,15 @@ function attack_source_charts(data) {
                 show: false
             },
         },
+        label:{
+            show:true,
+            position: 'right',
+            formatter:'{b}',
+            color: '#000'
+        },
         yAxis: {
             type: 'category',
+            show:false,
             data: data_list_source,
             axisTick: {
                 show: false
@@ -625,7 +663,8 @@ function attack_source_charts(data) {
             {
                 name: '次数',
                 type: 'bar',
-                data: data_list_source_dic
+                data: data_list_source_dic,
+                barWidth: 20,
             }
         ]
     };

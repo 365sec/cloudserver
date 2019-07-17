@@ -499,10 +499,6 @@ td {
 .footer a:not(.btn) {
     color: #6e7687;
 }
-.overviewDiv{
-    display: block;
-    height: calc(100vh - 36px - 60px);
-}
 .row .col-4 > div {
     height: 100%;
     width: 100%;
@@ -513,7 +509,7 @@ td {
     width: 100%;
 }
 
-.overviewDiv .row ,.count_div .row{
+.count_div .row{
     height: 100%;
     width: 100%;
 }
@@ -609,17 +605,13 @@ td {
     line-height: 35px;
     padding: 0px 5px;
     box-sizing: border-box;
-    overflow: hidden;
-    background: none;
     border-left: 0;
     border-right: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-.chart-table thead{
-    border: 1px solid rgba(233, 233, 233, 1);
-}
+
 
 
 #attrack_recent_warning_dic_div tr td > div {
@@ -631,6 +623,7 @@ td {
 }
 #attrack_recent_warning_dic_div table{
     table-layout: fixed;
+    margin-bottom: 0;
 }
 
 #attrack_recent_warning_dic_div table thead tr th:first-child {
@@ -683,14 +676,6 @@ td {
     height: 54px;
     padding: 0px 10px;
     background-color: rgba(250, 250, 250, 1);
-}
-.table th:first-child {
-    border-left: 1px solid rgba(233, 233, 233, 1);
-    /*border-radius: 4px;*/
-}
-.table th:last-child {
-    border-right: 1px solid rgba(233, 233, 233, 1);
-    /*border-radius: 4px;*/
 }
 
 .table-bordered>tbody>tr> td ,.table-bordered th{
@@ -865,26 +850,50 @@ a:not([href]):not([tabindex]), a:not([href]):not([tabindex]):focus, a:not([href]
     width: 100%!important;
     padding: 20px;
 }
-.overviewDiv .title{
-    border-bottom: 2px solid #e7eaec;
-    padding: 5px 10px 5px;
-}
+/*.overviewDiv .title{*/
+/*    border-bottom: 2px solid #e7eaec;*/
+/*    padding: 5px 10px 5px;*/
+/*}*/
 
 
 .title .special{
     font-size: 16px;
-    font-weight: bold;
+    line-height: 36px;
+    margin-left: 12px;
 }
 .overviewDiv .chart-bo,.count_div .chart-bo{
     position: relative;
+
     padding-left: 0;
 }
 
-.row  .chart-con{
+.overviewDiv_flex  .chart-con{
     width: 100%;
-    height: calc(100% - 11px)!important;
+    border: 1px solid #ddd;
+    height: calc(100% - 13px)!important;
 }
-
+.table-tbody{
+    overflow-y: auto;
+    height: 391px;
+}
+.table-thead{
+    background-color: #002430;
+}
+.h350{
+    height: 350px;
+}
+.h480{
+    height: 480px;
+}
+.overviewDiv_flex{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+.overviewDiv_flex>div{
+    width: 48%;
+}
 .page-title{
     color: rgba(0, 0, 0, 0.65);
     background: #fafafa;
@@ -1296,9 +1305,6 @@ text-align:center;
     border-bottom:none;
     border-right:none;
     border-left:none;
-}
-#attrack_recent_warning_dic_div .table > thead > tr > th{
-    color: #333;
 }
 #right_content_main h5{
     font-weight:bold;
