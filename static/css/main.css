@@ -1,11 +1,11 @@
 @font-face {
     font-family: 'iconfont';  /* project id 1075499 */
-    src: url('//at.alicdn.com/t/font_1075499_rn8tn3cgbir.eot');
-    src: url('//at.alicdn.com/t/font_1075499_rn8tn3cgbir.eot?#iefix') format('embedded-opentype'),
-    url('//at.alicdn.com/t/font_1075499_rn8tn3cgbir.woff2') format('woff2'),
-    url('//at.alicdn.com/t/font_1075499_rn8tn3cgbir.woff') format('woff'),
-    url('//at.alicdn.com/t/font_1075499_rn8tn3cgbir.ttf') format('truetype'),
-    url('//at.alicdn.com/t/font_1075499_rn8tn3cgbir.svg#iconfont') format('svg');
+    src: url('//at.alicdn.com/t/font_1075499_b3h93gcz4dv.eot');
+    src: url('//at.alicdn.com/t/font_1075499_b3h93gcz4dv.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_1075499_b3h93gcz4dv.woff2') format('woff2'),
+    url('//at.alicdn.com/t/font_1075499_b3h93gcz4dv.woff') format('woff'),
+    url('//at.alicdn.com/t/font_1075499_b3h93gcz4dv.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_1075499_b3h93gcz4dv.svg#iconfont') format('svg');
 }
 .iconfont{
     font-family:"iconfont" !important;
@@ -865,11 +865,12 @@ a:not([href]):not([tabindex]), a:not([href]):not([tabindex]):focus, a:not([href]
 /*    padding: 5px 10px 5px;*/
 /*}*/
 
-
+.title .iconfont{
+    color: #2d7ba4;
+}
 .title .special{
     font-size: 16px;
     line-height: 36px;
-    margin-left: 12px;
 }
 .overviewDiv .chart-bo,.count_div .chart-bo{
     position: relative;
@@ -2049,8 +2050,12 @@ text-align:center;
     font-size: 16px;
     line-height: 30px;
 }
-#config_show .panel-title a i{
+#config_show .panel-title a>i{
     margin-left: auto;
+}
+#config_show .panel-title a i:first-child{
+    margin-left: 0;
+    font-size: 20px;
 }
 #config_show .panel-group div button{
     background: none;
@@ -2060,7 +2065,9 @@ text-align:center;
     padding: 10px 15px;
     box-sizing: border-box;
 }
-
+#config_show .panel-body{
+    padding: 20px;
+}
 #config_show .panel-group div button.active {
     color: rgba(0, 0, 0, .7);
     border: 1px solid #333;
@@ -2255,4 +2262,55 @@ text-align:center;
 }
 #AGENT_ID{
     padding-left: 15px;
+}
+.btn_on_off{
+    border-radius: 3px;
+    margin-top: 10px;
+    height: 18px;
+    width: 60px;
+    overflow: hidden;
+    display: inline-flex;
+    border:1px solid #adadad;
+}
+.btn_fath{
+    position: relative;
+    width: 120px;
+    height: 18px;
+    display: flex;
+}
+
+.btn_left{
+    float: left;
+    background-color: #333;
+    color: #fff;
+}
+
+.btn_right{
+    float: right;
+    background-color: #e6e6e6;
+    color: #333;
+}
+.btnSwitch{
+    border:none;
+
+    line-height: 18px;
+    font-size: 12px;
+    text-align: center;
+    z-index: 1;
+    width: 60px;
+}
+
+.move{
+    z-index: 100;
+    height: 16px;
+    width: 6px;
+    border-radius: 3px;
+    position: absolute;
+    cursor: pointer;
+    border: 1px solid #828282;
+    background-color: #fff;
+    left: 57px;
+}
+.on .btn_fath{
+    left: -5px;
 }

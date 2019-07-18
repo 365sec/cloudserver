@@ -1463,26 +1463,56 @@ function global_config_show(global_config, id) {
     }
     if (global_config['onekey_shutdown']['action'] === true) {
         onekey_shutdown = 'checked'
-    }
 
+    }
     let html = ``;
     html += `        <div class="form">
                         <p><b>快速设置</b></p>
-                        <label class="custom-switch">
-                            <input type="checkbox"  id="all_log" ${all_log} name="custom-switch-checkbox"  onchange="agent_manage_global_change('all_log','${id}')" class="custom-switch-input">
-                            <span class="custom-switch-indicator"></span>
-                            <span class="custom-switch-description">将所有算法设置为「记录日志」模式</span>
+                        <label for="all_log">
+                            <div class="btn_on_off on"  onclick="btnCheckboxToogle(this)">
+                                <div class="btn_fath"  data-state="on">
+                                    <div class="move"></div>
+                                    <div class="btnSwitch btn_left">ON</div>
+                                    <div class="btnSwitch btn_right ">OFF</div>
+                                </div>
+                            </div>
+                            <span >将所有算法设置为「记录日志」模式</span>
                         </label>
-                        <label class="custom-switch">
-                            <input type="checkbox" id="onekey_shutdown" ${onekey_shutdown} name="custom-switch-checkbox" onchange="agent_manage_global_change('onekey_shutdown','${id}')"  class="custom-switch-input">
-                            <span class="custom-switch-indicator"></span>
-                            <span class="custom-switch-description">是否关闭网站</span>
-                        </label>
+                        <input type="checkbox"  id="all_log" ${all_log} name="custom-switch-checkbox"  onchange="agent_manage_global_change('all_log','${id}')" class="custom-switch-input" style="display: none">
+                        <br/>
+                        <label for="onekey_shutdown">
+                            <div class="btn_on_off on"  onclick="btnCheckboxToogle(this)">
+                                <div class="btn_fath"  data-state="on">
+                                    <div class="move"></div>
+                                    <div class="btnSwitch btn_left">ON</div>
+                                    <div class="btnSwitch btn_right ">OFF</div>
+                                </div>
+                            </div>
+                            <span>是否关闭网站</span>
+                        </label>                            
+                        <input type="checkbox" id="onekey_shutdown" ${onekey_shutdown} name="custom-switch-checkbox" onchange="agent_manage_global_change('onekey_shutdown','${id}')"  class="custom-switch-input" style="display: none">
+
                     </div>`;
 
     return html;
 }
-
+function btnCheckboxToogle(th){
+    var ele = $(th).find(".btn_fath");
+    if(ele.attr("data-state") == "on"){
+        ele.animate({left: "-58px"}, 300, function(){
+            ele.attr("data-state", "off");
+            //关闭执行
+        });
+        $(th).removeClass("on").addClass("off");
+    }else if(ele.attr("data-state") == "off"){
+        ele.animate({left: '-4px'}, 300, function(){
+            $(this).attr("data-state", "on");
+            //开启执行
+        });
+        $(th).removeClass("off").addClass("on");
+    }
+    // console.log($('#all_log').prop("checked"))
+}
 
 function agent_manage_algorithm_change(x_id, state, id) {
 
