@@ -2272,13 +2272,21 @@ text-align:center;
     display: inline-flex;
     border:1px solid #adadad;
 }
+
 .btn_fath{
     position: relative;
     width: 120px;
     height: 18px;
     display: flex;
+    left: -58px;
+    transition: left 0.5s ease;
+    -webkit-transition: left 0.5s ease;
+    -ms-transition: left 0.5s ease;
+    -moz-transition: left 0.5s ease;
 }
-
+.custom-switch-input:checked +label .btn_fath{
+    left: -4px;
+}
 .btn_left{
     float: left;
     background-color: #333;
@@ -2310,7 +2318,4 @@ text-align:center;
     border: 1px solid #828282;
     background-color: #fff;
     left: 57px;
-}
-.on .btn_fath{
-    left: -5px;
 }

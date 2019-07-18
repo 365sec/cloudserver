@@ -483,8 +483,6 @@ function application_security(){
 // 基线检查
 function click_baseline(data){
     $(document).on('click','#server_checking_link',function () {
-
-
         server_checking(data);
     })
 }
@@ -594,8 +592,8 @@ function server_checking(data){
         }});
 }
 // 一级点击关闭所有二级
-$(document).on('click','.panel-fst',function () {
-   $(this).find('.panel-sec').find('.collapse').removeClass('in');
+$(document).on('click','.panel-fst>.panel-heading',function () {
+   $(this).siblings().find('.panel-sec').find('.collapse').removeClass('in');
 });
 
 function get_baseline_li_html(data) {
@@ -1460,17 +1458,22 @@ function global_config_show(global_config, id) {
     let onekey_shutdown;
     if (global_config['all_log'] === true) {
         all_log = 'checked'
+    }else {
+        all_log = 'unchecked';
     }
     if (global_config['onekey_shutdown']['action'] === true) {
         onekey_shutdown = 'checked'
-
+    }else {
+        onekey_shutdown = 'unchecked';
     }
     let html = ``;
+
     html += `        <div class="form">
                         <p><b>快速设置</b></p>
+                        <input type="checkbox"  id="all_log" ${all_log} name="custom-switch-checkbox"  onchange="agent_manage_global_change('all_log','${id}')" class="custom-switch-input" style="display: none">
                         <label for="all_log">
-                            <div class="btn_on_off on"  onclick="btnCheckboxToogle(this)">
-                                <div class="btn_fath"  data-state="on">
+                            <div class="btn_on_off"  >
+                                <div class="btn_fath"  >
                                     <div class="move"></div>
                                     <div class="btnSwitch btn_left">ON</div>
                                     <div class="btnSwitch btn_right ">OFF</div>
@@ -1478,41 +1481,41 @@ function global_config_show(global_config, id) {
                             </div>
                             <span >将所有算法设置为「记录日志」模式</span>
                         </label>
-                        <input type="checkbox"  id="all_log" ${all_log} name="custom-switch-checkbox"  onchange="agent_manage_global_change('all_log','${id}')" class="custom-switch-input" style="display: none">
                         <br/>
+                        <input type="checkbox" id="onekey_shutdown" ${onekey_shutdown} name="custom-switch-checkbox" onchange="agent_manage_global_change('onekey_shutdown','${id}')"  class="custom-switch-input" style="display: none">
                         <label for="onekey_shutdown">
-                            <div class="btn_on_off on"  onclick="btnCheckboxToogle(this)">
-                                <div class="btn_fath"  data-state="on">
+                            <div class="btn_on_off ">
+                                <div class="btn_fath"  ">
                                     <div class="move"></div>
                                     <div class="btnSwitch btn_left">ON</div>
                                     <div class="btnSwitch btn_right ">OFF</div>
                                 </div>
                             </div>
                             <span>是否关闭网站</span>
-                        </label>                            
-                        <input type="checkbox" id="onekey_shutdown" ${onekey_shutdown} name="custom-switch-checkbox" onchange="agent_manage_global_change('onekey_shutdown','${id}')"  class="custom-switch-input" style="display: none">
-
+                        </label>             
                     </div>`;
 
     return html;
+
+
 }
-function btnCheckboxToogle(th){
-    var ele = $(th).find(".btn_fath");
-    if(ele.attr("data-state") == "on"){
-        ele.animate({left: "-58px"}, 300, function(){
-            ele.attr("data-state", "off");
-            //关闭执行
-        });
-        $(th).removeClass("on").addClass("off");
-    }else if(ele.attr("data-state") == "off"){
-        ele.animate({left: '-4px'}, 300, function(){
-            $(this).attr("data-state", "on");
-            //开启执行
-        });
-        $(th).removeClass("off").addClass("on");
-    }
-    // console.log($('#all_log').prop("checked"))
-}
+// function btnCheckboxToogle(th){
+//     var ele = $(th).find(".btn_fath");
+//     if(ele.attr("data-state") == "checked"){
+//         ele.animate({left: "-58px"}, 300, function(){
+//             ele.attr("data-state", "unchecked");
+//             //关闭执行
+//         });
+//         $(th).removeClass("checked").addClass("unchecked");
+//     }else if(ele.attr("data-state") == "unchecked"){
+//         ele.animate({left: '-4px'}, 300, function(){
+//             $(this).attr("data-state", "checked");
+//             //开启执行
+//         });
+//         $(th).removeClass("unchecked").addClass("checked");
+//     }
+//     console.log($('#all_log').prop("checked"))
+// }
 
 function agent_manage_algorithm_change(x_id, state, id) {
 
