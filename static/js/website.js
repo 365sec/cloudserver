@@ -311,10 +311,10 @@ function event_treat_web(now_page,app_id){
             alarm_event_list_table +='<td><div class="btn btn-xs" disabled id = "btn_'+alarm_event_list_table_data[j]['event_issue_id']+'">已处理</div></td></tr>';
         }
         let page = '<ul role="menubar" aria-disabled="false" aria-label="Pagination" class="pagination b-pagination pagination-md justify-content-center">'+
-            '<a href="javascript:void(0);" onclick="event_treat_web(' + (now_page - 1) +","+app_id+ ')">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp'+
+            '<a href="javascript:void(0);" onclick="event_treat_web(' + (now_page - 1) +",'"+app_id+ '\')">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp'+
             '<a href="javascript:void(0);">' + now_page + "/" + max_size + '</a>'+
             '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp'+
-            '<a href="javascript:void(0);" onclick="event_treat_web(' + (now_page + 1) +","+app_id+ ')">下一页</a>'+
+            '<a href="javascript:void(0);" onclick="event_treat_web(' + (now_page + 1) +",'"+app_id+ '\')">下一页</a>'+
             '<input id = "event_treat_web_jump" value="'+now_page+'" />'+
             '<a href="javascript:void(0);" onclick="event_treat_web_jump()">跳转</a>'+
             '</ul>';
