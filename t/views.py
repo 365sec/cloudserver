@@ -662,8 +662,8 @@ def attack_query_source(request):
     intercept_state = None
 
     result = TAttackEvent.objects.all().values_list('event_time', 'attack_source', 'plugin_message',
-                                                    'intercept_state','unused','event_name').filter( attack_source=attack_source,agent_id=agent_id)
-    log_obj=TLogAnalysisd.objects.all().values_list('event_time','srcip','event_name','unused','host_name','dstuser').filter(dstip=ip, srcip=attack_source,agent_id=agent_id)
+                                                    'intercept_state','unused','event_name','event_id').filter( ~Q(event_id__in=[2011,2012,2013]), attack_source=attack_source,agent_id=agent_id )
+    log_obj=TLogAnalysisd.objects.all().values_list('event_time','srcip','event_name','unused','host_name','dstuser','event_id').filter(~Q(event_id__in=[2011,2012,2013]), dstip=ip, srcip=attack_source,agent_id=agent_id)
     result=result.union(log_obj,all=True).order_by('event_time')
     # result=log_obj
     num = result.count()
@@ -695,6 +695,8 @@ def attack_query_source(request):
             list_x.append(x2)
         else:
             list_x.append(x2.replace('<', '&lt').replace('>', '&gt'))
+
+
         list_x.append(INTERCEPT_STATUS.get(x[3], ''))
         list_x_all.append(list_x)
 
@@ -1419,6 +1421,7 @@ def user_query(request):
     if page > max_size:
         page = max_size
     user_list = []
+
     for x in result[(page - 1) * page_size:(page) * page_size]:
         y = model_to_dict(x)
         # y = json.dumps(y)
