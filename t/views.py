@@ -158,7 +158,7 @@ def server_agent_query(request):
         result = THostAgents.objects.all().order_by("-online")
     else:
         username = request.session['username']
-        result = THostAgents.objects.filter(owner=username).order_by("-online")
+        result = THostAgents.objects.filter(own_user=username).order_by("-online")
     # 每页显示多少个数据
 
     page_size = 15
@@ -262,9 +262,11 @@ def attack_event_query(request):
 
     if not request.session['superuser']:
         username = request.session['username']
-        result = TWebAgents.objects.filter(owner=username)
+        result = THostAgents.objects.filter(own_user=username)
         agent_ids = [x.agent_id for x in result]
+        print agent_ids
         filter_condition['agent_id__in'] = agent_ids
+
 
     tweb_obj = TWebEvent.objects.all()
     tfile_obj = TFileIntegrity.objects.all()
@@ -277,7 +279,10 @@ def attack_event_query(request):
         tlog_obj = tlog_obj.filter(agent_id=agent_id)
         tweb_obj = tweb_obj.filter(agent_id=agent_id)
         # print (agent_id)
-
+    else:
+        tfile_obj = tfile_obj.filter(**filter_condition)
+        tlog_obj = tlog_obj.filter(**filter_condition)
+        tweb_obj = tweb_obj.filter(**filter_condition)
 
     # 关于攻击类型的过滤,在搜索界面展示的下拉框
     attack_type = request.POST.get("attack_type")
@@ -492,9 +497,15 @@ def query_web_agent_by_agent_id(request):
         result = TWebAgents.objects.all().order_by("-online")
     else:
         username = request.session['username']
-        result = TWebAgents.objects.filter(owner=username).order_by("-online")
-    # 每页显示多少个数据
-    result=result.filter(agent_id=agent_id)
+        filter_condition = {}
+        result = THostAgents.objects.filter(own_user=username)
+        agent_ids = [x.agent_id for x in result]
+        filter_condition['agent_id__in'] = agent_ids
+        result = TWebAgents.objects.all(**filter_condition).order_by("-online")
+
+    if  agent_id:
+        # 每页显示多少个数据
+        result=result.filter(agent_id=agent_id)
 
 
     page_size = 15
@@ -1392,15 +1403,17 @@ def user_query(request):
     # print '[*]'+str(request.session)
     username = request.session['username']
 
+    # 每页显示多少个数据
+    page_size = 15
     user = TUsers.objects.all().filter(username=username).first()
     if user.superuser==1:
         result=TUsers.objects.all().order_by('-superuser')
+        max_size = (result.count() + page_size - 1) / page_size
     else:
-        result=user
-    # 每页显示多少个数据
-    page_size = 15
+        result=[user]
+        max_size = 1
     # 最大分页数
-    max_size = (result.count() + page_size - 1) / page_size
+
     if max_size == 0:
         max_size = 1
     if page > max_size:
