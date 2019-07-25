@@ -1133,9 +1133,42 @@ function web_event_html(data) {
 function log_event_html(data) {
     /*
     * 渲染 log_event_html*/
+    let content='';
+    let user=``;
+    if (data['event_id'] === 2011||data['event_id']===2012||data['event_id']===2013) {
 
-    iochtml = `
-        
+         content=`
+<!--        <h3>基本信息</h3>-->
+        <table class="table table-bordered">
+        <tbody>
+        <tr>
+            <td>事件时间</td>
+            <td>服务器名称</td>
+            <td>用户名</td>
+            <td>类型</td>
+            <td>事件内容</td>
+         </tr>
+        <tr>
+            <td>${data['event_time']}</td>
+            <td>${data['host_name']}</td>
+            <td>${data['dstuser']}</td>
+            <td>${data['event_name']}</td>
+            <td>${data['comment']}</td>
+        </tr>
+        </tbody>
+        </table>
+        <table class="table table-bordered">
+        <tbody>
+        <tr><td>日志</td><td>>${data['full_log']}</td</tr>
+        </tbody>
+        </table>
+   
+`
+
+    }
+    else
+    {
+        content=`
 <!--        <h3>基本信息</h3>-->
         <table class="table table-bordered">
         <tbody>
@@ -1144,7 +1177,7 @@ function log_event_html(data) {
             <td>服务器名称</td>
             <td>类型</td>
             <td>事件内容</td>
-            </tr>
+         </tr>
         <tr>
             <td>${data['event_time']}</td>
             <td>${data['host_name']}</td>
@@ -1202,7 +1235,8 @@ function log_event_html(data) {
                                         <div class="triangle-top"></div>
                                         <div class="table-content-td-plain-b" style="min-width: 205px;">
                                             <table class="text-legend-text">
-                                                <tbody><tr>
+                                                <tbody>
+                                                <tr>
                                                     <td class="td-01" style="width: 40px;">IP</td>
                                                     <td class="td-02">:</td>
                                                     <td class="td-03">
@@ -1251,8 +1285,14 @@ function log_event_html(data) {
 
                                 </tr>
                             </tbody>
-                            </table>
+                            </table>`
+    }
 
+    iochtml = `
+        
+
+
+        ${content}
         `;
 
     $("#ioc_body_stage1").text("").append(iochtml);
