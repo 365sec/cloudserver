@@ -43,7 +43,7 @@ urlpatterns = [
     url(r'^logout$', login.loginout),
     url(r'^index$', login.index),
     url(r'^download$', link.download),
-    url(r'^agentClick$', link.agent_click),
+    #url(r'^agentClick$', link.agent_click),
     url(r'^overview$', link.overview),
     url(r'^attack$', link.attack),
     # url(r'^agent$', link.agent),

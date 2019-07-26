@@ -2323,3 +2323,119 @@ text-align:center;
     background-color: #fff;
     left: 57px;
 }
+
+.col-sm-12 {
+    width: 100%;
+}
+ .download-link {
+    margin-bottom: 25px;
+}
+.col-sm-6 {
+    width: 50%;
+}
+
+.col-md-12 {
+    width: 100%;
+}
+
+ .download-link .left-wrap {
+    height: 410px;
+    border-right: dotted 2px #d8d8d8;
+}
+.download-link .windows-logo {
+    float: left;
+    background: url(/static/images/windows-logo.png);
+    margin-top: 25px;
+    margin-bottom: 10px;
+    width: 95px;
+    height: 83px;
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+ .download-link .windows-link {
+    margin-left: 120px;
+    padding-top: 20px;
+    height: 260px;
+}
+ .download-link .windows-link h6 {
+    margin: 0;
+    line-height: 24px;
+    text-align: left;
+    font-size: 16px;
+    color: #232323;
+}
+  .download-link .aqs-auth-area {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+  .download-link .aqs-auth-area .auth-key {
+    display: inline-block;
+    background: #fff;
+    border: 1px solid #ddd;
+    height: 32px;
+    line-height: 32px;
+    padding: 0 10px;
+}
+ .download-link .linux-logo {
+    float: left;
+    margin: 25px 0 10px 10px;
+    width: 96px;
+    height: 96px;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background: url(/static/images/linux-logo.png);
+}
+
+  .icon-step-bg {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    border-radius: 100%;
+    background: #00C1DE;
+    color: #fff;
+}
+
+   .linux-chose {
+    height: 35px;
+    width: auto;
+    border: 1px solid #ddd;
+    margin-left: 40px;
+    margin-top: 10px;
+}
+   .download-link .linux-dl {
+    width: 100%;
+    margin: 10px 0;
+    padding-left: 36px;
+}
+
+.download-link .linux-dl-label {
+    display: inline-block;
+    width: 36px;
+    text-align: right;
+    font-weight: bold;
+    margin-left: -38px;
+}
+   .download-link .content {
+    width: 75%;
+    margin-left: 6px;
+    display: inline-block;
+    vertical-align: middle;
+    border: 1px solid #dddddd;
+    background: #ffffff;
+    line-height: 12px;
+    font-size: 12px;
+    padding: 5px 10px;
+    color: #000000;
+    font-family: Heiti SC;
+    margin-bottom: 2px;
+}
+   .download-link .btn-wrap {
+    width: 65px;
+    display: inline-block;
+    vertical-align: middle;
+}
+.linux-chose .radio-inline {
+    margin: 10px 15px 0 20px;
+}

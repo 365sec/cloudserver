@@ -10,8 +10,10 @@ from common.data import CONF
 from common.common import file_iterator
 from t.models import THostAgents
 
+"""
+
 def agent_click(request):
-    java_agent_download_url = "http://" + CONF.CLOUD_SERVER + "/download?filepath=static/package/" + CONF.JAVA_PACKAGE_URL
+    java_agent_download_url = "http://" + CONF.CLOUD_SERVER + "/download?filepath=static/download/" + CONF.JAVA_PACKAGE_URL
     iis_agent_download_url = "http://" + CONF.CLOUD_SERVER + "/download?filepath=static/package/" + CONF.IIS_PACKAGE_URL
     req_data=request.POST
     data={}
@@ -30,6 +32,7 @@ def agent_click(request):
         data["download_url"]=iis_agent_download_url
 
     return HttpResponse(json.dumps(data),content_type='application/json')
+"""
 
 def download(request):
     print ("agent_download")
@@ -58,7 +61,9 @@ def countreport(request):
     return render(request, 'countreport.html')
 
 def agent_download(request):
-    return render(request, 'download.html')
+    win32_agent_download = "/static/download/" + CONF.WIN32_AGENT_URL
+    context = {'win32_download_url': win32_agent_download}
+    return render(request, 'download.html', context)
 
 # def agent_detail(request):
 #     return render(request, 'agent_detail.html', {})
