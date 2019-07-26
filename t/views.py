@@ -203,7 +203,7 @@ def web_agent_query(request):
     page = request.POST.get("page")
     page = int(page)
     result = None
-
+    print request.session
     if request.session['superuser']:
         result = TWebAgents.objects.all().order_by("-online")
     else:
@@ -375,7 +375,7 @@ def attack_event_query(request):
         y['agent_id'] = x[0]
         y['event_time'] = x[1].strftime("%Y-%m-%d %H:%M:%S")
         y['event_name'] = x[2]
-        y['comment'] = x[3]
+        y['comment'] = x[3].replace('<', '&lt').replace('>', '&gt')
         y['attack_source'] = x[4]
         y['server_ip'] = x[5]
         y['event_issue_id'] = x[6]
@@ -528,7 +528,7 @@ def query_web_agent_by_agent_id(request):
         y['sensor_type_id'] = SENSOR_TYPE.get(y['sensor_type_id'], '')
         y['online'] = '在线' if y['online'] else '离线'
         y['disabled'] = '是' if y['disabled'] else '否'
-        y['last_heartbeat'] = y['last_heartbeat'].strftime("%Y-%m-%d %H:%M:%S")
+        y['last_heartbeat'] = y['last_heartbeat'].strftime("%Y-%m-%d %H:%M:%S") if y.get('last_heartbeat', None) else ''
 
         for k, v in y.items():
             if not y[k]:
