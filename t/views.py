@@ -207,8 +207,13 @@ def web_agent_query(request):
     if request.session['superuser']:
         result = TWebAgents.objects.all().order_by("-online")
     else:
+        filter_condition = {}
         username = request.session['username']
-        result = TWebAgents.objects.filter(owner=username).order_by("-online")
+        result = THostAgents.objects.filter(own_user=username)
+        agent_ids = [x.agent_id for x in result]
+        filter_condition['agent_id__in'] = agent_ids
+        result = TWebAgents.objects.all().filter(**filter_condition).order_by("-online")
+
     # 每页显示多少个数据
     # for x in result:
     #     print (x)
@@ -501,7 +506,7 @@ def query_web_agent_by_agent_id(request):
         result = THostAgents.objects.filter(own_user=username)
         agent_ids = [x.agent_id for x in result]
         filter_condition['agent_id__in'] = agent_ids
-        result = TWebAgents.objects.all(**filter_condition).order_by("-online")
+        result = TWebAgents.objects.all().filter(**filter_condition).order_by("-online")
 
     if  agent_id:
         # 每页显示多少个数据
