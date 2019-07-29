@@ -1366,7 +1366,8 @@ def baseline(request):
             data['last_check_time']=data['last_check_time'].strftime("%Y-%m-%d %H:%M:%S")
         else:
             data['last_check_time'] = ""
-        data['result']=json.loads( data['result'])
+        if(data['result']):
+            data['result']=json.loads( data['result'])
     data['online']=online
     # print (data)
     return HttpResponse(json.dumps(data), content_type='application/json')

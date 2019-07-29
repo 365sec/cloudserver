@@ -324,6 +324,7 @@ function event_treat_server(now_page){
         },
         //dataType: "json",
         success: function (data_list) {
+            console.log(data_list);
             max_size = data_list['max_size'];
             if (now_page == null || now_page < 1) {
                 now_page = 1;
@@ -336,7 +337,7 @@ function event_treat_server(now_page){
             for(let j=0,len = alarm_event_list_table_data.length;j<len;j++) {
                 alarm_event_list_table += '<tr><td>' + alarm_event_list_table_data[j]['event_time'] + '</td>' +
                     '<td>' + alarm_event_list_table_data[j]['event_name'] + '</td>' +
-                    '<td style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;title="' + alarm_event_list_table_data[j]['comment'] + '">' + alarm_event_list_table_data[j]['comment'] + '</td>';
+                    '<td style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis" title="' + alarm_event_list_table_data[j]['comment'] + '">' + alarm_event_list_table_data[j]['comment'] + '</td>';
                 // '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['comment'] + '">' + data[x]['comment'] + '</td>'
                 switch (alarm_event_list_table_data[j]['threat_level']) {
                     case 0:
@@ -522,10 +523,27 @@ function server_checking(data){
             if (data_list['online']!==1) {
                 $("#start_server_check").hide();
             }
-            $("#base_line_last_day").text("").append(data_list['last_day']);
-            $("#base_line_totalScore").text("").append(data_list['score']);
-            $("#last_check_time").text("").append(data_list['last_check_time']);
+            if (data_list['result'])
+            {
+                $("#base_line_last_day").text("").append(data_list['last_day']);
+                $("#base_line_totalScore").text("").append(data_list['score']);
 
+                //$("#base_line_countNum").text("").append();
+
+
+                $("#last_check_time").text("").append(data_list['last_check_time']);
+                $("#baseline_check_status1").hide();
+                $("#baseline_check_status").show();
+                $("#baseline_check_time").show();
+            }
+            else {
+                $("#baseline_check_status1").show();
+                $("#baseline_check_status").hide();
+                $("#baseline_check_time").hide();
+
+            }
+
+            let all_lenth=0;
             for(result in data_list['result']){
                 // 一级
                 let datas = data_list['result'][result]['result'];
@@ -533,8 +551,7 @@ function server_checking(data){
                 // console.log(data_list['result'][result]['result']);
                 for(data in datas){
                     // 二级
-
-                    console.log(data,datas[data]);
+                    all_lenth += datas[data].length;
                     if(datas[data].length){
                         all_num += datas[data].length;
                         $("#"+data).children().text('（'+datas[data].length+'）');
@@ -553,7 +570,7 @@ function server_checking(data){
                     $("#"+result+'_num').text("").append(all_num);
                 }
             }
-
+            $("#base_line_countNum").text("").append(all_lenth);
             //WEB文件扫描
             // let web_scan=data_list['result']['web_file_check']['result'];
             // let web_all_num=web_scan['webshell'].length+web_scan['dark_chain'].length+web_scan['suspicious_links'].length;
