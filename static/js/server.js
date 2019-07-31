@@ -548,7 +548,7 @@ function server_checking(data){
                 // 一级
                 let datas = data_list['result'][result]['result'];
                 let all_num =0;
-                // console.log(data_list['result'][result]['result']);
+                console.log(data_list['result'][result]['result']);
                 for(data in datas){
                     // 二级
                     all_lenth += datas[data].length;
@@ -603,7 +603,6 @@ function server_checking(data){
             console.log(data_list['last_check_time']);
             if (data_list['last_check_time']===null)
             {
-                console.log("11111");
                 $("#server_checking").hide()
             }
         }});
@@ -618,7 +617,10 @@ function get_baseline_li_html(data) {
     * */
     let html =``;
     for (x in data) {
-
+        if (typeof(data[x])==='object')
+        {
+            data[x]=data[x]['name']+"&nbsp&nbsp&nbsp&nbsp当前状态："+data[x]['status']+"&nbsp&nbsp&nbsp&nbsp建议："+data[x]['suggest']
+        }
         html+=`
             <li>
                 <div class="u-list-leftbox">
