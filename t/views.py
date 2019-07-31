@@ -376,17 +376,19 @@ def attack_event_query(request):
         for z in range(len(x)):
             if x[int(z)] == None:
                 x[int(z)] = ""
+
         y = {}
         y['agent_id'] = x[0]
         y['event_time'] = x[1].strftime("%Y-%m-%d %H:%M:%S")
         y['event_name'] = x[2]
-        y['comment'] = x[3].replace('<', '&lt').replace('>', '&gt')
+        y['comment'] = x[3].replace('<', '&lt').replace('>', '&gt').replace('"', '&quot;')
         y['attack_source'] = x[4]
         y['server_ip'] = x[5]
         y['event_issue_id'] = x[6]
         try:
             y['hostname'] = THostAgents.objects.all().filter(agent_id=x[0]).values_list("host_name").first()[0]
         except Exception, e:
+            print e
             continue
         if x[8]=="web_event":
             y['threat_level']=int(x[9])
