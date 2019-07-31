@@ -527,10 +527,6 @@ function server_checking(data){
             {
                 $("#base_line_last_day").text("").append(data_list['last_day']);
                 $("#base_line_totalScore").text("").append(data_list['score']);
-
-                //$("#base_line_countNum").text("").append();
-
-
                 $("#last_check_time").text("").append(data_list['last_check_time']);
                 $("#baseline_check_status1").hide();
                 $("#baseline_check_status").show();
@@ -548,7 +544,9 @@ function server_checking(data){
                 // 一级
                 let datas = data_list['result'][result]['result'];
                 let all_num =0;
+                console.log(result);
                 console.log(data_list['result'][result]['result']);
+
                 for(data in datas){
                     // 二级
                     all_lenth += datas[data].length;
@@ -560,6 +558,8 @@ function server_checking(data){
                         $('#'+data).parent().siblings().last().css('display','block');
                         $('#'+data+"_li").text("").append(get_baseline_li_html(datas[data]));
                     }else{
+                        console.log("长度为0 的组");
+                        console.log(data);
                         $("#"+data).children().text('（0）');
                         $("#"+data).parent().siblings().first().html('&#xe60c;');
                         $("#"+data).parent().siblings().first().addClass('grey');
@@ -870,6 +870,7 @@ $(document).on("click", "#server_website_list_del", function() {
 
 function click_black_white_list(agent_id){
     $(document).on('click','#black_white_list_link',function () {
+
         black_white_list(agent_id);
     })
 }
@@ -885,6 +886,7 @@ function black_white_list(agent_id) {
         // dataType: "json",
         async: false,
         success: function (data_list) {
+
             let black_list_data = data_list['black_list'];
             let white_list_data = data_list['white_list'];
             b_w_list['black_list'] = data_list['black_list'];

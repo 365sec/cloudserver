@@ -1345,13 +1345,10 @@ def baseline(request):
     data={}
     if  result:
         # print (model_to_dict(result))
-
         data = model_to_dict(result)
         if data.get('last_check_time',None):
             data['last_day']=datetime.now()-data['last_check_time']
-            aaa=data['last_day']
             if(data['last_day'].days <1 ):
-
                 time_delta = data['last_day']
                 data['last_day']=str(time_delta.seconds/3600)+"小时之前"
                 if(time_delta.seconds/3600 < 1):
