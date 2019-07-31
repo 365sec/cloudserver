@@ -43,7 +43,7 @@ function server_click(page) {
                     html += '<th>IP地址</th>';
                     html += '<th>外网IP</th>';
                     html += '<th>服务器状态</th>';
-                    html += '<th>所属分组</th>';
+                    html += '<th>所属用户</th>';
                     html += '<th>标记</th>';
                     html += '</tr>';
                     html += '</thead>';
