@@ -311,27 +311,92 @@ function click_event_treat_server(){
     })
 }
 function event_treat_server(now_page){
-    console.log("事件处理");
-    let query=$("#event_keyword").val();
 
+    console.log("事件处理");
+
+    //获得查询条件
+    let data = {};
+    let attack_time = $("#server_attack_time").val();
+    let attack_type = $("#server_attack_type").val();
+    let attack_msg = $("#server_attack_msg").val();
+    let attack_level = $("#server_attack_level").val();
+
+    if (attack_time === undefined) {
+        attack_time = ""
+    }
+    if (attack_type === undefined) {
+        attack_type = ""
+    }
+    if (attack_msg === undefined) {
+        attack_msg = ""
+    }
+    if (attack_level === undefined) {
+        attack_level = ""
+    }
+    data['attack_time'] = attack_time;
+    data['attack_type'] = attack_type;
+    data['attack_msg'] = attack_msg;
+    data ['attack_level'] = attack_level;
+    data ['agent_id'] = agent_server_id;
+    data['page'] = now_page;
+    if (now_page == null || now_page < 1) {
+        now_page = 1;
+    }
     $.ajax({
         url: "attack/query/",
         type: 'POST',
-        data: {
-            "agent_id":agent_server_id,
-            "page": now_page,
-            "attack_msg": query,
-        },
+        data: data,
         //dataType: "json",
         success: function (data_list) {
-            console.log(data_list);
-            max_size = data_list['max_size'];
+            let now_page = data_list['page'];
+            let max_size = data_list['max_size'];
+            let attack_type_list = data_list['attack_type'];
+            let attack_level = data_list['attack_level'];
             if (now_page == null || now_page < 1) {
                 now_page = 1;
             }
             if (now_page > max_size) {
                 now_page = max_size;
             }
+            //搜索框-----------------------------------------------------
+            let select_div = $("#server_table_select_div");
+            let html_select = "";
+            html_select = '<div>';
+            html_select += '<div id="" class="search_btngroup">';
+            html_select += `<div class="search_button datesel">
+                                <span class="btnvalue">日期选择: </span>
+                                <input type="text" id="server_attack_time" >
+                                <label for="attack_time" class="datesel_icon"><i class="fa fa-calendar"></i></label>
+                            </div>
+                            `;
+            html_select += '<div class="search_button"><span class="btnvalue">攻击类型: </span>';
+            html_select += '<select id="server_attack_type" class="form-btn">';
+            html_select += '<option value="" >' + "--请选择攻击类型--" + '</option>';
+            for (x in attack_type_list) {
+                html_select += '<option value="' + attack_type_list[x] + '" >' + attack_type_list[x] + '</option>'
+            }
+            html_select += '</select></div>';
+            html_select += '<div class="search_button"><span class="btnvalue">危险等级: </span>';
+            html_select += '<select id="server_attack_level">';
+            html_select += '<option value="" >' + "--请选择危险等级--" + '</option>';
+            html_select += '<option value="0" >严重</option>';
+            html_select += '<option value="1" >高危</option>';
+            html_select += '<option value="2" >中危</option>';
+            html_select += '<option value="3" >信息</option>';
+            html_select += '</select></div>';
+            html_select += '<div class="search_button"><span class="btnvalue">关键词: </span>';
+            html_select += '<input id="server_attack_msg" value="' + attack_msg + '" /></div>';
+            html_select += '<div  class="btn" onclick="event_treat_server(1)" >查询</div>';
+            html_select += '<div  class="btn" onclick="server_reset()" >重置</div>';
+            html_select += '</div>';
+            html_select += '</div>';
+            select_div.html(html_select);
+            // $("#server_attack_time").val(attack_time);
+            $("#server_attack_time").val(attack_time);
+            $("#server_attack_type").val(attack_type);
+            $("#server_attack_msg").val(attack_msg);
+            $("#server_attack_level").val(attack_level);
+            //----------------------------------------------------------
             let alarm_event_list_table_data = data_list['attack'];
             let alarm_event_list_table = '';
             for(let j=0,len = alarm_event_list_table_data.length;j<len;j++) {
@@ -354,34 +419,41 @@ function event_treat_server(now_page){
                         break;
                 }
                 let b = new Base64();
-                // let str = b.encode(JSON.stringify(data[j]));
                 let aaa = JSON.stringify(alarm_event_list_table_data[j]);
-
                 let str = b.encode(aaa);
-                alarm_event_list_table_data[j]['event_issue_id']=alarm_event_list_table_data[j]['event_issue_id'].replace(".","__");
+                alarm_event_list_table_data[j]['event_issue_id'] = alarm_event_list_table_data[j]['event_issue_id'].replace(".", "__");
                 alarm_event_list_table += '<td><a class="custom_a event_detail detail-a" href="javascript:void(0)" data-name="' + str + '">查看报告</a></td>';
-
                 if (alarm_event_list_table_data[j]['status'] === 0) {
                     alarm_event_list_table += '<td><div class="deal_cls btn btn_untreated btn-xs"  id = "btn_' + alarm_event_list_table_data[j]['event_issue_id'] + '">未处理</div></td></tr>';
                 } else {
                     alarm_event_list_table += '<td><div class="btn btn-xs" disabled id = "btn_' + alarm_event_list_table_data[j]['event_issue_id'] + '">已处理</div></td></tr>';
                 }
-                let page = '<ul role="menubar" aria-disabled="false" aria-label="Pagination" class="pagination b-pagination pagination-md justify-content-center">' +
-                    '<a href="javascript:void(0);" onclick="event_treat_server(' + (now_page - 1) + ",'" + agent_server_id + '\')">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp' +
-                    '<a href="javascript:void(0);">' + now_page + "/" + max_size + '</a>' +
-                    '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp' +
-                    '<a href="javascript:void(0);" onclick="event_treat_server(' + (now_page + 1) + ",'" + agent_server_id + '\')">下一页</a>' +
-                    '<input id = "event_treat_server_jump" value="' + now_page + '" />' +
-                    '<a href="javascript:void(0);" onclick="event_treat_server_jump()">跳转</a>' +
-                    '</ul>';
-                $('.page').html(page);
             }
+
+            let page = '<ul role="menubar" aria-disabled="false" aria-label="Pagination" class="pagination b-pagination pagination-md justify-content-center">' +
+                '<a href="javascript:void(0);" onclick="event_treat_server(' + (now_page - 1) + ",'" + agent_server_id + '\')">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp' +
+                '<a href="javascript:void(0);">' + now_page + "/" + max_size + '</a>' +
+                '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp' +
+                '<a href="javascript:void(0);" onclick="event_treat_server(' + (now_page + 1) + ",'" + agent_server_id + '\')">下一页</a>' +
+                '<input id = "event_treat_server_jump" value="' + now_page + '" />' +
+                '<a href="javascript:void(0);" onclick="event_treat_server_jump()">跳转</a>' +
+                '</ul>';
+            $('.page').html(page);
             $('#alarm_event_list_table>tbody').html(alarm_event_list_table);
 
         }});
 
 
 }
+
+function server_reset() {
+    $("#server_attack_time").val("");
+    $("#server_attack_type").val("");
+    $("#server_attack_msg").val("");
+    $("#server_attack_level").val("");
+    event_treat_server(1);
+}
+
 
 function event_treat_server_jump() {
 
@@ -779,7 +851,7 @@ function click_server_website_list(data){
 function server_website_list(now_page){
 
     console.log("网站详情 server");
-    let max_size;
+    let max_size = 1;
     $.ajax({
         url: "attack/web_event_agent/",
         type: 'POST',
@@ -792,6 +864,7 @@ function server_website_list(now_page){
         success: function (data_list) {
             data = data_list['agents'];
             max_size=data_list['max_size'];
+            console.log(data_list);
         }});
     if (now_page == null || now_page < 1) {
         now_page = 1;
@@ -804,23 +877,24 @@ function server_website_list(now_page){
     let server_website_list_data;
     server_website_list_data=data;
 
-    for(let j=0,len = server_website_list_data.length;j<len;j++){
-        server_website_list_data[j]=JSON.parse(server_website_list_data[j]);
+    for(let j=0,len = server_website_list_data.length;j<len;j++) {
+        server_website_list_data[j] = JSON.parse(server_website_list_data[j]);
         // console.log(server_website_list_data[j]);
         let b = new Base64();
         let data1 = b.encode(JSON.stringify(server_website_list_data[j]));
         // html += '<td><a class="detail-a-website" href="javascript:void(0)" data-name="' + data1 + '" >' + data[x]['register_ip'] + '</a> </td>';
-        server_website_list +='<tr>' +
-                            ' <td style="width: 46px;padding: 14px;">' +
-                            '    <div class="server_website_list_checkbox">' +
-                            '    <input class="regular_checkbox" id="'+server_website_list_data[j]['app_id']+'" type="checkbox" name="server_website_list_checkall">' +
-                            '    <label for="'+server_website_list_data[j]['app_id']+'"></label>' +
-                            '    </div>' +
-                            ' </td>' +
-                            '<td><a class="detail-a-website" href="javascript:void(0)" data-name="' +data1 + '"   >' + server_website_list_data[j]['register_ip'] + '</a></td>'+
-                            '<td>'+server_website_list_data[j]['remark']+'</td>'+
-                            '<td>'+server_website_list_data[j]['owner']+'</td>'+
-                            '<td>'+server_website_list_data[j]['last_heartbeat']+'</td>';
+        server_website_list += '<tr>' +
+            ' <td style="width: 46px;padding: 14px;">' +
+            '    <div class="server_website_list_checkbox">' +
+            '    <input class="regular_checkbox" id="' + server_website_list_data[j]['app_id'] + '" type="checkbox" name="server_website_list_checkall">' +
+            '    <label for="' + server_website_list_data[j]['app_id'] + '"></label>' +
+            '    </div>' +
+            ' </td>' +
+            '<td><a class="detail-a-website" href="javascript:void(0)" data-name="' + data1 + '"   >' + server_website_list_data[j]['register_ip'] + '</a></td>' +
+            '<td>' + server_website_list_data[j]['remark'] + '</td>' +
+            '<td>' + server_website_list_data[j]['owner'] + '</td>' +
+            '<td>' + server_website_list_data[j]['last_heartbeat'] + '</td>';
+    }
         let page = '<ul role="menubar" aria-disabled="false" aria-label="Pagination" class="pagination b-pagination pagination-md justify-content-center">'+
             '<a href="javascript:void(0);" onclick="server_website_list(' + (now_page - 1) + ')">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp'+
             '<a href="javascript:void(0);">' + now_page + "/" + max_size + '</a>'+
@@ -830,7 +904,7 @@ function server_website_list(now_page){
             '<a href="javascript:void(0);" onclick="server_website_list_jump()">跳转</a>'+
             '</ul>';
         $('.page').html(page);
-    }
+
     $('#server_website_list_table>tbody').html(server_website_list);
 }
 // 打开网站详情删除弹窗
@@ -864,10 +938,7 @@ $(document).on("click", "#server_website_list_del", function() {
     $('#del_web_infor').modal("show");
 });
 
-
 // 黑白名单
-
-
 function click_black_white_list(agent_id){
     $(document).on('click','#black_white_list_link',function () {
 

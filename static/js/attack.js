@@ -28,8 +28,6 @@ function attack_click(attack_page) {
             if (attack_level === undefined) {
                 attack_level = ""
             }
-
-
             data['attack_time'] = attack_time;
             data['attack_type'] = attack_type;
             data['attack_msg'] = attack_msg;
@@ -41,8 +39,6 @@ function attack_click(attack_page) {
             // let div_container1 = $(".attackDiv");
             let div_container2 = $(".btnGroup");
             div_container2.append("<div id='table_select_div'></div>");
-            //    div_container1.append("<div id='table_div'></div>");
-
             $.ajax({
                 url: "attack/query/",
                 type: 'POST',
@@ -55,12 +51,8 @@ function attack_click(attack_page) {
                     let max_size = data_list['max_size'];
                     let attack_type_list = data_list['attack_type'];
                     let attack_level = data_list['attack_level'];
-                    // data = data.replace(/}{/g, "}****{").split("****");
-
-                    //let select_div=$("#table_select_div");
                     let select_div = $("#table_select_div");
                     let html_select = "";
-
                     html_select = '<div>';
                     html_select += '<div id="" class="search_btngroup">';
                     html_select += `<div class="search_button datesel">
@@ -88,23 +80,16 @@ function attack_click(attack_page) {
                     html_select += '<div class="search_button"><span class="btnvalue">关键词: </span>';
                     html_select += '<input id="attack_msg" value="' + attack_msg + '" /></div>';
 
-
-                    //html_select+='<a href="javascript:void(0);" onclick="attack_click(1)" >查询<a/>';
                     html_select += '<div  class="btn" onclick="attack_click_search(1)" >查询</div>';
                     html_select += '<div  class="btn" onclick="reset()" >重置</div>';
-                    //html_select+='<a href="javascript:void(0);" onclick="reset()" >重置<a/>';
                     html_select += '</div>';
                     html_select += '</div>';
                     select_div.html(html_select);
                     $("#attack_time").val(attack_time);
-
-
                     let div_container = $("#table_div");
                     div_container.text("");
 
                     let html = "<div>";
-
-
                     html += '<div class="card-body">';
                     html += '<table class="table table-bordered table-striped table-hover">';
                     html += '<thead>';
@@ -129,8 +114,6 @@ function attack_click(attack_page) {
                             case 1: threat_level="<span class=\"label label_custom label_high\" >高危</span>";break;
                             case 2: threat_level="<span class=\"label label_custom label_norm\" >中危</span>";break;
                             case 3: threat_level="<span class=\"label label_custom label_info\" >信息</span>";break;
-
-
                         }
                         html += '<tr>';
                         html += '<td>' + data[x]['event_time'] + '</td>';

@@ -203,7 +203,7 @@ def web_agent_query(request):
     page = request.POST.get("page")
     page = int(page)
     result = None
-    print request.session
+    print (request.session)
     if request.session['superuser']:
         result = TWebAgents.objects.all().order_by("-online")
     else:
@@ -269,7 +269,7 @@ def attack_event_query(request):
         username = request.session['username']
         result = THostAgents.objects.filter(own_user=username)
         agent_ids = [x.agent_id for x in result]
-        print agent_ids
+        print (agent_ids)
         filter_condition['agent_id__in'] = agent_ids
 
 
@@ -293,12 +293,10 @@ def attack_event_query(request):
     attack_type = request.POST.get("attack_type")
     event_dic = {}
     event_div_arr = []
-
     not_allow_search=TEventKnowledge.objects.filter(~Q(allow_search=1)).values("event_id")
     not_allow_search_list=[]
     for x in not_allow_search:
         not_allow_search_list.append(x['event_id'])
-
     for x in TEventKnowledge.objects.filter(allow_search=1).order_by("event_id"):
         event_div_arr.append(x.event_name)
         event_dic[x.event_name] = x.event_id
@@ -341,6 +339,7 @@ def attack_event_query(request):
     #     result = TAttackEvent.objects.filter(msg_filter, **filter_condition).order_by('-event_time')
     # else:
     #     result = TAttackEvent.objects.filter(**filter_condition).order_by('-event_time')
+
     # 过滤不被允许查询的结果
     for x in not_allow_search_list:
         tlog_obj=tlog_obj.filter(~Q(event_id=x))
@@ -387,8 +386,8 @@ def attack_event_query(request):
         y['event_issue_id'] = x[6]
         try:
             y['hostname'] = THostAgents.objects.all().filter(agent_id=x[0]).values_list("host_name").first()[0]
-        except Exception, e:
-            print e
+        except Exception as e:
+            print (e)
             continue
         if x[8]=="web_event":
             y['threat_level']=int(x[9])
@@ -499,7 +498,6 @@ def query_web_agent_by_agent_id(request):
     agent_id = request.POST.get("agent_id")
     page = int(page)
     result = None
-
     if request.session['superuser']:
         result = TWebAgents.objects.all().order_by("-online")
     else:
@@ -509,12 +507,9 @@ def query_web_agent_by_agent_id(request):
         agent_ids = [x.agent_id for x in result]
         filter_condition['agent_id__in'] = agent_ids
         result = TWebAgents.objects.all().filter(**filter_condition).order_by("-online")
-
     if  agent_id:
         # 每页显示多少个数据
         result=result.filter(agent_id=agent_id)
-
-
     page_size = 15
     # 最大分页数
     max_size = (result.count() + page_size - 1) / page_size
@@ -522,6 +517,8 @@ def query_web_agent_by_agent_id(request):
         max_size = 1
     if page > max_size:
         page = max_size
+    if page<1:
+        page=1
     TAgents_list = []
     for x in result[(page - 1) * page_size:(page) * page_size]:
         y = model_to_dict(x)
@@ -557,12 +554,58 @@ def query_web_event_by_app_id(request):
     app_id = request.POST.get("app_id")
     page = int(page)
     # print (app_id)
-    result = TWebEvent.objects.filter(app_id=app_id).order_by("-event_time")
+    # result = TWebEvent.objects.filter(app_id=app_id).order_by("-event_time")
+    tweb_obj = TWebEvent.objects.all().filter(app_id=app_id)
+    # 关于报警消息的过滤
+    msg_filter = None
+    attack_msg = request.POST.get("attack_msg")
+    if attack_msg != "" and attack_msg != None:
+        # filter_condition['plugin_message__icontains']=attack_msg
+        tweb_msg_filter = Q(event_name__icontains=attack_msg) | Q(plugin_message__icontains=attack_msg)
+        tweb_obj = tweb_obj.filter(tweb_msg_filter)
+    # 关于攻击时间的过滤
+    attack_time = request.POST.get("attack_time")
+    if attack_time != "" and attack_time != None:
+        start_time = attack_time.split(" ~ ")[0]
+        end_time = attack_time.split(" ~ ")[1]
+        tweb_obj = tweb_obj.filter(event_time__range=(start_time, end_time))
+
+    # 关于攻击类型的过滤,在搜索界面展示的下拉框
+    event_dic = {}
+    event_div_arr = []
+    not_allow_search=TEventKnowledge.objects.filter(~Q(allow_search=1)).values("event_id")
+    not_allow_search_list=[]
+    for x in not_allow_search:
+        not_allow_search_list.append(x['event_id'])
+    for x in TEventKnowledge.objects.filter(allow_search=1).order_by("event_id"):
+        event_div_arr.append(x.event_name)
+        event_dic[x.event_name] = x.event_id
+
+    #攻击类型过滤
+    attack_type = request.POST.get("attack_type")
+    if attack_type != "" and attack_type != None:
+        tweb_obj = tweb_obj.filter(event_id=event_dic[attack_type])
+
+    # 关于攻击等级的过滤
+    attack_level = request.POST.get("attack_level")
+    if attack_level != "" and attack_level != None:
+        attack_level = int(attack_level)
+        tweb_obj = tweb_obj.filter(threat_level = attack_level)
+
+    # 过滤不被允许查询的结果
+    not_allow_search=TEventKnowledge.objects.filter(~Q(allow_search=1)).values("event_id")
+    not_allow_search_list=[]
+    for x in not_allow_search:
+        not_allow_search_list.append(x['event_id'])
+    for x in not_allow_search_list:
+        tweb_obj=tweb_obj.filter(~Q(event_id=x))
+    tweb_obj=tweb_obj.order_by("-event_time")
+
     # 每页显示多少个数据
 
     page_size = 15
     # 最大分页数
-    max_size = (result.count() + page_size - 1) / page_size
+    max_size = (tweb_obj.count() + page_size - 1) / page_size
     if max_size == 0:
         max_size = 1
     if page > max_size:
@@ -570,8 +613,9 @@ def query_web_event_by_app_id(request):
     if page < 1:
         page = 1
     event_list = []
-    for x in result[(page - 1) * page_size:(page) * page_size]:
+    for x in tweb_obj[(page - 1) * page_size:(page) * page_size]:
         y = model_to_dict(x)
+        y['plugin_message']=y['plugin_message'].replace('<', '&lt').replace('>', '&gt')
         y['event_time'] = y['event_time'].strftime("%Y-%m-%d %H:%M:%S")
         try:
             y['attack_type'] = TEventKnowledge.objects.get(event_id=y['event_id']).event_name
@@ -583,6 +627,8 @@ def query_web_event_by_app_id(request):
         "event_list": event_list,
         "max_size": max_size,
         "page": page,
+        "attack_type": event_div_arr,
+        # "attack_level": attack_level,
     }
     # print (data)
 
