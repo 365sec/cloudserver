@@ -226,26 +226,29 @@ def web_agent_query(request):
         page = max_size
     TAgents_list = []
     for x in result[(page - 1) * page_size:(page) * page_size]:
-        y = model_to_dict(x)
-        hostname = THostAgents.objects.all().filter(agent_id=y['agent_id']).first()
-        # print (hostname)
-        if hostname.internal_ip:
-            y['register_ip'] = hostname.internal_ip
-        else:
-            y['register_ip'] = hostname.extranet_ip
-        y['hostname'] = hostname.host_name
-        y['sensor_type_id'] = SENSOR_TYPE.get(y['sensor_type_id'], '')
-        y['online'] = '在线' if y['online'] else '离线'
-        y['disabled'] = '是' if y['disabled'] else '否'
-        if y['last_heartbeat']:
-            y['last_heartbeat'] = y['last_heartbeat'].strftime("%Y-%m-%d %H:%M:%S")
+        try:
+            y = model_to_dict(x)
+            hostname = THostAgents.objects.all().filter(agent_id=y['agent_id']).first()
+            # print (hostname)
+            if hostname.internal_ip:
+                y['register_ip'] = hostname.internal_ip
+            else:
+                y['register_ip'] = hostname.extranet_ip
+            y['hostname'] = hostname.host_name
+            y['sensor_type_id'] = SENSOR_TYPE.get(y['sensor_type_id'], '')
+            y['online'] = '在线' if y['online'] else '离线'
+            y['disabled'] = '是' if y['disabled'] else '否'
+            if y['last_heartbeat']:
+                y['last_heartbeat'] = y['last_heartbeat'].strftime("%Y-%m-%d %H:%M:%S")
 
-        for k, v in y.items():
-            if not y[k]:
-                y[k] = ''
-        y = json.dumps(y)
-        # print (y)
-        TAgents_list.append(y)
+            for k, v in y.items():
+                if not y[k]:
+                    y[k] = ''
+            y = json.dumps(y)
+            # print (y)
+            TAgents_list.append(y)
+        except Exception, e:
+            print e
     data = {
         "agents": TAgents_list,
         "max_size": max_size,
@@ -331,9 +334,9 @@ def attack_event_query(request):
     if attack_level != "" and attack_level != None:
         attack_level = int(attack_level)
         tweb_obj = tweb_obj.filter(threat_level=attack_level)
+        tlog_obj = tlog_obj.filter(threat_level=attack_level)
         if attack_level != 3:
             tfile_obj = tfile_obj.filter(event_issue_id=0)
-            tlog_obj = tlog_obj.filter(event_issue_id=0)
 
     # if msg_filter:
     #     result = TAttackEvent.objects.filter(msg_filter, **filter_condition).order_by('-event_time')
@@ -352,7 +355,7 @@ def attack_event_query(request):
     tfile = tfile_obj.values_list("agent_id", "event_time", "event_name", "full_log", "unused", "unused",
                                   "event_issue_id", "event_id","event_category","unused","status","unused")
     tlog = tlog_obj.values_list("agent_id", "event_time", "event_name", "comment", "srcip", "dstip", "event_issue_id",
-                                "event_id","event_category","event_id","status","unused")
+                                "event_id","event_category","threat_level","status","unused")
     # 三张表联合查询
     qchain = tweb.union(tlog, tfile,all=True)
     result = qchain.order_by("-event_time")
@@ -392,7 +395,7 @@ def attack_event_query(request):
         if x[8]=="web_event":
             y['threat_level']=int(x[9])
         elif x[8]=="log_analysisd":
-            y['threat_level']=3
+            y['threat_level']=int(x[9])
         elif x[8]=="file_integrity":
             y['threat_level']=3
         y['status']=x[10]

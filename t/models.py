@@ -126,6 +126,7 @@ class TLogAnalysisd(models.Model):
     process_name = models.CharField(max_length=255, blank=True, null=True)
     status = models.PositiveIntegerField(blank=True, null=True)
     unused = models.CharField(max_length=255, blank=True, null=True)
+    threat_level = models.IntegerField(max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False
