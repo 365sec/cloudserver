@@ -100,10 +100,10 @@
                             <td id="user_name" ></td></tr>
                         <tr>
                             <td style="text-align: right;padding-right: 20px"><span >电话：</span></td>
-                            <td id=""><input type="text" placeholder="" id='user_phone' name="" /></td></tr>
+                            <td id=""><input type="number" placeholder="" id='user_phone' name="" /></td></tr>
                         <tr>
                             <td style="text-align: right;padding-right: 20px"><span >邮件：</span></td>
-                            <td id="" ><input type="text" placeholder="" id='user_email' name="" /></td></tr>
+                            <td id="" ><input type="email" placeholder="" id='user_email' name="" /></td></tr>
                         <tr>
                             <td style="text-align: right;padding-right: 20px"><span >用户类型：</span></td>
                             <td id="user_type"></td>
@@ -125,12 +125,12 @@
                         </tr>
                         <tr>
                             <td style="text-align: right;padding-right: 20px; width: 50%"><span class="red">*</span><span>新密码：</span></td>
-                            <td><input  placeholder=" " type="password" id='new_password'  /></td>
+                            <td><input  placeholder=" " type="password" id='new_password' minlength="6" /></td>
 
                         </tr>
                         <tr>
                             <td style="text-align: right;padding-right: 20px"><span><span class="red">*</span>确认密码：</span></td>
-                            <td><input  placeholder=" " type="password" id="new_password_" /></td></tr>
+                            <td><input  placeholder=" " type="password" id="new_password_" minlength="6" /></td></tr>
                         <tr>
                             <td colspan="2" class="text-center"><div class="btn" onclick="pwd_update()">确认修改</div></td>
                         </tr>

@@ -59,6 +59,18 @@ function personal_infor_load() {
 function user_update() {
     let phone=$("#user_phone").val();
     let email=$("#user_email").val();
+    var phonereg=/^[1][3,4,5,7,8][0-9]{9}$/;
+    var emailreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+    if (!phonereg.test(phone))
+    {
+        alert("手机号输入有误");
+        return;
+    }
+    if (!emailreg.test(email))
+    {
+        alert(("邮箱输入有误"));
+        return;
+    }
     $.ajax({
         url: "user/user_update/",
         type: 'POST',
@@ -228,9 +240,21 @@ $(document).on('click','.add_user_btn',function () {
 //添加用户
 function user_add() {
 
-    console.log("222222222");
+
     let username=$("#user_add_name").val();
     let password=$("#user_add_password").val();
+    var usernamereg=/^[a-zA-Z0-9]{5,12}$/;
+    var passwordreg = /^[a-zA-Z0-9]{6,22}$/;
+    if (!usernamereg.test(username))
+    {
+        alert("账号格式5-12位字母数字");
+        return;
+    }
+    if (!passwordreg.test(password))
+    {
+        alert("密码格式6-22位字母数字");
+        return;
+    }
 
     $.ajax({
         url: "user/user_add/",

@@ -16,7 +16,6 @@ function report_btn() {
                     barchart(data_list['attack_target'].reverse(),'attack_target_part');
                     attack_server_ip(data_list['attack_server_ip'].reverse(),'attack_server_ip_part');
                     barchartv(data_list['attack_server'].reverse(),'attack_server_part');
-                    console.log(data_list['attack_level'])
                     piechart(data_list['attack_level'],'attack_level_part');
                     // console.log(data_list['attack_scan'],typeof data_list['attack_scan']);
                     piechart1(data_list['attack_scan'],'attack_scan_part');

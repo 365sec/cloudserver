@@ -322,9 +322,10 @@ def attack_event_query(request):
 
     # 关于攻击时间的过滤
     attack_time = request.POST.get("attack_time")
+
     if attack_time != "" and attack_time != None:
-        start_time = attack_time.split(" ~ ")[0]
-        end_time = attack_time.split(" ~ ")[1]
+        start_time = datetime.strptime(attack_time.split(" ~ ")[0], "%Y-%m-%d")
+        end_time = datetime.strptime(attack_time.split(" ~ ")[1], "%Y-%m-%d")+timedelta(1)
         tfile_obj = tfile_obj.filter(event_time__range=(start_time, end_time))
         tlog_obj = tlog_obj.filter(event_time__range=(start_time, end_time))
         tweb_obj = tweb_obj.filter(event_time__range=(start_time, end_time))
@@ -569,8 +570,8 @@ def query_web_event_by_app_id(request):
     # 关于攻击时间的过滤
     attack_time = request.POST.get("attack_time")
     if attack_time != "" and attack_time != None:
-        start_time = attack_time.split(" ~ ")[0]
-        end_time = attack_time.split(" ~ ")[1]
+        start_time = datetime.strptime(attack_time.split(" ~ ")[0], "%Y-%m-%d")
+        end_time = datetime.strptime(attack_time.split(" ~ ")[1], "%Y-%m-%d")+timedelta(1)
         tweb_obj = tweb_obj.filter(event_time__range=(start_time, end_time))
 
     # 关于攻击类型的过滤,在搜索界面展示的下拉框
@@ -1272,7 +1273,8 @@ def view_report(request):
     dt_s = (dt_e - timedelta(30))  # 2018-7-08
     if attack_time_range != "" and attack_time_range != None:
         dt_s = datetime.strptime(attack_time_range.split(" ~ ")[0], "%Y-%m-%d")
-        dt_e = datetime.strptime(attack_time_range.split(" ~ ")[1], "%Y-%m-%d")
+        dt_e = datetime.strptime(attack_time_range.split(" ~ ")[1], "%Y-%m-%d")+timedelta(1)
+
     num = dt_e - dt_s
     attack_time_range = TAttackEvent.objects.filter(event_time__range=(dt_s, dt_e))
     attack = attack_time_range
