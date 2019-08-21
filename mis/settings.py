@@ -65,6 +65,15 @@ DATABASES = {
         'PORT':'3306',
         'CONN_MAX_AGE':6
     }
+    # 'default': {
+    #     'ENGINE':'django.db.backends.mysql',
+    #     'NAME':'gov_defence',
+    #     'USER':'grxa',
+    #     'PASSWORD':'GRXA@1410g20db',
+    #     'HOST':'172.16.31.135',
+    #     'PORT':'3306',
+    #     'CONN_MAX_AGE':6
+    # }
 }
 
 AUTH_PASSWORD_VALIDATORS = [

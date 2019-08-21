@@ -229,11 +229,14 @@ def web_agent_query(request):
         try:
             y = model_to_dict(x)
             hostname = THostAgents.objects.all().filter(agent_id=y['agent_id']).first()
-            # print (hostname)
-            if hostname.internal_ip:
+            if  not hostname:
+                continue
+            if hasattr(hostname,"internal_ip"):
                 y['register_ip'] = hostname.internal_ip
-            else:
+            elif hasattr(hostname,"extranet_ip"):
                 y['register_ip'] = hostname.extranet_ip
+            else:
+                y['register_ip'] = ""
             y['hostname'] = hostname.host_name
             y['sensor_type_id'] = SENSOR_TYPE.get(y['sensor_type_id'], '')
             y['online'] = '在线' if y['online'] else '离线'
@@ -527,7 +530,7 @@ def query_web_agent_by_agent_id(request):
     for x in result[(page - 1) * page_size:(page) * page_size]:
         y = model_to_dict(x)
         hostname = THostAgents.objects.all().filter(agent_id=agent_id).first()
-        # print (hostname)
+
         if hostname.internal_ip:
             y['register_ip'] = hostname.internal_ip
         else:
@@ -970,13 +973,19 @@ def web_attack_trend(request):
 @auth
 def query_threat_level(request):
     data = {}
-    attack = TAttackEvent.objects
+    attack = TWebEvent.objects.all()
 
     filter_condition = {}
     result = None
+    # if request.session['superuser']:
+    #     result = THostAgents.objects.all()
+    # else:
+    #     username = request.session['username']
+    #     result = THostAgents.objects.filter(owner=username)
+
     if not request.session['superuser']:
         username = request.session['username']
-        result = TWebAgents.objects.filter(owner=username)
+        result = THostAgents.objects.filter(own_user=username)
         agent_ids = [x.agent_id for x in result]
         filter_condition['agent_id__in'] = agent_ids
 
@@ -1005,7 +1014,7 @@ def query_attack_source(request):
     result = None
     if not request.session['superuser']:
         username = request.session['username']
-        result = TWebAgents.objects.filter(owner=username)
+        result = THostAgents.objects.filter(own_user=username)
         agent_ids = [x.agent_id for x in result]
         filter_condition['agent_id__in'] = agent_ids
 
@@ -1089,7 +1098,7 @@ def query_attack_times(request):
     filter_condition = {}
     if not request.session['superuser']:
         username = request.session['username']
-        result = TWebAgents.objects.filter(owner=username)
+        result = THostAgents.objects.filter(own_user=username)
         agent_ids = [x.agent_id for x in result]
         filter_condition['agent_id__in'] = agent_ids
 
@@ -1131,7 +1140,7 @@ def query_attack_type(request):
     filter_condition = {}
     if not request.session['superuser']:
         username = request.session['username']
-        result = TWebAgents.objects.filter(owner=username)
+        result = THostAgents.objects.filter(own_user=username)
         agent_ids = [x.agent_id for x in result]
         filter_condition['agent_id__in'] = agent_ids
 
@@ -1154,7 +1163,6 @@ def query_attack_type(request):
 
     data['attrack_type_times'] = attack_type1
     data = json.dumps(data)
-
     return HttpResponse(data, content_type='application/json')
 
 
@@ -1167,7 +1175,7 @@ def query_attack_warn(request):
     result = None
     if not request.session['superuser']:
         username = request.session['username']
-        result = TWebAgents.objects.filter(owner=username)
+        result = THostAgents.objects.filter(own_user=username)
         agent_ids = [x.agent_id for x in result]
         filter_condition['agent_id__in'] = agent_ids
 

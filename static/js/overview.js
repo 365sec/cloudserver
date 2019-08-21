@@ -34,11 +34,10 @@ function query_threat_level() {
         url: "query_threat_level",
         type: 'POST',
         data: {
-            "page": "asdsad"
+            "page": ""
         },
         //dataType: "json",
         success: function (data_list) {
-            // console.log(data_list['threat_level_dict']);
             attack_threat_level_charts(data_list['threat_level_dict'],'attrack_threat_level_dic_div');
         }
     });
@@ -55,6 +54,7 @@ function query_attack_source(show_continuous) {
         },
         //dataType: "json",
         success: function (data_list) {
+
             if(show_continuous) {
                 // 攻击IP排行
                 attack_source_charts(data_list['attrack_source_dic']);
@@ -108,10 +108,11 @@ function query_attack_times() {
         url: "query_attack_times",
         type: 'POST',
         data: {
-            "page": "asdsad"
+            "page": ""
         },
         //dataType: "json",
         success: function (data_list) {
+
             attrack_time_charts(data_list['attrack_time_dic'],'attrack_time_dic_div');
         }
     });
@@ -123,7 +124,7 @@ function query_attack_type() {
         url: "query_attack_type",
         type: 'POST',
         data: {
-            "page": "asdsad"
+
         },
         //dataType: "json",
         success: function (data_list) {
@@ -138,10 +139,11 @@ function query_attack_warn() {
         url: "query_attack_warn",
         type: 'POST',
         data: {
-            "page": "asdsad"
+            "page": ""
         },
         //dataType: "json",
         success: function (data_list) {
+
             attrack_recent_warning(data_list['attrack_recent_warning']['data']);
         }
     });

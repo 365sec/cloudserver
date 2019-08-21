@@ -8,12 +8,12 @@ from t import login
 
 urlpatterns = [
     url(r'^data_count$', views.view_report),# 统计信息界面展示
-    url(r'^agent/query/$', views.agent_query),#查询agent
+    # url(r'^agent/query/$', views.agent_query),#查询agent事件
     url(r'^server_agent/query/$', views.server_agent_query),# 查询服务agent
     url(r'^web_agent/query/$', views.web_agent_query),    #查询网络agent
     url(r'^attack/query/$', views.attack_event_query),   #过滤agent事件
     url(r'^attack/query_detail_data/$', views.query_detail_data),#根据ID查询相应表的单条数据
-    url(r'^attack/query_source/$', views.attack_query_source),#追踪溯源 查询
+    url(r'^attack/query_source/$', views.attack_query_source),#追踪溯源查询
     url(r'^attack/server_trend/$', views.server_attack_trend),#服务安全事件
     url(r'^attack/web_trend/$', views.web_attack_trend),      #网站安全事件
     url(r'^attack/web_event/$', views.query_web_event_by_app_id),# 查询某个服务上面的所有网站

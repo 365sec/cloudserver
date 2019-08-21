@@ -126,7 +126,6 @@ function pwd_update() {
             } else {
                 alert(data_list['msg']);
             }
-
         }
     });
 }
@@ -239,8 +238,6 @@ $(document).on('click','.add_user_btn',function () {
 })
 //添加用户
 function user_add() {
-
-
     let username=$("#user_add_name").val();
     let password=$("#user_add_password").val();
     var usernamereg=/^[a-zA-Z0-9]{5,12}$/;
@@ -255,7 +252,6 @@ function user_add() {
         alert("密码格式6-22位字母数字");
         return;
     }
-
     $.ajax({
         url: "user/user_add/",
         type: 'POST',

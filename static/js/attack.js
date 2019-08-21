@@ -46,6 +46,7 @@ function attack_click(attack_page) {
                 // async: false,
                 dataType: "json",
                 success: function (data_list) {
+                    console.log(data_list);
                     let data = data_list['attack'];
                     let now_page = data_list['page'];
                     let max_size = data_list['max_size'];
@@ -77,7 +78,7 @@ function attack_click(attack_page) {
                     html_select += '<option value="2" >中危</option>';
                     html_select += '<option value="3" >信息</option>';
                     html_select += '</select></div>';
-                    html_select += '<div class="search_button"><span class="btnvalue">关键词: </span>';
+                    html_select += '<div class="search_button"><span class="btnvalue">关键词(事件内容): </span>';
                     html_select += '<input id="attack_msg" value="' + attack_msg + '" /></div>';
 
                     html_select += '<div  class="btn" onclick="attack_click_search(1)" >查询</div>';
@@ -410,10 +411,8 @@ $(document).on("click", ".detail-a", function () {
 function get_iochtml(data) {
     /*
     详情页面显示部分
-    * */
-    console.log(data);
+    **/
     let agent_id=data['agent_id'];
-    console.log(agent_id);
     if (data['event_category'] === "web_event") {
         web_event_html(data);
         //追踪溯源部分
@@ -449,8 +448,6 @@ function get_attack_body(ip, attack_source,agent_id) {
         async: false,
         //dataType: "json",
         success: function (data_list) {
-            console.log($(document).scrollTop());
-            console.log(data_list);
             temp_html += ` <tr>
                 <td style="width: 10%; text-align: right;">
                 <br>
@@ -513,8 +510,6 @@ function get_attack_body(ip, attack_source,agent_id) {
 
             console.log("第一次查询结果 remain剩余", data_list["remain"]);
             $("#attack_body").text("").append(temp_html);
-
-
             if (data_list["remain"] !== 0) {
                 append_attack_body(ip, data_list['last_next'], attack_source,agent_id);
             } else {

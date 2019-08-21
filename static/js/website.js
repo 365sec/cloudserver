@@ -23,6 +23,7 @@ function website_click(page) {
                 },
                 //dataType: "json",
                 success: function (data_list) {
+                    // console.log(data_list);
                     data = data_list['agents'];
                     let now_page = data_list['page'];
                     let max_size = data_list['max_size'];
@@ -132,7 +133,7 @@ $(document).on("click", ".detail-a-website", function () {
     let data1 = $(this).attr("data-name");
     let b = new Base64();
     let data = JSON.parse(b.decode(data1));
-    console.log(data);
+    // console.log(data);
     $.ajax({
         url: 'website_manage_detail',
         type: 'get',
@@ -326,7 +327,7 @@ function event_treat_web(now_page, app_id) {
             html_select += '<option value="2" >中危</option>';
             html_select += '<option value="3" >信息</option>';
             html_select += '</select></div>';
-            html_select += '<div class="search_button"><span class="btnvalue">关键词: </span>';
+            html_select += '<div class="search_button"><span class="btnvalue">关键词(事件摘要): </span>';
             html_select += '<input id="web_attack_msg" value="' + attack_msg + '" /></div>';
             html_select += '<div  class="btn" onclick="event_treat_web(1,\''+app_id+'\')" >查询</div>';
             html_select += '<div  class="btn" onclick="web_reset(1,\''+app_id+'\')" >重置</div>';

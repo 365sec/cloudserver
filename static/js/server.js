@@ -23,7 +23,7 @@ function server_click(page) {
                 //dataType: "json",
                 success: function (data_list) {
                     data = data_list['agents'];
-                    console.log(data);
+
                     let now_page = data_list['page'];
                     let max_size = data_list['max_size'];
                     // data = data.replace(/}{/g, "}****{").split("****");
@@ -51,8 +51,6 @@ function server_click(page) {
                     for (x in data) {
                         let server_img;
                         data[x] = JSON.parse(data[x]);
-                        console.log(data[x]['os']);
-                        console.log(typeof data[x]['os']);
                         if (data[x]['online']==="在线")
                         {
                             if (data[x]['os'].toLowerCase().indexOf("windows") !== -1){
@@ -161,12 +159,11 @@ $(document).on("click", ".detail-a-server", function () {
     let data1 = $(this).attr("data-name");
     let b=new Base64();
     let data=JSON.parse(b.decode(data1));
-    console.log(data);
+    // console.log(data);
     $.ajax({
         url: 'server_manage_detail',
         type: 'get',
         dataType: 'html',
-
         success: function (res) {
             // console.log(res);
             $('#div_container').html($(res));
@@ -221,6 +218,7 @@ function chart_attack_trend_server(agent_id){
         // dataType: "json",
         async: false,
         success: function (data_list) {
+            // console.log(data_list);
             data=data_list;
             // console.log(data_list);
             let server_id_nowcount=0;
@@ -312,7 +310,7 @@ function click_event_treat_server(){
 }
 function event_treat_server(now_page){
 
-    console.log("事件处理");
+    // console.log("事件处理");
 
     //获得查询条件
     let data = {};
@@ -384,7 +382,7 @@ function event_treat_server(now_page){
             html_select += '<option value="2" >中危</option>';
             html_select += '<option value="3" >信息</option>';
             html_select += '</select></div>';
-            html_select += '<div class="search_button"><span class="btnvalue">关键词: </span>';
+            html_select += '<div class="search_button" ><span class="btnvalue"  >关键词(事件摘要): </span>';
             html_select += '<input id="server_attack_msg" value="' + attack_msg + '" /></div>';
             html_select += '<div  class="btn" onclick="event_treat_server(1)" >查询</div>';
             html_select += '<div  class="btn" onclick="server_reset()" >重置</div>';
@@ -941,7 +939,6 @@ $(document).on("click", "#server_website_list_del", function() {
 // 黑白名单
 function click_black_white_list(agent_id){
     $(document).on('click','#black_white_list_link',function () {
-
         black_white_list(agent_id);
     })
 }
@@ -1084,6 +1081,17 @@ $(document).on('click','.black_list_release',function () {
 // 批量解除黑名单
 $(document).on('click','#releaseall_black',function () {
     let id = $(this).attr("id");
+    let num=0;
+    for( let i=1;i<=$('#black_list_table>tbody>tr').length;i++){
+        if($('#black_list_table>tbody>tr:nth-child('+i+')').find('input').prop('checked')){
+            let ip=$('#black_list_table>tbody>tr:nth-child('+i+')').find('input').attr('id');
+            num++;
+        }
+    }
+    if (num === 0) {
+        alert("未选择任何黑名单ip")
+        return;
+    }
     let html = `<div class="modal fade" id="releaseall_black_list" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -1096,7 +1104,7 @@ $(document).on('click','#releaseall_black',function () {
                     <tbody>
                         <tr>
                         <td style="text-align: right;padding-right: 20px; width: 38%">
-                        <span >确认要删除选中的数据吗</span>
+                        <span >确认要删除选中的${num}条数据吗</span>
                         </td></tr>
                     </tbody>
                 </table>
@@ -1180,6 +1188,18 @@ $(document).on('click','.white_list_release',function () {
 // 批量解除白名单触发
 $(document).on('click','#releaseall_white',function () {
     let id = $(this).attr("id");
+    let num=0;
+    for( let i=1;i<=$('#white_list_table>tbody>tr').length;i++){
+        if($('#white_list_table>tbody>tr:nth-child('+i+')').find('input').prop('checked')){
+            let ip=$('#white_list_table>tbody>tr:nth-child('+i+')').find('input').attr('id');
+            num++;
+        }
+    }
+    if  (num===0)
+    {
+        alert("未选择任何白名单ip")
+        return;
+    }
     let html = `<div class="modal fade" id="releaseall_white_list" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -1192,7 +1212,7 @@ $(document).on('click','#releaseall_white',function () {
                     <tbody>
                         <tr>
                         <td style="text-align: right;padding-right: 20px; width: 38%">
-                        <span >确认要删除选中的数据吗</span>
+                        <span >确认要删除选中的${num}条数据吗</span>
                         </td></tr>
                     </tbody>
                 </table>
@@ -1207,7 +1227,7 @@ $(document).on('click','#releaseall_white',function () {
     $("#releaseall_white_list").modal("show");
 });
 
-// 添加红白名单执行
+// 添加黑白名单执行
 function white_black_list_add() {
 
     let add_black_ip= [];
@@ -1252,6 +1272,11 @@ function white_black_list_add() {
                 return;
             }
         }
+    }
+    if (!$("#white_ip").val()&&!$("#black_ip").val())
+    {
+        alert("请输入ip");
+        return;
     }
 
 
@@ -1317,8 +1342,8 @@ function white_black_list_releaseall(id,type) {
                 let ip=$('#black_list_table>tbody>tr:nth-child('+i+')').find('input').attr('id');
                 black_list.splice(black_list.indexOf(ip),1);
             }
-
         }
+
     }
     else if (type==='white') {
         for( let i=1;i<=$('#white_list_table>tbody>tr').length;i++){
@@ -1326,8 +1351,8 @@ function white_black_list_releaseall(id,type) {
                 let ip=$('#white_list_table>tbody>tr:nth-child('+i+')').find('input').attr('id');
                 white_list.splice(white_list.indexOf(ip),1)
             }
-
         }
+
     }
 
     black_list=JSON.stringify(black_list);
@@ -1359,7 +1384,7 @@ function click_config_show(data){
         config_show(data);
     })
 }
-function config_show(id) {
+function config_show(agent_id) {
     let algorithm_html = ``;
     let httpProtec_html = ``;
     let global_html = ``;
@@ -1370,11 +1395,12 @@ function config_show(id) {
         url: "plugins",
         type: 'POST',
         data: {
-            "id": id
+            "id": agent_id
         },
         async: false,
         dataType: "json",
         success: function (data_list) {
+            // console.log(data_list);
             httpProtectConfig = data_list['httpProtectConfig'];
             algorithm_config = data_list['algorithm_config'];
             globalConfig = data_list['globalConfig'];
@@ -1382,9 +1408,9 @@ function config_show(id) {
             $("#input_algorithm_config").val(algorithm_config);
             $("#input_global_config").val(globalConfig);
 
-            httpProtec_html = httpProtec_config_show(httpProtectConfig, id);
-            algorithm_html = algorithm_config_show(algorithm_config, id);
-            global_html = global_config_show(globalConfig, id);
+            httpProtec_html = httpProtec_config_show(httpProtectConfig, agent_id);
+            algorithm_html = algorithm_config_show(algorithm_config, agent_id);
+            global_html = global_config_show(globalConfig, agent_id);
         }
     });
     $("#agent_manage_submit").html("");
