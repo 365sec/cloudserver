@@ -1405,21 +1405,17 @@ def baseline(request):
     # print ("baseline ",online)
     data={}
     if  result:
-        # print (model_to_dict(result))
         data = model_to_dict(result)
         if data.get('last_check_time',None):
-            data['last_day']=datetime.now()-data['last_check_time']
-            if(data['last_day'].days <1 ):
-                time_delta = data['last_day']
-                data['last_day']=str(time_delta.seconds/3600)+"小时之前"
-                if(time_delta.seconds/3600 < 1):
-                    if time_delta.seconds/60 < 1:
-                        data['last_day']="1分钟之前"
-                    else:
-                        data['last_day']=str(time_delta.seconds/60)+"分钟之前"
-
+            time_span=(datetime.now()-data['last_check_time'])
+            if time_span.days >= 1:
+                data['last_day']=str(time_span.days)+"天之前"
+            elif time_span.total_seconds()/3600 >= 1:
+                data['last_day']=str(int(time_span.total_seconds()/3600))+"小时之前"
+            elif time_span.total_seconds()/60 >= 1:
+                data['last_day']=str(int(time_span.total_seconds()/60 ))+"分钟之前"
             else:
-                data['last_day']=str(data['last_day'].days)+"天之前"
+                data['last_day']="1分钟之前"
         if data['last_check_time']:
             data['last_check_time']=data['last_check_time'].strftime("%Y-%m-%d %H:%M:%S")
         else:
