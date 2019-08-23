@@ -530,7 +530,7 @@ def query_web_agent_by_agent_id(request):
     for x in result[(page - 1) * page_size:(page) * page_size]:
         y = model_to_dict(x)
         hostname = THostAgents.objects.all().filter(agent_id=agent_id).first()
-
+        # print (hostname)
         if hostname.internal_ip:
             y['register_ip'] = hostname.internal_ip
         else:
@@ -977,12 +977,6 @@ def query_threat_level(request):
 
     filter_condition = {}
     result = None
-    # if request.session['superuser']:
-    #     result = THostAgents.objects.all()
-    # else:
-    #     username = request.session['username']
-    #     result = THostAgents.objects.filter(owner=username)
-
     if not request.session['superuser']:
         username = request.session['username']
         result = THostAgents.objects.filter(own_user=username)
@@ -1163,6 +1157,7 @@ def query_attack_type(request):
 
     data['attrack_type_times'] = attack_type1
     data = json.dumps(data)
+
     return HttpResponse(data, content_type='application/json')
 
 
@@ -1408,7 +1403,9 @@ def baseline(request):
         data = model_to_dict(result)
         if data.get('last_check_time',None):
             time_span=(datetime.now()-data['last_check_time'])
-            if time_span.days >= 1:
+            if time_span.days < 0:
+                data['last_day'] = "1分钟之前"
+            elif time_span.days >= 1:
                 data['last_day']=str(time_span.days)+"天之前"
             elif time_span.total_seconds()/3600 >= 1:
                 data['last_day']=str(int(time_span.total_seconds()/3600))+"小时之前"

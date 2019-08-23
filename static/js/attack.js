@@ -1063,11 +1063,11 @@ function web_event_html(data) {
     html += '<tr><td>攻击事件编号</td><td>' + data['event_issue_id'] + '</td></tr>';
     html += '<tr><td>攻击类型</td><td>' + data['attack_type'] + '</td></tr>';
     html += '<tr><td>攻击参数</td><td><pre>' + data['attack_params'] + '</pre></td></tr>';
-    html += '<tr><td>调用栈</td><td><pre>' + data['stack_trace'] + '</pre></td></tr>';
     html += '<tr><td>事件描述</td><td>' + data['plugin_message'] + '</td></tr>';
     html += '<tr><td>事件可信度</td><td>' + data['plugin_confidence'] + '</td></tr>';
     html += '<tr><td>拦截状态</td><td>' + data['intercept_state'] + '</td></tr>';
     html += '<tr><td>风险等级</td><td>' + data['threat_level'] + '</td></tr>';
+    html += '<tr><td>调用栈</td><td><pre>' + data['stack_trace'] + '</pre></td></tr>';
     html += '</tbody>';
     html += '</table>';
 

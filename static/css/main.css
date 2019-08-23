@@ -88,10 +88,10 @@ b {
 }
 #myModal .modal-dialog{
     position: absolute;
-    top: 10%;
-    bottom: 10%;
-    left: 15%;
-    right: 15%;
+    top: 5%;
+    bottom: 5%;
+    left: 10%;
+    right: 10%;
     overflow-y: hidden;
     width: auto;
 }

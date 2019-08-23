@@ -32,12 +32,12 @@ function server_click(page) {
                     div_container.text("");
                     let html = '<h1 class="page-title" ><i class="iconfont">&#xe73b;</i>服务器管理</h1>';
                     html += '<div class="card">';
-                    html += '<div class = "btngroup"><div  class="btn" onclick="javascript:void(0)" data-toggle="modal" data-target="#add_host">添加主机</div></div>';
+                    /* html += '<div class = "btngroup"><div  class="btn" onclick="javascript:void(0)" data-toggle="modal" data-target="#add_host">添加主机</div></div>';*/
                     html += '<div class="card-body">';
                     html += '<table class="table table-bordered table-striped table-hover">';
                     html += '<thead>';
                     html += '<tr>';
-                    html += '<th>AGENT_ID</th>';
+                    //html += '<th>AGENT_ID</th>';
                     html += '<th>服务器名称</th>';
                     html += '<th>操作系统</th>';
                     html += '<th>IP地址</th>';
@@ -72,7 +72,7 @@ function server_click(page) {
                         let agent_id = data[x]['agent_id'];
                         let b = new Base64();
                         let data1 = b.encode(JSON.stringify(data[x]));
-                        html += '<td>' + data[x]['agent_id'] + '</td>';
+                        //html += '<td>' + data[x]['agent_id'] + '</td>';
                         html += '<td>' +
                             // '<img src="/static/images/os_linux_off.png" style="width: 20px"/>' +
                             // '<img src="/static/images/os_linux_on.png" style="width: 20px"/>' +
@@ -116,7 +116,7 @@ function server_click(page) {
             });
             $(".container1").css('background-color', '#f0f2f5');
             // 添加主机模态框
-            add_host_modal();
+            //add_host_modal();
         }
 
     });
@@ -689,7 +689,11 @@ function get_baseline_li_html(data) {
     for (x in data) {
         if (typeof(data[x])==='object')
         {
-            data[x]=data[x]['name']+"&nbsp&nbsp&nbsp&nbsp当前状态："+data[x]['status']+"&nbsp&nbsp&nbsp&nbsp建议："+data[x]['suggest']
+            var status = data[x]['status']
+            if(status === '没有定义' || status === '-1'){
+               status = '未设置'
+            }
+            data[x]=data[x]['name']+"&nbsp&nbsp&nbsp&nbsp当前状态: "+status+"&nbsp&nbsp&nbsp&nbsp建议改为: "+data[x]['suggest']
         }
         html+=`
             <li>
