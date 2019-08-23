@@ -60,7 +60,7 @@ function website_click(page) {
                         html += '<td><a class="detail-a-website" href="javascript:void(0)" data-name="' + data1 + '" >' + data[x]['register_ip'] + '</a> </td>';
                         // html += '<td>' + data[x]['register_ip'] + '</td>';
                         html += '<td style="width: 200px">' +
-                            '<input class="web_tip_text" placeholder="点击编辑" data-type="web"  data-id="' + data[x]['app_id'] + '" value="' + data[x]['remark'] + '"/>' +
+                            '<input class="web_tip_text" placeholder="点击编辑" data-type="web"   data-id="' + data[x]['app_id'] + '" value="' + data[x]['remark'] + '"/>' +
                             '</td>';
                         html += '<td>' + data[x]['hostname'] + '</td>';
                         html += '<td>' + data[x]['server_type'] + '-' + data[x]['server_version'] + '</td>';
@@ -126,6 +126,18 @@ $(document).on('change ', '.web_tip_text', function () {
     let id = $(this).attr('data-id');
     let data_type = $(this).attr('data-type');
     // 操作
+    var pattern = /^[A-Za-z0-9\u4e00-\u9fa5]+$/gi;
+    if (remark!==""&&!pattern.test(remark))
+    {
+        alert("请输入数字、字母、或者汉字");
+        return;
+    }
+    if (remark.length > 30)
+    {
+        alert("字符长度应小于30，当前长度"+remark.length);
+        return;
+    }
+
     update_remark(id, remark, data_type)
 });
 //详情

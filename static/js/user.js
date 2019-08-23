@@ -108,9 +108,16 @@ function pwd_update() {
     let old_password=$("#old_password").val();
     let new_password=$("#new_password").val();
     let new_password_=$("#new_password_").val();
+    var usernamereg=/^[a-zA-Z0-9]{5,12}$/;
+
     if (new_password !== new_password_) {
         alert("输入两次密码不一致");
         return ;
+    }
+    if (!usernamereg.test(new_password))
+    {
+        alert("密码格式6-22位字母数字");
+        return;
     }
     $.ajax({
         url: "user/user_update_pwd/",
