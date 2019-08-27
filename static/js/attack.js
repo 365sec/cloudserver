@@ -469,7 +469,6 @@ function get_attack_body(ip, attack_source,agent_id) {
                 let temp_data3=temp_data[3];
                 if (Array.isArray(temp_data[3]))
                 {
-                    // temp_data3="主机名（"+temp_data3[0]+") 用户（"+temp_data3[1]+"）正在进行 "+temp_data3[2]+"";
                     temp_data3=`主机 <span class="hostname event_detail_attack_detail_table_span label label-info">${temp_data3[0]}</span> 
                 使用账户 <span class="user event_detail_attack_detail_table_span label label-info">${temp_data3[1]}</span> 正在进行${temp_data3[2]}`;
                 // <span class="ip event_detail_attack_detail_table_span label label-info">${temp_data[2]}</span>
@@ -582,13 +581,15 @@ function append_attack_body_more(ip, last, attack_source,agent_id) {
         data: parm,
         async: false,
         success: function (data_list) {
-
+            console.log("datalist:",data_list);
             for (x in data_list['list']) {
                 let temp_data = data_list['list'][x];
                 let temp_data3=temp_data[3];
                 if (Array.isArray(temp_data[3]))
                 {
-                    temp_data3=`主机名（${temp_data3[0]}) 用户（${temp_data3[1]}）正在进行${temp_data3[2]}`;
+                    // temp_data3=`主机名（${temp_data3[0]}) 用户（${temp_data3[1]}）正在进行${temp_data3[2]}`;
+                    temp_data3=`主机 <span class="hostname event_detail_attack_detail_table_span label label-info">${temp_data3[0]}</span> 
+                使用账户 <span class="user event_detail_attack_detail_table_span label label-info">${temp_data3[1]}</span> 正在进行${temp_data3[2]}`;
                 }
                 let block_status=temp_data[4];
                 let block_html;

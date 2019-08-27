@@ -218,7 +218,6 @@ function chart_attack_trend_server(agent_id){
         // dataType: "json",
         async: false,
         success: function (data_list) {
-            // console.log(data_list);
             data=data_list;
             // console.log(data_list);
             let server_id_nowcount=0;

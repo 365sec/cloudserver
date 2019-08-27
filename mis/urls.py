@@ -14,7 +14,7 @@ urlpatterns = [
     url(r'^attack/query/$', views.attack_event_query),   #过滤agent事件
     url(r'^attack/query_detail_data/$', views.query_detail_data),#根据ID查询相应表的单条数据
     url(r'^attack/query_source/$', views.attack_query_source),#追踪溯源查询
-    url(r'^attack/server_trend/$', views.server_attack_trend),#服务安全事件
+    url(r'^attack/server_trend/$', views.server_attack_trend),#服务安全分析
     url(r'^attack/web_trend/$', views.web_attack_trend),      #网站安全事件
     url(r'^attack/web_event/$', views.query_web_event_by_app_id),# 查询某个服务上面的所有网站
     url(r'^attack/web_remark/$', views.change_web_event_remark),# 修改网站管理里面的标签 remark

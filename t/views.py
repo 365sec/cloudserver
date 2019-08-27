@@ -756,8 +756,7 @@ def attack_query_source(request):
         else:
             list_x.append(x2.replace('<', '&lt').replace('>', '&gt'))
 
-
-        list_x.append(INTERCEPT_STATUS.get(x[3], ''))
+        list_x.append(INTERCEPT_STATUS.get(x[3], '记录'))
         list_x_all.append(list_x)
 
     remain = num - last_next
@@ -853,12 +852,28 @@ def server_attack_trend(request):
     # 攻击严重等级饼状图
     tweb_obj1=tweb_obj.values_list("threat_level").annotate(number=Count('threat_level'))
     tfile_obj1=tfile_obj.count()
-    tlog_obj1=tlog_obj.count()
+    tlog_obj1=tlog_obj.values_list("threat_level").annotate(number=Count('threat_level'))
     # union_obj2=tweb_obj1.union(tlog_obj1).order_by("-number")
-
+    # print ("网站攻击")
+    # print (tweb_obj1)
+    # print ("文件")
+    # print (tfile_obj1)
+    # print ("日志")
+    # print (tlog_obj1)
+    # print (tlog_obj.values_list("threat_level").annotate(number=Count('threat_level')))
     level_num_list=[["严重",0],["高危",0],["中危",0],["信息",0]]
-    level_num_list[3][1]=tfile_obj1+tlog_obj1
+    level_num_list[3][1]=tfile_obj1
     for x in list(tweb_obj1):
+        # print (x)
+        if x[0]==0:
+            level_num_list[0][1]+=x[1]
+        if x[0]==1:
+            level_num_list[1][1]+=x[1]
+        if x[0]==2:
+            level_num_list[2][1]+=x[1]
+        if x[0]==3:
+            level_num_list[3][1]+=x[1]
+    for x in list(tlog_obj1):
         # print (x)
         if x[0]==0:
             level_num_list[0][1]+=x[1]
