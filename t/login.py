@@ -32,6 +32,7 @@ def index(request):
 
 @require_http_methods(['GET', 'POST'])
 def login(request):
+    msg={"msg":"账户密码错误"}
     if request.method == 'GET':
         return render(request, 'login.html', {})
     elif request.method == 'POST':
@@ -40,16 +41,16 @@ def login(request):
         m2 = hashlib.md5()
         m2.update(password)
         u = TUsers.objects.filter(username=username).first()
-        print(u.password)
-        print(m2.hexdigest())
+        if not u:
+
+            return render(request, 'login.html', msg)
         if u.password == m2.hexdigest():
             request.session['username'] = username
             request.session['superuser'] = u.superuser
             request.session['is_login'] = True
             #request.session.set_expiry(1800)
             return redirect('/index')
-
-    return render(request, 'login.html', {})
+    return render(request, 'login.html', msg)
 
 
 def loginout(request):

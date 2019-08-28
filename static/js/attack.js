@@ -581,7 +581,7 @@ function append_attack_body_more(ip, last, attack_source,agent_id) {
         data: parm,
         async: false,
         success: function (data_list) {
-            console.log("datalist:",data_list);
+            // console.log("datalist:",data_list);
             for (x in data_list['list']) {
                 let temp_data = data_list['list'][x];
                 let temp_data3=temp_data[3];

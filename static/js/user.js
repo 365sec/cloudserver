@@ -108,7 +108,7 @@ function pwd_update() {
     let old_password=$("#old_password").val();
     let new_password=$("#new_password").val();
     let new_password_=$("#new_password_").val();
-    var usernamereg=/^[a-zA-Z0-9]{5,12}$/;
+    var usernamereg=/^[a-zA-Z0-9!@#$%^&*?.]{5,12}$/;
 
     if (new_password !== new_password_) {
         alert("输入两次密码不一致");
@@ -116,7 +116,7 @@ function pwd_update() {
     }
     if (!usernamereg.test(new_password))
     {
-        alert("密码格式6-22位字母数字");
+        alert("密码格式6-22位字母数字或者特殊字符");
         return;
     }
     $.ajax({
@@ -230,7 +230,7 @@ $(document).on('click','.add_user_btn',function () {
                                         <td style="text-align: right;padding-right: 20px"><span class="red">*</span>
                                             <span>密码</span>
                                         </td>
-                                        <td><input type="text" placeholder="" id='user_add_password' name="" /></td></tr>
+                                        <td><input type="password" placeholder=""  id='user_add_password' name="" /></td></tr>
                                     </tbody>
                                 </table>
                                 </div>
@@ -247,16 +247,16 @@ $(document).on('click','.add_user_btn',function () {
 function user_add() {
     let username=$("#user_add_name").val();
     let password=$("#user_add_password").val();
-    var usernamereg=/^[a-zA-Z0-9]{5,12}$/;
-    var passwordreg = /^[a-zA-Z0-9]{6,22}$/;
+    var usernamereg=/^[_a-zA-Z0-9]{5,12}$/;
+    var passwordreg = /^[a-zA-Z0-9!@#$%^&*?.]{6,22}$/;
     if (!usernamereg.test(username))
     {
-        alert("账号格式5-12位字母数字");
+        alert("账号格式5-12位字母数字或者下划线");
         return;
     }
     if (!passwordreg.test(password))
     {
-        alert("密码格式6-22位字母数字");
+        alert("密码格式6-22位字母数字或者特殊字符");
         return;
     }
     $.ajax({

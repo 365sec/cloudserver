@@ -17,6 +17,9 @@
 					<div class="login-work">登录</div>
 					<form action="" method="POST" class="loginform" >
                         {% csrf_token %}
+                        {% if msg %}
+                           <div style="color: red">账户密码错误</div>
+                        {% endif %}
 						<input class="textinput" type="text" name="username" id="username" value="" />
 						<input class="textinput" type="password" name="password" id="userpasswor" value="" />
 						<!--div class="login-tip">
