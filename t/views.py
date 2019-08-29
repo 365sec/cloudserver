@@ -988,7 +988,8 @@ def web_attack_trend(request):
 @auth
 def query_threat_level(request):
     data = {}
-    attack = TWebEvent.objects.all()
+    web_attack = TWebEvent.objects.all()
+    log_attack = TLogAnalysisd.objects.all().filter(event_id=2010)
 
     filter_condition = {}
     result = None
@@ -999,12 +1000,15 @@ def query_threat_level(request):
         filter_condition['agent_id__in'] = agent_ids
 
     # 统计风险等级
-    threat_level_list = attack.filter(**filter_condition).values_list('threat_level').annotate(
+    web_threat_level_list = web_attack.filter(**filter_condition).values_list('threat_level').annotate(
+        aaa=Count('threat_level'))
+    log_threat_level_list = log_attack.filter(**filter_condition).values_list('threat_level').annotate(
         aaa=Count('threat_level'))
     threat_level_dict = {}
-    for item in threat_level_list:
+    for item in web_threat_level_list:
         threat_level_dict[item[0]] =int(item[1])
-
+    for item in log_threat_level_list:
+        threat_level_dict[item[0]] +=int(item[1])
     data['threat_level_dict'] = threat_level_dict
     data = json.dumps(data)
 
@@ -1017,7 +1021,8 @@ def query_attack_source(request):
     flag = request.POST.get("flag")
     flag = int(flag)
     data = {}
-    attack = TAttackEvent.objects
+    web_attack = TWebEvent.objects.all()
+    log_attack = TLogAnalysisd.objects.all().filter(event_id=2010)
 
     filter_condition = {}
     result = None
@@ -1028,7 +1033,11 @@ def query_attack_source(request):
         filter_condition['agent_id__in'] = agent_ids
 
     # 统计attack_source
-    attrack_source = attack.filter(**filter_condition).values_list('attack_source').annotate(Count('attack_source'))
+
+    web_attrack_source = web_attack.filter(**filter_condition).values_list('attack_source').annotate(Count('attack_source'))
+    log_attrack_source = log_attack.filter(**filter_condition).values_list('dstip').annotate(Count('dstip'))
+
+    attrack_source=list(web_attrack_source)+(list(log_attrack_source))
     attrack_source = sorted(attrack_source, key=lambda item: item[1], reverse=True)
     # 统计前10条记录
     attrack_source_dic = {}
@@ -1045,9 +1054,7 @@ def query_attack_source(request):
             response = gi.city(item[0])
         except Exception as e:
             continue
-
         result = []
-
         try:
             if flag == 1 and response.country.names['zh-CN'] not in ['中国', '香港', '澳门', '台湾']:
                 continue
@@ -1075,32 +1082,6 @@ def query_attack_source(request):
     return HttpResponse(data, content_type='application/json')
 
 
-def query_attack_source_map(request):
-    attack_source_map = {}
-    data = {}
-    attack = TAttackEvent.objects
-    attrack_source = attack.values_list('attack_source').annotate(number=Count('attack_source')).order_by('-number')
-    gi = geoip2.database.Reader('data/geoip/GeoLite2-City.mmdb', locales=['zh-CN'])
-    for item in attrack_source:
-        response = None
-        try:
-            response = gi.city(item[0])
-
-        except Exception as e:
-            continue
-
-        try:
-            key = item[0] + '\r\n' + response.subdivisions.most_specific.name + ' ' + response.city.name
-            attack_source_map[key] = [response.location.longitude, response.location.latitude, item[1]]
-        except Exception as e:
-            attack_source_map[item[0]] = [response.location.longitude, response.location.latitude, item[1]]
-
-    data['attack_source_map'] = attack_source_map
-    data = json.dumps(data)
-
-    return HttpResponse(data, content_type='application/json')
-
-
 @auth
 def query_attack_times(request):
     data = {}
@@ -1112,17 +1093,25 @@ def query_attack_times(request):
         filter_condition['agent_id__in'] = agent_ids
 
     # 统计前num天的攻击次数，攻击趋势分析
-    num = 15
+    num = 30
     dt_s = datetime.now().date()  # 2018-7-15
     dt_e = (dt_s - timedelta(num))  # 2018-7-08
 
-    num=dt_s-dt_e
-    tobj=   TWebEvent.objects.all()
-    time_num = tobj.filter(event_time__range=(dt_e, dt_s)).extra(
+    num = dt_s-dt_e
+    tobj = TWebEvent.objects.all()
+    web_tobj = TWebEvent.objects.all()
+    log_tobj = TLogAnalysisd.objects.all()
+    tobj=web_tobj.union(log_tobj)
+    web_time_num = web_tobj.filter(event_time__range=(dt_e, dt_s),**filter_condition).extra(
         select={"event_time": "DATE_FORMAT( event_time, '%%Y-%%m-%%d')"}) \
         .values('event_time').annotate(num=Count('event_time')).values('event_time', 'num').order_by('event_time')
+    log_time_num = log_tobj.filter(event_id=2010,event_time__range=(dt_e, dt_s),**filter_condition).extra(
+        select={"event_time": "DATE_FORMAT( event_time, '%%Y-%%m-%%d')"}) \
+        .values('event_time').annotate(num=Count('event_time')).values('event_time', 'num').order_by('event_time')
+
+    log_time_num=list(log_time_num)
     attack_time_dic_list=[]
-    for x in time_num:
+    for x in web_time_num:
         attack_time_dic_list.append((x['event_time'],x['num']))
     attack_time_dic_list1 = []
     # dt_s = (dt_e - timedelta(num))  # 2018-7-08
@@ -1133,18 +1122,22 @@ def query_attack_times(request):
             attack_time_dic_list.pop(0)
         else:
             attack_time_dic_list1.append([time1, 0])
+    for x in attack_time_dic_list1:
+        if log_time_num and  x[0]==log_time_num[0]['event_time']:
+            x[1]+=log_time_num[0]['num']
+            log_time_num.pop(0)
+
     attack_time_dic_list1.reverse()
     data['attrack_time_dic'] = attack_time_dic_list1
-
     data = json.dumps(data)
-
     return HttpResponse(data, content_type='application/json')
 
 
 @auth
 def query_attack_type(request):
     data = {}
-    attack = TAttackEvent.objects
+    web_attack = TWebEvent.objects.all()
+    log_attack = TLogAnalysisd.objects.all().filter(event_id=2010)
 
     filter_condition = {}
     if not request.session['superuser']:
@@ -1159,9 +1152,12 @@ def query_attack_type(request):
     for x in result:
         attack_type[str(x.event_id)] = x.event_name
     num = 12
-    attrack_times = attack.filter(~Q(event_id__in=[0, 999]), **filter_condition).values_list('event_id').annotate(
+    web_attrack_times = web_attack.filter(~Q(event_id__in=[0, 999]), **filter_condition).values_list('event_id').annotate(
         Count('event_id'))
-    attrack_times1 = sorted(attrack_times, key=lambda item: item[1], reverse=True)
+    log_attrack_times = log_attack.filter(~Q(event_id__in=[0, 999]), **filter_condition).values_list('event_id').annotate(
+        Count('event_id'))
+    attrack_times1=list(web_attrack_times)+list(log_attrack_times)
+    attrack_times1 = sorted(attrack_times1, key=lambda item: item[1], reverse=True)
     attack_type1 = {}
     for x in attrack_times1:
         name = attack_type[str(x[0])]
@@ -1179,10 +1175,10 @@ def query_attack_type(request):
 @auth
 def query_attack_warn(request):
     data = {}
-    attack = TAttackEvent.objects
+    web_attack = TWebEvent.objects.values("agent_id","event_id","event_time","plugin_message","attack_source")
+    log_attack = TLogAnalysisd.objects.values("agent_id","event_id","event_time","unused","dstip").filter(event_id=2010)
 
     filter_condition = {}
-    result = None
     if not request.session['superuser']:
         username = request.session['username']
         result = THostAgents.objects.filter(own_user=username)
@@ -1195,14 +1191,23 @@ def query_attack_warn(request):
         attack_type[str(x.event_id)] = x.event_name
 
     recent_warning_list = []
+    attack=web_attack.union(log_attack)
+    # attack=log_attack
     result = attack.filter(~Q(event_id__in=[0, 999]), **filter_condition).order_by('-event_time')
+
     for x in result[:10]:
-        x.event_time = x.event_time.strftime("%Y-%m-%d %H:%M:%S")
-        x.event_id = attack_type[str(x.event_id)]
-        x.plugin_message = x.plugin_message.replace('<', '&lt').replace('>', '&gt')
-        x.plugin_message = x.plugin_message.replace('"', '&quot;')
-        temp = model_to_dict(x)
-        recent_warning_list.append(temp)
+        x[u'event_time'] = x[u'event_time'].strftime("%Y-%m-%d %H:%M:%S")
+        x[u'event_id'] = attack_type[str(x[u'event_id'])]
+        if x[u'plugin_message']:
+            x[u'plugin_message'] = x[u'plugin_message'].replace('<', '&lt').replace('>', '&gt')
+            x[u'plugin_message'] = x[u'plugin_message'].replace('"', '&quot;')
+
+        else:
+            x[u'plugin_message']="SSH远程暴力登录"
+        if hasattr(x,u'dstip'):
+            x[u'attack_source']=x[u'dstip']
+
+        recent_warning_list.append(x)
     recent_warning = {"data": recent_warning_list}
 
     data['attrack_recent_warning'] = recent_warning
