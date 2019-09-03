@@ -230,7 +230,7 @@ $(document).on('click','.add_user_btn',function () {
                                         <td style="text-align: right;padding-right: 20px"><span class="red">*</span>
                                             <span>密码</span>
                                         </td>
-                                        <td><input type="password" placeholder=""  id='user_add_password' name="" /></td></tr>
+                                        <td><input type="password" placeholder=""  id='user_add_password' name="" autocomplete="off" /></td></tr>
                                     </tbody>
                                 </table>
                                 </div>
@@ -247,7 +247,7 @@ $(document).on('click','.add_user_btn',function () {
 function user_add() {
     let username=$("#user_add_name").val();
     let password=$("#user_add_password").val();
-    var usernamereg=/^[_a-zA-Z0-9]{5,12}$/;
+    var usernamereg=/^[_a-zA-Z0-9]{4,12}$/;
     var passwordreg = /^[a-zA-Z0-9!@#$%^&*?.]{6,22}$/;
     if (!usernamereg.test(username))
     {

@@ -46,6 +46,9 @@ function attack_click(attack_page) {
                 // async: false,
                 dataType: "json",
                 success: function (data_list) {
+                    if(data_list.hasOwnProperty('auth')){
+                        windows.location.url = '/login'
+                    }
                     console.log(data_list);
                     let data = data_list['attack'];
                     let now_page = data_list['page'];
@@ -709,6 +712,10 @@ function web_event_html(data) {
             obj_title = "查询条数";
             obj_code = code['query_count'];
             break;
+        case 'sql_exception':
+            obj_title = "SQL语句";
+            obj_code = code['query'];
+            break;
 
         case 'ssrf':
             obj_title = "访问URL";
@@ -1246,7 +1253,7 @@ function log_event_html(data) {
                                                     <td class="td-01">类型</td>
                                                     <td class="td-02">:</td>
                                                     <td class="td-03">
-                                                        <p>rdp</p>
+                                                        <p>${data['login_type']}</p>
                                                     </td>
                                                 </tr>
                                                 <tr>

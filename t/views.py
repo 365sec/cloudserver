@@ -447,6 +447,14 @@ def query_detail_data(request):
         y['event_time'] = y['event_time'].strftime("%Y-%m-%d %H:%M:%S")
         # 查询城市
         y['city'] = ''
+        if y['event_id'] in [2010, 2000]:
+            if 'windows' in y['group']:
+                y['login_type'] = 'rdp'
+            elif 'ssh' in y['group']:
+                y['login_type'] = 'ssh'
+        else:
+            y['login_type'] = ''
+
         if "." in y['srcip']:
             str_ip = y['srcip'].split(".")[0]
             if str_ip == "172" or str_ip == "192" or str_ip == "10":
