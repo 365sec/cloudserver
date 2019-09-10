@@ -441,7 +441,13 @@ function linechart(data,div) {
 
     option = {
         // Make gradient line here
-        color: "#3398db",
+        grid:{
+            x:50,
+            y:20,
+            x2:35
+        },
+        color: ['#ff3333'],
+        calculable : false,
         visualMap: [{
             show: false,
             type: 'continuous',
@@ -460,38 +466,42 @@ function linechart(data,div) {
         tooltip: {
             trigger: 'axis'
         },
-        color: ['#3398db', "#2FC25B", "#FACC14", "#223273", "#8543E0", "#13C2C2", "#3436C7", "#F04864"],
         xAxis: [{
+            type : 'category',
+            boundaryGap : false,
+            axisLine:{
+                lineStyle:{
+                    color: '#b3b3b3',
+                    width: 1,
+                    type: 'solid'
+                }
+            },
             data: dateList,
         }],
-        yAxis: [{
-            axisLine: {
-                show: false
-            },
-            axisTick: {
-                show: false
-            },
-        }],
-        grid: {
-            left: '5%',
-            top: '13%',
-            right: '5%',
-            bottom: '5%',
-            containLabel: true
-        },
+        yAxis: [
+            {
+                type : 'value',
+                axisLine:{
+                lineStyle:{
+                color: '#b3b3b3',
+                width: 1,
+                type: 'solid'
+                }
+                },
+                splitNumber:10
+            }
+        ],
         series: [{
-            type: 'line',
-            showSymbol: false,
-            name: "事件",
-            data: valueList,
+            type:'line',
+            smooth:true,
             itemStyle: {
                 normal: {
-                    color: '#fbcb14',
-                    lineStyle: {
-                        color: '#fbcb14'
-                    }
+                lineStyle:{color:'#ff3333'},
+                areaStyle: {type: 'default', color:'rgba(255, 51, 51, 0.15)'}
                 }
-            }
+             },
+            data: valueList,
+
         }]
     };
 

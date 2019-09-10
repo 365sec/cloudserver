@@ -704,8 +704,8 @@ function get_baseline_li_html(data) {
                        ${data[x]}
                     </p>
                 </div>
-<!--                <button type="button" onclick="check_ignore(this);">忽略</button>-->
-<!--                <button type="button" onclick="check_repair(this);">修复</button>-->
+               <!--<button type="button" onclick="check_ignore(this);">忽略</button>
+                <button type="button" onclick="check_repair(this);">修复</button-->
             </li>
             
         `

@@ -9,6 +9,6 @@ class appDict(dict):
 
 CONF = appDict()
 CONF.WIN32_AGENT_URL = 'AgentServiceInstaller-1.3.exe'
-CONF.LINUX_AGENT_URL = ''
+CONF.LINUX64_AGENT_URL = 'agent_service_x64-1.4.tar.gz'
 
 

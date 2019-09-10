@@ -62,7 +62,9 @@ def countreport(request):
 
 def agent_download(request):
     win32_agent_download = "/static/download/" + CONF.WIN32_AGENT_URL
-    context = {'win32_download_url': win32_agent_download}
+    linux64_agent_download = "http://" + request.get_host() + "/static/download/" + CONF.LINUX64_AGENT_URL
+
+    context = {'win32_download_url': win32_agent_download, "linux64_download_url":linux64_agent_download}
     return render(request, 'download.html', context)
 
 # def agent_detail(request):

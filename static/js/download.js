@@ -57,3 +57,8 @@ function iis_click() {
     });
 
 }
+
+
+function copyUrl()
+{
+}
