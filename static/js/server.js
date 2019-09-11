@@ -692,7 +692,9 @@ function get_baseline_li_html(data) {
             if(status === '没有定义' || status === '-1'){
                status = '未设置'
             }
-            data[x]=data[x]['name']+"&nbsp&nbsp&nbsp&nbsp当前状态: "+status+"&nbsp&nbsp&nbsp&nbsp建议改为: "+data[x]['suggest']
+            data[x]=data[x]['name'];
+
+                // +"&nbsp&nbsp&nbsp&nbsp当前状态: "+status+"&nbsp&nbsp&nbsp&nbsp建议改为: "+data[x]['suggest']
         }
         html+=`
             <li>
@@ -704,6 +706,7 @@ function get_baseline_li_html(data) {
                        ${data[x]}
                     </p>
                 </div>
+                <button type="button" class="xtpzaqjc_infor">详情</button>
                <!--<button type="button" onclick="check_ignore(this);">忽略</button>
                 <button type="button" onclick="check_repair(this);">修复</button-->
             </li>
@@ -713,6 +716,35 @@ function get_baseline_li_html(data) {
 
     return html;
 }
+$(document).on("click", ".xtpzaqjc_infor", function() {
+    let id = $(this).attr("class");
+    let html = `<div class="modal fade modal_rightsilde" id="xtpzaqjc_infor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">操作确认</h4>
+            </div>
+            <div style="width: 100%;height: calc(100% - 118px);display: flex;align-items: center;justify-content: center;line-height: 50px">
+                <table>
+                    <tbody>
+                    <tr>
+                        <td style="text-align: right;padding-right: 20px; width: 38%">
+                            <span>操作系统的密码复杂度不符合要求</span>
+                        </td>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="">提交</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+            `;
+    $('#model_div').text('').append(html);
+    $('#xtpzaqjc_infor').modal("show");
+});
 // 基线检查
 function base_check() {
     $('#accordion').css('display','none');

@@ -1867,6 +1867,32 @@ text-align:center;
 
 
 /*基线检查*/
+
+#xtpzaqjc .panel-sec .xtpzaqjc_infor{
+    opacity: 1;
+    cursor: pointer;
+}
+#xtpzaqjc_infor .modal-dialog{
+    top: auto;
+    margin: 0 0 0 auto;
+    height: 100vh;
+    margin-right: -600px;
+}
+ .modal-dialog .modal-content{
+    height: 100%;
+}
+#xtpzaqjc_infor.in .modal-dialog {
+    -webkit-transform: translate(-600px,0);
+    -ms-transform: translate(-600px,0);
+    -o-transform: translate(-600px,0);
+    transform: translate(-600px,0);
+}
+#xtpzaqjc_infor .modal-dialog {
+    -webkit-transform: translate(0,0);
+    -ms-transform: translate(0,0);
+    -o-transform: translate(0,0);
+    transform: translate(0,0);
+}
 .u-css-examineTITLE {
     margin-top: 10px;
     margin-bottom: 5px;
@@ -1886,6 +1912,7 @@ text-align:center;
 .u-css-examineTOP {
     border-bottom: 0px;
     margin: 20px 0;
+    height: 54px;
 }
 .u-css-List-titleBOX{
     width: 100%;
