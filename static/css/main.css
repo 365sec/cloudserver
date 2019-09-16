@@ -1893,6 +1893,21 @@ text-align:center;
     -o-transform: translate(0,0);
     transform: translate(0,0);
 }
+#xtpzaqjc_infor table tr{
+    border-bottom: 1px solid #dfdfdf;
+
+}
+.xtpzaqjc_infor_title{
+    height: 28px;
+    line-height: 28px;
+    border-left: 3px solid #0b7ec4;
+    padding-left: 12px;
+    margin-top: 16px;
+    font-weight: 700;
+}
+.xtpzaqjc_infor_content{
+    margin: 16px 0;
+}
 .u-css-examineTITLE {
     margin-top: 10px;
     margin-bottom: 5px;

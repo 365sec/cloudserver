@@ -732,17 +732,21 @@ $(document).on("click", ".xtpzaqjc_infor", function() {
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabel">操作确认</h4>
             </div>
-            <div style="width: 100%;height: calc(100% - 118px);display: flex;align-items: center;justify-content: center;line-height: 50px">
-                <table>
+            <div style="width: 100%;height: calc(100% - 118px);padding: 24px">
+                <table style="width: 100%;">
                     <tbody>
-                    <tr>
-                        <td style="text-align: right;padding-right: 20px; width: 38%">
-                            <span>检查项名称：${detail['name']}</span><br>
-                            <span>当前系统状态：${detail['status']}</span><br>
-                            <span>检查建议：${detail['suggest']}</span><br>
-                            
-                            
-                        </td>
+                        <tr><td>
+                            <div class="xtpzaqjc_infor_title">检查项名称</div>
+                            <div class="xtpzaqjc_infor_content">${detail['name']}</div>
+                        </td></tr>
+                        <tr><td>
+                            <div class="xtpzaqjc_infor_title">当前系统状态</div>
+                            <div class="xtpzaqjc_infor_content">${detail['status']}<div/>
+                        </td></tr>
+                        <tr><td>
+                            <div class="xtpzaqjc_infor_title">检查建议</div>
+                            <div class="xtpzaqjc_infor_content">${detail['suggest']}</div>
+                        </td></tr>
                     </tbody>
                 </table>
             </div>
