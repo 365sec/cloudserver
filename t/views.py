@@ -29,6 +29,7 @@ from t.models import TBaselineCheck
 from t.models import TWebEvent
 from t.models import TFileIntegrity
 from t.models import TLogAnalysisd
+from t.models import TBaselineKnowledge
 
 from t.models import TEventKnowledge
 from t.models import TConfig
@@ -251,7 +252,7 @@ def web_agent_query(request):
             # print (y)
             TAgents_list.append(y)
         except Exception, e:
-            print e
+            print (e)
     data = {
         "agents": TAgents_list,
         "max_size": max_size,
@@ -395,7 +396,8 @@ def attack_event_query(request):
             y['hostname'] = THostAgents.objects.all().filter(agent_id=x[0]).values_list("host_name").first()[0]
         except Exception as e:
             print (e)
-            continue
+            y['hostname']="主机已被删除"
+            # continue
         if x[8]=="web_event":
             y['threat_level']=int(x[9])
         elif x[8]=="log_analysisd":
@@ -1420,13 +1422,18 @@ def view_report(request):
             }
     return HttpResponse(json.dumps(data), content_type='application/json')
 
-def baseline(request):
+# 基线检查项字典
+baseline_dir={}
+for x in TBaselineKnowledge.objects.all():
+    baseline_dir[str(x.check_item_id)]=model_to_dict(x)
 
+def baseline(request):
     id=request.POST.get("agent_id")
     result = TBaselineCheck.objects.all().filter(agent_id=id).first()
     online=THostAgents.objects.get(agent_id=id).online
     # print ("baseline ",online)
     data={}
+
     if  result:
         data = model_to_dict(result)
         if data.get('last_check_time',None):
@@ -1447,9 +1454,19 @@ def baseline(request):
             data['last_check_time'] = ""
         if(data['result']):
             data['result']=json.loads( data['result'])
+            # print (json.dumps(data['result']['system_check']['result'],ensure_ascii=False,encoding='utf-8'))
+            for x in data['result']['system_check']['result']:
+                for y in data['result']['system_check']['result'][x]:
+                    y['name']=baseline_dir.get(y['id'])['check_item_name']
+                    y['suggest']=baseline_dir.get(y['id'])['check_suggest']
+                    if not y['suggest']:
+                        y['suggest']="暂无"
+
     data['online']=online
-    # print (data)
-    return HttpResponse(json.dumps(data), content_type='application/json')
+
+    # print (baseline_dir)
+    # print (json.dumps(data,ensure_ascii=False,encoding='utf-8'))
+    return HttpResponse(json.dumps(data,ensure_ascii=False,encoding='utf-8'), content_type='application/json')
 
 def baseline_check(request):
     id=request.POST.get("agent_id")

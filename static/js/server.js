@@ -613,8 +613,8 @@ function server_checking(data){
                 // 一级
                 let datas = data_list['result'][result]['result'];
                 let all_num =0;
-                console.log(result);
-                console.log(data_list['result'][result]['result']);
+                // console.log(result);
+                // console.log(data_list['result'][result]['result']);
 
                 for(data in datas){
                     // 二级
@@ -627,14 +627,14 @@ function server_checking(data){
                         $('#'+data).parent().siblings().last().css('display','block');
                         $('#'+data+"_li").text("").append(get_baseline_li_html(datas[data]));
                     }else{
-                        console.log("长度为0 的组");
-                        console.log(data);
+                        // console.log("长度为0 的组");
+                        // console.log(data);
                         $("#"+data).children().text('（0）');
                         $("#"+data).parent().siblings().first().html('&#xe60c;');
                         $("#"+data).parent().siblings().first().addClass('grey');
                     }
                 }
-                console.log(all_num);
+                // console.log(all_num);
                 if(all_num){
                     $("#"+result+'_num').text("").append(all_num);
                 }
@@ -686,13 +686,19 @@ function get_baseline_li_html(data) {
     * */
     let html =``;
     for (x in data) {
+        //检查名称
+        let name=data[x];
+        //一条信息详情
+        let detail='';
         if (typeof(data[x])==='object')
         {
             var status = data[x]['status']
             if(status === '没有定义' || status === '-1'){
                status = '未设置'
             }
-            data[x]=data[x]['name'];
+            // console.log(data[x]);
+            name=data[x]['name'];
+            detail=JSON.stringify(data[x])
 
                 // +"&nbsp&nbsp&nbsp&nbsp当前状态: "+status+"&nbsp&nbsp&nbsp&nbsp建议改为: "+data[x]['suggest']
         }
@@ -703,10 +709,10 @@ function get_baseline_li_html(data) {
                 </div>
                 <div class="u-list-leftbox   u-list-rightTEXT">
                     <p class="u-css-examineP">
-                       ${data[x]}
+                       ${name}
                     </p>
                 </div>
-                <button type="button" class="xtpzaqjc_infor">详情</button>
+                <button type="button" data-detail='${detail}' class="xtpzaqjc_infor">详情</button>
                <!--<button type="button" onclick="check_ignore(this);">忽略</button>
                 <button type="button" onclick="check_repair(this);">修复</button-->
             </li>
@@ -717,7 +723,8 @@ function get_baseline_li_html(data) {
     return html;
 }
 $(document).on("click", ".xtpzaqjc_infor", function() {
-    let id = $(this).attr("class");
+    let detail = $(this).attr("data-detail");
+    detail=JSON.parse(detail);
     let html = `<div class="modal fade modal_rightsilde" id="xtpzaqjc_infor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -730,7 +737,11 @@ $(document).on("click", ".xtpzaqjc_infor", function() {
                     <tbody>
                     <tr>
                         <td style="text-align: right;padding-right: 20px; width: 38%">
-                            <span>操作系统的密码复杂度不符合要求</span>
+                            <span>检查项名称：${detail['name']}</span><br>
+                            <span>当前系统状态：${detail['status']}</span><br>
+                            <span>检查建议：${detail['suggest']}</span><br>
+                            
+                            
                         </td>
                     </tbody>
                 </table>

@@ -41,6 +41,18 @@ class TBaselineCheck(models.Model):
         managed = False
         db_table = 't_baseline_check'
 
+class TBaselineKnowledge(models.Model):
+    check_item_id = models.CharField(primary_key=True, max_length=255)
+    check_item_name = models.CharField(max_length=255, blank=True, null=True)
+    check_item_level = models.IntegerField()
+    check_classfly = models.CharField(max_length=255, blank=True, null=True)
+    check_descript = models.TextField( blank=True, null=True)
+    check_suggest = models.TextField( blank=True, null=True)
+    os = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 't_baseline_knowledge'
 
 class TConfig(models.Model):
     agent_id = models.CharField(primary_key=True, max_length=255)
