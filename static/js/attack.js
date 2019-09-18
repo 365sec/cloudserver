@@ -48,6 +48,7 @@ function attack_click(attack_page) {
                 success: function (data_list) {
                     if(data_list.hasOwnProperty('auth')){
                         windows.location.url = '/login'
+                        // redirect('/login');
                     }
                     console.log(data_list);
                     let data = data_list['attack'];

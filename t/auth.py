@@ -6,7 +6,9 @@ def auth(func):
         if request.session.has_key('superuser'):
             return func(request)
         else:
+            from django.http import HttpResponse
             return HttpResponse('{"auth": "failed!"}', content_type='application/json')
+
             #return redirect('/login')
             #return HttpResponseRedirect("/login")
 

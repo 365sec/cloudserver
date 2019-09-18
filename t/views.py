@@ -260,18 +260,29 @@ def web_agent_query(request):
     }
     return HttpResponse(json.dumps(data), content_type='application/json')
 
-
+#获得下拉框列表
+event_div_arr = []
+event_dic = {}
+for x in TEventKnowledge.objects.filter(allow_search=1).order_by("event_id"):
+    event_div_arr.append(x.event_name)
+    event_dic[x.event_name] = x.event_id
+#获得不被允许查询列表
+not_allow_search=TEventKnowledge.objects.filter(~Q(allow_search=1)).values("event_id")
+not_allow_search_list=[]
+for x in not_allow_search:
+    not_allow_search_list.append(x['event_id'])
+#获得agent_id 跟主机名称的dir
+hostname_dir={}
+for x in THostAgents.objects.all().values_list("agent_id","host_name"):
+    hostname_dir[str(x[0])]=x[1]
 @auth
 def attack_event_query(request):
     #attack/query
     # 当前页码数
     page = request.POST.get("page")
     page = int(page)
-
     filter_condition = {}
-
     result = None
-
     if not request.session['superuser']:
         username = request.session['username']
         result = THostAgents.objects.filter(own_user=username)
@@ -298,15 +309,7 @@ def attack_event_query(request):
 
     # 关于攻击类型的过滤,在搜索界面展示的下拉框
     attack_type = request.POST.get("attack_type")
-    event_dic = {}
-    event_div_arr = []
-    not_allow_search=TEventKnowledge.objects.filter(~Q(allow_search=1)).values("event_id")
-    not_allow_search_list=[]
-    for x in not_allow_search:
-        not_allow_search_list.append(x['event_id'])
-    for x in TEventKnowledge.objects.filter(allow_search=1).order_by("event_id"):
-        event_div_arr.append(x.event_name)
-        event_dic[x.event_name] = x.event_id
+
     if attack_type != "" and attack_type != None:
         tfile_obj = tfile_obj.filter(event_id=event_dic[attack_type])
         tlog_obj = tlog_obj.filter(event_id=event_dic[attack_type])
@@ -393,7 +396,8 @@ def attack_event_query(request):
         y['server_ip'] = x[5]
         y['event_issue_id'] = x[6]
         try:
-            y['hostname'] = THostAgents.objects.all().filter(agent_id=x[0]).values_list("host_name").first()[0]
+            # y['hostname'] = THostAgents.objects.all().filter(agent_id=x[0]).values_list("host_name").first()[0]
+            y['hostname'] = hostname_dir[x[0]]
         except Exception as e:
             print (e)
             y['hostname']="主机已被删除"
@@ -587,16 +591,17 @@ def query_web_event_by_app_id(request):
         end_time = datetime.strptime(attack_time.split(" ~ ")[1], "%Y-%m-%d")+timedelta(1)
         tweb_obj = tweb_obj.filter(event_time__range=(start_time, end_time))
 
-    # 关于攻击类型的过滤,在搜索界面展示的下拉框
-    event_dic = {}
-    event_div_arr = []
-    not_allow_search=TEventKnowledge.objects.filter(~Q(allow_search=1)).values("event_id")
-    not_allow_search_list=[]
-    for x in not_allow_search:
-        not_allow_search_list.append(x['event_id'])
-    for x in TEventKnowledge.objects.filter(allow_search=1).order_by("event_id"):
-        event_div_arr.append(x.event_name)
-        event_dic[x.event_name] = x.event_id
+    # 关于攻击类型的过滤
+
+    # 过滤不被允许查询的结果
+    # not_allow_search=TEventKnowledge.objects.filter(~Q(allow_search=1)).values("event_id")
+    # not_allow_search_list=[]
+    # for x in not_allow_search:
+    #     not_allow_search_list.append(x['event_id'])
+    for x in not_allow_search_list:
+        tweb_obj=tweb_obj.filter(~Q(event_id=x))
+    tweb_obj=tweb_obj.order_by("-event_time")
+
 
     #攻击类型过滤
     attack_type = request.POST.get("attack_type")
@@ -609,14 +614,7 @@ def query_web_event_by_app_id(request):
         attack_level = int(attack_level)
         tweb_obj = tweb_obj.filter(threat_level = attack_level)
 
-    # 过滤不被允许查询的结果
-    not_allow_search=TEventKnowledge.objects.filter(~Q(allow_search=1)).values("event_id")
-    not_allow_search_list=[]
-    for x in not_allow_search:
-        not_allow_search_list.append(x['event_id'])
-    for x in not_allow_search_list:
-        tweb_obj=tweb_obj.filter(~Q(event_id=x))
-    tweb_obj=tweb_obj.order_by("-event_time")
+
 
     # 每页显示多少个数据
 
