@@ -22,6 +22,10 @@ function server_click(page) {
                 },
                 //dataType: "json",
                 success: function (data_list) {
+                    if(data_list.hasOwnProperty('auth')){
+                        window.location.href = '/login'
+                        // redirect('/login');
+                    }
                     data = data_list['agents'];
 
                     let now_page = data_list['page'];

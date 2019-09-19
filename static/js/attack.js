@@ -47,7 +47,7 @@ function attack_click(attack_page) {
                 dataType: "json",
                 success: function (data_list) {
                     if(data_list.hasOwnProperty('auth')){
-                        windows.location.url = '/login'
+                        window.location.href = '/login'
                         // redirect('/login');
                     }
                     console.log(data_list);
@@ -765,6 +765,18 @@ function web_event_html(data) {
     }
     let iochtml = "";
     if (attack_type === 'request' || attack_type === 'request_body') {
+        let body=` <tr>
+                                                    <td class="td-01">请求体</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                        <pre id="httpQueryString" data-toggle="tooltip" data-html="true" data-delay="200" data-original-title="" data-trigger="manual">${data['body']}</pre>
+
+                                                    </td>
+                                                </tr>`;
+        if (data['body']==="")
+        {
+            body=``;
+        }
         iochtml = `
         <table class="legend-table01" style="width: 70%;">
                                 <tbody>
@@ -788,14 +800,7 @@ function web_event_html(data) {
                                                         <p>${data['method']}</p>
                                                     </td>
                                                 </tr>
-                                                <tr>
-                                                    <td class="td-01">请求体</td>
-                                                    <td class="td-02">:</td>
-                                                    <td class="td-03">
-                                                        <pre id="httpQueryString" data-toggle="tooltip" data-html="true" data-delay="200" data-original-title="" data-trigger="manual">${data['body']}</pre>
-
-                                                    </td>
-                                                </tr>
+                                               ${body}
                                             </tbody>
                                             </table>
                                         </div>
@@ -1171,6 +1176,17 @@ function log_event_html(data) {
     }
     else
     {
+        let process_name=`<tr>
+                                                    <td class="td-01">进程路径</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                        <p>${data['process_name']}</p>
+                                                    </td>
+                                                </tr>`;
+        if (data['process_name'] === "") {
+            process_name=``
+        }
+
         content=`
 <!--        <h3>基本信息</h3>-->
         <table class="table table-bordered">
@@ -1210,6 +1226,13 @@ function log_event_html(data) {
                                                     <td class="td-02">:</td>
                                                     <td class="td-03">
                                                         <p>${data['dstuser']}</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td-01">主机IP</td>
+                                                    <td class="td-02">:</td>
+                                                    <td class="td-03">
+                                                        <p>${data['dstip']}</p>
                                                     </td>
                                                 </tr>
                                                 
@@ -1273,13 +1296,7 @@ function log_event_html(data) {
                                                         <p>${data['login_type']}</p>
                                                     </td>
                                                 </tr>
-                                                <tr>
-                                                    <td class="td-01">进程路径</td>
-                                                    <td class="td-02">:</td>
-                                                    <td class="td-03">
-                                                        <p>${data['process_name']}</p>
-                                                    </td>
-                                                </tr>
+                                                ${process_name}
                                             </tbody>
                                             </table>
                                         </div>
@@ -1288,7 +1305,7 @@ function log_event_html(data) {
 
                                 </tr>
                             </tbody>
-                            </table>`
+                            </table>`;
     }
 
     iochtml = `

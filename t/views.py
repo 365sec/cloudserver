@@ -192,7 +192,7 @@ def server_agent_query(request):
     }
     return HttpResponse(json.dumps(data), content_type='application/json')
 
-
+@auth
 def web_agent_query(request):
     '''
     查询web_agent
@@ -204,7 +204,6 @@ def web_agent_query(request):
     page = request.POST.get("page")
     page = int(page)
     result = None
-    print (request.session)
     if request.session['superuser']:
         result = TWebAgents.objects.all().order_by("-online")
     else:
@@ -1226,7 +1225,6 @@ def query_attack_warn(request):
 
 def plugins_manage(request):
     id = request.POST.get("id")
-
     result = TConfig.objects.all().filter(agent_id=id)
     data1 = {}
     for x in result:
@@ -1234,6 +1232,8 @@ def plugins_manage(request):
         data1['config_time']=data1['config_time'].strftime("%Y-%m-%d %H:%M:%S")
     data = data1
     data = json.dumps(data)
+
+
     return HttpResponse(data, content_type='application/json')
 
 
@@ -1453,13 +1453,15 @@ def baseline(request):
         if(data['result']):
             data['result']=json.loads( data['result'])
             # print (json.dumps(data['result']['system_check']['result'],ensure_ascii=False,encoding='utf-8'))
-            for x in data['result']['system_check']['result']:
-                for y in data['result']['system_check']['result'][x]:
-                    y['name']=baseline_dir.get(y['id'])['check_item_name']
-                    y['suggest']=baseline_dir.get(y['id'])['check_suggest']
-                    if not y['suggest']:
-                        y['suggest']="暂无"
-
+            try:
+                for x in data['result']['system_check']['result']:
+                    for y in data['result']['system_check']['result'][x]:
+                        y['name']=baseline_dir.get(y['id'])['check_item_name']
+                        y['suggest']=baseline_dir.get(y['id'])['check_suggest']
+                        if not y['suggest']:
+                            y['suggest']="暂无"
+            except Exception, e:
+                pass
     data['online']=online
 
     # print (baseline_dir)
