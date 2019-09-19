@@ -273,8 +273,8 @@ for x in not_allow_search:
     not_allow_search_list.append(x['event_id'])
 #获得agent_id 跟主机名称的dir
 hostname_dir={}
-for x in THostAgents.objects.all().values_list("agent_id","host_name"):
-    hostname_dir[str(x[0])]=x[1]
+for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip"):
+    hostname_dir[str(x[0])]=[x[1],x[2]]
 @auth
 def attack_event_query(request):
     #attack/query
@@ -289,7 +289,6 @@ def attack_event_query(request):
         agent_ids = [x.agent_id for x in result]
         print (agent_ids)
         filter_condition['agent_id__in'] = agent_ids
-
 
     tweb_obj = TWebEvent.objects.all()
     tfile_obj = TFileIntegrity.objects.all()
@@ -397,7 +396,7 @@ def attack_event_query(request):
         y['event_issue_id'] = x[6]
         try:
             # y['hostname'] = THostAgents.objects.all().filter(agent_id=x[0]).values_list("host_name").first()[0]
-            y['hostname'] = hostname_dir[x[0]]
+            y['hostname'] = hostname_dir[x[0]][0]
         except Exception as e:
             print (e)
             y['hostname']="主机已被删除"
@@ -420,6 +419,7 @@ def attack_event_query(request):
         "page": page,
         "attack_type": event_div_arr,
         "attack_level": attack_level,
+        "attack_hostname": hostname_dir,
     }
 
     data = json.dumps(data)

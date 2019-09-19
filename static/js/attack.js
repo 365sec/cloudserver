@@ -1,5 +1,5 @@
 function attack_click(attack_page) {
-    //let page=1;
+    // //let page=1;
     $.ajax({
         url: 'attack',
         dataType: "html",
@@ -55,6 +55,7 @@ function attack_click(attack_page) {
                     let now_page = data_list['page'];
                     let max_size = data_list['max_size'];
                     let attack_type_list = data_list['attack_type'];
+                    let attack_hostname = data_list['attack_hostname'];
                     let attack_level = data_list['attack_level'];
                     let select_div = $("#table_select_div");
                     let html_select = "";
@@ -64,7 +65,6 @@ function attack_click(attack_page) {
                                 <span class="btnvalue">日期选择: </span>
                                 <input type="text" id="attack_time" >
                                 <label for="attack_time" class="datesel_icon"><i class="fa fa-calendar"></i></label>
-                                
                             </div>
                             `;
                     html_select += '<div class="search_button"><span class="btnvalue">攻击类型: </span>';
@@ -72,6 +72,13 @@ function attack_click(attack_page) {
                     html_select += '<option value="" >' + "--请选择攻击类型--" + '</option>';
                     for (x in attack_type_list) {
                         html_select += '<option value="' + attack_type_list[x] + '" >' + attack_type_list[x] + '</option>'
+                    }
+                    html_select += '</select></div>';
+                    html_select += '<div class="search_button"><span class="btnvalue">主机名称: </span>';
+                    html_select += '<select id="attack_hostname" class="form-btn">';
+                    html_select += '<option value="" >' + "--请选择主机名称--" + '</option>';
+                    for (agent_id in attack_hostname) {
+                        html_select += '<option value="' + agent_id + '" >' + attack_hostname[agent_id][0]+"("+attack_hostname[agent_id][1] +")"+ '</option>'
                     }
                     html_select += '</select></div>';
                     html_select += '<div class="search_button"><span class="btnvalue">危险等级: </span>';
@@ -151,6 +158,7 @@ function attack_click(attack_page) {
                     html += '</ul>';
                     div_container.append(html);
                     $("#attack_type_select").val(attack_type);
+                    $("#attack_hostname_select").val(attack_hostname);
                     $("#attack_level_select").val(attack_level);
                     $(".container1").css('background-color', '#f0f2f5');
                     if ($(".daterangepicker").length > 0) {
@@ -194,6 +202,7 @@ function attack_click_search(attack_page) {
     let data = {};
     let attack_time = $("#attack_time").val();
     let attack_type = $("#attack_type").val();
+    let attack_hostname = $("#attack_hostname").val();
     let attack_msg = $("#attack_msg").val();
     let attack_level = $("#attack_level").val();
     if (attack_time === undefined) {
@@ -201,6 +210,9 @@ function attack_click_search(attack_page) {
     }
     if (attack_type === undefined) {
         attack_type = ""
+    }
+    if (attack_hostname === undefined) {
+        attack_hostname = ""
     }
     if (attack_msg === undefined) {
         attack_msg = ""
@@ -213,6 +225,7 @@ function attack_click_search(attack_page) {
     data['attack_time'] = attack_time;
     data['attack_type'] = attack_type;
     data['attack_msg'] = attack_msg;
+    data['agent_id'] = attack_hostname;
     data ['attack_level'] = attack_level;
     data['page'] = attack_page;
     if (attack_page == null || attack_page < 1) {
@@ -270,8 +283,6 @@ function attack_click_search(attack_page) {
                     case 1: threat_level="<span class=\"label label_custom label_high\" >高危</span>";break;
                     case 2: threat_level="<span class=\"label label_custom label_norm\" >中危</span>";break;
                     case 3: threat_level="<span class=\"label label_custom label_info\" >信息</span>";break;
-
-
                 }
                 html += '<tr>';
 
@@ -306,6 +317,7 @@ function attack_click_search(attack_page) {
             html += '</ul>';
             div_container.append(html);
             $("#attack_type_select").val(attack_type);
+            $("#attack_hostname_select").val(attack_hostname);
             $("#attack_level_select").val(attack_level);
             $(".container1").css('background-color', '#f0f2f5');
 
@@ -334,6 +346,10 @@ function attack_jump() {
 $(document).on("change", "select#attack_type_select", function () {
 
     $("#attack_type").val($(this).val())
+});
+$(document).on("change", "select#attack_hostname_select", function () {
+
+    $("#attack_hostname").val($(this).val())
 });
 $(document).on("change", "select#attack_level_select", function () {
 
