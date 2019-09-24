@@ -379,7 +379,6 @@ def attack_event_query(request):
     attack_list = []
     if page < 1:
         page = 1
-    print (hostname_dir)
     for x in result[(page - 1) * page_size:(page) * page_size]:
         x = list(x)
         for z in range(len(x)):
