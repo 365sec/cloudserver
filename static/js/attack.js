@@ -112,6 +112,7 @@ function attack_click(attack_page) {
                     html += '<th style="min-width: 100px;">事件内容</th>';
                     // html += '<th>源ip</th>';
                     html += '<th>服务器名称</th>';
+                    html += '<th>服务器IP</th>';
                     html += '<th>拦截状态</th>';
                     // html += '<th>目的ip</th>';
                     html += '<th>严重等级</th>';
@@ -132,6 +133,7 @@ function attack_click(attack_page) {
                         html += '<td>' + data[x]['event_name'] + '</td>';
                         html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['comment'] + '">' + data[x]['comment'] + '</td>';
                         html += '<td>' + data[x]['hostname'] + '</td>';
+                        html += '<td>' + data[x]['host_ip'] + '</td>';
                         html += '<td>' + data[x]['intercept_state'] + '</td>';
                         html += '<td>' + threat_level + '</td>';
 
@@ -270,6 +272,7 @@ function attack_click_search(attack_page) {
             // html += '<th>目的ip</th>';
 
             html += '<th>服务器名称</th>';
+            html += '<th>服务器IP</th>';
             html += '<th>拦截状态</th>';
             html += '<th>严重等级</th>';
             html += '<th>操作</th>';
@@ -291,6 +294,7 @@ function attack_click_search(attack_page) {
                 html += '<td>' + data[x]['event_name'] + '</td>';
                 html += '<td style="width:20%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 200px;" title="' + data[x]['comment'] + '">' + data[x]['comment'] + '</td>';
                 html += '<td>' + data[x]['hostname'] + '</td>';
+                html += '<td>' + data[x]['host_ip'] + '</td>';
                 html += '<td>' + data[x]['intercept_state'] + '</td>';
                 html += '<td>' + threat_level + '</td>';
 

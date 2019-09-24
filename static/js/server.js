@@ -571,7 +571,6 @@ function server_checking(data){
             let status=get_base_line_status();
             console.log("status ",status);
             if (status === 2|| status===1) {
-                get_base_line_status();
                 console.log("正在检查");
 
             } else if(status===3) {

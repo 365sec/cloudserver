@@ -259,23 +259,24 @@ def web_agent_query(request):
     }
     return HttpResponse(json.dumps(data), content_type='application/json')
 
-#获得下拉框列表
-event_div_arr = []
-event_dic = {}
-for x in TEventKnowledge.objects.filter(allow_search=1).order_by("event_id"):
-    event_div_arr.append(x.event_name)
-    event_dic[x.event_name] = x.event_id
-#获得不被允许查询列表
-not_allow_search=TEventKnowledge.objects.filter(~Q(allow_search=1)).values("event_id")
-not_allow_search_list=[]
-for x in not_allow_search:
-    not_allow_search_list.append(x['event_id'])
-#获得agent_id 跟主机名称的dir
-hostname_dir={}
-for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip"):
-    hostname_dir[str(x[0])]=[x[1],x[2]]
+
 @auth
 def attack_event_query(request):
+    #获得下拉框列表
+    event_div_arr = []
+    event_dic = {}
+    for x in TEventKnowledge.objects.filter(allow_search=1).order_by("event_id"):
+        event_div_arr.append(x.event_name)
+        event_dic[x.event_name] = x.event_id
+    #获得不被允许查询列表
+    not_allow_search=TEventKnowledge.objects.filter(~Q(allow_search=1)).values("event_id")
+    not_allow_search_list=[]
+    for x in not_allow_search:
+        not_allow_search_list.append(x['event_id'])
+    #获得agent_id 跟主机名称的dir
+    hostname_dir={}
+    for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip"):
+        hostname_dir[str(x[0])]=[x[1],x[2]]
     #attack/query
     # 当前页码数
     page = request.POST.get("page")
@@ -378,7 +379,7 @@ def attack_event_query(request):
     attack_list = []
     if page < 1:
         page = 1
-
+    print (hostname_dir)
     for x in result[(page - 1) * page_size:(page) * page_size]:
         x = list(x)
         for z in range(len(x)):
@@ -396,9 +397,11 @@ def attack_event_query(request):
         try:
             # y['hostname'] = THostAgents.objects.all().filter(agent_id=x[0]).values_list("host_name").first()[0]
             y['hostname'] = hostname_dir[x[0]][0]
+            y['host_ip'] = hostname_dir[x[0]][1]
         except Exception as e:
             print (e)
             y['hostname']="主机已被删除"
+            y['host_ip']="主机已被删除"
             # continue
         if x[8]=="web_event":
             y['threat_level']=int(x[9])
@@ -569,7 +572,22 @@ def query_web_agent_by_agent_id(request):
 
 
 def query_web_event_by_app_id(request):
-    # 当前页码数
+    #获得下拉框列表
+    event_div_arr = []
+    event_dic = {}
+    for x in TEventKnowledge.objects.filter(allow_search=1).order_by("event_id"):
+        event_div_arr.append(x.event_name)
+        event_dic[x.event_name] = x.event_id
+    #获得不被允许查询列表
+    not_allow_search=TEventKnowledge.objects.filter(~Q(allow_search=1)).values("event_id")
+    not_allow_search_list=[]
+    for x in not_allow_search:
+        not_allow_search_list.append(x['event_id'])
+    #获得agent_id 跟主机名称的dir
+    hostname_dir={}
+    for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip"):
+        hostname_dir[str(x[0])]=[x[1],x[2]]
+        # 当前页码数
     page = request.POST.get("page")
     app_id = request.POST.get("app_id")
     page = int(page)
@@ -1182,7 +1200,8 @@ def query_attack_type(request):
 @auth
 def query_attack_warn(request):
     data = {}
-    web_attack = TWebEvent.objects.values("agent_id","event_id","event_time","plugin_message","attack_source")
+    web_attack = TWebEvent.objects.filter(event_id__gt=999)
+    web_attack = web_attack.values("agent_id","event_id","event_time","plugin_message","attack_source")
     log_attack = TLogAnalysisd.objects.values("agent_id","event_id","event_time","unused","dstip").filter(event_id=2010)
 
     filter_condition = {}
@@ -1200,19 +1219,20 @@ def query_attack_warn(request):
     recent_warning_list = []
     attack=web_attack.union(log_attack)
     # attack=log_attack
-    result = attack.filter(~Q(event_id__in=[0, 999]), **filter_condition).order_by('-event_time')
+    # result = attack.filter(~Q(event_id__in=[0,999]), **filter_condition).order_by('-event_time')
+    result = attack.filter(**filter_condition).order_by('-event_time')
 
     for x in result[:10]:
-        x[u'event_time'] = x[u'event_time'].strftime("%Y-%m-%d %H:%M:%S")
-        x[u'event_id'] = attack_type[str(x[u'event_id'])]
-        if x[u'plugin_message']:
-            x[u'plugin_message'] = x[u'plugin_message'].replace('<', '&lt').replace('>', '&gt')
-            x[u'plugin_message'] = x[u'plugin_message'].replace('"', '&quot;')
+        x['event_time'] = x['event_time'].strftime("%Y-%m-%d %H:%M:%S")
+        x['event_id'] = attack_type[str(x['event_id'])]
+        if x['plugin_message']:
+            x['plugin_message'] = x['plugin_message'].replace('<', '&lt').replace('>', '&gt')
+            x['plugin_message'] = x['plugin_message'].replace('"', '&quot;')
 
         else:
-            x[u'plugin_message']="SSH远程暴力登录"
+            x['plugin_message']="SSH远程暴力登录"
         if hasattr(x,u'dstip'):
-            x[u'attack_source']=x[u'dstip']
+            x['attack_source']=x['dstip']
 
         recent_warning_list.append(x)
     recent_warning = {"data": recent_warning_list}
@@ -1420,12 +1440,14 @@ def view_report(request):
             }
     return HttpResponse(json.dumps(data), content_type='application/json')
 
-# 基线检查项字典
-baseline_dir={}
-for x in TBaselineKnowledge.objects.all():
-    baseline_dir[str(x.check_item_id)]=model_to_dict(x)
+
 
 def baseline(request):
+    # 基线检查项字典
+    baseline_dir={}
+    for x in TBaselineKnowledge.objects.all():
+        baseline_dir[str(x.check_item_id)]=model_to_dict(x)
+
     id=request.POST.get("agent_id")
     result = TBaselineCheck.objects.all().filter(agent_id=id).first()
     online=THostAgents.objects.get(agent_id=id).online
