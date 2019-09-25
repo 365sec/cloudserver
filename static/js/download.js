@@ -25,7 +25,8 @@ function java_click() {
         url: "agentClick",
         type: 'POST',
         data: {
-            "agent": "java"
+            "agent": "java",
+
         },
         //dataType: "json",
         success: function (data_list) {

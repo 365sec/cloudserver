@@ -152,7 +152,9 @@ function user_admin_load(page) {
         url: "user/query/",
         type: 'POST',
         data: {
-            "page": page
+            "page": page,
+
+
         },
         //dataType: "json",
         success: function (data_list) {

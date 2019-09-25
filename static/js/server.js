@@ -556,7 +556,7 @@ function application_security(){
 
 // 基线检查
 function click_baseline(data){
-    $(document).on('click','#server_checking_link',function () {
+    $(document).off('click','#server_checking_link').on('click','#server_checking_link',function () {
         server_checking(data);
     })
 }

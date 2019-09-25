@@ -1456,7 +1456,9 @@ def baseline(request):
     if  result:
         data = model_to_dict(result)
         if data.get('last_check_time',None):
-            time_span=(datetime.now()-data['last_check_time'])
+            date_now=datetime.now()
+            data['date_now']=date_now.strftime("%Y-%m-%d %H:%M:%S")
+            time_span=(date_now-data['last_check_time'])
             if time_span.days < 0:
                 data['last_day'] = "1分钟之前"
             elif time_span.days >= 1:
@@ -1525,7 +1527,6 @@ def user_query(request):
     # 当前页码数
     page = request.POST.get("page")
     page = int(page)
-    # print '[*]'+str(request.session)
     username = request.session['username']
 
     # 每页显示多少个数据
@@ -1576,6 +1577,7 @@ def user_query_one(request):
     global SENSOR_TYPE
     # 当前页码数
     username = request.session['username']
+
     user = TUsers.objects.all().filter(username=username).first()
     y = model_to_dict(user)
     y['password']=""
