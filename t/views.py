@@ -273,10 +273,13 @@ def attack_event_query(request):
     not_allow_search_list=[]
     for x in not_allow_search:
         not_allow_search_list.append(x['event_id'])
-    #获得agent_id 跟主机名称的dir
+    #获得agent_id 跟主机名称 ip 的dir
     hostname_dir={}
-    for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip"):
-        hostname_dir[str(x[0])]=[x[1],x[2]]
+    for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip","extranet_ip"):
+        if x[2]=="" or x[2] == None:
+            hostname_dir[str(x[0])]=[x[1],x[3]]
+        else:
+            hostname_dir[str(x[0])]=[x[1],x[2]]
     #attack/query
     # 当前页码数
     page = request.POST.get("page")
