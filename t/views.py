@@ -1461,7 +1461,10 @@ def baseline(request):
         if data.get('last_check_time',None):
             date_now=datetime.now()
             data['date_now']=date_now.strftime("%Y-%m-%d %H:%M:%S")
+            print (date_now)
             time_span=(date_now-data['last_check_time'])
+            print (time_span)
+            print (time_span.total_seconds())
             if time_span.days < 0:
                 data['last_day'] = "1分钟之前"
             elif time_span.days >= 1:
@@ -1476,18 +1479,25 @@ def baseline(request):
             data['last_check_time']=data['last_check_time'].strftime("%Y-%m-%d %H:%M:%S")
         else:
             data['last_check_time'] = ""
+
+
         if(data['result']):
             data['result']=json.loads( data['result'])
+            # print (data['result'])
             # print (json.dumps(data['result']['system_check']['result'],ensure_ascii=False,encoding='utf-8'))
-            try:
-                for x in data['result']['system_check']['result']:
-                    for y in data['result']['system_check']['result'][x]:
-                        y['name']=baseline_dir.get(y['id'])['check_item_name']
-                        y['suggest']=baseline_dir.get(y['id'])['check_suggest']
+            # print (json.dumps(baseline_dir,ensure_ascii=False,encoding='utf-8'))
+
+
+            for x in data['result']['system_check']['result']:
+                for y in data['result']['system_check']['result'][x]:
+                    try:
+                        y['name']=baseline_dir[str(y['id'])]['check_item_name']
+                        y['suggest']=baseline_dir[str(y['id'])]['check_suggest']
                         if not y['suggest']:
                             y['suggest']="暂无"
-            except Exception, e:
-                pass
+                    except Exception, e:
+                        print e
+
     data['online']=online
 
     # print (baseline_dir)
