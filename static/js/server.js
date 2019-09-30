@@ -24,7 +24,6 @@ function server_click(page) {
                 success: function (data_list) {
                     if(data_list.hasOwnProperty('auth')){
                         window.location.href = '/login'
-                        // redirect('/login');
                     }
                     data = data_list['agents'];
 
