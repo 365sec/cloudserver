@@ -63,33 +63,33 @@ function attack_click(attack_page) {
                     html_select += '<div id="" class="search_btngroup">';
                     html_select += `<div class="search_button datesel">
                                 <span class="btnvalue">日期选择: </span>
-                                <input type="text" id="attack_time" >
+                                <input type="text" id="attack_time" style="width: 130px">
                                 <label for="attack_time" class="datesel_icon"><i class="fa fa-calendar"></i></label>
                             </div>
                             `;
                     html_select += '<div class="search_button"><span class="btnvalue">攻击类型: </span>';
-                    html_select += '<select id="attack_type" class="form-btn">';
+                    html_select += '<select id="attack_type" class="form-btn" style="width: 170px">';
                     html_select += '<option value="" >' + "--请选择攻击类型--" + '</option>';
                     for (x in attack_type_list) {
                         html_select += '<option value="' + attack_type_list[x] + '" >' + attack_type_list[x] + '</option>'
                     }
                     html_select += '</select></div>';
                     html_select += '<div class="search_button"><span class="btnvalue">主机名称: </span>';
-                    html_select += '<select id="attack_hostname" class="form-btn">';
+                    html_select += '<select id="attack_hostname" class="form-btn" style="width: 140px">';
                     html_select += '<option value="" >' + "--请选择主机名称--" + '</option>';
                     for (agent_id in attack_hostname) {
                         html_select += '<option value="' + agent_id + '" >' + attack_hostname[agent_id][0]+"("+attack_hostname[agent_id][1] +")"+ '</option>'
                     }
                     html_select += '</select></div>';
                     html_select += '<div class="search_button"><span class="btnvalue">危险等级: </span>';
-                    html_select += '<select id="attack_level">';
+                    html_select += '<select id="attack_level" style="width: 100px">';
                     html_select += '<option value="" >' + "--请选择危险等级--" + '</option>';
                     html_select += '<option value="0" >严重</option>';
                     html_select += '<option value="1" >高危</option>';
                     html_select += '<option value="2" >中危</option>';
                     html_select += '<option value="3" >信息</option>';
                     html_select += '</select></div>';
-                    html_select += '<div class="search_button"><span class="btnvalue">关键词(事件内容): </span>';
+                    html_select += '<div class="search_button"><span class="btnvalue">关键词: </span>';
                     html_select += '<input id="attack_msg" value="' + attack_msg + '" /></div>';
 
                     html_select += '<div  class="btn" onclick="attack_click_search(1)" >查询</div>';

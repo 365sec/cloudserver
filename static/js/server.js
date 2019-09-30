@@ -178,7 +178,11 @@ $(document).on("click", ".detail-a-server", function () {
             $("#server_manager_eip").html("").append(data['extranet_ip']);
             $("#server_manager_cpu").html("").append(data['cpu']);
             $("#server_manager_memory").html("").append(data['memory']);
-
+            if (data['os'].toLowerCase().indexOf("windows") !== -1) {
+                $("#system_logo_img").attr("src", '/static/img/server-group-detail-pc-logo-windows.png');
+            }else{
+                $("#system_logo_img").attr("src", '/static/img/server-group-detail-pc-logo-linux.png');
+            }
             agent_server_id=data['agent_id'];
             // 安全分析
             chart_attack_trend_server(data['agent_id']);
@@ -563,7 +567,7 @@ function click_baseline(data){
 
 function server_checking(data){
     let status=get_base_line_status();
-    if (status === 2) {
+    if (status === 2 || status === 1) {
         $('#accordion').css('display','none');
         $('.loading_content').css('display','flex');
         let setInte = setInterval(function () {
@@ -573,11 +577,11 @@ function server_checking(data){
             if (status === 2|| status===1) {
                 console.log("正在检查");
 
-            } else if(status===3) {
+            } else if(status===3 || status===0) {
                 console.log("检查结束");
                 $('#accordion').css('display','block');
                 $('.loading_content').css('display','none');
-                server_checking(agent_server_id);
+                //server_checking(agent_server_id);
                 clearInterval(setInte);
             }
         },1500);
@@ -733,7 +737,7 @@ $(document).on("click", ".xtpzaqjc_infor", function() {
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">操作确认</h4>
+                <h4 class="modal-title" id="myModalLabel">详情</h4>
             </div>
             <div style="width: 100%;height: calc(100% - 118px);padding: 24px">
                 <table style="width: 100%;">
@@ -743,18 +747,18 @@ $(document).on("click", ".xtpzaqjc_infor", function() {
                             <div class="xtpzaqjc_infor_content">${detail['name']}</div>
                         </td></tr>
                         <tr><td>
-                            <div class="xtpzaqjc_infor_title">当前系统状态</div>
+                            <div class="xtpzaqjc_infor_title">检查结果</div>
                             <div class="xtpzaqjc_infor_content">${detail['status']}<div/>
                         </td></tr>
                         <tr><td>
-                            <div class="xtpzaqjc_infor_title">检查建议</div>
+                            <div class="xtpzaqjc_infor_title">指导方案</div>
                             <div class="xtpzaqjc_infor_content">${detail['suggest']}</div>
                         </td></tr>
                     </tbody>
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="">提交</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
             </div>
         </div><!-- /.modal-content -->
@@ -784,14 +788,14 @@ function base_check() {
                     let status=get_base_line_status();
                     console.log("status ",status);
                     if (status === 2|| status===1) {
-                        get_base_line_status();
+                        //get_base_line_status();
                         console.log("正在检查");
 
-                    } else if(status===3) {
+                    } else if(status===3 || status===0) {
                         console.log("检查结束");
                         $('#accordion').css('display','block');
                         $('.loading_content').css('display','none');
-                        server_checking(agent_server_id);
+                        //server_checking(agent_server_id);
                         clearInterval(setInte);
                     }
                 },1500);

@@ -1121,7 +1121,7 @@ def query_attack_times(request):
 
     # 统计前num天的攻击次数，攻击趋势分析
     num = 30
-    dt_s = datetime.now().date()  # 2018-7-15
+    dt_s = datetime.now().date()+timedelta(1)  # 2018-7-15
     dt_e = (dt_s - timedelta(num))  # 2018-7-08
 
     num = dt_s-dt_e

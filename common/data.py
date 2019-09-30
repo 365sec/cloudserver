@@ -8,7 +8,7 @@ class appDict(dict):
         dict.__init__(self)
 
 CONF = appDict()
-CONF.WIN32_AGENT_URL = 'AgentServiceInstaller-1.3.exe'
-CONF.LINUX64_AGENT_URL = 'agent_service_x64-1.4.tar.gz'
+CONF.WIN32_AGENT_URL = 'AgentServiceInstaller-1.4.exe'
+CONF.LINUX64_AGENT_URL = 'agent_service_64bit-1.5.tar.gz'
 
 

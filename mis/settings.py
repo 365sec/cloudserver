@@ -55,6 +55,18 @@ WSGI_APPLICATION = 'mis.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
+DATABASES = {
+    'default': {
+        'ENGINE':'django.db.backends.mysql',
+        'NAME':'gov_defence',
+        'USER':'jinkai',
+        'PASSWORD':'`1q`1q`1Q',
+        'HOST':'49.235.152.172',
+        'PORT':'3306',
+        'CONN_MAX_AGE':6
+    }
+}
+'''
 
 DATABASES = {
     'default': {
@@ -76,6 +88,7 @@ DATABASES = {
     #     'CONN_MAX_AGE':6
     # }
 }
+'''
 '''
 DATABASES = {
     'default': {
@@ -121,7 +134,7 @@ SESSION_SAVE_EVERY_REQUEST = True
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
