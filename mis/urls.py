@@ -49,11 +49,18 @@ urlpatterns = [
     # url(r'^agent$', link.agent),
     url(r'^countreport$', link.countreport),
     url(r'^agent_download$', link.agent_download),
+    url(r'^win32_help$', link.win32_help),
+    url(r'^linux_help$', link.linux_help),
+    url(r'^help$', link.help),
     # url(r'^agent_detail$', link.agent_detail),
     url(r'^server_manage_detail$', link.server_manage_detail),
     url(r'^website_manage_detail$', link.website_manage_detail),
     url(r'^manage$', link.manage),
     url(r'^user$', link.user),
+    url(r'^_book/doc', link.doc),
+    url(r'^_book/doc', link.doc),
+    url(r'^_book/doc', link.doc),
     url(r'', login.index),
+
 ]
 

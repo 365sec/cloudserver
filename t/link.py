@@ -63,12 +63,25 @@ def countreport(request):
 def agent_download(request):
     win32_agent_download = "/static/download/" + CONF.WIN32_AGENT_URL
     linux64_agent_download = "http://" + request.get_host() + "/static/download/" + CONF.LINUX64_AGENT_URL
-
-    context = {'win32_download_url': win32_agent_download, "linux64_download_url":linux64_agent_download}
+    win32_help="win32_help"
+    linux_help="linux_help"
+    help="help"
+    context = {'win32_download_url': win32_agent_download,
+               "linux64_download_url":linux64_agent_download,
+               "win32_help":win32_help,
+               "linux_help":linux_help,
+               "help":help,
+               }
     return render(request, 'download.html', context)
 
-# def agent_detail(request):
-#     return render(request, 'agent_detail.html', {})
+def win32_help(request):
+    return render(request, 'help/win32_help.html', {})
+
+def linux_help(request):
+    return render(request, 'help/linux_help.html', {})
+
+def help(request):
+    return render(request, 'help/help.html', {})
 
 def server_manage_detail(request):
 
@@ -82,3 +95,7 @@ def manage(request):
 
 def user(request):
     return render(request, 'user.html', {})
+
+def doc(request):
+    print 'doc'
+    return render(request, '_book/index.html', {})
