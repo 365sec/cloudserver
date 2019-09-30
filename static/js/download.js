@@ -3,7 +3,7 @@ function download_click() {
     * 下载事件*/
 
     $.ajax( {
-        url: 'agent_download',
+        url: '/agent_download',
         dataType:"html",
         type: "get",
 

@@ -160,6 +160,12 @@ def server_agent_query(request):
     else:
         username = request.session['username']
         result = THostAgents.objects.filter(own_user=username).order_by("-online")
+
+
+    last_1m=result.filter(last_hearbeat__gte=(datetime.now()-timedelta(minutes=1))).count()
+    last_10m=result.filter(last_hearbeat__gte=(datetime.now()-timedelta(minutes=10))).count()
+    last_30m=result.filter(last_hearbeat__gte=(datetime.now()-timedelta(minutes=30))).count()
+    last_online={"last_1m":last_1m,"last_10m":last_10m,"last_30m":last_30m}
     # 每页显示多少个数据
 
     page_size = 15
@@ -189,6 +195,7 @@ def server_agent_query(request):
         "agents": TAgents_list,
         "max_size": max_size,
         "page": page,
+        "last_online": last_online,
     }
     return HttpResponse(json.dumps(data), content_type='application/json')
 
@@ -1121,7 +1128,7 @@ def query_attack_times(request):
 
     # 统计前num天的攻击次数，攻击趋势分析
     num = 30
-    dt_s = datetime.now().date()+timedelta(1)  # 2018-7-15
+    dt_s = datetime.now().date() + timedelta(1) # 2018-7-15
     dt_e = (dt_s - timedelta(num))  # 2018-7-08
 
     num = dt_s-dt_e
@@ -1461,10 +1468,10 @@ def baseline(request):
         if data.get('last_check_time',None):
             date_now=datetime.now()
             data['date_now']=date_now.strftime("%Y-%m-%d %H:%M:%S")
-            print (date_now)
+            # print (date_now)
             time_span=(date_now-data['last_check_time'])
-            print (time_span)
-            print (time_span.total_seconds())
+            # print (time_span)
+            # print (time_span.total_seconds())
             if time_span.days < 0:
                 data['last_day'] = "1分钟之前"
             elif time_span.days >= 1:

@@ -4,7 +4,7 @@ function server_click(page) {
     * */
     //let page=1;
     $.ajax( {
-        url: 'manage',
+        url: '/manage',
         dataType:"html",
         type: "get",
         success: function(res){
@@ -15,7 +15,7 @@ function server_click(page) {
             }
             $(this).addClass("active router-link-active").siblings().removeClass("active router-link-active");
             $.ajax({
-                url: "server_agent/query/",
+                url: "/server_agent/query/",
                 type: 'POST',
                 data: {
                     "page": page
@@ -164,7 +164,7 @@ $(document).on("click", ".detail-a-server", function () {
     let data=JSON.parse(b.decode(data1));
     // console.log(data);
     $.ajax({
-        url: 'server_manage_detail',
+        url: '/server_manage_detail',
         type: 'get',
         dataType: 'html',
         success: function (res) {
@@ -217,7 +217,7 @@ function click_chart_attack_trend_server(data){
 function chart_attack_trend_server(agent_id){
     let data;
     $.ajax({
-        url: "attack/server_trend/",
+        url: "/attack/server_trend/",
         type: 'POST',
         data: {
             "id": agent_id
@@ -239,8 +239,6 @@ function chart_attack_trend_server(agent_id){
             }
             $("#server_id_nowcount").html("").append(server_id_nowcount);
             $("#server_id_allcount").html("").append(server_id_allcount);
-
-
         }});
 
     let temp_tday = [];
@@ -347,7 +345,7 @@ function event_treat_server(now_page){
         now_page = 1;
     }
     $.ajax({
-        url: "attack/query/",
+        url: "/attack/query/",
         type: 'POST',
         data: data,
         //dataType: "json",
@@ -594,7 +592,6 @@ function server_checking(data){
         //dataType: "json",
         success: function (data_list) {
             console.log(data_list);
-
             if (data_list['online']!==1) {
                 $("#start_server_check").hide();
             }
@@ -613,7 +610,6 @@ function server_checking(data){
                 $("#baseline_check_time").hide();
 
             }
-
             let all_lenth=0;
             for(result in data_list['result']){
                 // 一级
@@ -621,7 +617,6 @@ function server_checking(data){
                 let all_num =0;
                 // console.log(result);
                 // console.log(data_list['result'][result]['result']);
-
                 for(data in datas){
                     // 二级
                     all_lenth += datas[data].length;
@@ -646,36 +641,7 @@ function server_checking(data){
                 }
             }
             $("#base_line_countNum").text("").append(all_lenth);
-            //WEB文件扫描
-            // let web_scan=data_list['result']['web_file_check']['result'];
-            // let web_all_num=web_scan['webshell'].length+web_scan['dark_chain'].length+web_scan['suspicious_links'].length;
-            // $("#base_line_web_num").text("0").append(web_all_num);
-            // $("#web_muma_num").text("网页木马 （").append(web_scan['webshell'].length).append(")");
-            // if(!web_scan['webshell'].length){
-            //     $("#web_muma_num").parent().last().css('display','none');
-            //
-            // }
-            // $("#dark_chain_num").text("黑链暗链 （").append(web_scan['dark_chain'].length).append(")");
-            // $("#suspicious_links_num").text("可疑外链 （").append(web_scan['suspicious_links'].length).append(")");
-            // $("#webmuma_li").text("").append(get_baseline_li_html(web_scan['webshell']));
-            // $("#suspicious_links_li").text("").append(get_baseline_li_html(web_scan['suspicious_links']));
-            // $("#dark_chain_li").text("").append(get_baseline_li_html(web_scan['dark_chain']));
-            // 账户安全发现
-            // let user_scan=data_list['result']['account_security_check']['result'];
-            // let user_all_num=user_scan['clone_account'].length+user_scan['hidden_account'].length+user_scan['weak_password_account'].length;
-            // $("#base_line_user_num").text("0").append(user_all_num);
-            // $("#clone_account_num").text("克隆账户检查（").append(user_scan['clone_account'].length).append("）");
-            // $("#hidden_account_num").text("隐藏账户检查（").append(user_scan['hidden_account'].length).append("）");
-            // $("#weak_password_account_num").text("弱密码账户检查（").append(user_scan['weak_password_account'].length).append("）");
-            // $("#clone_account_li").text("").append(get_baseline_li_html(user_scan['clone_account']));
-            // $("#hidden_account_li").text("").append(get_baseline_li_html(user_scan['hidden_account']));
-            // $("#weak_password_account_li").text("").append(get_baseline_li_html(user_scan['weak_password_account']));
-            //系统配置检测
-            // let sys_scan=data_list['re']
-
-
-            // $("#base_line_countNum").text("").append(web_all_num+user_all_num);
-            console.log(data_list['last_check_time']);
+            // console.log(data_list['last_check_time']);
             if (data_list['last_check_time']===null)
             {
                 $("#server_checking").hide()
@@ -771,7 +737,7 @@ function base_check() {
     $('#accordion').css('display','none');
     $('.loading_content').css('display','flex');
     $.ajax({
-        url: "baseline_check",
+        url: "/baseline_check",
         type: 'POST',
         data: {
             "agent_id":agent_server_id,
@@ -794,7 +760,7 @@ function base_check() {
                         console.log("检查结束");
                         $('#accordion').css('display','block');
                         $('.loading_content').css('display','none');
-                        //server_checking(agent_server_id);
+                        server_checking(agent_server_id);
                         clearInterval(setInte);
                     }
                 },1500);
@@ -816,7 +782,7 @@ function base_check() {
 function get_base_line_status() {
     let data;
     $.ajax({
-        url: "baseline_status",
+        url: "/baseline_status",
         type: 'POST',
         async:false,
         data: {
@@ -1002,7 +968,7 @@ function click_black_white_list(agent_id){
 var b_w_list={"black_list":[],"white_list":[]};
 function black_white_list(agent_id) {
     $.ajax({
-        url: "black_white_list",
+        url: "/black_white_list",
         type: 'POST',
         data: {
             "agent_id": agent_id,
@@ -1343,7 +1309,7 @@ function white_black_list_add() {
     white_list=JSON.stringify(white_list);
     // console.log(black_list);
     $.ajax({
-        url:'black_white_lis_update',
+        url:'/black_white_lis_update',
         type:'POST',
         data:{
             "agent_id":agent_server_id,
@@ -1372,7 +1338,7 @@ function white_black_list_release(id,type) {
     white_list=JSON.stringify(white_list);
 
     $.ajax({
-        url:'black_white_lis_update',
+        url:'/black_white_lis_update',
         type:'POST',
         data:{
             "agent_id":agent_server_id,
@@ -1416,7 +1382,7 @@ function white_black_list_releaseall(id,type) {
 
 
     $.ajax({
-        url:'black_white_lis_update',
+        url:'/black_white_lis_update',
         type:'POST',
         data:{
             "agent_id":agent_server_id,
@@ -1757,7 +1723,7 @@ function agent_manage_submit(id) {
     $.ajax({
         type: "post",
         // async : false, //同步请求
-        url: "plugins_update",
+        url: "/plugins_update",
         data: {"id": id, "algo": algo, "http": http, "glob": glob},
         // timeout:1000,
         success: function (data) {
@@ -1772,7 +1738,7 @@ function get_host_gent_id() {
     $.ajax({
         type: "post",
         //async : false, //同步请求
-        url: "get_host_agent_id",
+        url: "/get_host_agent_id",
         data: {"remarkmsg": $("#host_add").val()},
         // timeout:1000,
         success: function (data) {

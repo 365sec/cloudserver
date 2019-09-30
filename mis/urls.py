@@ -58,9 +58,9 @@ urlpatterns = [
     url(r'^manage$', link.manage),
     url(r'^user$', link.user),
     url(r'^_book/doc', link.doc),
-    url(r'^_book/doc', link.doc),
-    url(r'^_book/doc', link.doc),
+    url(r'^//', login.index),
     url(r'', login.index),
+
 
 ]
 

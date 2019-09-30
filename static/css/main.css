@@ -936,6 +936,7 @@ a:not([href]):not([tabindex]), a:not([href]):not([tabindex]):focus, a:not([href]
     width: auto;
     box-shadow: none;
     border: none;
+    min-height: calc(100vh - 150px);
 }
 .card .card-body{
     padding: 0;

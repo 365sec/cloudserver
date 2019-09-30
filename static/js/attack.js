@@ -1,7 +1,7 @@
 function attack_click(attack_page) {
     // //let page=1;
     $.ajax({
-        url: 'attack',
+        url: '/attack',
         dataType: "html",
         type: "get",
 
@@ -40,7 +40,7 @@ function attack_click(attack_page) {
             let div_container2 = $(".btnGroup");
             div_container2.append("<div id='table_select_div'></div>");
             $.ajax({
-                url: "attack/query/",
+                url: "/attack/query/",
                 type: 'POST',
                 data: data,
                 // async: false,
@@ -239,7 +239,7 @@ function attack_click_search(attack_page) {
 //    div_container1.append("<div id='table_div'></div>");
 
     $.ajax({
-        url: "attack/query/",
+        url: "/attack/query/",
         type: 'POST',
         data: data,
         // async: false,
@@ -466,7 +466,7 @@ function get_attack_body(ip, attack_source,agent_id) {
     let temp_html = ``;
 
     $.ajax({
-        url: "attack/query_source/",
+        url: "/attack/query_source/",
         type: 'POST',
         data: parm,
         async: false,
@@ -600,7 +600,7 @@ function append_attack_body_more(ip, last, attack_source,agent_id) {
     let ramain;
 
     $.ajax({
-        url: "attack/query_source/",
+        url: "/attack/query_source/",
         type: 'POST',
         data: parm,
         async: false,
@@ -672,7 +672,7 @@ function get_detail_data_from_issue_id(event_issue_id) {
     let data = null;
     parm['id'] = event_issue_id;
     $.ajax({
-        url: "attack/query_detail_data/",
+        url: "/attack/query_detail_data/",
         type: 'POST',
         data: parm,
         async: false,

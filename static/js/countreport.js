@@ -1,6 +1,6 @@
 function report_btn() {
     $.ajax({
-                url: "data_count",
+                url: "/data_count",
                 type: 'POST',
                 data: {
                     "attack_time": $("#daterange-btn").val()
@@ -30,7 +30,7 @@ function count_div_click() {
      */
 
     $.ajax( {
-        url: 'countreport',
+        url: '/countreport',
         dataType:"html",
         type: "get",
 
@@ -83,7 +83,7 @@ function count_div_click() {
             $('#now_time').text('');
             $('#now_time').append("报告时间："+ year+"-"+month+"-"+day+" "+hour+":"+minute+":"+second);
             $.ajax({
-                url: "data_count",
+                url: "/data_count",
                 type: 'POST',
                 data: {
                     "attack_time": $("#daterange-btn").val()

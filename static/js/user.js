@@ -4,7 +4,7 @@ function user_click(page) {
     * */
     //let page=1;
     $.ajax( {
-        url: 'user',
+        url: '/user',
         dataType:"html",
         type: "get",
         success: function(res){
@@ -37,7 +37,7 @@ function personal_infor_click() {
 function personal_infor_load() {
     // 个人信息执行
     $.ajax({
-        url: "user/query_one/",
+        url: "/user/query_one/",
         type: 'POST',
         data: {
 
@@ -120,7 +120,7 @@ function pwd_update() {
         return;
     }
     $.ajax({
-        url: "user/user_update_pwd/",
+        url: "/user/user_update_pwd/",
         type: 'POST',
         data: {
             "old_password":old_password,
@@ -149,7 +149,7 @@ function user_admin_load(page) {
     }
     $(this).addClass("active router-link-active").siblings().removeClass("active router-link-active");
     $.ajax({
-        url: "user/query/",
+        url: "/user/query/",
         type: 'POST',
         data: {
             "page": page,
@@ -262,7 +262,7 @@ function user_add() {
         return;
     }
     $.ajax({
-        url: "user/user_add/",
+        url: "/user/user_add/",
         type: 'POST',
         data: {
             "username":username,

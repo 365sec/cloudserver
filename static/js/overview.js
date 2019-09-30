@@ -4,7 +4,7 @@ function overview_click() {
      *
      */
     $.ajax( {
-        url: 'overview',
+        url: '/overview',
         dataType:"html",
         type: "get",
         success: function(res){
@@ -31,7 +31,7 @@ function overviewFlash() {
 // 危险等级分布
 function query_threat_level() {
     $.ajax({
-        url: "query_threat_level",
+        url: "/query_threat_level",
         type: 'POST',
         data: {
             "page": ""
@@ -46,7 +46,7 @@ function query_threat_level() {
 //首页地图
 function query_attack_source(show_continuous) {
     $.ajax({
-        url: "query_attack_source",
+        url: "/query_attack_source",
         type: 'POST',
         data: {
             "flag": map_flag
@@ -105,7 +105,7 @@ if($('#div_container').find('div').className == 'overviewDiv'){
 //外部威胁趋势
 function query_attack_times() {
     $.ajax({
-        url: "query_attack_times",
+        url: "/query_attack_times",
         type: 'POST',
         data: {
             "page": ""
@@ -121,7 +121,7 @@ function query_attack_times() {
 //攻击类型排行
 function query_attack_type() {
     $.ajax({
-        url: "query_attack_type",
+        url: "/query_attack_type",
         type: 'POST',
         data: {
 
@@ -136,7 +136,7 @@ function query_attack_type() {
 //近期攻击警告
 function query_attack_warn() {
     $.ajax({
-        url: "query_attack_warn",
+        url: "/query_attack_warn",
         type: 'POST',
         data: {
             "page": ""

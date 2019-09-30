@@ -4,7 +4,7 @@ function website_click(page) {
     * */
     //let page=1;
     $.ajax({
-        url: 'manage',
+        url: '/manage',
         dataType: "html",
         type: "get",
         success: function (res) {
@@ -16,7 +16,7 @@ function website_click(page) {
             $(this).addClass("active router-link-active").siblings().removeClass("active router-link-active");
 
             $.ajax({
-                url: "web_agent/query/",
+                url: "/web_agent/query/",
                 type: 'POST',
                 data: {
                     "page": page
@@ -102,7 +102,7 @@ function website_click(page) {
 
 function update_remark(id, remark, data_type) {
     $.ajax({
-        url: "attack/web_remark/",
+        url: "/attack/web_remark/",
         type: 'POST',
         async: false,
         data: {
@@ -151,7 +151,7 @@ $(document).on("click", ".detail-a-website", function () {
     let data = JSON.parse(b.decode(data1));
     // console.log(data);
     $.ajax({
-        url: 'website_manage_detail',
+        url: '/website_manage_detail',
         type: 'get',
         dataType: 'html',
         success: function (res) {
@@ -180,7 +180,7 @@ function chart_attack_trend_web(app_id) {
     // chart_attack_trend 服务器攻击趋势
     let data;
     $.ajax({
-        url: "attack/web_trend/",
+        url: "/attack/web_trend/",
         type: 'POST',
         data: {
             "id": app_id
@@ -298,7 +298,7 @@ function event_treat_web(now_page, app_id) {
     parm['app_id'] = app_id;
 
     $.ajax({
-        url: "attack/web_event/",
+        url: "/attack/web_event/",
         type: 'POST',
         data: parm,
         // dataType: "json",
