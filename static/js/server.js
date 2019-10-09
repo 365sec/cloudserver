@@ -26,7 +26,8 @@ function server_click(page) {
                         window.location.href = '/login'
                     }
                     data = data_list['agents'];
-
+                    let last_online=data_list['last_online'];
+                    console.log(last_online);
                     let now_page = data_list['page'];
                     let max_size = data_list['max_size'];
                     // data = data.replace(/}{/g, "}****{").split("****");
@@ -34,9 +35,15 @@ function server_click(page) {
                     let div_container2 = $(".table-manage");
                     div_container.text("");
                     let html = '<h1 class="page-title" ><i class="iconfont">&#xe73b;</i>服务器管理</h1>';
+
                     html += '<div class="card">';
                     /* html += '<div class = "btngroup"><div  class="btn" onclick="javascript:void(0)" data-toggle="modal" data-target="#add_host">添加主机</div></div>';*/
                     html += '<div class="card-body">';
+                    html += `<div >
+                    最后1分钟前连接个数${last_online['last_1m']} <br>
+                    最后10分钟前连接个数${last_online['last_10m']}<br>
+                    最后30分钟前连接个数${last_online['last_30m']}<br>
+                    </div >`;
                     html += '<table class="table table-bordered table-striped table-hover">';
                     html += '<thead>';
                     html += '<tr>';
@@ -584,7 +591,7 @@ function server_checking(data){
         },1500);
     }
     $.ajax({
-        url: "baseline",
+        url: "/ baseline",
         type: 'POST',
         data: {
             "agent_id":agent_server_id,
