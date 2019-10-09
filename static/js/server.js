@@ -39,10 +39,22 @@ function server_click(page) {
                     html += '<div class="card">';
                     /* html += '<div class = "btngroup"><div  class="btn" onclick="javascript:void(0)" data-toggle="modal" data-target="#add_host">添加主机</div></div>';*/
                     html += '<div class="card-body">';
-                    html += `<div >
-                    最后1分钟前连接个数${last_online['last_1m']} <br>
-                    最后10分钟前连接个数${last_online['last_10m']}<br>
-                    最后30分钟前连接个数${last_online['last_30m']}<br>
+                    html += `<div class="server_header">
+                            <div>
+                                <div class="orbitron">${last_online['last_1m']}</div>
+                                <p>最后1分钟前连接个数</p>
+                                <div class="server_header_border red"></div>
+                            </div>
+                            <div>
+                                <div class="orbitron">${last_online['last_10m']}</div>
+                                <p>最后10分钟前连接个数</p>
+                                <div class="server_header_border yellow"></div>
+                            </div>
+                            <div>
+                                <div class="orbitron">${last_online['last_30m']}</div>
+                                <p>最后30分钟前连接个数</p>
+                                <div class="server_header_border green"></div>
+                            </div>
                     </div >`;
                     html += '<table class="table table-bordered table-striped table-hover">';
                     html += '<thead>';

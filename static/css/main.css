@@ -15,6 +15,13 @@
     -webkit-text-stroke-width: 0.2px;
     -moz-osx-font-smoothing: grayscale;
 }
+@font-face {
+    font-family: 'Orbitron';  /* project id 1075499 */
+    src: url('fonts/orbitron-light.ttf');
+}
+.orbitron {
+    font-family: 'Orbitron', 'Microsoft YaHei', SimSun, STXihei, "华文细黑", "宋体", Heiti, "黑体", sans-serif;
+}
 .mt-md-5,
 .my-md-5 {
     margin-top: 0rem !important;
@@ -2480,4 +2487,45 @@ text-align:center;
 }
 .linux-chose .radio-inline {
     margin: 10px 15px 0 20px;
+}
+
+/*服务器管理header*/
+
+.server_header {
+    width: 100%;
+    min-height: 120px;
+    margin: 24px 0;
+    position: relative;
+    border: 1px solid #ccd8dc;
+    background-color: #f5f5f5;
+    padding: 10px 0;
+}
+.server_header>div {
+    width: 33.3%;
+    float: left;
+    text-align: center;
+    color: #666;
+    padding: 10px 60px 20px;
+    border-left: 1px solid #dbdbdb;
+}
+.server_header>div:first-child {
+    border: none;
+}
+.server_header>div>div{
+     font-size: 26px;
+ }
+.server_header>div>p{
+    font-size: 14px;
+}
+.server_header_border{
+    width: 100%;
+}
+.server_header_border.red{
+    border-bottom: 2px solid #ff6156;
+}
+.server_header_border.yellow{
+    border-bottom: 2px solid #ffb73d;
+}
+.server_header_border.green{
+    border-bottom: 2px solid #43c1c0;
 }
