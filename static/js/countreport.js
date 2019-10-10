@@ -274,20 +274,17 @@ function piechart(data,div) {
     var piechart = echarts.init(document.getElementById(div));
     option = {
         legend: {
+            orient: 'horizontal',
+            top: 'top',
             show: true,
-            width: '20%',
-            right: '2%',
-            top: 'middle',
-            orient: 'vertical',
             backgroundColor: '#eee',
 
         },
         series: [{
             name: '威胁指数',
             type: 'pie',
-            radius: ['55%', '70%'],
-            center: ['40%', '50%'],
-            clockwise: false,
+            radius: '60%',
+            center: ['50%', '60%'],
 
             data: function () {
                 let res=[];
@@ -295,6 +292,17 @@ function piechart(data,div) {
                     res.push({
                         name: data[x][0],
                         value: data[x][1],
+                        itemStyle:{
+                           normal:{
+                                label:{
+                                    show: true,
+                                },
+                                labelLine: {
+                                    show: true
+                                }
+                           }
+                        }
+
                     });
                 }
                 return res;
@@ -306,7 +314,6 @@ function piechart(data,div) {
                     },
                     formatter: '{b}:  {c}',
                 }
-
             },
             grid: {
                 left: '5%',
@@ -315,22 +322,7 @@ function piechart(data,div) {
                 bottom: '0',
                 containLabel: true
             },
-            labelLine: {
-                normal: {
-                    show: true,
-                    length: 20,
-                    length2: 10
-                }
-            },
-            itemStyle: {
-                normal: {
-                    borderWidth: 1,
-                    borderColor: '#ffffff',
-                },
-                emphasis: {
-                    borderWidth: 0,
-                }
-            }
+
         }],
         color: [
             '#C23531',
@@ -340,6 +332,20 @@ function piechart(data,div) {
         ],
         backgroundColor: '#fff'
     };
+
+    var opt = option.series[0];
+    //数据为零时隐藏线段
+    function lineHide(opt) {
+        jQuery.each(opt.data, function (i, item) {
+            if (item.value == 0) {
+                item.itemStyle.normal.labelLine.show = false;
+                item.itemStyle.normal.label.show = false;
+            }
+        });
+    }
+    console.log(opt);
+    lineHide(opt);
+
     piechart.setOption(option);
     // let data_list_type = [];
     //     let data_list_type_dic = [];

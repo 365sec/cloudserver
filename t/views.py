@@ -297,7 +297,6 @@ def attack_event_query(request):
         username = request.session['username']
         result = THostAgents.objects.filter(own_user=username)
         agent_ids = [x.agent_id for x in result]
-        print (agent_ids)
         filter_condition['agent_id__in'] = agent_ids
 
     tweb_obj = TWebEvent.objects.all()
