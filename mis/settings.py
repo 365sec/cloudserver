@@ -5,7 +5,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = 't(5+*we*z8dad2o^p*5)csn^5+@kt^xjk7sz=#an!9c-te66gd'
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -55,29 +55,17 @@ WSGI_APPLICATION = 'mis.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE':'django.db.backends.mysql',
-        'NAME':'gov_defence',
-        'USER':'jinkai',
-        'PASSWORD':'`1q`1q`1Q',
-        'HOST':'49.235.152.172',
-        'PORT':'3306',
-        'CONN_MAX_AGE':6
-    }
-}
-'''
 
 DATABASES = {
-    'default': {
-        'ENGINE':'django.db.backends.mysql',
-        'NAME':'gov_defence',
-        'USER':'root',
-        'PASSWORD':'12345',
-        'HOST':'172.16.39.65',
-        'PORT':'3306',
-        'CONN_MAX_AGE':6
-    }
+    # 'default': {
+    #     'ENGINE':'django.db.backends.mysql',
+    #     'NAME':'gov_defence',
+    #     'USER':'root',
+    #     'PASSWORD':'12345',
+    #     'HOST':'172.16.39.65',
+    #     'PORT':'3306',
+    #     'CONN_MAX_AGE':6
+    # }
     # 'default': {
     #     'ENGINE':'django.db.backends.mysql',
     #     'NAME':'gov_defence',
@@ -87,12 +75,8 @@ DATABASES = {
     #     'PORT':'3306',
     #     'CONN_MAX_AGE':6
     # }
-}
-'''
-'''
-DATABASES = {
     'default': {
-        'ENGINE':'django.db.backends.mysql',
+        'ENGINE':'django_mysqlpool.backends.mysqlpool',
         'NAME':'gov_defence',
         'USER':'grxa',
         'PASSWORD':'GRXA@1410g20db',
@@ -100,8 +84,41 @@ DATABASES = {
         'PORT':'3306',
         'CONN_MAX_AGE':6
     }
+
+    # 'default': {
+    #     'ENGINE':'django.db.backends.mysql',
+    #     'NAME':'gov_defence',
+    #     'USER':'jinkai',
+    #     'PASSWORD':'`1q`1q`1Q',
+    #     'HOST':'49.235.152.172',
+    #     'PORT':'3306',
+    #     'CONN_MAX_AGE':6
+    #
+    # }
+
 }
-'''
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE':'django.db.backends.mysql',
+#         'NAME':'gov_defence',
+#         'USER':'grxa',
+#         'PASSWORD':'GRXA@1410g20db',
+#         'HOST':'172.16.31.135',
+#         'PORT':'3306',
+#         'CONN_MAX_AGE':6
+#     }
+# }
+
+MYSQLPOOL_ARGUMENTS = {
+    'pool_size': 5,
+    'max_overflow':-1,
+    'timeout':2
+}
+
+MYSQLPOOL_BACKEND = 'QueuePool'
+MYSQLPOOL_TIMEOUT=100
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -143,8 +160,9 @@ USE_L10N = True
 USE_TZ = False
 
 STATIC_URL = '/static/'
+STATIC_ROOT = 'static'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR,'static')
+    os.path.join(BASE_DIR,'static'),
 
 ]
 ALLOWED_HOSTS = ['*']

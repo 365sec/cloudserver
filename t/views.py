@@ -816,6 +816,7 @@ def server_attack_trend(request):
     tfile_obj = TFileIntegrity.objects.all().filter(agent_id=id)
     tlog_obj = TLogAnalysisd.objects.all().filter(agent_id=id)
 
+    all_count = tweb_obj.count()+tfile_obj.count()+tlog_obj.count()
     # 统计今日、昨日、这周的攻击情况
     date = datetime.today().day
     # dt_s = datetime.now().date()  # 2018-7-15
@@ -877,6 +878,7 @@ def server_attack_trend(request):
     # union_obj3=union_obj2.values_list("event_name").annotate(number=Count('event_name'))
     type_num=list(union_obj2)
 
+
     # 攻击类型分析及被攻击网站列表
     tweb_obj1=tweb_obj.values_list("target").annotate(number=Count('target'))
     # tfile_obj1=tfile_obj.values_list("unused").annotate(number=Count('event_name'))
@@ -888,12 +890,6 @@ def server_attack_trend(request):
     tfile_obj1=tfile_obj.count()
     tlog_obj1=tlog_obj.values_list("threat_level").annotate(number=Count('threat_level'))
     # union_obj2=tweb_obj1.union(tlog_obj1).order_by("-number")
-    # print ("网站攻击")
-    # print (tweb_obj1)
-    # print ("文件")
-    # print (tfile_obj1)
-    # print ("日志")
-    # print (tlog_obj1)
     # print (tlog_obj.values_list("threat_level").annotate(number=Count('threat_level')))
     level_num_list=[["严重",0],["高危",0],["中危",0],["信息",0]]
     level_num_list[3][1]=tfile_obj1
@@ -918,13 +914,12 @@ def server_attack_trend(request):
         if x[0]==3:
             level_num_list[3][1]+=x[1]
 
-
-
     data = {
         "num_list": num_list,
         "type_num":type_num[0:10],
         "web_num":web_num[0:10],
          "level_num":level_num_list[0:10],
+         "all_count":all_count,
     }
     data = json.dumps(data)
     return HttpResponse(data, content_type='application/json')
@@ -939,7 +934,7 @@ def web_attack_trend(request):
     '''
     id = request.POST.get("id")
     tweb_obj = TWebEvent.objects.all().filter(app_id=id)
-
+    all_count=tweb_obj.count()
     # 统计今日、昨日、这周的攻击情况
     date = datetime.today().day
     # dt_s = datetime.now().date()  # 2018-7-15
@@ -1014,6 +1009,7 @@ def web_attack_trend(request):
         "type_num":list(tweb_obj_type_num)[0:10],
         "web_num":list(tweb_obj_web_num)[0:10],
         "level_num":level_num[0:10],
+        "all_count":all_count,
     }
     data = json.dumps(data)
     return HttpResponse(data, content_type='application/json')

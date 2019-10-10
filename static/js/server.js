@@ -177,7 +177,7 @@ function add_host_modal() {
 
 //详情
 var agent_server_id;
-$(document).on("click", ".detail-a-server", function () {
+$(document).off("click", ".detail-a-server").on("click", ".detail-a-server", function () {
     let data1 = $(this).attr("data-name");
     let b=new Base64();
     let data=JSON.parse(b.decode(data1));
@@ -229,7 +229,7 @@ $(document).on("click", ".detail-a-server", function () {
 });
 // 安全分析
 function click_chart_attack_trend_server(data){
-    $(document).on('click','#security_analysis_link',function () {
+    $(document).off('click','#security_analysis_link').on('click','#security_analysis_link',function () {
         chart_attack_trend_server(data);
     })
 }
@@ -252,10 +252,7 @@ function chart_attack_trend_server(agent_id){
             {
                 server_id_nowcount+=data['num_list']['day'][x];
             }
-            for(x in data['level_num'] )
-            {
-                server_id_allcount+=data['level_num'][x][1];
-            }
+            server_id_allcount=data_list['all_count'];
             $("#server_id_nowcount").html("").append(server_id_nowcount);
             $("#server_id_allcount").html("").append(server_id_allcount);
         }});
@@ -298,12 +295,16 @@ function chart_attack_trend_server(agent_id){
     // 被攻击网站列表
     let web_attack = '';
     for(x in data['web_num']){
+        if (data['web_num'][x][1]===0)
+        {
+            continue
+        }
         web_attack +='<tr><td style="width: 60%">'+data['web_num'][x][0]+'</td>';
         web_attack +='<td>'+data['web_num'][x][1]+'</td></tr>';
     }
     $('#web_attack').html(web_attack);
     // 安全分析服务器攻击趋势tab切换
-    $(document).on('click','.server_detail_tab',function () {
+    $(document).off('click','.server_detail_tab').on('click','.server_detail_tab',function () {
         let value = $(this).attr('data-type');
         let data = [];
         switch (value) {
@@ -327,7 +328,7 @@ function chart_attack_trend_server(agent_id){
 
 // 事件处理
 function click_event_treat_server(){
-    $(document).on('click','#event_statistics_link',function () {
+    $(document).off('click','#event_statistics_link').on('click','#event_statistics_link',function () {
         event_treat_server(1);
     })
 }
@@ -485,7 +486,7 @@ function event_treat_server_jump() {
 
 // 安全设置
 function click_application_security(data){
-    $(document).on('click','#application_security_link',function () {
+    $(document).off('click','#application_security_link').on('click','#application_security_link',function () {
         application_security(data);
     })
 }
@@ -603,7 +604,7 @@ function server_checking(data){
         },1500);
     }
     $.ajax({
-        url: "/ baseline",
+        url: "/baseline",
         type: 'POST',
         data: {
             "agent_id":agent_server_id,
@@ -622,11 +623,13 @@ function server_checking(data){
                 $("#baseline_check_status1").hide();
                 $("#baseline_check_status").show();
                 $("#baseline_check_time").show();
+                $("#accordion").show();
             }
             else {
                 $("#baseline_check_status1").show();
                 $("#baseline_check_status").hide();
                 $("#baseline_check_time").hide();
+                $("#accordion").hide();
 
             }
             let all_lenth=0;
@@ -883,7 +886,7 @@ $(document).on('click','.panel-title>a',function(){
 
 //网站详情
 function click_server_website_list(data){
-    $(document).on('click','#server_website_list_link',function () {
+    $(document).off('click','#server_website_list_link').on('click','#server_website_list_link',function () {
         server_website_list(data);
     })
 }
@@ -979,7 +982,7 @@ $(document).on("click", "#server_website_list_del", function() {
 
 // 黑白名单
 function click_black_white_list(agent_id){
-    $(document).on('click','#black_white_list_link',function () {
+    $(document).off('click','#black_white_list_link').on('click','#black_white_list_link',function () {
         black_white_list(agent_id);
     })
 }
@@ -1055,7 +1058,7 @@ function checkall(obj) {
 }
 
 // 添加黑名单触发
-$(document).on('click','#add_black',function () {
+$(document).off('click','#add_black').on('click','#add_black',function () {
     let html = `<div class="modal fade" id="add_black_list" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -1089,7 +1092,7 @@ $(document).on('click','#add_black',function () {
 });
 
 // 解除黑名单触发
-$(document).on('click','.black_list_release',function () {
+$(document).off('click','.black_list_release',).on('click','.black_list_release',function () {
     let id = $(this).attr("id");
     id=id.toString();
     let html = `<div class="modal fade" id="black_release_list" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -1120,7 +1123,7 @@ $(document).on('click','.black_list_release',function () {
 });
 
 // 批量解除黑名单
-$(document).on('click','#releaseall_black',function () {
+$(document).off('click','#releaseall_black').on('click','#releaseall_black',function () {
     let id = $(this).attr("id");
     let num=0;
     for( let i=1;i<=$('#black_list_table>tbody>tr').length;i++){
@@ -1162,7 +1165,7 @@ $(document).on('click','#releaseall_black',function () {
 });
 
 // 添加白名单触发
-$(document).on('click','#add_white',function () {
+$(document).off('click','#add_white').on('click','#add_white',function () {
     let html = `<div class="modal fade" id="add_white_list" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -1196,7 +1199,7 @@ $(document).on('click','#add_white',function () {
 });
 
 // 解除白名单触发
-$(document).on('click','.white_list_release',function () {
+$(document).off('click','.white_list_release').on('click','.white_list_release',function () {
     let id = $(this).attr("id");
     let html = `<div class="modal fade" id="white_release_list" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -1227,7 +1230,7 @@ $(document).on('click','.white_list_release',function () {
 
 
 // 批量解除白名单触发
-$(document).on('click','#releaseall_white',function () {
+$(document).off('click','#releaseall_white').on('click','#releaseall_white',function () {
     let id = $(this).attr("id");
     let num=0;
     for( let i=1;i<=$('#white_list_table>tbody>tr').length;i++){
@@ -1421,7 +1424,7 @@ function white_black_list_releaseall(id,type) {
 
 // 防御策略
 function click_config_show(data){
-    $(document).on('click','#config_show_link',function () {
+    $(document).off('click','#config_show_link').on('click','#config_show_link',function () {
         config_show(data);
     })
 }
