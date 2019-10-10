@@ -692,7 +692,9 @@ function get_baseline_li_html(data) {
             }
             // console.log(data[x]);
             name=data[x]['name'];
-            detail=JSON.stringify(data[x])
+            let b = new Base64();
+            let data1 = b.encode(JSON.stringify(data[x]));
+            detail=JSON.stringify(data1)
 
                 // +"&nbsp&nbsp&nbsp&nbsp当前状态: "+status+"&nbsp&nbsp&nbsp&nbsp建议改为: "+data[x]['suggest']
         }
@@ -718,7 +720,8 @@ function get_baseline_li_html(data) {
 }
 $(document).on("click", ".xtpzaqjc_infor", function() {
     let detail = $(this).attr("data-detail");
-    detail=JSON.parse(detail);
+    let b=new Base64();
+    detail=JSON.parse(b.decode(detail));
     let html = `<div class="modal fade modal_rightsilde" id="xtpzaqjc_infor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
