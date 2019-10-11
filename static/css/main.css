@@ -2529,3 +2529,22 @@ text-align:center;
 .server_header_border.green{
     border-bottom: 2px solid #43c1c0;
 }
+.server_score{
+    border-radius: 3px;
+    color: #fff;
+    text-align:center;
+    width: 100%;
+    display: block;
+}
+.server_score.green{
+    background: #34a856;
+}
+.server_score.blue{
+    background: #5bc0de;
+}
+.server_score.orange{
+    background: orange;
+}
+.server_score.red{
+background: red;
+}

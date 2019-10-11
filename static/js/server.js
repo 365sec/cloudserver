@@ -27,7 +27,6 @@ function server_click(page) {
                     }
                     data = data_list['agents'];
                     let last_online=data_list['last_online'];
-                    console.log(last_online);
                     let now_page = data_list['page'];
                     let max_size = data_list['max_size'];
                     // data = data.replace(/}{/g, "}****{").split("****");
@@ -67,12 +66,17 @@ function server_click(page) {
                     html += '<th>服务器状态</th>';
                     html += '<th>所属用户</th>';
                     html += '<th>标记</th>';
+                    html += '<th>检查分数</th>';
                     html += '</tr>';
                     html += '</thead>';
                     html += '<tbody>';
                     for (x in data) {
                         let server_img;
                         data[x] = JSON.parse(data[x]);
+                        if (data[x]['score']==='-1'||data[x]['score']==='None')
+                        {
+                            data[x]['score']=''
+                        }
                         if (data[x]['online']==="在线")
                         {
                             if (data[x]['os'].toLowerCase().indexOf("windows") !== -1){
@@ -94,13 +98,24 @@ function server_click(page) {
                         let agent_id = data[x]['agent_id'];
                         let b = new Base64();
                         let data1 = b.encode(JSON.stringify(data[x]));
-                        //html += '<td>' + data[x]['agent_id'] + '</td>';
-                        html += '<td>' +
-                            // '<img src="/static/images/os_linux_off.png" style="width: 20px"/>' +
-                            // '<img src="/static/images/os_linux_on.png" style="width: 20px"/>' +
-                            // '<img src="/static/images/os_windows_off.png" style="width: 20px"/>' +
-                            server_img +
+                        let score=`${data[x]['score']} `;
+                        if (data[x]['score'] > 80) {
+                          //  score=`<td><span class="server_score green">${data[x]['score']}</span></td>`
+                            score=`<td><span style="color: #00cc00"><strong>${data[x]['score']}</strong></span></td>`
+                        }else if (data[x]['score'] > 60)
+                        {
 
+                           // score=`<td><span class="server_score blue">${data[x]['score']}</span></td>`
+                            score=`<td><span style="color:yellow"><strong>${data[x]['score']}</strong></span></td>`
+                        }else if (data[x]['score'] > 40){
+                           // score=`<td><span class="server_score orange">${data[x]['score']}</span></td>`
+                            score=`<td><span style="color: orange"><strong>${data[x]['score']}</strong></span></td>`
+                        }else {
+                            //score=`<td><span class="server_score red">${data[x]['score']}</span></td>`
+                            score=`<td><span style="color: red"><strong>${data[x]['score']}</strong></span></td>`
+                        }
+                        html += '<td>' +
+                            server_img +
                             '<a class="detail-a-server" href="javascript:void(0)" data-name="' + data1 + '"   >' + data[x]['host_name'] + '</a> </td>';
                         html += '<td>' + data[x]['os'] + '</td>';
                         html += '<td>' + data[x]['internal_ip'] + '</td>';
@@ -114,9 +129,7 @@ function server_click(page) {
                         html += '<td>' +
                             '<input class="web_tip_text" placeholder="点击编辑" data-type="server" data-id="'+data[x]['agent_id']+'" value="' + data[x]['remark'] + '"/>'+
                             '</td>';
-                        // '<td style="width: 200px">' +
-                        // '<input class="web_tip_text" placeholder="点击编辑" data-id="'+data[x]['app_id']+'" value="' + data[x]['remark'] + '"/>'+
-                        // '</td>'
+                        html +=  score;
                         html += '</tr>';
                     }
                     html += '</tbody>';
@@ -280,7 +293,14 @@ function chart_attack_trend_server(agent_id){
     linechart(tday,'chart_attack_trend');
 
     // 服务器被攻击类型分析
-    let attack = data['level_num'];
+    let attack = [];
+    for (let x in data['level_num'])
+    {
+        if (data['level_num'][x][1] !== 0)
+        {
+            attack.push(data['level_num'][x])
+        }
+    }
     piechart(attack,'chart_attack_kind');
 
     // 攻击类型攻击次数
@@ -295,10 +315,7 @@ function chart_attack_trend_server(agent_id){
     // 被攻击网站列表
     let web_attack = '';
     for(x in data['web_num']){
-        if (data['web_num'][x][1]===0)
-        {
-            continue
-        }
+
         web_attack +='<tr><td style="width: 60%">'+data['web_num'][x][0]+'</td>';
         web_attack +='<td>'+data['web_num'][x][1]+'</td></tr>';
     }
@@ -611,7 +628,7 @@ function server_checking(data){
         },
         //dataType: "json",
         success: function (data_list) {
-            console.log(data_list);
+            // console.log(data_list);
             if (data_list['online']!==1) {
                 $("#start_server_check").hide();
             }

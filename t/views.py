@@ -150,6 +150,7 @@ def server_agent_query(request):
     :param request:
     :return:
     '''
+    # baseline()
     global SENSOR_TYPE
     # 当前页码数
     page = request.POST.get("page")
@@ -161,13 +162,17 @@ def server_agent_query(request):
         username = request.session['username']
         result = THostAgents.objects.filter(own_user=username).order_by("-online")
 
-
+    #获得最后agent心跳数目
     last_1m=result.filter(last_hearbeat__gte=(datetime.now()-timedelta(minutes=1))).count()
     last_10m=result.filter(last_hearbeat__gte=(datetime.now()-timedelta(minutes=10))).count()
     last_30m=result.filter(last_hearbeat__gte=(datetime.now()-timedelta(minutes=30))).count()
     last_online={"last_1m":last_1m,"last_10m":last_10m,"last_30m":last_30m}
+    #获得主机分数字典
+    server_score_list=TBaselineCheck.objects.all().values("agent_id","score")
+    server_score={}
+    for item in server_score_list:
+        server_score[str(item['agent_id'])]=item['score']
     # 每页显示多少个数据
-
     page_size = 15
     # 最大分页数
     max_size = (result.count() + page_size - 1) / page_size
@@ -178,7 +183,12 @@ def server_agent_query(request):
     TAgents_list = []
     for x in result[(page - 1) * page_size:(page) * page_size]:
         y = model_to_dict(x)
+
         # print (y)
+        y['score']=str(server_score[y['agent_id']])
+        if y['score']=="None":
+            y['score']=""
+        # y['score']=str(get_baseline_score_by_agent_id(y['agent_id']))
         if y['last_hearbeat']:
             y['last_hearbeat'] = y['last_hearbeat'].strftime("%Y-%m-%d %H:%M:%S")
         # y['sensor_type_id'] = SENSOR_TYPE.get(y['sensor_type_id'], '')
@@ -198,6 +208,53 @@ def server_agent_query(request):
         "last_online": last_online,
     }
     return HttpResponse(json.dumps(data), content_type='application/json')
+
+def get_baseline_score_by_agent_id(agentid):
+    # 基线检查项字典
+    baseline_dir={}
+    for x in TBaselineKnowledge.objects.all():
+        baseline_dir[str(x.check_item_id)]=model_to_dict(x)
+
+    id=agentid
+    result = TBaselineCheck.objects.all().filter(agent_id=id).first()
+
+    score=""
+    if  result and result.score!=-1:
+        data = model_to_dict(result)
+        #基线检查分数
+        score=100
+        if(data['result']):
+            data['result']=json.loads( data['result'])
+
+            clone_account=len(data['result']['account_security_check']['result']['clone_account'])*3
+            hidden_account=len(data['result']['account_security_check']['result']['hidden_account'])*3
+            weak_password_account=len(data['result']['account_security_check']['result']['weak_password_account'])*3
+            account_security_count=clone_account+hidden_account+weak_password_account
+            if account_security_count > 30:
+                account_security_count = 30
+
+            dark_chain=len(data['result']['web_file_check']['result']['dark_chain'])*2
+            suspicious_links=len(data['result']['web_file_check']['result']['suspicious_links'])*2
+            webshell=len(data['result']['web_file_check']['result']['webshell'])*3
+            web_file_count=dark_chain+suspicious_links+webshell
+            if web_file_count > 30:
+                web_file_count = 30
+            system_check = 0
+            # print (agentid)
+            for x in data['result']['system_check']['result']:
+                for y in data['result']['system_check']['result'][x]:
+                    # baseline_dir[str(y['id'])]
+                    try:
+                        system_check=system_check+baseline_dir[str(y['id'])]['check_item_level']
+                    except Exception as e:
+                        print(e)
+            score=score-account_security_count-web_file_count-system_check
+            if score<0:
+                score=0
+            result.score=score
+            result.save()
+    return  score
+
 
 @auth
 def web_agent_query(request):
@@ -1457,7 +1514,7 @@ def baseline(request):
     online=THostAgents.objects.get(agent_id=id).online
     # print ("baseline ",online)
     data={}
-
+    score="-1"
     if  result:
         data = model_to_dict(result)
         if data.get('last_check_time',None):
@@ -1482,26 +1539,46 @@ def baseline(request):
         else:
             data['last_check_time'] = ""
 
-
+        #基线检查分数
+        score=100
         if(data['result']):
             data['result']=json.loads( data['result'])
             # print (data['result'])
             # print (json.dumps(data['result']['system_check']['result'],ensure_ascii=False,encoding='utf-8'))
             # print (json.dumps(baseline_dir,ensure_ascii=False,encoding='utf-8'))
 
+            clone_account=len(data['result']['account_security_check']['result']['clone_account'])*3
+            hidden_account=len(data['result']['account_security_check']['result']['hidden_account'])*3
+            weak_password_account=len(data['result']['account_security_check']['result']['weak_password_account'])*3
+            account_security_count=clone_account+hidden_account+weak_password_account
+            if account_security_count > 30:
+                account_security_count = 30
 
+            dark_chain=len(data['result']['web_file_check']['result']['dark_chain'])*2
+            suspicious_links=len(data['result']['web_file_check']['result']['suspicious_links'])*2
+            webshell=len(data['result']['web_file_check']['result']['webshell'])*3
+            web_file_count=dark_chain+suspicious_links+webshell
+            if web_file_count > 30:
+                web_file_count = 30
+            system_check = 0
             for x in data['result']['system_check']['result']:
                 for y in data['result']['system_check']['result'][x]:
                     try:
                         y['name']=baseline_dir[str(y['id'])]['check_item_name']
                         y['suggest']=baseline_dir[str(y['id'])]['check_suggest']
+                        system_check=system_check+baseline_dir[str(y['id'])]['check_item_level']
                         if not y['suggest']:
                             y['suggest']="暂无"
                     except Exception, e:
                         print e
 
+            score=score-account_security_count-web_file_count-system_check
+            if score<0:
+                score=0
+            result.score=score
+            result.save()
     data['online']=online
-
+    data['score']=score
     # print (baseline_dir)
     # print (json.dumps(data,ensure_ascii=False,encoding='utf-8'))
     return HttpResponse(json.dumps(data,ensure_ascii=False,encoding='utf-8'), content_type='application/json')
