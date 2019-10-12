@@ -54,18 +54,31 @@ WSGI_APPLICATION = 'mis.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-
+'''
+DATABASES = {
+    'default': {
+        'ENGINE':'django_mysqlpool.backends.mysqlpool',
+        'NAME':'gov_defence',
+        'USER':'jinkai',
+        'PASSWORD':'`1q`1q`1Q',
+        'HOST':'49.235.152.172',
+        'PORT':'3306',
+        'CONN_MAX_AGE':6
+    }
+}
+'''
+'''
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE':'django.db.backends.mysql',
-    #     'NAME':'gov_defence',
-    #     'USER':'root',
-    #     'PASSWORD':'12345',
-    #     'HOST':'172.16.39.65',
-    #     'PORT':'3306',
-    #     'CONN_MAX_AGE':6
-    # }
+    'default': {
+        'ENGINE':'django.db.backends.mysql',
+        'NAME':'gov_defence',
+        'USER':'root',
+        'PASSWORD':'12345',
+        'HOST':'172.16.39.65',
+        'PORT':'3306',
+        'CONN_MAX_AGE':6
+    }
     # 'default': {
     #     'ENGINE':'django.db.backends.mysql',
     #     'NAME':'gov_defence',
@@ -75,8 +88,12 @@ DATABASES = {
     #     'PORT':'3306',
     #     'CONN_MAX_AGE':6
     # }
+}
+'''
+
+DATABASES = {
     'default': {
-        'ENGINE':'django_mysqlpool.backends.mysqlpool',
+        'ENGINE':'django.db.backends.mysql',
         'NAME':'gov_defence',
         'USER':'grxa',
         'PASSWORD':'GRXA@1410g20db',
@@ -84,34 +101,10 @@ DATABASES = {
         'PORT':'3306',
         'CONN_MAX_AGE':6
     }
-
-    # 'default': {
-    #     'ENGINE':'django.db.backends.mysql',
-    #     'NAME':'gov_defence',
-    #     'USER':'jinkai',
-    #     'PASSWORD':'`1q`1q`1Q',
-    #     'HOST':'49.235.152.172',
-    #     'PORT':'3306',
-    #     'CONN_MAX_AGE':6
-    #
-    # }
-
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE':'django.db.backends.mysql',
-#         'NAME':'gov_defence',
-#         'USER':'grxa',
-#         'PASSWORD':'GRXA@1410g20db',
-#         'HOST':'172.16.31.135',
-#         'PORT':'3306',
-#         'CONN_MAX_AGE':6
-#     }
-# }
-
 MYSQLPOOL_ARGUMENTS = {
-    'pool_size': 5,
+    'pool_size': 10,
     'max_overflow':-1,
     'timeout':2
 }

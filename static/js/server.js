@@ -41,17 +41,17 @@ function server_click(page) {
                     html += '<div class="server_header">'
                     html += '<div>' +
                             '<div class="orbitron">'+last_online['last_1m']+'</div>' +
-                            '<p>最后1分钟前连接个数</p>' +
+                            '<p>最近1分钟内在线主机</p>' +
                             '<div class="server_header_border red"></div>' +
                             '</div>' +
                             '<div>' +
                             '<div class="orbitron">'+last_online['last_10m']+'</div>' +
-                            '<p>最后10分钟前连接个数</p>' +
+                            '<p>最近10分钟内在线主机</p>' +
                             '<div class="server_header_border yellow"></div>' +
                             '</div>' +
                             '<div>' +
                             '<div class="orbitron">'+last_online['last_30m']+'</div>' +
-                            '<p>最后30分钟前连接个数</p>' +
+                            '<p>最近30分钟内在线主机</p>' +
                             '<div class="server_header_border green"></div>' +
                             '</div>' +
                             '</div >';
@@ -66,7 +66,7 @@ function server_click(page) {
                     html += '<th>服务器状态</th>';
                     html += '<th>所属用户</th>';
                     html += '<th>标记</th>';
-                    html += '<th>检查分数</th>';
+                    html += '<th>风险评分</th>';
                     html += '</tr>';
                     html += '</thead>';
                     html += '<tbody>';
@@ -101,15 +101,15 @@ function server_click(page) {
                         let score=`${data[x]['score']} `;
                         if (data[x]['score'] > 80) {
                           //  score=`<td><span class="server_score green">${data[x]['score']}</span></td>`
-                            score=`<td><span style="color: #00cc00"><strong>${data[x]['score']}</strong></span></td>`
+                            score=`<td><span style="color: #2D952D"><strong>${data[x]['score']}</strong></span></td>`
                         }else if (data[x]['score'] > 60)
                         {
 
                            // score=`<td><span class="server_score blue">${data[x]['score']}</span></td>`
-                            score=`<td><span style="color:yellow"><strong>${data[x]['score']}</strong></span></td>`
+                            score=`<td><span style="color:#2B62C3"><strong>${data[x]['score']}</strong></span></td>`
                         }else if (data[x]['score'] > 40){
                            // score=`<td><span class="server_score orange">${data[x]['score']}</span></td>`
-                            score=`<td><span style="color: orange"><strong>${data[x]['score']}</strong></span></td>`
+                            score=`<td><span style="color: #EB8400"><strong>${data[x]['score']}</strong></span></td>`
                         }else {
                             //score=`<td><span class="server_score red">${data[x]['score']}</span></td>`
                             score=`<td><span style="color: red"><strong>${data[x]['score']}</strong></span></td>`

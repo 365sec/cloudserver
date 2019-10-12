@@ -1547,25 +1547,27 @@ def baseline(request):
             # print (json.dumps(data['result']['system_check']['result'],ensure_ascii=False,encoding='utf-8'))
             # print (json.dumps(baseline_dir,ensure_ascii=False,encoding='utf-8'))
 
-            clone_account=len(data['result']['account_security_check']['result']['clone_account'])*3
-            hidden_account=len(data['result']['account_security_check']['result']['hidden_account'])*3
-            weak_password_account=len(data['result']['account_security_check']['result']['weak_password_account'])*3
+            clone_account=len(data['result']['account_security_check']['result']['clone_account'])*5
+            hidden_account=len(data['result']['account_security_check']['result']['hidden_account'])*5
+            weak_password_account=len(data['result']['account_security_check']['result']['weak_password_account'])*10
             account_security_count=clone_account+hidden_account+weak_password_account
-            if account_security_count > 30:
-                account_security_count = 30
+            if account_security_count > 50:
+                account_security_count = 50
 
             dark_chain=len(data['result']['web_file_check']['result']['dark_chain'])*2
             suspicious_links=len(data['result']['web_file_check']['result']['suspicious_links'])*2
             webshell=len(data['result']['web_file_check']['result']['webshell'])*3
             web_file_count=dark_chain+suspicious_links+webshell
-            if web_file_count > 30:
-                web_file_count = 30
+            if web_file_count > 40:
+                web_file_count = 40
             system_check = 0
+
             for x in data['result']['system_check']['result']:
                 for y in data['result']['system_check']['result'][x]:
                     try:
                         y['name']=baseline_dir[str(y['id'])]['check_item_name']
                         y['suggest']=baseline_dir[str(y['id'])]['check_suggest']
+                        print baseline_dir[str(y['id'])]['check_item_level']
                         system_check=system_check+baseline_dir[str(y['id'])]['check_item_level']
                         if not y['suggest']:
                             y['suggest']="暂无"
@@ -1579,8 +1581,7 @@ def baseline(request):
             result.save()
     data['online']=online
     data['score']=score
-    # print (baseline_dir)
-    # print (json.dumps(data,ensure_ascii=False,encoding='utf-8'))
+
     return HttpResponse(json.dumps(data,ensure_ascii=False,encoding='utf-8'), content_type='application/json')
 
 def baseline_check(request):

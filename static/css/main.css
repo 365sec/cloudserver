@@ -2494,7 +2494,7 @@ text-align:center;
 .server_header {
     width: 100%;
     min-height: 120px;
-    margin: 24px 0;
+    margin: 2px 0px 24px;
     position: relative;
     border: 1px solid #ccd8dc;
     background-color: #f5f5f5;

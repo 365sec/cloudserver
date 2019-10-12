@@ -768,8 +768,7 @@ function web_event_html(data) {
             break;
     }
     let iochtml = "";
-    if (attack_type === 'request' || attack_type === 'request_body') {
-        let body=` <tr>
+           let body=` <tr>
                                                     <td class="td-01">请求体</td>
                                                     <td class="td-02">:</td>
                                                     <td class="td-03">
@@ -781,6 +780,8 @@ function web_event_html(data) {
         {
             body=``;
         }
+    if (attack_type === 'request' || attack_type === 'request_body') {
+
         iochtml = `
         <table class="legend-table01" style="width: 70%;">
                                 <tbody>
@@ -929,14 +930,7 @@ function web_event_html(data) {
                                                         <p>${data['method']}</p>
                                                     </td>
                                                 </tr>
-                                                <tr>
-                                                    <td class="td-01">请求体</td>
-                                                    <td class="td-02">:</td>
-                                                    <td class="td-03">
-                                                        <pre id="httpQueryString" data-toggle="tooltip" data-html="true" data-delay="200" data-original-title="" data-trigger="manual">${data['body']}</pre>
-
-                                                    </td>
-                                                </tr>
+                                               ${body}
                                             </tbody>
                                             </table>
                                         </div>
