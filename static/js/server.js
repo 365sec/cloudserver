@@ -1789,20 +1789,22 @@ function agent_manage_submit(id) {
 
 function get_host_gent_id() {
     $.ajax({
-        type: "post",
-        //async : false, //同步请求
-        url: "/get_host_agent_id",
-        data: {"remarkmsg": $("#host_add").val()},
-        // timeout:1000,
-        success: function (data) {
-            if (data['agent_id']) {
-                $("#AGENT_ID").append(data['agent_id']);
+    type: "post",
+    //async : false, //同步请求
+    url: "/get_host_agent_id",
+    data: {"remarkmsg": $("#host_add").val()},
+    // timeout:1000,
+    success: function (data) {
+        if (data['agent_id']) {
+            $("#AGENT_ID").append(data['agent_id']);
 
-            } else {
-                alert('查询AGRNT_ID失败。');
-            }
+        } else {
+            alert('查询AGRNT_ID失败。');
         }
-})}
+    }
+})
+
+}
 
 function host_add() {
     $.ajax({
@@ -1873,14 +1875,15 @@ $(document).off('click','.check_single').on('click','.check_single',function () 
     }else {
         $('#'+checkname+'_del').addClass("btn_disabled");
     }
-})
+});
 $(document).off('click','#server_table_list_del').on('click','#server_table_list_del',function () {
+
     if($(this).hasClass('btn_disabled')){
         return ;
     }
 
     let num=$('.server_table_list:checked').length;
-    console.log($('.server_table_list:checked'));
+
     var idlist = [];
     for(var i = 0;i<num;i++){
         idlist[i] = $('.server_table_list:checked').eq(i).attr('id');
@@ -1904,7 +1907,7 @@ $(document).off('click','#server_table_list_del').on('click','#server_table_list
                 </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="server_table_list_del_submit('`+idlist+`')">提交</button>
+                    <button type="button" class="btn btn-primary" onclick="server_table_list_del_submit('${idlist}')">提交</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                 </div>
                 </div><!-- /.modal-content -->
@@ -1915,7 +1918,21 @@ $(document).off('click','#server_table_list_del').on('click','#server_table_list
 
 function server_table_list_del_submit(idlist) {
 
-    console.log(idlist)
+    console.log(idlist);
+    $.ajax({
+        type: "post",
+        //async : false, //同步请求
+        url: "/server_agent/del/",
+        data: {
+            "agent_id":idlist
+            },
+      success: function (data) {
+        console.log(data['msg']);
+          server_click(1)
+
+        }
+    }
+    );
     //关闭弹窗
     $("#server_table_list_del_modal").modal("hide");
 

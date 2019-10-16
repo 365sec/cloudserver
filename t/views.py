@@ -99,49 +99,60 @@ def add_host(request):
     return HttpResponse(json.dumps(data), content_type='application/json')
 
 
+# @auth
+# def agent_query(request):
+#     global SENSOR_TYPE
+#     # 当前页码数
+#     page = request.POST.get("page")
+#     page = int(page)
+#     result = None
+#     if request.session['superuser']:
+#         result = THostAgents.objects.all().order_by("-online")
+#     else:
+#         username = request.session['username']
+#         result = THostAgents.objects.filter(owner=username).order_by("-online")
+#     # 每页显示多少个数据
+#
+#     page_size = 15
+#     # 最大分页数
+#     max_size = (result.count() + page_size - 1) / page_size
+#     if max_size == 0:
+#         max_size = 1
+#     if page > max_size:
+#         page = max_size
+#     TAgents_list = []
+#     for x in result[(page - 1) * page_size:(page) * page_size]:
+#         y = model_to_dict(x)
+#         # print (y)
+#         y['last_hearbeat'] = y['last_hearbeat'].strftime("%Y-%m-%d %H:%M:%S")
+#         # y['sensor_type_id'] = SENSOR_TYPE.get(y['sensor_type_id'], '')
+#         y['online'] = '在线' if y['online'] else '离线'
+#         y['disabled'] = '是' if y['disabled'] else '否'
+#
+#         for k, v in y.items():
+#             if not y[k]:
+#                 y[k] = ''
+#         y = json.dumps(y)
+#
+#         TAgents_list.append(y)
+#     data = {
+#         "agents": TAgents_list,
+#         "max_size": max_size,
+#         "page": page,
+#     }
+#     return HttpResponse(json.dumps(data), content_type='application/json')
+
 @auth
-def agent_query(request):
-    global SENSOR_TYPE
-    # 当前页码数
-    page = request.POST.get("page")
-    page = int(page)
-    result = None
-    if request.session['superuser']:
-        result = THostAgents.objects.all().order_by("-online")
-    else:
-        username = request.session['username']
-        result = THostAgents.objects.filter(owner=username).order_by("-online")
-    # 每页显示多少个数据
+def agent_del(request):
+    agent_id_list = request.POST.get("agent_id")
+    if "," in agent_id_list:
+        agent_id_list=agent_id_list.split(",")
+    for agent_id in agent_id_list:
+        delobj= TWebEvent.objects.filter(agent_id=agent_id)
+        delobj.delete()
+    data={"msg":"删除成功"}
 
-    page_size = 15
-    # 最大分页数
-    max_size = (result.count() + page_size - 1) / page_size
-    if max_size == 0:
-        max_size = 1
-    if page > max_size:
-        page = max_size
-    TAgents_list = []
-    for x in result[(page - 1) * page_size:(page) * page_size]:
-        y = model_to_dict(x)
-        # print (y)
-        y['last_hearbeat'] = y['last_hearbeat'].strftime("%Y-%m-%d %H:%M:%S")
-        # y['sensor_type_id'] = SENSOR_TYPE.get(y['sensor_type_id'], '')
-        y['online'] = '在线' if y['online'] else '离线'
-        y['disabled'] = '是' if y['disabled'] else '否'
-
-        for k, v in y.items():
-            if not y[k]:
-                y[k] = ''
-        y = json.dumps(y)
-
-        TAgents_list.append(y)
-    data = {
-        "agents": TAgents_list,
-        "max_size": max_size,
-        "page": page,
-    }
     return HttpResponse(json.dumps(data), content_type='application/json')
-
 
 @auth
 def server_agent_query(request):
