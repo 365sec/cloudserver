@@ -1916,9 +1916,12 @@ $(document).off('click','#server_table_list_del').on('click','#server_table_list
     $("#server_table_list_del_modal").modal("show");
 })
 
+/*
+*
+* 删除主机功能
+* */
 function server_table_list_del_submit(idlist) {
 
-    console.log(idlist);
     $.ajax({
         type: "post",
         //async : false, //同步请求
@@ -1927,7 +1930,6 @@ function server_table_list_del_submit(idlist) {
             "agent_id":idlist
             },
       success: function (data) {
-        console.log(data['msg']);
           server_click(1)
 
         }
