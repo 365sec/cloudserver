@@ -148,8 +148,23 @@ def agent_del(request):
     if "," in agent_id_list:
         agent_id_list=agent_id_list.split(",")
     for agent_id in agent_id_list:
-        delobj= TWebEvent.objects.filter(agent_id=agent_id)
-        delobj.delete()
+        web_event= TWebEvent.objects.filter(agent_id=agent_id)
+        web_event.delete()
+        log_obj= TLogAnalysisd.objects.filter(agent_id=agent_id)
+        log_obj.delete()
+        file_obj= TFileIntegrity.objects.filter(agent_id=agent_id)
+        file_obj.delete()
+
+        web_agent= TWebAgents.objects.filter(agent_id=agent_id)
+        web_agent.delete()
+        host_agent= THostAgents.objects.filter(agent_id=agent_id)
+        host_agent.delete()
+
+        tconfig=TConfig.objects.filter(agent_id=agent_id)
+        tconfig.delete()
+        tbaseline=TBaselineCheck.objects.filter(agent_id=agent_id)
+        tbaseline.delete()
+
     data={"msg":"删除成功"}
 
     return HttpResponse(json.dumps(data), content_type='application/json')
