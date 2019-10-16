@@ -1078,7 +1078,14 @@ function black_white_slide(obj) {
     $(target).slideToggle();
 }
 
-
+// 全选按钮
+function checkall(obj) {
+    var flag=$(obj).prop('checked');
+    var list=document.getElementsByName($(obj).attr('id'));
+    for(var i=0;i<list.length;i++){
+        list[i].checked=flag;
+    }
+}
 
 // 添加黑名单触发
 $(document).off('click','#add_black').on('click','#add_black',function () {
@@ -1870,7 +1877,6 @@ $(document).off('click','#server_table_list_del').on('click','#server_table_list
     if($(this).hasClass('btn_disabled')){
         return ;
     }
-    let id = $(this).attr("id");
     let num=$('.server_table_list:checked').length;
     let html = `<div class="modal fade" id="server_table_list_del_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -1890,7 +1896,7 @@ $(document).off('click','#server_table_list_del').on('click','#server_table_list
                 </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick=" ">提交</button>
+                    <button type="button" class="btn btn-primary" onclick="server_table_list_del_submit()">提交</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                 </div>
                 </div><!-- /.modal-content -->
@@ -1898,3 +1904,9 @@ $(document).off('click','#server_table_list_del').on('click','#server_table_list
     $('#model_div').text('').append(html);
     $("#server_table_list_del_modal").modal("show");
 })
+
+function server_table_list_del_submit() {
+    //关闭弹窗
+    $("#server_table_list_del_modal").modal("hide");
+
+}
