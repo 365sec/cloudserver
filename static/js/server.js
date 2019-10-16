@@ -66,7 +66,7 @@ function server_click(page) {
                         '<th style="width: 46px;padding: 14px;">\n' +
                         '  <div class="server_list_checkbox"><input class="regular_checkbox check_all" id="server_table_list" type="checkbox"> <label for="server_table_list"></label> </div>' +
                         '</th>';
-                    //html += '<th>AGENT_ID</th>';
+                    // html += '<th>AGENT_ID</th>';
                     html += '<th>服务器名称</th>';
                     html += '<th>操作系统</th>';
                     html += '<th>IP地址</th>';
@@ -122,6 +122,7 @@ function server_click(page) {
                             //score=`<td><span class="server_score red">${data[x]['score']}</span></td>`
                             score=`<td><span style="color: red"><strong>${data[x]['score']}</strong></span></td>`
                         }
+                        html += '<td style="display: none">' + agent_id + '</td>';
                         html += '<td style="width: 46px;padding: 14px;">\n' +
                             '      <div class="server_list_checkbox"><input class="regular_checkbox check_single server_table_list" name="server_table_list" type="checkbox" id="'+agent_id+'"> <label for="'+agent_id+'"></label> </div>' +
                             '</td><td>' +
@@ -1877,7 +1878,14 @@ $(document).off('click','#server_table_list_del').on('click','#server_table_list
     if($(this).hasClass('btn_disabled')){
         return ;
     }
+
     let num=$('.server_table_list:checked').length;
+    console.log($('.server_table_list:checked'));
+    var idlist = [];
+    for(var i = 0;i<num;i++){
+        idlist[i] = $('.server_table_list:checked').eq(i).attr('id');
+    }
+
     let html = `<div class="modal fade" id="server_table_list_del_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -1896,7 +1904,7 @@ $(document).off('click','#server_table_list_del').on('click','#server_table_list
                 </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="server_table_list_del_submit()">提交</button>
+                    <button type="button" class="btn btn-primary" onclick="server_table_list_del_submit('`+idlist+`')">提交</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                 </div>
                 </div><!-- /.modal-content -->
@@ -1905,7 +1913,9 @@ $(document).off('click','#server_table_list_del').on('click','#server_table_list
     $("#server_table_list_del_modal").modal("show");
 })
 
-function server_table_list_del_submit() {
+function server_table_list_del_submit(idlist) {
+
+    console.log(idlist)
     //关闭弹窗
     $("#server_table_list_del_modal").modal("hide");
 
