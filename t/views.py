@@ -145,8 +145,7 @@ def add_host(request):
 @auth
 def agent_del(request):
     agent_id_list = request.POST.get("agent_id")
-    if "," in agent_id_list:
-        agent_id_list=agent_id_list.split(",")
+    agent_id_list=agent_id_list.split(",")
     for agent_id in agent_id_list:
         web_event= TWebEvent.objects.filter(agent_id=agent_id)
         web_event.delete()
