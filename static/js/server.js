@@ -54,10 +54,18 @@ function server_click(page) {
                             '<p>最近30分钟内在线主机</p>' +
                             '<div class="server_header_border green"></div>' +
                             '</div>' +
-                            '</div >';
+                            '</div >' +
+                        '<div class="btnGroup">' +
+                        '   <div class="table_select_div server_table_select_div">' +
+                        '       <div class="btn btn_disabled" id="server_table_list_del">删除</div>' +
+                        '   </div>' +
+                        '</div>';
                     html += '<table class="table table-bordered table-striped table-hover">';
                     html += '<thead>';
-                    html += '<tr>';
+                    html += '<tr>' +
+                        '<th style="width: 46px;padding: 14px;">\n' +
+                        '  <div class="server_list_checkbox"><input class="regular_checkbox check_all" id="server_table_list" type="checkbox"> <label for="server_table_list"></label> </div>' +
+                        '</th>';
                     //html += '<th>AGENT_ID</th>';
                     html += '<th>服务器名称</th>';
                     html += '<th>操作系统</th>';
@@ -114,7 +122,9 @@ function server_click(page) {
                             //score=`<td><span class="server_score red">${data[x]['score']}</span></td>`
                             score=`<td><span style="color: red"><strong>${data[x]['score']}</strong></span></td>`
                         }
-                        html += '<td>' +
+                        html += '<td style="width: 46px;padding: 14px;">\n' +
+                            '      <div class="server_list_checkbox"><input class="regular_checkbox check_single server_table_list" name="server_table_list" type="checkbox" id="'+agent_id+'"> <label for="'+agent_id+'"></label> </div>' +
+                            '</td><td>' +
                             server_img +
                             '<a class="detail-a-server" href="javascript:void(0)" data-name="' + data1 + '"   >' + data[x]['host_name'] + '</a> </td>';
                         html += '<td>' + data[x]['os'] + '</td>';
@@ -1068,14 +1078,7 @@ function black_white_slide(obj) {
     $(target).slideToggle();
 }
 
-// 全选按钮
-function checkall(obj) {
-    var flag=$(obj).prop('checked');
-    var list=document.getElementsByName($(obj).attr('id'));
-    for(var i=0;i<list.length;i++){
-        list[i].checked=flag;
-    }
-}
+
 
 // 添加黑名单触发
 $(document).off('click','#add_black').on('click','#add_black',function () {
@@ -1831,3 +1834,67 @@ function host_add() {
 $(document).on("click", ".btn-group button", function () {
         $(this).addClass("active").siblings().removeClass("active");
     });
+
+
+// 全选按钮
+$(document).off('click','.check_all').on('click','.check_all',function () {
+    var flag=$(this).prop('checked');
+    var checkname=$(this).attr('id');
+    if (flag){
+        $('#'+checkname+'_del').removeClass("btn_disabled");
+
+    }else {
+        $('#'+checkname+'_del').addClass("btn_disabled");
+
+    }
+    var list=document.getElementsByName($(this).attr('id'));
+    for(var i=0;i<list.length;i++){
+        list[i].checked=flag;
+    }
+})
+$(document).off('click','.check_single').on('click','.check_single',function () {
+    var checkname=$(this).attr('name');
+    if($('.'+checkname).length == $('.'+checkname+':checked').length){
+        $('#'+checkname).prop('checked',true);
+    }else{
+        $('#'+checkname).prop('checked',false);
+    }
+    if($('.'+checkname+':checked').length){
+        $('#'+checkname+'_del').removeClass("btn_disabled");
+
+    }else {
+        $('#'+checkname+'_del').addClass("btn_disabled");
+    }
+})
+$(document).off('click','#server_table_list_del').on('click','#server_table_list_del',function () {
+    if($(this).hasClass('btn_disabled')){
+        return ;
+    }
+    let id = $(this).attr("id");
+    let num=$('.server_table_list:checked').length;
+    let html = `<div class="modal fade" id="server_table_list_del_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">操作确认:</h4>
+                </div>
+            <div style="width: 100%;height: calc(100% - 109px);display: flex;align-items: center;justify-content: center;line-height: 50px">
+                <table>
+                    <tbody>
+                        <tr>
+                        <td style="text-align: right;padding-right: 20px; width: 38%">
+                        <span >确认要删除选中的${num}条数据吗</span>
+                        </td></tr>
+                    </tbody>
+                </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick=" ">提交</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+                </div><!-- /.modal-content -->
+        </div><!-- /.modal -->`;
+    $('#model_div').text('').append(html);
+    $("#server_table_list_del_modal").modal("show");
+})
