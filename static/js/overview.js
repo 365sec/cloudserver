@@ -225,20 +225,17 @@ function attrack_type_times(data,div) {
     }
     mycharts_attrack_type_times = echarts.init(document.getElementById(div));
     data = data.reverse();
+    console.log(data);
     for (x in data) {
 
         data_list_type.push(data[x][0]);
-        data_list_type_dic.push(data[x][1]);
-        //data_list_ua_dic.push({'name':data[x][0],'value':data[x][1]})
+        //data_list_type_dic.push(data[x][1]);
+        data_list_type_dic.push({'name':data[x][0],'value':data[x][1]})
     }
 
     option = {
-        color: "#2D7BA4",
+        /*
         tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-                type: 'shadow'
-            },
             formatter:'{b}<br>次数：{c}',
 
         },
@@ -247,28 +244,25 @@ function attrack_type_times(data,div) {
             top: '5%',
             right: '20%',
             bottom: '0%',
-            containLabel: false
         },
         xAxis: {
             type: 'value',
-            splitLine: {
-                show: false
-            },
-            axisLine: {
-                show: false
-            },
-            axisLabel: {
-                show: false
-            },
-            axisTick: {
-                show: false
-            }
         },
-        label:{
-            show:true,
-            position: 'right',
-            formatter:'{b}',
-            color: '#000'
+        label: {
+            formatter: function (params) {
+                // do some thing
+                console.log(params);
+                },
+            rich:{
+                a:{
+                    fontSize: 12,
+                    align: 'center'
+                },
+                b:{
+                    fontSize: 12,
+                    align: 'center'
+                }
+            }
         },
         yAxis: {
             type: 'category',
@@ -279,21 +273,40 @@ function attrack_type_times(data,div) {
             //         align:'left',
             //     }
             // },
-            axisTick: {
-                show: false
-            }, splitLine: {
-                show: false
-            }, axisLine: {
-                show: false
-            },
         },
         series: [
+                {
+                    // barMaxWidth:30,
+                    name: '次数',
+                    type: 'pie',
+                    data: data_list_type_dic,
+                    barWidth: 20,
+                }
+            ]
+
+        title : {
+            text: '某站点用户访问来源',
+            subtext: '纯属虚构',
+            x:'center'
+        },*/
+        tooltip : {
+            trigger: 'item',
+            formatter: "{b} : {c} ({d}%)"
+        },
+        series : [
             {
-                // barMaxWidth:30,
-                name: '次数',
-                type: 'bar',
-                data: data_list_type_dic,
-                barWidth: 20,
+                name: '攻击类型',
+                type: 'pie',
+                radius : ['40%','70%'],
+                center: ['50%', '55%'],
+                data:data_list_type_dic,
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
             }
         ]
     };
@@ -367,7 +380,7 @@ function attrack_time_charts(data,div) {
         series: [{
             type: 'bar',
             showSymbol: false,
-            name: "事件",
+            name: "事件总数",
             data: valueList,
             itemStyle: {
                 normal: {
@@ -396,8 +409,8 @@ function attack_threat_level_charts(data,div) {
         series: [{
             name: '威胁指数',
             type: 'pie',
-            radius: '60%',
-            // center: ['50%', '60%'],
+            radius : ['40%','70%'],
+            center: ['50%', '55%'],
             clockwise: true,
             data: [{
                 value: data[0],
@@ -417,7 +430,7 @@ function attack_threat_level_charts(data,div) {
                 //     fontSize: 14,
                 //     align:'center',
                 // },
-                formatter: '{a|{b}}{b|({c})}',
+                formatter: "{b} : {c} ({d}%)",
                 rich:{
                     a:{
                         fontSize: 12,
@@ -524,10 +537,10 @@ function chart_map(attack_source_data) {
         // },
         visualMap: {
             min: 0,
-            max: 200,
+            max: 100,
             show: false,
             inRange: {
-                color: ['#2fbcff', '#ffd71b', '#ff1717']
+                color: ['#D4494C', '#ED999A']
             },
             textStyle: {
                 color: '#fff'
@@ -543,11 +556,12 @@ function chart_map(attack_source_data) {
             },
             itemStyle: {
                 normal: {
-                    areaColor: '#004881',
-                    borderColor: '#fff',
+                    borderWidth: 1,
+                    areaColor: '#fff',
+                    borderColor: '#A9A9A9',
                 },
                 emphasis: {
-                    areaColor: '#2b91b7'
+                    areaColor: '#FFDBDB'
                 }
             }
         },
@@ -599,12 +613,12 @@ function attack_source_charts(data) {
     data = data.reverse();
     for (x in data) {
         data_list_source.push(data[x][0]);
-        data_list_source_dic.push(data[x][1]);
-        //data_list_source_dic.push({'name':data_list['attrack_source_dic'][x][0],'value':data_list['attrack_source_dic'][x][1]});
+        //data_list_source_dic.push(data[x][1]);
+        data_list_source_dic.push({'name':data[x][0],'value':data[x][1]});
     }
 
     option = {
-
+        /*
         color: "#2D7BA4",
         tooltip: {
             trigger: 'axis',
@@ -660,6 +674,27 @@ function attack_source_charts(data) {
                 type: 'bar',
                 data: data_list_source_dic,
                 barWidth: 20,
+            }
+        ]
+        */
+        tooltip : {
+            trigger: 'item',
+            formatter: "{b} : {c} ({d}%)"
+        },
+        series : [
+            {
+                name: '攻击IP',
+                type: 'pie',
+                radius : ['40%','70%'],
+                center: ['50%', '55%'],
+                data:data_list_source_dic,
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
             }
         ]
     };

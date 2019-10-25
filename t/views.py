@@ -145,8 +145,7 @@ def add_host(request):
 @auth
 def agent_del(request):
     agent_id_list = request.POST.get("agent_id")
-    if "," in agent_id_list:
-        agent_id_list=agent_id_list.split(",")
+    agent_id_list=agent_id_list.split(",")
     for agent_id in agent_id_list:
         web_event= TWebEvent.objects.filter(agent_id=agent_id)
         web_event.delete()
@@ -1155,7 +1154,7 @@ def query_attack_source(request):
     attrack_source_dic = {}
     for x in attrack_source[:12]:
         attrack_source_dic[str(x[0])] = x[1]
-    attrack_source_dic = sorted(attrack_source_dic.items(), key=lambda item: item[1], reverse=True)
+    attrack_source_dic = sorted(attrack_source_dic.items(), key=lambda item: item[1], reverse=False)
 
     gi = geoip2.database.Reader('data/geoip/GeoLite2-City.mmdb', locales=['zh-CN'])
     attack_source_map = {}
@@ -1259,24 +1258,25 @@ def query_attack_type(request):
         filter_condition['agent_id__in'] = agent_ids
 
     # 统计攻击事件
-    attack_type = {}
-    result = TEventKnowledge.objects.all()
-    for x in result:
-        attack_type[str(x.event_id)] = x.event_name
+    #attack_type = {}
+    #result = TEventKnowledge.objects.all()
+    #for x in result:
+    #    attack_type[str(x.event_id)] = x.event_name
     num = 12
-    web_attrack_times = web_attack.filter(~Q(event_id__in=[0, 999]), **filter_condition).values_list('event_id').annotate(
-        Count('event_id'))
-    log_attrack_times = log_attack.filter(~Q(event_id__in=[0, 999]), **filter_condition).values_list('event_id').annotate(
-        Count('event_id'))
+    web_attrack_times = web_attack.filter(~Q(event_id__in=[0, 999]), **filter_condition).values_list('event_name').annotate(
+        Count('event_name'))
+    log_attrack_times = log_attack.filter(~Q(event_id__in=[0, 999]), **filter_condition).values_list('event_name').annotate(
+        Count('event_name'))
     attrack_times1=list(web_attrack_times)+list(log_attrack_times)
     attrack_times1 = sorted(attrack_times1, key=lambda item: item[1], reverse=True)
     attack_type1 = {}
     for x in attrack_times1:
-        name = attack_type[str(x[0])]
-        attack_type1[name] = x[1]
+        #name = attack_type[str(x[0])]
+
+        attack_type1[x[0]] = x[1]
         if len(attack_type1) >= num:
             break
-    attack_type1 = sorted(attack_type1.items(), key=lambda item: item[1], reverse=True)
+    attack_type1 = sorted(attack_type1.items(), key=lambda item: item[1], reverse=False)
 
     data['attrack_type_times'] = attack_type1
     data = json.dumps(data)
