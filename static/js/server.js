@@ -124,7 +124,7 @@ function server_click(page) {
                         }
                         html += '<td style="display: none">' + agent_id + '</td>';
                         html += '<td style="width: 46px;padding: 14px;">\n' +
-                            '      <div class="server_list_checkbox"><input class="regular_checkbox check_single server_table_list" name="server_table_list" type="checkbox" id="'+agent_id+'"> <label for="'+agent_id+'"></label> </div>' +
+                            '      <div class="server_list_checkbox"><input class="regular_checkbox check_single server_table_list" name="server_table_list" type="checkbox" online="'+data[x]['online']+'" id="'+agent_id+'"> <label for="'+agent_id+'"></label> </div>' +
                             '</td><td>' +
                             server_img +
                             '<a class="detail-a-server" href="javascript:void(0)" data-name="' + data1 + '"   >' + data[x]['host_name'] + '</a> </td>';
@@ -1883,12 +1883,17 @@ $(document).off('click','#server_table_list_del').on('click','#server_table_list
     }
 
     let num=$('.server_table_list:checked').length;
-
+    // console.log($('.server_table_list:checked'))
     var idlist = [];
     for(var i = 0;i<num;i++){
         idlist[i] = $('.server_table_list:checked').eq(i).attr('id');
     }
+    var onlinelist = [];
+    for(var i = 0;i<num;i++){
+        onlinelist[i] = $('.server_table_list:checked').eq(i).attr('online');
 
+    }
+    console.log(onlinelist);
     let html = `<div class="modal fade" id="server_table_list_del_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -1907,7 +1912,7 @@ $(document).off('click','#server_table_list_del').on('click','#server_table_list
                 </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="server_table_list_del_submit('${idlist}')">提交</button>
+                    <button type="button" class="btn btn-primary" onclick="server_table_list_del_submit('${idlist}','${onlinelist}')">提交</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                 </div>
                 </div><!-- /.modal-content -->
@@ -1920,7 +1925,17 @@ $(document).off('click','#server_table_list_del').on('click','#server_table_list
 *
 * 删除主机功能
 * */
-function server_table_list_del_submit(idlist) {
+function server_table_list_del_submit(idlist,onlinelist) {
+
+    onlinelist=onlinelist.split(",");
+    for (x in onlinelist)
+    {
+        if (onlinelist[x]==="在线"){
+            alert("存在在线主机禁止删除");
+            $("#server_table_list_del_modal").modal("hide");
+            return
+        }
+    }
 
     $.ajax({
         type: "post",
