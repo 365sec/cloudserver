@@ -1258,21 +1258,29 @@ def query_attack_type(request):
         filter_condition['agent_id__in'] = agent_ids
 
     # 统计攻击事件
-    #attack_type = {}
-    #result = TEventKnowledge.objects.all()
-    #for x in result:
-    #    attack_type[str(x.event_id)] = x.event_name
-    num = 12
-    web_attrack_times = web_attack.filter(~Q(event_id__in=[0, 999]), **filter_condition).values_list('event_name').annotate(
+    attack_type = {}
+    result = TEventKnowledge.objects.all()
+    for x in result:
+        attack_type[str(x.event_id)] = x.event_name
+    num = 20
+    web_attrack_times = web_attack.filter(~Q(event_id__in=[0, 999, 1012]), **filter_condition).values_list('event_id').annotate(
+        Count('event_id'))
+    web_attack_times_vul = []
+    for x in list(web_attrack_times):
+        name = attack_type[str(x[0])]
+        #attack_type1[name] = x[1]
+        web_attack_times_vul.append((name, x[1]))
+
+    web_attrack_times1 = web_attack.filter(event_id=1012, **filter_condition).values_list('event_name').annotate(
         Count('event_name'))
+
     log_attrack_times = log_attack.filter(~Q(event_id__in=[0, 999]), **filter_condition).values_list('event_name').annotate(
         Count('event_name'))
-    attrack_times1=list(web_attrack_times)+list(log_attrack_times)
+    attrack_times1=list(web_attrack_times1)+list(log_attrack_times)+web_attack_times_vul
     attrack_times1 = sorted(attrack_times1, key=lambda item: item[1], reverse=True)
     attack_type1 = {}
     for x in attrack_times1:
         #name = attack_type[str(x[0])]
-
         attack_type1[x[0]] = x[1]
         if len(attack_type1) >= num:
             break

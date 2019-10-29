@@ -478,7 +478,7 @@ function attack_threat_level_charts(data,div) {
     mycharts_attack_threat_level.setOption(option)
 }
 // 首页地图
-var map_flag = 1;
+var map_flag = 0;
 
 function chart_map(attack_source_data) {
     if (mycharts__map != null
