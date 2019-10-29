@@ -740,7 +740,8 @@ def query_web_event_by_app_id(request):
         y['plugin_message']=y['plugin_message'].replace('<', '&lt').replace('>', '&gt')
         y['event_time'] = y['event_time'].strftime("%Y-%m-%d %H:%M:%S")
         try:
-            y['attack_type'] = TEventKnowledge.objects.get(event_id=y['event_id']).event_name
+            # y['attack_type'] = TEventKnowledge.objects.get(event_id=y['event_id']).event_name
+            y['attack_type']=y['event_name']
         except Exception as e:
             y['attack_type'] = ''
         event_list.append(y)
