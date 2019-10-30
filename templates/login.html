@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>网站综合防御平台</title>
+		<script src="/static/js/jquery.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="/static/css/login.css"/>
+		<link rel="stylesheet" type="text/css" href="/static/css/plugins/bootstrap.min.css"/>
+		<script src="/static/js/plugins/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="container text-center ">
+			<div class="row">
+				<div class="content">
+					<img src="/static/images/logo.png" style="width: 217px;"/>
+					<div class="login-title">网站综合防御平台</div>
+					<div class="login-work">登录</div>
+					<form action="" method="POST" class="loginform" >
+                        {% csrf_token %}
+                        {% if msg %}
+                           <div style="color: red">账户密码错误</div>
+                        {% endif %}
+						<input class="textinput" type="text" name="username" id="username" value="" />
+						<input class="textinput" type="password" name="password" id="userpasswor" value="" />
+						<!--div class="login-tip">
+							<span class="rememberme">
+								<input class="rememberbtn" type="checkbox" name="vehicle" value="">自动登录
+							</span>
+							
+							<a href="#" class="forgetme">忘记密码？</a>
+						</div-->
+						<input class="submitinput" type="submit" value="登录"/>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,659 @@
+<div class="manage_detailDiv">
+    <h1 class="page-title"></h1>
+    <div class = "card" >
+        <div class="right_content_content" style="min-height:220px;">
+            <p class="pull-left" style="font-size:18px;padding-left:16px;">服务器信息</p>
+            <p class="pull-right" style="padding-right:16px;">今日为当前服务器拦截攻击&nbsp;&nbsp;<span class="text-warning" id="server_id_nowcount" style="font-size:16px;">0</span>&nbsp;&nbsp;次，累计&nbsp;&nbsp;<span class="text-warning" id="server_id_allcount" style="font-size:16px;">0</span>&nbsp;&nbsp;次</p>
+            <div class="spclear"></div>
+            <div class="pull-left" style="text-align:center;width:210px;margin-top:18px;">
+                <div style="position:relative;">
+                    <img src="/static/img/server-group-detail-pc-logo.png" style="width:84px;">
+                    <img id="system_logo_img" src="/static/img/server-group-detail-pc-logo-windows.png" style="width:20px;position:absolute;top:0px; left:63px;">
+
+
+                    </div>
+
+                <div style="margin-top:20px;" id="machine_name_view"><span style="color:#3366ff;font-size:16px;word-break:break-all;word-wrap: break-word;"></span></div>
+            </div>
+                <div>
+                    <div class="pull-left">
+                        <table id="promotionTable" class="table server_detail_table" style="width:600px;margin-top:10px;">
+
+                            <tbody>
+                            <tr>
+                                <td class="text-muted">CPU：</td>
+                                <td id="server_manager_cpu" ></td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted">内存：</td>
+                                <td id="server_manager_memory" ></td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted">操作系统：</td>
+                                <td id="server_manager_os" ></td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted">内网IP：</td>
+                                <td id="server_manager_iip"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted">外网IP：</td>
+                                <td id="server_manager_eip" ></td>
+                            </tr>
+                            </tbody></table>
+                    </div>
+                </div>
+            </div>
+
+{#            <div class="pull-right" style="padding-right:16px;">#}
+{#                <span class="color_index" style="font-size: 25px; color: rgb(153, 153, 153);">未巡检</span>#}
+{#                <br>#}
+{#            </div>#}
+{#        </div>#}
+        <ul id="server_detail_panel" class="custom_nav nav nav-tabs ul-tabs">
+            <li class="tab-oblique active" id="security_analysis_link"><a class="tab-col" data-toggle="tab" href="#security_analysis" aria-expanded="true"><i class="iconfont">&#xe662;</i><span> 安全分析</span></a></li>
+            <li class="tab-oblique"  id="event_statistics_link"><a class="tab-col" data-toggle="tab" href="#event_statistics"><i class="iconfont">&#xe73c;</i><span> 事件处理</span></a></li>
+{#            <li class="tab-oblique"  id="application_security_link"><a class="tab-col" data-toggle="tab" href="#application_security"><i class="iconfont">&#xe6ee;</i><span>  安全设置</span></a></li>#}
+{#            <li class="tab-oblique"><a class="tab-col" data-toggle="tab" href="#security_settings"><i class="iconfont">&#xe615;</i><span>  常用开关</span></a></li>#}
+            <li class="tab-oblique"  id="server_checking_link"><a class="tab-col" data-toggle="tab" href="#server_checkingserver_checking"><i class="iconfont">&#xe626;</i><span>  基线检查</span></a></li>
+{#            <li class="tab-oblique"  id="resources_overview_link"><a class="tab-col" data-toggle="tab" href="#resources_overview"><i class="iconfont">&#xe623;</i> <span> 资源监控</span></a></li>#}
+            <li class="tab-oblique"  id="server_website_list_link"><a class="tab-col" data-toggle="tab" href="#server_website_list"><i class="iconfont">&#xe6f5;</i><span>  网站详情</span></a></li>
+            <li class="tab-oblique"  id="black_white_list_link"><a class="tab-col" data-toggle="tab" href="#black_white_list"><i class="iconfont">&#xe62d;</i> <span> 黑白名单</span></a></li>
+            <li class="tab-oblique"  id="config_show_link"><a class="tab-col" data-toggle="tab" href="#config_show"><i class="iconfont">&#xe792;</i> <span> 防御策略</span></a></li>
+        </ul>
+        <div id="server_detail_panel_content_wrapper" class="right_content_content" style="margin-top:0px;">
+            <div class="tab-content">
+                <div id="security_analysis" class="tab-pane fade active in">
+                    <div class="pull-left" style="width:65%;padding:6px;">
+                        <div>
+                            <p class="pull-left" style="font-size:15px;line-height:36px;margin-left:12px;">服务器攻击趋势</p>
+                            <div id="server_detail_tab1_duration" class="duration_select_wrapper pull-right" role="group">
+                                <button type="button" class="tab current server_detail_tab" data-type="tday">今</button>
+                                <button type="button" href="#" class="tab server_detail_tab" data-type="yday">昨</button>
+                                <button type="button" href="#" class="tab server_detail_tab" data-type="week">周</button>
+                            </div>
+                            <div class="spclear"></div>
+                        </div>
+                        <div id="chart_attack_trend" style="height: 350px; width: 100%;"></div>
+
+                    </div>
+                    <div class="pull-right" style="width:33%;height:400px;position:relative;margin-top: 20px">
+                        <table class="chart-table-title">
+                            <thead >
+                                <tr>
+                                    <th width="60%">事件类型</th>
+                                    <th>次数</th>
+                                </tr>
+                            </thead></table>
+                        <div class="chart-table" style="height:350px;position:relative;overflow-y: scroll">
+                            <table class='table' id='ana_attack'>
+                            </table>
+                        </div>
+                    </div >
+                    <div class="spclear"></div>
+                    <div id="tab1_bottom" style="margin-top:20px;padding-top:12px;border-top:1px solid #ccc;height: 350px;">
+                        <p style="text-align:center;font-size:15px;margin:10px 0 0 0;">服务器被攻击类型分析及被攻击网站列表</p>
+                        <div class="pull-left" style="width:49%;height: 100%;">
+                            <div id="chart_attack_kind" style="height: 300px; width: 100%;">
+                            </div>
+                        </div>
+                        <div class="pull-right" style="width:49%;height:300px;position:relative;margin-top: 20px">
+                            <table class=" chart-table-title">
+                                <thead >
+                                <tr>
+                                    <th style="width: 60%">被攻击网站名称</th>
+                                    <th>攻击次数</th>
+                                </tr>
+                                </thead></table>
+                            <div class="chart-table" style="height:300px;position:relative;overflow-y: scroll">
+                                <table class='table' id='web_attack'>
+                                </table>
+                            </div>
+                        </div >
+                        <div class="spclear"></div>
+                    </div>
+                </div>
+                <div id="event_statistics" class="tab-pane fade">
+                    <div id="right_content_main">
+                        <div id="right_content_main_header">
+                            <div class="btnGroup">
+                                <div id="table_select_div">
+                                    <div>
+                                        <div id="server_table_select_div" class="search_btngroup">
+{#                                            <input type="text" class="form-control" name="keyword" id="event_keyword" placeholder="IP关键字或类型" value="">#}
+{#<!--                                            条件查询-->#}
+{#                                            <div id="queryBtn" class="btn" onclick="event_treat_server()">&nbsp;查询</div>#}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <table id="alarm_event_list_table" class="table table-bordered table-striped table-hover" style="table-layout:fixed;">
+                                <thead>
+                                    <tr>
+                                        <th>攻击时间</th>
+                                        <th >事件名称</th>
+                                        <th style="width: 38%">事件摘要</th>
+                                        <th >风险等级</th>
+                                        <th >操作</th>
+                                        <th >状态</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div class="page">
+
+                            </div>
+                    </div>
+
+                    </div>
+
+                </div>
+                <div id="application_security" class="tab-pane fade" style="height: calc(100vh - 445px); ">
+                    <div class="btnGroup">
+                        <div id="btn_refresh" class="btn" onclick="application_security()">&nbsp;刷新</div>
+                    </div>
+                    <table id="application_security_table" class="table table-bordered table-striped table-hover" style="table-layout:fixed;">
+                        <thead>
+                        <tr>
+                            <th>类型</th>
+                            <th >端口</th>
+                            <th >服务</th>
+                            <th >版本</th>
+                            <th style="width: 33%">描述</th>
+                            <th style="width: 20%">防护方式</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <!--   安全基线检查-->
+                <div id="server_checkingserver_checking" class="tab-pane fade">
+                    <div class="u-css-examineTOP">
+                        <!--标题-->
+                        <div class="u-css-examineTITLE" >
+                            <div id="baseline_check_status">
+                                您上次基线检查是<span id="base_line_last_day"></span>,待解决问题
+                                <span id="base_line_countNum" style="color: red ;font-size: 20px;"></span> 项
+                                检查分数为：<span id="base_line_totalScore" style="color: red ;font-size: 20px;"></span>分
+                            </div>
+                            <div id="baseline_check_status1">
+                                当前服务器还未进行检查，请执行一键检查功能！
+                            </div>
+
+                            <div id="start_server_check" class="btn" onclick="base_check()">一键检查</div>
+                        </div>
+                        <p></p>
+                        <div id="baseline_check_time">
+                            <!--巡检日期-->
+                            <p class="u-css-examineP" style="width: 520px;">检查日期
+                                <span id="last_check_time"> </span>
+                            </p>
+                        </div>
+
+                    </div>
+                    <div class="loading_content" style="display: none;">
+                        <div class="loading_circle"></div>
+                        正在检查...
+                    </div>
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-fst">
+                            <div class="panel-heading">
+                                <h4 class="panel-title u-css-List-titleBOX">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#webscran">
+                                        <div class="u-list-leftbox">
+                                            <i class="iconfont">&#xe63f;</i>
+                                        </div>
+                                        <div class="u-list-leftbox   u-list-rightTEXT">
+                                            <p class="u-css-examineP" style="color: #666;margin-bottom: 2px;font-size: 15px;">WEB文件扫描
+                                                <span class="label label-red " id="web_file_check_num"></span>
+                                            </p>
+                                            <p class="u-css-examineP" style="font-size: 12px;">扫描网站文件中的网页木马、可疑外链、暗链黑链等</p>
+                                        </div>
+                                        <button type="button" class="check_box" data-tip="web_repair_all" >一键修复</button>
+                                        <i class="iconfont slide_mark slide_down">&#xe64a;</i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="webscran" class="panel-collapse collapse">
+                                <div class="panel-body" id="accordion_webscran">
+                                    <div class="panel panel-sec">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title" class="u-css-List-titleBOX">
+                                                <a data-toggle="collapse" data-parent="#accordion_webscran" href="#webmuma">
+                                                    <i class="iconfont ">&#xe60b;</i>
+                                                    <div class="u-list-leftbox   u-list-rightTEXT">
+                                                        <p id="webshell" class="u-css-examineP">网页木马<span></span></p>
+                                                    </div>
+                                                    <button type="button" class="check_box" data-tip="treat_all">全部处理</button>
+                                                    <i class="iconfont slide_mark slide_down" style="display: none">&#xe64a;</i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id = 'webmuma' class="panel-collapse collapse webscran_contant">
+                                            <ul id="webshell_li">
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-sec">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title" class="u-css-List-titleBOX">
+                                                <a data-toggle="collapse" data-parent="#accordion_webscran" href="#suspicious_links_a">
+                                                    <i class="iconfont">&#xe60b;</i>
+                                                    <div class="u-list-leftbox   u-list-rightTEXT">
+                                                        <p  id="suspicious_links" class="u-css-examineP">可疑外链<span></span></p>
+
+                                                    </div>
+                                                    <button type="button" class="check_box" data-tip="treat_all">全部处理</button>
+                                                    <i class="iconfont slide_mark slide_down" style="display: none">&#xe64a;</i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id = 'suspicious_links_a' class="panel-collapse collapse webscran_contant">
+                                            <ul id="suspicious_links_li">
+
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                    <div class="panel panel-sec">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title" class="u-css-List-titleBOX">
+                                                <a data-toggle="collapse" data-parent="#accordion_webscran" href="#dark_chain_a">
+                                                    <i class="iconfont">&#xe60b;</i>
+                                                    <div class="u-list-leftbox   u-list-rightTEXT">
+                                                        <p id="dark_chain" class="u-css-examineP">黑链暗链<span></span></p>
+
+                                                    </div>
+                                                    <button type="button" class="check_box" data-tip="treat_all">全部处理</button>
+                                                    <i class="iconfont slide_mark slide_down" style="display: none">&#xe64a;</i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id = 'dark_chain_a' class="panel-collapse collapse webscran_contant">
+                                            <ul id="dark_chain_li">
+
+                                            </ul>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-fst">
+                            <div class="panel-heading">
+                                <h4 class="panel-title u-css-List-titleBOX">
+                                    <a data-toggle="collapse" data-parent="#accordion"
+                                       href="#acc_safe_checking">
+                                        <div class="u-list-leftbox">
+                                            <i class="iconfont">&#xe61c;</i>
+                                        </div>
+                                        <div class="u-list-leftbox   u-list-rightTEXT">
+                                            <p class="u-css-examineP" >账户安全检查
+                                                <span class="label label-red " id="account_security_check_num"></span>
+<!--                                                <span class="label label-red ">6</span>-->
+                                            </p>
+                                            <p class="u-css-examineP" style="font-size: 12px;">扫及时发现存在问题的用户账户，降低用户账户被盗的可能性</p>
+                                        </div>
+                                        <button type="button" onclick="javascript:void(0)">已优化</button>
+                                        <i class="iconfont slide_mark slide_down">&#xe64a;</i>
+                                    </a>
+                                </h4>
+                            </div>
+
+                            <div id="acc_safe_checking" class="panel-collapse collapse">
+                                  <div class="panel-body" id="according_acc_safe_checking">
+                                      <div class="panel panel-sec">
+                                          <div class="panel-heading">
+                                              <h4 class="panel-title" class="u-css-List-titleBOX">
+                                                  <a data-toggle="collapse" data-parent="#according_acc_safe_checking" href="#hidden_account_content">
+                                                      <i class="iconfont">&#xe60b;</i>
+                                                      <div class="u-list-leftbox   u-list-rightTEXT">
+                                                          <p id="hidden_account" class="u-css-examineP" >隐藏账户检查<span></span></p>
+                                                      </div>
+                                                      <button type="button" class="check_box" data-tip="treat_all">全部处理</button>
+                                                      <i class="iconfont slide_mark slide_down" style="display: none">&#xe64a;</i>
+                                                  </a>
+                                              </h4>
+                                          </div>
+                                          <div id = 'hidden_account_content' class="panel-collapse collapse webscran_contant">
+                                              <ul id="hidden_account_li">
+
+                                              </ul>
+                                          </div>
+                                      </div>
+                                      <div class="panel panel-sec">
+                                          <div class="panel-heading">
+                                              <h4 class="panel-title" class="u-css-List-titleBOX">
+                                                  <a data-toggle="collapse" data-parent="#according_acc_safe_checking" href="#clone_account_content">
+                                                      <i class="iconfont">&#xe60b;</i>
+                                                      <div class="u-list-leftbox   u-list-rightTEXT">
+                                                          <p id="clone_account" class="u-css-examineP" >克隆账户检查<span></span></p>
+                                                      </div>
+                                                      <button type="button" class="check_box" data-tip="treat_all">全部处理</button>
+                                                      <i class="iconfont slide_mark slide_down" style="display: none">&#xe64a;</i>
+                                                  </a>
+                                              </h4>
+                                          </div>
+                                          <div id = 'clone_account_content' class="panel-collapse collapse webscran_contant">
+                                              <ul id="clone_account_li">
+
+                                              </ul>
+                                          </div>
+
+                                      </div>
+{#                                      <div class="panel panel-sec">#}
+{#                                          <div class="panel-heading">#}
+{#                                              <h4 class="panel-title" class="u-css-List-titleBOX">#}
+{#                                                  <a data-toggle="collapse" data-parent="#accordion" href="#webmuma">#}
+{#                                                      <i class="iconfont gray">&#xe60d;</i>#}
+{#                                                      <div class="u-list-leftbox   u-list-rightTEXT">#}
+{#                                                          <p class="u-css-examineP" >已登录账户检查#}
+{#                                                          </p>#}
+{#                                                      </div>#}
+{#                                                  </a>#}
+{#                                              </h4>#}
+{#                                          </div>#}
+{##}
+{#                                      </div>#}
+                                      <div class="panel panel-sec">
+                                          <div class="panel-heading">
+                                              <h4 class="panel-title" class="u-css-List-titleBOX">
+                                                  <a data-toggle="collapse" data-parent="#according_acc_safe_checking" href="#weak_password_account_content">
+                                                      <i class="iconfont">&#xe60c;</i>
+                                                      <div class="u-list-leftbox   u-list-rightTEXT">
+                                                          <p id="weak_password_account"  class="u-css-examineP" >弱密码账户检查<span></span></p>
+                                                      </div>
+                                                      <button type="button" class="check_box" data-tip="treat_all">全部处理</button>
+                                                      <i class="iconfont slide_mark slide_down" style="display: none">&#xe64a;</i>
+                                                  </a>
+                                              </h4>
+                                          </div>
+                                          <div id = 'weak_password_account_content' class="panel-collapse collapse webscran_contant">
+                                              <ul id="weak_password_account_li">
+
+                                              </ul>
+                                          </div>
+
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                        <div class="panel panel-fst">
+                              <div class="panel-heading">
+                                  <h4 class="panel-title u-css-List-titleBOX">
+                                      <a data-toggle="collapse" data-parent="#accordion"
+                                         href="#xtpzaqjc">
+                                          <div class="u-list-leftbox">
+                                              <i class="iconfont">&#xeae6;</i>
+                                          </div>
+                                          <div class="u-list-leftbox   u-list-rightTEXT">
+                                              <p class="u-css-examineP" >系统配置安全检查<span class="label label-red " id="system_check_num"></span>
+                                              </p>
+                                              <p class="u-css-examineP" style="font-size: 12px;">通过对操作系统自身的配置项进行合理设置，提升系统的安全性及抗攻击能力</p>
+                                          </div>
+                                          <button type="button" class="check_box" data-tip="improve_all">一键优化</button>
+                                          <i class="iconfont slide_mark slide_down">&#xe64a;</i>
+                                      </a>
+                                  </h4>
+                              </div>
+                              <div id="xtpzaqjc" class="panel-collapse collapse">
+                                  <div class="panel-body" id="according_xtpzaqjc">
+                                      <div class="panel panel-sec">
+                                          <div class="panel-heading">
+                                              <h4 class="panel-title" class="u-css-List-titleBOX">
+                                                  <a data-toggle="collapse" data-parent="#according_acc_safe_checking" href="#password_content">
+                                                      <i class="iconfont">&#xe60b;</i>
+                                                      <div class="u-list-leftbox   u-list-rightTEXT">
+                                                          <p id="password" class="u-css-examineP" >密码策略<span></span></p>
+                                                      </div>
+                                                      <button type="button" class="check_box" data-tip="treat_all">全部处理</button>
+                                                      <i class="iconfont slide_mark slide_down" style="display: none">&#xe64a;</i>
+                                                  </a>
+                                              </h4>
+                                          </div>
+                                          <div id = 'password_content' class="panel-collapse collapse webscran_contant">
+                                              <ul id="password_li">
+
+                                              </ul>
+                                          </div>
+                                      </div>
+                                      <div class="panel panel-sec">
+                                          <div class="panel-heading">
+                                              <h4 class="panel-title" class="u-css-List-titleBOX">
+                                                  <a data-toggle="collapse" data-parent="#according_acc_safe_checking" href="#security_content">
+                                                      <i class="iconfont">&#xe60b;</i>
+                                                      <div class="u-list-leftbox   u-list-rightTEXT">
+                                                          <p id="security" class="u-css-examineP" >安全选项<span></span></p>
+                                                      </div>
+                                                      <button type="button" class="check_box" data-tip="treat_all">全部处理</button>
+                                                      <i class="iconfont slide_mark slide_down" style="display: none">&#xe64a;</i>
+                                                  </a>
+                                              </h4>
+                                          </div>
+                                          <div id = 'security_content' class="panel-collapse collapse webscran_contant">
+                                              <ul id="security_li">
+
+                                              </ul>
+                                          </div>
+                                      </div>
+
+                                      <div class="panel panel-sec">
+                                          <div class="panel-heading">
+                                              <h4 class="panel-title" class="u-css-List-titleBOX">
+                                                  <a data-toggle="collapse" data-parent="#according_acc_safe_checking" href="#ips_content">
+                                                      <i class="iconfont">&#xe60b;</i>
+                                                      <div class="u-list-leftbox   u-list-rightTEXT">
+                                                          <p id="ips" class="u-css-examineP" >入侵防御<span></span></p>
+                                                      </div>
+                                                      <button type="button" class="check_box" data-tip="treat_all">全部处理</button>
+                                                      <i class="iconfont slide_mark slide_down" style="display: none">&#xe64a;</i>
+                                                  </a>
+                                              </h4>
+                                          </div>
+                                          <div id='ips_content' class="panel-collapse collapse webscran_contant">
+                                              <ul id="ips_li">
+
+                                              </ul>
+                                          </div>
+                                      </div>
+
+                                      </div>
+
+
+                                  </div>
+                              </div>
+                          </div>
+                    </div>
+                <div id="resources_overview" class="tab-pane fade">
+                      <div>
+                          <div  class="resources_overview_duration" role="group">
+                              <button type="button" class="tab current resources_overview_tab" data-type="hour">一小时</button>
+                              <button type="button" href="#" class="tab resources_overview_tab" data-type="hours">六小时</button>
+                              <button type="button" href="#" class="tab resources_overview_tab" data-type="perday">一天</button>
+                          </div>
+                          <div class="resources_overview_top" style="width: 100%;height: 400px;"></div>
+                          <div class="resources_overview_middle" style="width: 100%;height: 400px;"></div>
+                          <div class="resources_overview_bottom" style="width: 100%;height: 400px;"></div>
+                      </div>
+                  </div>
+                  <div id="server_website_list" class="tab-pane fade">
+                      <div id="server_website_list_main">
+                          <div class="btnGroup">
+                              <div class="table_select_div">
+                                  <div style="display: flex;justify-content: space-between;">
+{#                                    <!--批量删除-->#}
+{#                                    <div class="btn" id="server_website_list_del" >删除</div>#}
+{#                                    <div class="search_btngroup">#}
+{#                                        <input type="text" class="form-control" name="keyword" id="website_keyword" placeholder="查询" value="">#}
+{#                                        <div id="websiteBtn" class="btn" onclick="server_website_list(1)">&nbsp;查询</div>#}
+{#                                    </div>#}
+{#                                      <!--条件查询-->#}
+                                  </div>
+                            </div>
+                        </div>
+                        <table id="server_website_list_table" class="table table-bordered table-striped table-hover" style="table-layout:fixed;">
+                            <thead>
+                            <tr>
+                                <th style="width: 46px;padding: 14px;">
+                                    <div class="black_white_checkbox">
+                                        <input class="regular_checkbox" id="server_website_list_checkall" type="checkbox" onclick="checkall(this)">
+                                        <label for="server_website_list_checkall"></label>
+                                    </div>
+                                </th>
+                                <th>网站名称</th>
+                                <th >标签</th>
+                                <th >所属分组</th>
+                                <th >更新时间</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <div class="page">
+                        </div>
+                    </div>
+
+                </div>
+                <div id="black_white_list" class="tab-pane fade">
+                    <div id="black_list_content">
+                        <div class="btnGroup">
+                            <div class="table_select_div">
+                                <div style="display: flex;justify-content: space-between;">
+                                    <div>
+                                        <div class="btn" id="add_black" >添加黑名单</div>
+                                        <div class="btn" id="releaseall_black" >解除</div>
+                                    </div>
+                                    <div data-tip="black_list_table" onclick="black_white_slide(this)">
+                                        <span>收起</span>
+                                        <i class="iconfont slide_mark slide_down">&#xe64a;</i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <table id="black_list_table" class="table table-bordered table-striped table-hover" style="table-layout:fixed;">
+                            <thead>
+                            <tr>
+                                <th style="width: 46px;padding: 10px;">
+                                    <div class="black_white_checkbox">
+                                        <input class="regular_checkbox" id="black_list" type="checkbox" onclick="checkall(this)">
+                                        <label for="black_list"></label>
+                                    </div>
+                                </th>
+                                <th style="width: 70%">黑名单IP地址</th>
+                                <th >操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div id="white_list_content">
+                        <div class="btnGroup">
+                            <div class="table_select_div">
+                                <div style="display: flex;justify-content: space-between;">
+                                    <div>
+                                    <div class="btn" id="add_white">添加白名单</div>
+                                    <div class="btn" id="releaseall_white">解除</div>
+                                    </div>
+                                    <div data-tip="white_list_table" onclick="black_white_slide(this)">
+                                        <span>收起</span>
+                                        <i class="iconfont slide_mark slide_down">&#xe64a;</i>
+                                    </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <table id="white_list_table" class="table table-bordered table-striped table-hover" style="table-layout:fixed;">
+                            <thead>
+                            <tr>
+                                <th style="width: 46px;    padding: 10px;">
+                                    <div class="black_white_checkbox">
+                                        <input class="regular_checkbox" type="checkbox" id="white_list" onclick="checkall(this)">
+                                        <label for="white_list"></label>
+                                    </div>
+                                </th>
+                                <th style="width: 70%">白名单IP地址</th>
+                                <th >操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+
+                    </div>
+                <div id="config_show" class="tab-pane fade">
+                    <div class="panel-group">
+                        <div class="panel panel-fst">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" href="#algorithm_config_show">
+                                        {#                                        <div class="u-list-leftbox">#}
+                                        {#                                            <i class="iconfont">&#xe63f;</i>#}
+                                        {#                                        </div>#}
+
+                                        <div class="config_show_title" id="input_algorithm_config"><i class="iconfont">&#xe64b;</i><span> RASP防御策略</span></div>
+                                        <i class="iconfont slide_mark slide_down">&#xe64a;</i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="algorithm_config_show" class="panel-collapse collapse">
+                                <div class="panel-body">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-fst">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse"
+                                       href="#httpProtec_config_show" class="config_show_title">
+{#                                        <div class="u-list-leftbox">#}
+{#                                            <i class="iconfont">&#xe63f;</i>#}
+{#                                        </div>#}
+
+                                        <div class="config_show_title" id="input_httpProtec_config"><i class="iconfont">&#xe610;</i><span> WAF防御策略</span></div>
+                                        <i class="iconfont slide_mark slide_down">&#xe64a;</i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="httpProtec_config_show" class="panel-collapse collapse">
+                                <div class="panel-body">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-fst">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" href="#global_config_show">
+                                        {#                                        <div class="u-list-leftbox">#}
+                                        {#                                            <i class="iconfont">&#xe63f;</i>#}
+                                        {#                                        </div>#}
+
+                                        <div class="config_show_title" id="input_global_config"><i class="iconfont">&#xe6ee;</i><span> 全局配置</span></div>
+                                        <i class="iconfont slide_mark slide_down">&#xe64a;</i>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="global_config_show" class="panel-collapse collapse">
+                                <div class="panel-body">
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div id="agent_manage_submit"></div>
+                </div>
+                {#                </div>#}
+                </div>
+            </div>
+    </div>
+</div>
+

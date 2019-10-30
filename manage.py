@@ -2,7 +2,7 @@
 import os
 import sys
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'gov.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mis.settings')
 
 if __name__ == '__main__':
 

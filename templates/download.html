@@ -1,0 +1,83 @@
+
+    
+<a href="/static/help/index.html" style="float: right !important;line-height: 40px;color: #000000;font-size: 16px;text-decoration: none; padding-right: 12px" target="_blank">使用帮助说明</a>
+
+<div class="col-sm-12 download-link">
+
+<div class="col-sm-6 left-wrap" data-spm-anchor-id="5176.2020520154.sas.i15.4e312690QqjFMl">
+    <!--------   windows  ----------->
+    <div class="windows-logo"></div>
+    <div class="windows-link">
+        <h6 class="ng-binding">Windows 系统</h6>
+        <p>Windows 2012</p>
+        <p>Windows 2008</p>
+        <!--p>Windows 2003</p-->
+    </div>
+    <div class="col-md-12 dl-panel" data-spm-anchor-id="5176.2020520154.sas.i1.4e312690QqjFMl">
+        <em class="icon-step-bg">1</em>
+        <span class="ng-binding" data-spm-anchor-id="5176.2020520154.sas.i0.4e312690QqjFMl">下载并以管理员权限在您的云服务器上安装</span>
+        &nbsp
+        <p style="margin: 10px 0 15px 10px;"  data-spm-anchor-id="5176.2020520154.sas.i3.4e312690QqjFMl">
+            <a  class="btn btn-default dl-bg" href="{{ win32_download_url }}" data-spm-click="gostr=/aliyun;locaid=d116;;" data-spm-anchor-id="5176.2020520154.sas.d116">
+                <span class="ng-binding">点击下载</span>
+            </a>
+        </p>
+    </div>
+
+
+
+{#    <div class="col-md-12 dl-panel" data-spm-anchor-id="5176.2020520154.sas.i1.4e312690QqjFMl">#}
+{#        <em class="icon-step-bg">2</em>#}
+{#        <span class="ng-binding" data-spm-anchor-id="5176.2020520154.sas.i0.4e312690QqjFMl">文档帮助</span>#}
+{#        &nbsp#}
+{#        <p style="margin: 10px 0 15px 10px;"  data-spm-anchor-id="5176.2020520154.sas.i3.4e312690QqjFMl">#}
+{#            <a  class="btn btn-default dl-bg" href="/doc" data-spm-click="gostr=/aliyun;locaid=d116;;" data-spm-anchor-id="5176.2020520154.sas.d116">#}
+{#                <span >详情</span>#}
+{#            </a>#}
+{#        </p>#}
+{##}
+{#    </div>#}
+
+
+
+</div>
+    <!--------   linux  ----------->
+<div class="col-sm-6">
+        <div class="linux-logo">
+
+        </div>
+        <div class="windows-link" style="padding-top:25px;">
+            <h6 class="ng-binding">Linux 系统</h6>
+            <p>CentOS: Versions 6 and 7 (64 bit)</p>
+            <p>Ubuntu: 12.10 - 18.4 (64 bit)</p>
+            <p>Debian: Versions 8,9 (64 bit)</p>
+            <p>RHEL: Versions 6 and 7 (64 bit)</p>
+            <p>Gentoo: (64 bit)</p>
+            <p>OpenSUSE: (64 bit)</p>
+            <p>SUSE: (64 bit)</p>
+        </div>
+        <div class="col-md-12 dl-panel" style="padding-right: 0;">
+            <em class="icon-step-bg">1</em>
+            <span class="ng-binding">在您的服务器中以管理员权限执行以下命令进行安装</span>&nbsp;
+
+            <div class="linux-dl clearfix"><div class="linux-dl-label ng-binding">64位</div>
+                <div id="linux64_copy_download_url" class="content breakall ng-scope ng-binding" ng-if="linuxServer==1">wget {{ linux64_download_url }}</div>
+                <div class="btn-wrap ng-scope" ng-if="linuxServer==1">
+                    <button yd-copy-paste="" content="wget {{ linux64_download_url }}" class="btn btn-primary pull-right ng-isolate-scope" style="position: relative;" onclick="copyUrl()">
+                        <div class="yd-copy-paste">
+                            <div ng-transclude="">
+                                <span class="ng-scope ng-binding" >复制</span>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+</div>
+</div>
+{#</div>#}

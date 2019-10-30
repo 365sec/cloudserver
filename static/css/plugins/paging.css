@@ -1,0 +1,7 @@
+.pageNum{text-decoration: none;font-size: 12px;font-family: "微软雅黑";width: 30px;height: 25px;
+border: 1px solid #999999;display: inline-block;text-align: center;line-height: 25px;color: #000000;}
+.pageTurn{width: 60px;}
+.pageNumSelect{background-color: #666666;color: #CC9999;}
+.skipPage{width:30px;height:20px;}
+.paging{margin:20px 0;text-align: center;}
+.btn{padding:2px 12px;font-size:13px;font-family:'微软雅黑';}

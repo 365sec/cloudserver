@@ -1,0 +1,115 @@
+<div id="overviewDiv" class="overviewDiv">
+    <div class="overviewDiv_flex h350">
+        <div class="content">
+            <div class="title">
+                <i class="iconfont">&#xe639;</i>
+                <span class="special">攻击类型排行</span>
+            </div>
+            <div id="attack_type_dic_div" class="chart-con"></div>
+        </div>
+        <div class="content right">
+            <div class="title">
+                <i class="iconfont">&#xe709;</i>
+                <span class="special">攻击IP排行</span>
+            </div>
+            <div id="attrack_source_dic_div" class="chart-con"></div>
+        </div>
+    </div>
+    <div class="overviewDiv_flex h480">
+        <div class="content">
+            <div class="title">
+                <i class="iconfont">&#xec34;</i>
+                <span class="special">最近告警内容</span>
+            </div>
+            <div id="attrack_recent_warning_dic_div" class="chart-con chart-table"></div>
+        </div>
+        <div class="content">
+            <div class="title">
+                <i class="iconfont">&#xe76c;</i>
+                <span class="special">全球分布</span>
+            </div>
+            <div style="height: 100%;position:relative">
+                <div style="padding: 10px;position: absolute;z-index: 2;">
+                    <button type="button" class="tab current" id="map-tab-China">中国地图</button><!--
+                                 --><button type="button" class="tab" id="map-tab-world">世界地图</button>
+
+                </div>
+                <div id="chart_map" class="chart-con"></div>
+            </div>
+        </div>
+    </div>
+    <div  class="overviewDiv_flex h350">
+
+        <div class="content">
+            <div class="title">
+                <i class="iconfont">&#xe661;</i>
+                <span class="special">外部威胁趋势</span>
+            </div>
+            <div id="attrack_time_dic_div" class="chart-con"></div>
+
+        </div>
+        <div class="content">
+            <div class="title">
+                <i class="iconfont">&#xe658;</i>
+                <span class="special">危险等级分布</span>
+            </div>
+            <div id="attrack_threat_level_dic_div" class="chart-con"></div>
+        </div>
+
+    </div>
+</div>
+{#<div id="overviewDiv" class="overviewDiv">#}
+{#    <div class="row" >#}
+{#        <div class="col-lg-3" style="height: 100%">#}
+{#            <div class="content " style="height: 60%">#}
+{#                <div class="title">#}
+{#                    <span class="special">攻击类型排行</span>#}
+{#                </div>#}
+{#                <div id="attack_type_dic_div" class="chart-con"></div>#}
+{#            </div>#}
+{#            <div class="content " style="height: 40%">#}
+{#                <div class="title">#}
+{#                    <span class="special">外部威胁趋势</span>#}
+{#                </div>#}
+{#                <div id="attrack_time_dic_div" class="chart-con"></div>#}
+{##}
+{#            </div>#}
+{#        </div>#}
+{##}
+{#        <div class="col-lg-6" style="height: 100%">#}
+{#            <div class="content" style="height: 60%;">#}
+{#                <div class="title">#}
+{#                    <span class="special">全球分布</span>#}
+{#                </div>#}
+{#                <div style="height: 100%;positon:relation">#}
+{#                    <div style="padding: 10px;position: absolute;z-index: 2;">#}
+{#                        <button type="button" class="tab current" id="map-tab-China">中国地图</button><!--#}
+{#                                         --><button type="button" class="tab" id="map-tab-world">世界地图</button>#}
+{##}
+{#                    </div>#}
+{#                    <div id="chart_map" class="chart-con"></div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="content" style="height: 40%;">#}
+{#                <div class="title">#}
+{#                    <span class="special">最近告警内容</span>#}
+{#                </div>#}
+{#                <div id="attrack_recent_warning_dic_div" class="chart-con chart-table" style="overflow-y: scroll;"></div>#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="col-lg-3" style="height: 100%">#}
+{#            <div class="content" style="height: 60%;">#}
+{#                <div class="title">#}
+{#                    <span class="special">攻击IP排行</span>#}
+{#                </div>#}
+{#                <div id="attrack_source_dic_div" class="chart-con"></div>#}
+{#            </div>#}
+{#            <div class="content" style="height: 40%;">#}
+{#                <div class="title">#}
+{#                    <span class="special">危险等级分布</span>#}
+{#                </div>#}
+{#                <div id="attrack_threat_level_dic_div" class="chart-con"></div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
