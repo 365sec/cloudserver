@@ -111,6 +111,9 @@ DATABASES = {
         'HOST':'172.16.39.46',
         'PORT':'3306',
         'CONN_MAX_AGE':6
+
+
+
     }
 }
 
