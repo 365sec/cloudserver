@@ -1602,7 +1602,7 @@ def baseline(request):
                     try:
                         y['name']=baseline_dir[str(y['id'])]['check_item_name']
                         y['suggest']=baseline_dir[str(y['id'])]['check_suggest']
-                        print baseline_dir[str(y['id'])]['check_item_level']
+                        # print baseline_dir[str(y['id'])]['check_item_level']
                         system_check=system_check+baseline_dir[str(y['id'])]['check_item_level']
                         if not y['suggest']:
                             y['suggest']="暂无"
