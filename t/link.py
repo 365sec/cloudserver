@@ -96,6 +96,9 @@ def manage(request):
 def user(request):
     return render(request, 'user.html', {})
 
+def chart(request):
+    return render(request, 'chart.html', {})
+
 def doc(request):
     print 'doc'
     return render(request, '_book/index.html', {})

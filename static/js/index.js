@@ -32,6 +32,9 @@ $(document).on("click", ".nano-content li>div", function () {
         case "user":
             user_click();
             break;
+        case "chart":
+            setting_chart_click();
+            break;
         default:
     }
 });

@@ -221,6 +221,17 @@ class TUsers(models.Model):
         managed = False
         db_table = 't_users'
 
+class TChart(models.Model):
+    id = models.CharField(primary_key=True, max_length=255)
+    event_type = models.CharField(max_length=255)
+    chart_android = models.TextField( blank=True, null=True)
+    chart_ios = models.TextField( blank=True, null=True)
+
+
+    class Meta:
+        managed = False
+        db_table = 't_chart'
+
 
 class TWebEvent(models.Model):
     event_issue_id = models.CharField(primary_key=True, max_length=100)

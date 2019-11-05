@@ -34,6 +34,7 @@ from t.models import TBaselineKnowledge
 from t.models import TEventKnowledge
 from t.models import TConfig
 from t.models import TUsers
+from t.models import TChart
 from t.auth import auth
 from t.login import get_agent_id
 from t.login import refresh_agent_id
@@ -1783,4 +1784,31 @@ def user_add(request):
     data = {
         "msg":msg,
     }
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
+def get_chart(request):
+    id = request.POST.get("id")
+    print (id)
+    tchart= TChart.objects.get(id=id)
+    tchart=model_to_dict((tchart))
+    # print (tchart['chart_android'])
+    tchart['chart_android']=json.loads(tchart['chart_android'])
+    tchart['chart_ios']=json.loads(tchart['chart_ios'])
+    # print (model_to_dict(tchart))
+    msg=""
+    data = tchart
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
+def chart_submit(request):
+    id = request.POST.get("id")
+    chart_data = request.POST.get("data")
+    tchart= TChart.objects.get(id=id)
+    chart_data=json.loads(chart_data)
+    tchart.chart_android=json.dumps(chart_data['chart_android'])
+    tchart.chart_ios=json.dumps(chart_data['chart_ios'])
+    # print ("1111")
+    # print (chart_data)
+    tchart.save()
+    data={}
+
     return HttpResponse(json.dumps(data), content_type='application/json')

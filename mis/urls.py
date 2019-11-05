@@ -43,6 +43,8 @@ urlpatterns = [
     url(r'^user/user_update/$', views.user_update),#个人更新
     url(r'^user/user_update_pwd/$', views.user_update_pwd),#个人密码修改
     url(r'^user/user_add/$', views.user_add),#添加用户
+    url(r'^setting/get_chart/$', views.get_chart),#获得图表数据
+    url(r'^setting/chart_submit/$', views.chart_submit),#更新图表数据
     url(r'^login$', login.login),
     url(r'^logout$', login.loginout),
     url(r'^index$', login.index),
@@ -61,6 +63,7 @@ urlpatterns = [
     url(r'^website_manage_detail$', link.website_manage_detail),
     url(r'^manage$', link.manage),
     url(r'^user$', link.user),
+    url(r'^chart$', link.chart),
     url(r'^_book/doc', link.doc),
     url(r'^//', login.index),
     url(r'^static/(?P<path>.*)$', static.serve,
