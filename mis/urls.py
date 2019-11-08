@@ -8,6 +8,8 @@ from django.conf import settings
 from t import views
 from t import link
 from t import login
+from assets import  assets_link
+from assets import views as assets_view
 
 urlpatterns = [
     url(r'^data_count$', views.view_report),# 统计信息界面展示
@@ -46,6 +48,11 @@ urlpatterns = [
     url(r'^login$', login.login),
     url(r'^logout$', login.loginout),
     url(r'^index$', login.index),
+    ############################ 资产清点URL ###############################
+    url(r'^assets/app_query$', assets_view.app_query),
+    url(r'^assets/query_port$', assets_view.assets_query_port),
+
+    #######################################################################
     url(r'^download$', link.download),
     #url(r'^agentClick$', link.agent_click),
     url(r'^overview$', link.overview),
@@ -62,8 +69,11 @@ urlpatterns = [
     url(r'^manage$', link.manage),
     url(r'^user$', link.user),
     url(r'^netconnecting', link.netconnecting),
-    url(r'^app', link.app),
     url(r'^_book/doc', link.doc),
+    ############################ 资产清点link ###############################
+    url(r'^app', assets_link.app),
+
+    #######################################################################
     url(r'^//', login.index),
     url(r'^static/(?P<path>.*)$', static.serve,
         {'document_root': settings.STATIC_ROOT}, name='static'),

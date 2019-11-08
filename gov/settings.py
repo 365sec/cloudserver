@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     't',
+    'assets',
 ]
 
 MIDDLEWARE = [
@@ -76,15 +77,16 @@ WSGI_APPLICATION = 'gov.wsgi.application'
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {
+    #
     'default': {
         # 'ENGINE': 'django.db.backends.sqlite3',
         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'ENGINE':'django.db.backends.mysql',
         'NAME':'gov_defence_db',
-        'USER':'root',
-        'PASSWORD':'12345',
-        'HOST':'172.16.39.65',
-        'PORT':'8806'
+        'USER':'jinkai',
+        'PASSWORD':'`1q`1q`1Q',
+        'HOST':'49.235.152.172',
+        'PORT':'3306'
         # 'USER':'root',
         # 'PASSWORD':'123456',
         # 'HOST':'127.0.0.1',

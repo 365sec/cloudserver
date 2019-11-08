@@ -33,7 +33,7 @@ $(document).on("click", ".nano-content li>div", function () {
             user_click();
             break;
         case "netconnecting":
-            netconnecting_click();
+            netconnecting_click(0);
             break;
         case "app":
             app_click();

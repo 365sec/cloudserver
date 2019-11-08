@@ -99,8 +99,7 @@ def user(request):
 def netconnecting(request):
     return render(request, 'netconnecting.html', {})
 
-def app(request):
-    return render(request, 'app.html', {})
+
 
 def doc(request):
     print 'doc'

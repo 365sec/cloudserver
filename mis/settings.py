@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     't',
+    'assets',
 
 ]
 
@@ -54,7 +55,7 @@ WSGI_APPLICATION = 'mis.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-'''
+
 DATABASES = {
     'default': {
         'ENGINE':'django_mysqlpool.backends.mysqlpool',
@@ -66,7 +67,10 @@ DATABASES = {
         'CONN_MAX_AGE':6
     }
 }
-'''
+
+
+
+
 
 
 # DATABASES = {
@@ -74,46 +78,13 @@ DATABASES = {
 #         'ENGINE':'django_mysqlpool.backends.mysqlpool',
 #         'NAME':'gov_defence',
 #         'USER':'root',
-#         'PASSWORD':'12345',
-#         'HOST':'172.16.39.65',
+#         'PASSWORD':'123456',
+#         'HOST':'172.16.39.46',
 #         'PORT':'3306',
 #         'CONN_MAX_AGE':6
-#     }
-#     # 'default': {
-#     #     'ENGINE':'django.db.backends.mysql',
-#     #     'NAME':'gov_defence',
-#     #     'USER':'grxa',
-#     #     'PASSWORD':'GRXA@1410g20db',
-#     #     'HOST':'172.16.31.135',
-#     #     'PORT':'3306',
-#     #     'CONN_MAX_AGE':6
-#     # }
-# }
-
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE':'django_mysqlpool.backends.mysqlpool',
-#         'NAME':'gov_defence',
-#         'USER':'grxa',
-#         'PASSWORD':'GRXA@1410g20db',
-#         'HOST':'172.16.31.135',
-#         'PORT':'3306',
-#         'CONN_MAX_AGE':6
+#
 #     }
 # }
-DATABASES = {
-    'default': {
-        'ENGINE':'django_mysqlpool.backends.mysqlpool',
-        'NAME':'gov_defence',
-        'USER':'root',
-        'PASSWORD':'123456',
-        'HOST':'172.16.39.46',
-        'PORT':'3306',
-        'CONN_MAX_AGE':6
-
-    }
-}
 
 MYSQLPOOL_ARGUMENTS = {
     'pool_size': 10,
