@@ -261,7 +261,7 @@ function attack_click_search(attack_page) {
             let html = "<div>";
 
             html += '<div class="card-body">';
-            html += '<table class="table table-bordered">';
+            html += '<table class="table table-bordered table-striped table-hover">';
             html += '<thead>';
             html += '<tr>';
             // html += '<th>agent_id</th>';

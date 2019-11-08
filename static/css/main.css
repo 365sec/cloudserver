@@ -1,11 +1,11 @@
 @font-face {
-  font-family: 'iconfont';  /* project id 1075499 */
-  src: url('//at.alicdn.com/t/font_1075499_42iujjcxrb7.eot');
-  src: url('//at.alicdn.com/t/font_1075499_42iujjcxrb7.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_1075499_42iujjcxrb7.woff2') format('woff2'),
-  url('//at.alicdn.com/t/font_1075499_42iujjcxrb7.woff') format('woff'),
-  url('//at.alicdn.com/t/font_1075499_42iujjcxrb7.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_1075499_42iujjcxrb7.svg#iconfont') format('svg');
+    font-family: 'iconfont';  /* project id 1075499 */
+    src: url('//at.alicdn.com/t/font_1075499_42iujjcxrb7.eot');
+    src: url('//at.alicdn.com/t/font_1075499_42iujjcxrb7.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_1075499_42iujjcxrb7.woff2') format('woff2'),
+    url('//at.alicdn.com/t/font_1075499_42iujjcxrb7.woff') format('woff'),
+    url('//at.alicdn.com/t/font_1075499_42iujjcxrb7.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_1075499_42iujjcxrb7.svg#iconfont') format('svg');
 }
 
 .iconfont{
@@ -635,7 +635,7 @@ td {
 }
 
 #attrack_recent_warning_dic_div table thead tr th:first-child {
-   /* min-width: 150px;*/
+    /* min-width: 150px;*/
 }
 
 #attrack_recent_warning_dic_div table thead tr th:nth-child(2) {
@@ -697,27 +697,27 @@ td {
     border: 1px solid #ddd;
 }
 .table-bordered td pre{
-     border: none;
-     color: #757575;
-     padding: 0;
-     margin: 0;
-     font-family: auto;
-     font-size: 13px;
-     line-height: 25px;
-     white-space: pre-wrap;
-     white-space: -moz-pre-wrap;
-     white-space: -pre-wrap;
-     white-space: -o-pre-wrap;
-     word-wrap: break-word;
-     background-color: inherit;
+    border: none;
+    color: #757575;
+    padding: 0;
+    margin: 0;
+    font-family: auto;
+    font-size: 13px;
+    line-height: 25px;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+    background-color: inherit;
 }
 .table-bordered td>img{
     margin-bottom: 3px;
     margin-right: 5px;
 }
-#table_div .table.table-bordered tr td:first-child, #table_div .table.table-bordered tr td:nth-child(2), #table_div .table.table-bordered tr td:nth-child(3) {
-    min-width: 100px;
-}
+/*#table_div .table.table-bordered tr td:first-child, #table_div .table.table-bordered tr td:nth-child(2), #table_div .table.table-bordered tr td:nth-child(3) {*/
+/*    min-width: 100px;*/
+/*}*/
 
 /*新增弹框*/
 .close:not(:disabled):not(.disabled):focus, .close:not(:disabled):not(.disabled):hover {
@@ -1832,8 +1832,8 @@ text-align:center;
     border-color: #fe0202;
 }
 .label_custom.label_high {
-     color: #fe0202;
-     border-color: #fe0202;
+    color: #fe0202;
+    border-color: #fe0202;
 }
 .label_custom.label_norm {
     color: #85d603;
@@ -1886,7 +1886,7 @@ text-align:center;
     height: 100vh;
     margin-right: -600px;
 }
- .modal-dialog .modal-content{
+.modal-dialog .modal-content{
     height: 100%;
 }
 #xtpzaqjc_infor.in .modal-dialog {
@@ -1941,7 +1941,7 @@ text-align:center;
     width: 100%;
 }
 .panel-body {
-     padding: 0;
+    padding: 0;
 }
 .panel-group{
     border-top: 1px solid #ececec;
@@ -1965,8 +1965,8 @@ text-align:center;
     padding: 10px;
 }
 .panel-group .panel-fst>.panel-heading>.panel-title>a{
-     border-bottom: 1px solid #ddd;
- }
+    border-bottom: 1px solid #ddd;
+}
 
 .panel-group .panel-fst>div>.panel-body{
     background: rgb(245, 245, 245);
@@ -2021,10 +2021,10 @@ text-align:center;
     color: #999;
 }
 .webscran_contant ul>li i{
-     margin: 0 20px;
-     margin-left: 36px;
-     font-size: 16px;
- }
+    margin: 0 20px;
+    margin-left: 36px;
+    font-size: 16px;
+}
 .panel-group >.panel-fst>.panel-heading>.panel-title>a>i{
     line-height: 30px;
 }
@@ -2096,7 +2096,8 @@ text-align:center;
 }
 .black_white_checkbox,
 .server_website_list_checkbox,
-.server_list_checkbox{
+.server_list_checkbox,
+.list_checkbox{
     width:14px;
     height: 14px;
 }
@@ -2290,8 +2291,8 @@ text-align:center;
     background: #5bc0de;
 }
 #attack_body .user{
-     background: #34a856;
- }
+    background: #34a856;
+}
 #attack_body .hostname{
     background: #34a856;
 }
@@ -2309,9 +2310,9 @@ text-align:center;
     text-align: center;
 }
 .chart-table-title{
-     width: calc(100% - 18px);
-     font-size: 15px;
- }
+    width: calc(100% - 18px);
+    font-size: 15px;
+}
 .chart-table-title th{
     font-weight: 400;
     text-align: center!important;
@@ -2379,7 +2380,7 @@ text-align:center;
 .col-sm-12 {
     width: 100%;
 }
- .download-link {
+.download-link {
     margin-bottom: 25px;
 }
 .col-sm-6 {
@@ -2390,7 +2391,7 @@ text-align:center;
     width: 100%;
 }
 
- .download-link .left-wrap {
+.download-link .left-wrap {
     border-right: dotted 2px #d8d8d8;
 }
 .download-link .windows-logo {
@@ -2403,23 +2404,23 @@ text-align:center;
     background-size: 100%;
     background-repeat: no-repeat;
 }
- .download-link .windows-link {
+.download-link .windows-link {
     margin-left: 120px;
     padding-top: 20px;
     height: 260px;
 }
- .download-link .windows-link h6 {
+.download-link .windows-link h6 {
     margin: 0;
     line-height: 24px;
     text-align: left;
     font-size: 16px;
     color: #232323;
 }
-  .download-link .aqs-auth-area {
+.download-link .aqs-auth-area {
     margin-top: 10px;
     margin-left: 10px;
 }
-  .download-link .aqs-auth-area .auth-key {
+.download-link .aqs-auth-area .auth-key {
     display: inline-block;
     background: #fff;
     border: 1px solid #ddd;
@@ -2427,7 +2428,7 @@ text-align:center;
     line-height: 32px;
     padding: 0 10px;
 }
- .download-link .linux-logo {
+.download-link .linux-logo {
     float: left;
     margin: 25px 0 10px 10px;
     width: 96px;
@@ -2437,7 +2438,7 @@ text-align:center;
     background: url(/static/images/linux-logo.png);
 }
 
-  .icon-step-bg {
+.icon-step-bg {
     display: inline-block;
     width: 16px;
     height: 16px;
@@ -2448,14 +2449,14 @@ text-align:center;
     color: #fff;
 }
 
-   .linux-chose {
+.linux-chose {
     height: 35px;
     width: auto;
     border: 1px solid #ddd;
     margin-left: 40px;
     margin-top: 10px;
 }
-   .download-link .linux-dl {
+.download-link .linux-dl {
     width: 100%;
     margin: 10px 0;
     padding-left: 36px;
@@ -2468,7 +2469,7 @@ text-align:center;
     font-weight: bold;
     margin-left: -38px;
 }
-   .download-link .content {
+.download-link .content {
     width: 75%;
     margin-left: 6px;
     display: inline-block;
@@ -2482,7 +2483,7 @@ text-align:center;
     font-family: Heiti SC;
     margin-bottom: 2px;
 }
-   .download-link .btn-wrap {
+.download-link .btn-wrap {
     width: 65px;
     display: inline-block;
     vertical-align: middle;
@@ -2514,8 +2515,8 @@ text-align:center;
     border: none;
 }
 .server_header>div>div{
-     font-size: 26px;
- }
+    font-size: 26px;
+}
 .server_header>div>p{
     font-size: 14px;
 }
@@ -2548,7 +2549,7 @@ text-align:center;
     background: orange;
 }
 .server_score.red{
-background: red;
+    background: red;
 }
 
 .btn.btn_disabled{
@@ -2556,4 +2557,10 @@ background: red;
     border-color: #b3b3b3;
     color: #404040;
     cursor: not-allowed;
+}
+.tag{
+    border: 1px solid;
+    display: inline-block;
+    padding: 0 5px;
+    border-radius: 4px;
 }

@@ -61,6 +61,8 @@ urlpatterns = [
     url(r'^website_manage_detail$', link.website_manage_detail),
     url(r'^manage$', link.manage),
     url(r'^user$', link.user),
+    url(r'^netconnecting', link.netconnecting),
+    url(r'^app', link.app),
     url(r'^_book/doc', link.doc),
     url(r'^//', login.index),
     url(r'^static/(?P<path>.*)$', static.serve,

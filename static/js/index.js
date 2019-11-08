@@ -32,6 +32,12 @@ $(document).on("click", ".nano-content li>div", function () {
         case "user":
             user_click();
             break;
+        case "netconnecting":
+            netconnecting_click();
+            break;
+        case "app":
+            app_click();
+            break;
         default:
     }
 });
