@@ -72,20 +72,6 @@ DATABASES = {
 
 
 
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE':'django_mysqlpool.backends.mysqlpool',
-#         'NAME':'gov_defence',
-#         'USER':'root',
-#         'PASSWORD':'123456',
-#         'HOST':'172.16.39.46',
-#         'PORT':'3306',
-#         'CONN_MAX_AGE':6
-#
-#     }
-# }
-
 MYSQLPOOL_ARGUMENTS = {
     'pool_size': 10,
     'max_overflow':-1,

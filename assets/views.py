@@ -35,5 +35,7 @@ def assets_query_port(request):
     data={}
     data['data']=y
     data['msg']="success"
+    data['page']=page
+    data['max_size']=(obj.count()/num)+1
 
     return  HttpResponse(json.dumps(data), content_type='application/json')

@@ -1,11 +1,11 @@
 @font-face {
     font-family: 'iconfont';  /* project id 1075499 */
-    src: url('//at.alicdn.com/t/font_1075499_42iujjcxrb7.eot');
-    src: url('//at.alicdn.com/t/font_1075499_42iujjcxrb7.eot?#iefix') format('embedded-opentype'),
-    url('//at.alicdn.com/t/font_1075499_42iujjcxrb7.woff2') format('woff2'),
-    url('//at.alicdn.com/t/font_1075499_42iujjcxrb7.woff') format('woff'),
-    url('//at.alicdn.com/t/font_1075499_42iujjcxrb7.ttf') format('truetype'),
-    url('//at.alicdn.com/t/font_1075499_42iujjcxrb7.svg#iconfont') format('svg');
+    src: url('//at.alicdn.com/t/font_1075499_up59gcc9xr.eot');
+    src: url('//at.alicdn.com/t/font_1075499_up59gcc9xr.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_1075499_up59gcc9xr.woff2') format('woff2'),
+    url('//at.alicdn.com/t/font_1075499_up59gcc9xr.woff') format('woff'),
+    url('//at.alicdn.com/t/font_1075499_up59gcc9xr.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_1075499_up59gcc9xr.svg#iconfont') format('svg');
 }
 
 .iconfont{
@@ -2563,4 +2563,55 @@ text-align:center;
     display: inline-block;
     padding: 0 5px;
     border-radius: 4px;
+}
+.server_div{
+    display: inline-block;
+    width: calc(14.6% - 3.3px);
+    margin: 0 1% ;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #eee;
+    position: relative;
+}
+.server_div .server_div_img{
+    width: 100%;
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+}
+.server_div .server_div_subscript{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+.server_div .server_num{
+    padding: 10px 0;
+}
+.server_div .server_num span{
+     font-size: 18px;
+     font-weight: bold;
+     margin: 0 5px;
+ }
+.server_div .server_info{
+    color: #999;
+}
+.ftp_color{
+    color: #50872a;
+}
+.smtp_color{
+    color: #167eb9;
+}
+.tomcat_color{
+    color: #cea719;
+}
+.weblogic_color{
+    color: #b13d4c;
+}
+.ssh_color{
+    color: #123a91;
+}
+.iis_color{
+    color: #211f20;
+}
+.appDIV .title{
+    margin: 10px 1% 20px 1%;
 }
