@@ -41,6 +41,9 @@ $(document).on("click", ".nano-content li>div", function () {
         case "process":
             process_click();
             break;
+        case "port":
+            port_click();
+            break;
         default:
     }
 });

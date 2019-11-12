@@ -34,9 +34,10 @@
     <script src="/static/js/server.js"></script>
     <script src="/static/js/website.js"></script>
     <script src="/static/js/user.js"></script>
-    <script src="/static/js/netconnecting.js"></script>
-    <script src="/static/js/app.js"></script>
-    <script src="/static/js/process.js"></script>
+    <script src="/static/js/assets/netconnecting.js"></script>
+    <script src="/static/js/assets/app.js"></script>
+    <script src="/static/js/assets/process.js"></script>
+    <script src="/static/js/assets/port.js"></script>
     <script src="/static/js/countreport.js"></script>
     <script src="/static/js/download.js"></script>
 <style>
@@ -59,6 +60,38 @@
                         <span>&nbsp;&nbsp;安全总览</span>
                     </a>
                 </div>
+            </li>
+            <li class="s-firstItem">
+                <div class="s-firstNav d-firstNav">
+                    <a href="javascript:void(0)" class="nav-link" data-value="asset">
+                        <i class="iconfont">&#xe606;</i>
+                        <span>&nbsp;&nbsp;资产清点
+                            <i class="iconfont slide_mark slide_down">&#xe64a;</i></span>
+                    </a>
+                </div>
+                <ul class="d-firstDrop s-firstDrop">
+
+                    <li>
+                        <div class="d-secondNav s-secondNav">
+                            <a href="javascript:void(0)" data-value="process" class="nav-link-sec"><i class="iconfont">&#xe602;</i>进程资产</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="d-secondNav s-secondNav">
+                            <a href="javascript:void(0)" data-value="port" class="nav-link-sec"><i class="iconfont">&#xe602;</i>端口资产</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="d-secondNav s-secondNav">
+                            <a href="javascript:void(0)" data-value="netconnecting" class="nav-link-sec"><i class="iconfont">&#xe602;</i>网络连接资产</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="d-secondNav s-secondNav">
+                            <a href="javascript:void(0)" data-value="app" class="nav-link-sec"><i class="iconfont">&#xe602;</i>软件应用</a>
+                        </div>
+                    </li>
+                </ul>
             </li>
             <li class="s-firstItem">
                 <div  class="d-firstNav s-firstNav">
@@ -127,32 +160,7 @@
                     </a>
                 </div>
             </li>
-            <li class="s-firstItem">
-                <div class="s-firstNav d-firstNav">
-                    <a href="javascript:void(0)" class="nav-link" data-value="asset">
-                        <i class="iconfont">&#xe606;</i>
-                        <span>&nbsp;&nbsp;资产清点
-                            <i class="iconfont slide_mark slide_down">&#xe64a;</i></span>
-                    </a>
-                </div>
-                <ul class="d-firstDrop s-firstDrop">
-                    <li>
-                        <div class="d-secondNav s-secondNav">
-                            <a href="javascript:void(0)" data-value="netconnecting" class="nav-link-sec"><i class="iconfont">&#xe602;</i>网络连接资产</a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="d-secondNav s-secondNav">
-                            <a href="javascript:void(0)" data-value="app" class="nav-link-sec"><i class="iconfont">&#xe602;</i>软件应用</a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="d-secondNav s-secondNav">
-                            <a href="javascript:void(0)" data-value="process" class="nav-link-sec"><i class="iconfont">&#xe602;</i>进程资产</a>
-                        </div>
-                    </li>
-                </ul>
-            </li>
+
         </ul>
     </div>
     </div>

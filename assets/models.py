@@ -22,6 +22,7 @@ class TAssetsPort(models.Model):
     local_port = models.CharField( blank=True, null=True, max_length=255)
     name = models.CharField(blank=True, null=True, max_length=255)
     path = models.CharField(blank=True, null=True, max_length=255)
+    proname = models.CharField(blank=True, null=True, max_length=255)
     pid = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -34,6 +35,7 @@ class TAssetsActiveNetwork(models.Model):
     local_port = models.CharField( blank=True, null=True, max_length=255)
     name = models.CharField(blank=True, null=True, max_length=255)
     path = models.CharField(blank=True, null=True, max_length=255)
+    proname = models.CharField(blank=True, null=True, max_length=255)
     pid = models.IntegerField(blank=True, null=True)
     remote_addr = models.CharField(blank=True, null=True, max_length=255)
     remote_port = models.CharField(blank=True, null=True, max_length=255)
@@ -45,7 +47,7 @@ class TAssetsActiveNetwork(models.Model):
 
 class TAssetsProcess(models.Model):
     agent_id = models.CharField(primary_key=True, max_length=255)
-    pid = models.CharField(blank=True, null=True,max_length=255)
+    pid = models.IntegerField(blank=True, null=True)
     name = models.CharField(blank=True, null=True, max_length=255)
     command = models.TextField(blank=True, null=True)
     path = models.CharField(blank=True, null=True, max_length=255)

@@ -39,7 +39,7 @@ function process_click_search(page) {
     data['process_level'] = process_level;
     data['page'] = page;
     $.ajax({
-        url: "assets/process_query",
+        url: "assets/query_process",
         type: 'POST',
         data: data,
         //dataType: "json",
@@ -96,10 +96,11 @@ function process_click_search(page) {
             for(let j=0,len = process_table_data.length;j<len;j++) {
                 process_table += '<tr>' +
                     '<td>' + process_table_data[j]['host_name']+'<br>('+ process_table_data[j]['host_ip']+ ')</td>' +
-                    '<td>' + process_table_data[j]['pid'] + '</td>' +
+
                     '<td>' + process_table_data[j]['name'] + '</td>' +
-                    '<td>' + process_table_data[j]['command'] + '</td>' +
+                    '<td>' + process_table_data[j]['pid'] + '</td>' +
                     '<td>' + process_table_data[j]['path'] + '</td>'+
+                    '<td>' + process_table_data[j]['command'] + '</td>' +
                     '<td>' + process_table_data[j]['user'] + '</td>'+
                     '<td>' + process_table_data[j]['level'] + '</td>';
             }

@@ -65,15 +65,15 @@ function netconnecting_click_search(page) {
             let netconnecting_table = '';
             for(let j=0,len = netconnecting_table_data.length;j<len;j++) {
                 netconnecting_table += '<tr>' +
-                    '<td>' + netconnecting_table_data[j]['process_name'] + '</td>' +
-                    '<td>' + netconnecting_table_data[j]['pid'] + '</td>' +
-                    '<td>' + netconnecting_table_data[j]['name'] + '</td>' +
-                    '<td>' + netconnecting_table_data[j]['name'] + '</td>' +
-                    '<td>' + netconnecting_table_data[j]['path'] + '</td>' +
+                    '<td>' + netconnecting_table_data[j]['host_name'] + '</td>' +
                     '<td>' + netconnecting_table_data[j]['local_addr'] + '</td>' +
                     '<td>' + netconnecting_table_data[j]['local_port'] + '</td>' +
                     '<td>' + netconnecting_table_data[j]['remote_addr'] + '</td>' +
-                    '<td>' + netconnecting_table_data[j]['remote_port'] + '</td>';
+                    '<td>' + netconnecting_table_data[j]['remote_port'] + '</td>' +
+                    '<td>' + netconnecting_table_data[j]['name'] + '</td>' +
+                    '<td>' + netconnecting_table_data[j]['pid'] + '</td>' +
+                    '<td>' + netconnecting_table_data[j]['proname'] + '</td>' +
+                    '<td>' + netconnecting_table_data[j]['path'] + '</td>';
             }
 
             let page = '<ul role="menubar" aria-disabled="false" aria-label="Pagination" class="pagination b-pagination pagination-md justify-content-center">' +

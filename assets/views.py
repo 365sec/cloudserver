@@ -36,22 +36,24 @@ def app_query(request):
 
 # 资产查询活动网络信息
 def assets_query_network(request):
+    #获得agent_id 跟主机名称 ip 的dir
+    hostname_dir={}
+    for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip","extranet_ip"):
+        if x[2]=="" or x[2] == None:
+            hostname_dir[str(x[0])]=[x[1],x[3]]
+        else:
+            hostname_dir[str(x[0])]=[x[1],x[2]]
+
     obj = TAssetsActiveNetwork.objects.all()
 
-    # temp=TAssets.objects.all().get(agent_id="ed401614704cfb51").active_network
-    # temp=json.loads(temp)
-    # obj=temp
-    # print(temp)
     page = request.POST.get("page")
-    if not page:
-        page = 0
-    else:
-        page = int(page)
+    page = int(page) if page else 0
+
     if page < 0:
         page = 0
     num = 10  # 每页显示数目
     # max_size = math.ceil(obj.count() / num)    # 最大分页数
-    max_size = math.ceil(len(obj) / num)    # 最大分页数
+    max_size = int( math.ceil(len(obj) / num))    # 最大分页数
     if max_size == 0:
         max_size = 1
     if page > max_size - 1:
@@ -59,12 +61,8 @@ def assets_query_network(request):
     y = []
     for x in obj[page * num:(page + 1) * num]:
         temp=model_to_dict(x)
-        process =TAssetsProcess.objects.all().filter(agent_id=temp['agent_id']).filter(pid=temp['pid']).first()
-        if process:
-            process_temp=model_to_dict(process)
-            temp['process_name']=process_temp['name']
-        else:
-            temp['process_name']=""
+        temp['host_name']=hostname_dir[temp['agent_id']][0]
+        temp['host_ip']=hostname_dir[temp['agent_id']][1]
         y.append(temp)
 
     data = {}
@@ -75,32 +73,7 @@ def assets_query_network(request):
 
     return HttpResponse(json.dumps(data), content_type='application/json')
 
-# 资产查询端口信息
-def assets_query_port(request):
-    obj = TAssetsPort.objects.all()
-    page = request.POST.get("page")
-    if not page:
-        page = 0
-    else:
-        page = int(page)
-    if page < 0:
-        page = 0
-    num = 10  # 每页显示数目
-    max_size = math.ceil(obj.count() / num)    # 最大分页数
-    if max_size == 0:
-        max_size = 1
-    if page > max_size - 1:
-        page = max_size - 1
-    y = []
-    for x in obj[page * num:(page + 1) * num]:
-        y.append(model_to_dict(x))
-    data = {}
-    data['data'] = y
-    data['msg'] = "success"
-    data['page'] = page
-    data['max_size'] = max_size
 
-    return HttpResponse(json.dumps(data), content_type='application/json')
 
 
 
@@ -170,7 +143,7 @@ def assets_process_query(request):
         page = 0
     num = 10  # 每页显示数目
 
-    max_size = math.ceil( float(obj.count()) / num )   # 最大分页数
+    max_size = int( math.ceil(len(obj) / num))    # 最大分页数
     if max_size == 0:
         max_size = 1
     if page > max_size - 1:
@@ -191,6 +164,50 @@ def assets_process_query(request):
         temp['host_name']=hostname_dir[temp['agent_id']][0]
         temp['host_ip']=hostname_dir[temp['agent_id']][1]
         # print(temp)
+        y.append(temp)
+    data = {}
+    data['data'] = y
+    data['code'] = 200
+    data['msg'] = "success"
+    data['page'] = page
+    data['max_size'] = max_size
+    data['hostname'] = hostname_dir
+
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
+def assets_port_query(request):
+    obj = TAssetsPort.objects.all()
+    page = request.POST.get("page")
+    port_host = request.POST.get("port_host")
+
+    if port_host and  port_host!="":
+        obj=obj.filter(agent_id=port_host)
+
+    page = int(page) if page else 0
+    if page < 0:
+        page = 0
+    num = 10  # 每页显示数目
+
+    max_size = int( math.ceil(len(obj) / num))    # 最大分页数
+    if max_size == 0:
+        max_size = 1
+    if page > max_size - 1:
+        page = max_size - 1
+
+    #获得agent_id 跟主机名称 ip 的dir
+    hostname_dir={}
+    for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip","extranet_ip"):
+        if x[2]=="" or x[2] == None:
+            hostname_dir[str(x[0])]=[x[1],x[3]]
+        else:
+            hostname_dir[str(x[0])]=[x[1],x[2]]
+    y = []
+    print(hostname_dir)
+    for x in obj[page * num:(page + 1) * num]:
+        temp = model_to_dict(x)
+        temp['host_name']=hostname_dir[temp['agent_id']][0]
+        temp['host_ip']=hostname_dir[temp['agent_id']][1]
+        temp['process_name']=temp['proname']
         y.append(temp)
     data = {}
     data['data'] = y

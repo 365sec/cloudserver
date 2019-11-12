@@ -10,3 +10,5 @@ def process(request):
     return render(request, 'process.html', {})
 def netconnecting(request):
     return render(request, 'netconnecting.html', {})
+def port(request):
+    return render(request, 'port.html', {})

@@ -50,11 +50,11 @@ urlpatterns = [
     url(r'^index$', login.index),
     ############################ 资产清点URL ###############################
     url(r'^assets/app_query$', assets_view.app_query),
-    url(r'^assets/query_port$', assets_view.assets_query_port),
     url(r'^assets/query_network$', assets_view.assets_query_network),
     url(r'^assets/query_monitor_info_last$', assets_view.assets_monitor_info_last),
     url(r'^assets/query_monitor_info_query$', assets_view.assets_monitor_info_query),
-    url(r'^assets/process_query$', assets_view.assets_process_query),
+    url(r'^assets/query_process$', assets_view.assets_process_query),
+    url(r'^assets/query_port$', assets_view.assets_port_query),
 
     #######################################################################
     url(r'^download$', link.download),
@@ -78,6 +78,7 @@ urlpatterns = [
     url(r'^app', assets_link.app),
     url(r'^process', assets_link.process),
     url(r'^netconnecting', assets_link.netconnecting),
+    url(r'^port', assets_link.port),
 
     #######################################################################
     url(r'^//', login.index),
