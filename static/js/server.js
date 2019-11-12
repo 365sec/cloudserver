@@ -167,37 +167,8 @@ function server_click(page) {
 
     });
 }
-// 添加主机模态框
-function add_host_modal() {
-    get_host_gent_id();
-    let html = `<div class="modal fade" id="add_host" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">添加主机</h4>
-            </div>
-            <div id="AGENT_ID">当前添加主机AGENT_ID为：b4d9256ad4027516</div>
-            <div style="width: 100%;height: calc(100% - 109px);display: flex;align-items: center;justify-content: center;line-height: 50px">
-                <table>
-                    <tbody>
-                    <tr>
-                        <td style="text-align: right;padding-right: 20px; width: 38%"><span class="red">*</span>
-                            <span>标记</span>
-                        </td>
-                        <td><input type="text" placeholder="" id='' name="" /></td></tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary">提交</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal -->
-            `;
-    $('#model_div').text('').append(html);
-}
+
+
 
 //详情
 var agent_server_id;
@@ -210,6 +181,7 @@ $(document).off("click", ".detail-a-server").on("click", ".detail-a-server", fun
         url: '/server_manage_detail',
         type: 'get',
         dataType: 'html',
+        async: false,
         success: function (res) {
             // console.log(res);
             $('#div_container').html($(res));
@@ -248,8 +220,23 @@ $(document).off("click", ".detail-a-server").on("click", ".detail-a-server", fun
 
             // 防御策略
             click_config_show(data['agent_id']);
+
+            //监控详情
+            assets_detail(data['agent_id']);
         }
     });
+
+
+    $.ajax({
+        url: '/assets/query_monitor_info_last',
+        type: 'POST',
+        data:{"agent_id":agent_server_id},
+        success: function (data) {
+            console.log(data)
+        }
+    });
+
+
 });
 // 安全分析
 function click_chart_attack_trend_server(data){
@@ -1787,58 +1774,7 @@ function agent_manage_submit(id) {
     $("#setting").modal("hide");
 }
 
-function get_host_gent_id() {
-    $.ajax({
-    type: "post",
-    //async : false, //同步请求
-    url: "/get_host_agent_id",
-    data: {"remarkmsg": $("#host_add").val()},
-    // timeout:1000,
-    success: function (data) {
-        if (data['agent_id']) {
-            $("#AGENT_ID").append(data['agent_id']);
 
-        } else {
-            alert('查询AGRNT_ID失败。');
-        }
-    }
-})
-
-}
-
-function host_add() {
-    $.ajax({
-        type: "post",
-        //async : false, //同步请求
-        url: "add_host",
-        data: {"remarkmsg": $("#host_add").val()},
-        // timeout:1000,
-        success: function (data) {
-            if (!data['code']) {
-
-                server_click(1)
-            } else {
-                alert('添加主机失败。');
-            }
-        }
-    });
-    //document.getElementById("myForm").submit();
-}
-
-
-//添加主机弹窗
-// //打开弹窗
-//
-// // 关闭弹窗
-// $(document).on('click',".layout .close,.layout .layout-close",function (e) {
-//     $('.shade>.layout').html('');
-//     actionIn(".layout", 'action_scale_out', .3, "");
-//     $(".shade").css({
-//         visibility: "hidden"
-//     });
-//     event.stopPropagation(); //阻止事件向上冒泡
-//
-// });
 
 //拦截记录忽略按钮切换
 $(document).on("click", ".btn-group button", function () {
@@ -1919,7 +1855,43 @@ $(document).off('click','#server_table_list_del').on('click','#server_table_list
         </div><!-- /.modal -->`;
     $('#model_div').text('').append(html);
     $("#server_table_list_del_modal").modal("show");
-})
+});
+
+
+//监控详情
+function assets_detail(agent_id){
+    $(document).off('click','#asset_detail_link').on('click','#asset_detail_link',function () {
+        assets_detail_query(agent_id);
+    })
+}
+
+function assets_detail_query(agent_id) {
+
+    $.ajax({
+        url: '/assets/query_monitor_info_query',
+        type: 'POST',
+        data:{"agent_id":agent_id},
+        success: function (data) {
+            console.log(data)
+        }
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 *

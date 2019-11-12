@@ -38,6 +38,9 @@ $(document).on("click", ".nano-content li>div", function () {
         case "app":
             app_click();
             break;
+        case "process":
+            process_click();
+            break;
         default:
     }
 });

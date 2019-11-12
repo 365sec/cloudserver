@@ -96,8 +96,6 @@ def manage(request):
 def user(request):
     return render(request, 'user.html', {})
 
-def netconnecting(request):
-    return render(request, 'netconnecting.html', {})
 
 
 

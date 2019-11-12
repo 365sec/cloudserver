@@ -6,3 +6,7 @@ from django.http import FileResponse
 from common.data import CONF
 def app(request):
     return render(request, 'app.html', {})
+def process(request):
+    return render(request, 'process.html', {})
+def netconnecting(request):
+    return render(request, 'netconnecting.html', {})

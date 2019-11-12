@@ -41,6 +41,30 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="pull-left">
+                        <table id="promotionTable" class="table server_detail_table" style="width:600px;margin-top:10px;">
+
+                            <tbody>
+                            <tr>
+                                <td class="text-muted">CPU率：</td>
+                                <td id="cpu_used" ></td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted">内存使用率：</td>
+                                <td id="memory_used" ></td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted">硬盘使用率：</td>
+                                <td id="disk_used" ></td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted">详情：</td>
+                                <td id="assets_detail" ><a href="#asset_detail_show">详情</a></td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -59,6 +83,7 @@
             <li class="tab-oblique"  id="server_website_list_link"><a class="tab-col" data-toggle="tab" href="#server_website_list"><i class="iconfont">&#xe6f5;</i><span>  网站详情</span></a></li>
             <li class="tab-oblique"  id="black_white_list_link"><a class="tab-col" data-toggle="tab" href="#black_white_list"><i class="iconfont">&#xe62d;</i> <span> 黑白名单</span></a></li>
             <li class="tab-oblique"  id="config_show_link"><a class="tab-col" data-toggle="tab" href="#config_show"><i class="iconfont">&#xe792;</i> <span> 防御策略</span></a></li>
+            <li class="tab-oblique"  id="asset_detail_link"><a class="tab-col" data-toggle="tab" href="#asset_detail_show"><i class="iconfont">&#xe792;</i> <span> 监控</span></a></li>
         </ul>
         <div id="server_detail_panel_content_wrapper" class="right_content_content" style="margin-top:0px;">
             <div class="tab-content">
@@ -592,10 +617,6 @@
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <a data-toggle="collapse" href="#algorithm_config_show">
-                                        {#                                        <div class="u-list-leftbox">#}
-                                        {#                                            <i class="iconfont">&#xe63f;</i>#}
-                                        {#                                        </div>#}
-
                                         <div class="config_show_title" id="input_algorithm_config"><i class="iconfont">&#xe64b;</i><span> RASP防御策略</span></div>
                                         <i class="iconfont slide_mark slide_down">&#xe64a;</i>
                                     </a>
@@ -650,8 +671,18 @@
                     </div>
                     <div id="agent_manage_submit"></div>
                 </div>
-                               </div>
+                <div id="asset_detail_show" class="tab-pane fade active in">
+                    <div class="pull-left" style="width:65%;padding:6px;">
+
+                    </div>
+                    <div class="pull-right" style="width:33%;height:400px;position:relative;margin-top: 20px">
+
+                    </div>
+                </div >
+
                 </div>
+            </div>
+        </div>
     </div>
 </div>
 
