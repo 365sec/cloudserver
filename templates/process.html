@@ -1,25 +1,17 @@
+<style>
+    .pagination{
+        text-align: right;
+    }
+</style>
 <div class="processDiv">
     <h1 class="page-title" ><i class="iconfont">&#xe62e;</i>进程资产</h1>
     <div class="card">
-        <div class="server_content">
+        <div class="server_content card-body">
             <div id="process_select_div"></div>
-            <table id="process_table" class="table table-bordered table-striped table-hover">
-                <thead>
-                <tr>
-                    <th>主机</th>
-
-                    <th>进程名</th>
-                    <th>进程ID</th>
-
-                    <th>进程路径</th>
-                    <th>启动命令</th>
-                    <th>用户</th>
-                    <th>权限</th>
-                </tr>
-                </thead>
+            <table id="process_table" class="table table-bordered table-slide">
                 <tbody></tbody>
             </table>
-            <div class="page"></div>
+            <div class="paging"></div>
         </div>
     </div>
 </div>

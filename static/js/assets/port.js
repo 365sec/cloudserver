@@ -62,7 +62,7 @@ function port_click_search(page) {
             html_select += '<div id="" class="search_btngroup">';
             html_select += '<div class="search_button" >';
 
-            html_select += '<div class="search_button"><span class="btnvalue">主机名称: </span>';
+            html_select += '<div class="search_button">';
             html_select += '<select id="port_host" class="form-btn" style="width: 140px">';
             html_select += '<option value="" >' + "--请选择主机名称--" + '</option>';
             for (agent_id in hostname) {
@@ -91,7 +91,7 @@ function port_click_search(page) {
             let port_table = '';
             for(let j=0,len = port_table_data.length;j<len;j++) {
                 port_table += '<tr>' +
-                    '<td>' + port_table_data[j]['host_name']+'<br>('+ port_table_data[j]['host_ip']+ ')</td>' +
+                    '<td class="port_add">' + port_table_data[j]['host_name']+'<p >('+ port_table_data[j]['host_ip']+ ')</p></td>' +
                     '<td>' + port_table_data[j]['local_addr'] + '</td>'+
                     '<td>' + port_table_data[j]['local_port'] + '</td>'+
                     '<td>' + port_table_data[j]['name'] + '</td>' +
@@ -108,7 +108,7 @@ function port_click_search(page) {
                 '<input id = "port_jump" value="' + (now_page+1) + '" />' +
                 '<a href="javascript:void(0);" onclick="port_click_search_jump()">跳转</a>' +
                 '</ul>';
-            $('.page').html(page);
+            $('.paging').html(page);
             $('#port_table>tbody').html(port_table);
 
         }});

@@ -78,6 +78,7 @@ b {
 
 .table>tbody>tr>td {
     border-top: none;
+    vertical-align: middle;
 }
 .detail-td a {
     width: 50px;
@@ -1067,7 +1068,7 @@ a:not([href]):not([tabindex]), a:not([href]):not([tabindex]):focus, a:not([href]
     color: #4d4d4d;
 }
 .pagination{
-    padding-top: 10px;
+    /*padding-top: 10px;*/
     text-align: center;
     width: 100%;
 }
@@ -2614,4 +2615,29 @@ text-align:center;
 }
 .appDIV .title{
     margin: 10px 1% 20px 1%;
+}
+.table_fixed{
+    table-layout: fixed;
+}
+.table_fixed tbody>tr>td{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.w100{
+    width: 100%;
+}
+
+/*进程资产start*/
+#process_table>tbody>tr:nth-child(2n+1){
+    background: #f7f7f7;
+}
+/*进程资产end*/
+.table td.port_add{
+    line-height: initial;
+}
+.table td.port_add p{
+    font-size: 12px;
+    line-height: initial;
+    margin: 0;
 }

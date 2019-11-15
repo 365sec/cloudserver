@@ -84,7 +84,7 @@ function netconnecting_click_search(page) {
                 '<input id = "netconnecting_jump" value="' + (now_page+1) + '" />' +
                 '<a href="javascript:void(0);" onclick="netconnecting_click_search_jump()">跳转</a>' +
                 '</ul>';
-            $('.page').html(page);
+            $('.paging').html(page);
             $('#netconnecting_table>tbody').html(netconnecting_table);
 
         }});

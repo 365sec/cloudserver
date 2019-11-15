@@ -182,7 +182,7 @@ function attrack_recent_warning(data) {
     }
 
     html = `        
-                    <table class="table table-bordered table-striped table-hover">
+                    <table class="table table-bordered table-striped table-hover table_fixed">
                        <thead>
                             <tr>
                               <th width="24%">时间</th>

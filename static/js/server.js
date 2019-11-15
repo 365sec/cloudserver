@@ -385,6 +385,7 @@ function event_treat_server(now_page){
         data: data,
         //dataType: "json",
         success: function (data_list) {
+            console.log(data_list);
             let now_page = data_list['page'];
             let max_size = data_list['max_size'];
             let attack_type_list = data_list['attack_type'];
