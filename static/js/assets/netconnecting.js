@@ -26,10 +26,10 @@ function netconnecting_click_search(page) {
     let data = {};
     let netconnecting_msg = $("#netconnecting_msg").val();
 
-    if (netconnecting_msg === undefined) {
-        netconnecting_msg = ""
-    }
+    if (netconnecting_msg === undefined) {netconnecting_msg = ""}
+
     data['netconnecting_msg'] = netconnecting_msg;
+
     data['page'] = page;
     $.ajax({
         url: "assets/query_network",

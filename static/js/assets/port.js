@@ -17,27 +17,20 @@ function port_click(page) {
 
 function port_click_search(page) {
     let data = {};
-    let port_msg = $("#port_msg").val();
+
     let port_host = $("#port_host").val();
-    let port_name = $("#port_name").val();
-    let port_command = $("#port_command").val();
-    let port_user = $("#port_user").val();
-    let port_level = $("#port_level").val();
+    let port_local_port = $("#port_local_port").val();
+    let port_proname = $("#port_proname").val();
 
-
-    if (port_msg === undefined) {port_msg = ""}
     if (port_host === undefined) {port_host = ""}
-    if (port_name === undefined) {port_name = ""}
-    if (port_command === undefined) {port_command = ""}
-    if (port_user === undefined) {port_user = ""}
-    if (port_level === undefined) {port_level = ""}
+    if (port_local_port === undefined) {port_local_port = ""}
+    if (port_proname === undefined) {port_proname = ""}
 
-    data['port_msg'] = port_msg;
     data['port_host'] = port_host;
-    data['port_name'] = port_name;
-    data['port_command'] = port_command;
-    data['port_user'] = port_user;
-    data['port_level'] = port_level;
+    data['port_local_port'] = port_local_port;
+    data['port_proname'] = port_proname;
+
+
     data['page'] = page;
     $.ajax({
         url: "assets/query_port",
@@ -69,9 +62,9 @@ function port_click_search(page) {
                 html_select += '<option value="' + agent_id + '" >' + hostname[agent_id][0]+"("+hostname[agent_id][1] +")"+ '</option>'
             }
             html_select += '</select></div>';
-            html_select += '<input id="port_name" placeholder="进程名称" value="' + port_name + '" />';
-            html_select += '<input id="port_command" placeholder="启动命令" value="' + port_command + '" />';
-            html_select += '<input id="port_user" placeholder="启动用户" value="' + port_user + '" /></div>';
+            html_select += '<input id="port_local_port" placeholder="本地端口" value="' + port_local_port + '" />';
+            html_select += '<input id="port_proname" placeholder="进程名" value="' + port_proname + '" />';
+            // html_select += '<input id="port_user" placeholder="协议类型" value="' + port_user + '" /></div>';
 
 
             html_select += '<div  class="btn" onclick="port_click_search(0)" >查询</div>';
@@ -80,12 +73,11 @@ function port_click_search(page) {
             html_select += '</div>';
             select_div.html(html_select);
             // $("#server_attack_time").val(attack_time);
-            $("#port_msg").val(port_msg);
+
             $("#port_host").val(port_host);
-            $("#port_name").val(port_name);
-            $("#port_command").val(port_command);
-            $("#port_user").val(port_user);
-            $("#port_level").val(port_level);
+            $("#port_local_port").val(port_local_port);
+            $("#port_proname").val(port_proname);
+
             //----------------------------------------------------------
             let port_table_data = data_list['data'];
             let port_table = '';
@@ -124,11 +116,9 @@ function port_click_search_jump() {
 
 }
 function port_reset() {
-    $("#port_msg").val("");
     $("#port_host").val("");
-    $("#port_name").val("");
-    $("#port_command").val("");
-    $("#port_user").val("");
-    $("#port_level").val("");
+    $("#port_local_port").val("");
+    $("#port_proname").val("");
+
     port_click_search(0);
 }

@@ -52,7 +52,7 @@ class TAssetsProcess(models.Model):
     command = models.TextField(blank=True, null=True)
     path = models.CharField(blank=True, null=True, max_length=255)
     user = models.CharField(blank=True, null=True, max_length=255)
-    level = models.IntegerField(blank=True, null=True, max_length=255)
+    level = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False

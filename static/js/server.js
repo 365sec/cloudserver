@@ -22,6 +22,7 @@ function server_click(page) {
                 },
                 //dataType: "json",
                 success: function (data_list) {
+                    console.log(data_list);
                     if(data_list.hasOwnProperty('auth')){
                         window.location.href = '/login'
                     }

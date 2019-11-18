@@ -42,7 +42,6 @@ def login(request):
         m2.update(password)
         u = TUsers.objects.filter(username=username).first()
         if not u:
-
             return render(request, 'login.html', msg)
         if u.password == m2.hexdigest():
             request.session['username'] = username

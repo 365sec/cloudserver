@@ -124,7 +124,6 @@ function query_attack_type() {
         url: "/query_attack_type",
         type: 'POST',
         data: {
-
         },
         //dataType: "json",
         success: function (data_list) {

@@ -179,6 +179,7 @@ def server_agent_query(request):
     global SENSOR_TYPE
     # 当前页码数
     page = request.POST.get("page")
+    print (request.POST)
     page = int(page)
     result = None
     if request.session['superuser']:

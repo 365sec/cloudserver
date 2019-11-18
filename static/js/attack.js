@@ -67,7 +67,7 @@ function attack_click(attack_page) {
                             </div>
                             `;
                     html_select += '<div class="search_button">';
-                    html_select += '<select id="attack_type" class="form-btn" style="width: 170px"';
+                    html_select += '<select id="attack_type" class="form-btn" style="width: 170px">';
                     html_select += '<option value="" >' + "--请选择攻击类型--" + '</option>';
                     for (x in attack_type_list) {
                         html_select += '<option value="' + attack_type_list[x] + '" >' + attack_type_list[x] + '</option>'

@@ -54,6 +54,7 @@ urlpatterns = [
     url(r'^assets/query_monitor_info_last$', assets_view.assets_monitor_info_last),
     url(r'^assets/query_monitor_info_query$', assets_view.assets_monitor_info_query),
     url(r'^assets/query_process$', assets_view.assets_process_query),
+    url(r'^assets/query_process_num$', assets_view.assets_process_query_num),
     url(r'^assets/query_port$', assets_view.assets_port_query),
 
     #######################################################################

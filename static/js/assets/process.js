@@ -38,16 +38,24 @@ function process_click_search(page) {
     data['process_user'] = process_user;
     data['process_level'] = process_level;
     data['page'] = page;
-    // $.ajax({
-    //     url: "assets/query_process",
-    //     type: 'POST',
-    //     data: data,
-    //     //dataType: "json",
-    //     success: function (data_list) {
-            let hostname= []; //主机列表
-            let process_list = ['winlogon','ddddd','ggggg']  //进程列表
-            let now_page = 0;
-            let max_size = 3;
+    let hostname= []; //主机列表
+    let process_list = []; //进程列表
+    let now_page = 0;
+    let max_size;
+    $.ajax({
+        url: "assets/query_process_num",
+        type: 'POST',
+        data: data,
+        async:false,
+        //dataType: "json",
+        success: function (data_list) {
+            hostname=data_list['hostname'];
+            process_list=data_list['process_list'];
+            now_page=data_list['page'];
+            max_size=data_list['max_size'];
+
+    }});
+
             if (now_page == null ) {
                 now_page = 0;
             }
@@ -91,19 +99,27 @@ function process_click_search(page) {
             $("#process_user").val(process_user);
             $("#process_level").val(process_level);
             //----------------------------------------------------------
+        let next_page='<a href="javascript:void(0);" onclick="process_click_search(' + (now_page + 1) + ')">下一页</a>';
+        if (parseInt(now_page)+1===parseInt(max_size))
+        {
+             next_page='<a href="javascript:void(0);" onclick="process_click_search(' + (now_page + 1) + ')"></a>';
+        }
             let pagecontent = '<ul role="menubar" aria-disabled="false" aria-label="Pagination" class="pagination b-pagination pagination-md justify-content-center">' +
                 '<a href="javascript:void(0);" onclick="process_click_search(' + (now_page - 1)+')">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp' +
                 '<a href="javascript:void(0);">' + (now_page+1) + "/" + max_size + '</a>' +
                 '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp' +
-                '<a href="javascript:void(0);" onclick="process_click_search(' + (now_page + 1) + ')">下一页</a>' +
+                next_page +
                 '<input id = "process_jump" value="' + (now_page+1) + '" />' +
                 '<a href="javascript:void(0);" onclick="process_click_search_jump()">跳转</a>' +
                 '</ul>';
+            $('#process_table>tbody').html('');
             for(let i=0;i<process_list.length;i++) {
+                let base_id=process_list[i][0];
+                base_id=hex_md5(base_id);
                 let process_table = '';
-                process_table += '<tr id="'+ process_list[i] +'">' +
-                    '<td>进程：<span>'+process_list[i]+'</span></td>' +
-                    '<td>主机数：<span>1232</span></td>' +
+                process_table += '<tr id="'+ base_id+'" process_id="'+ process_list[i][0]+'">' +
+                    '<td>进程：<span>'+process_list[i][0]+'</span></td>' +
+                    '<td>主机数：<span>'+process_list[i][1]+'</span></td>' +
                     '<td width="45px" style="text-align: center"><i class="iconfont slide_mark">&#xe64a;</i></td>' +
                     '</tr>' +
                     '<tr style="display: none">' +
@@ -126,23 +142,28 @@ function process_click_search(page) {
                     '</td>' +
                     '</tr>';
                 $('#process_table>tbody').append(process_table);
-                process_detail(data,process_list[i],1);
+
             }
             
             $('.paging').html(pagecontent);
 
-        // }});
+
 
 
 }
 function process_detail(data,process_name1,now_page) {
-    console.log(process_name1);
+    // console.log(process_name1);
+    if (typeof data === "string") {
+        data=JSON.parse(data);
+    }
+    data['page']=now_page;
     $.ajax({
         url: "assets/query_process",
         type: 'POST',
         data: data,
         //dataType: "json",
         success: function (data_list) {
+            console.log(data_list);
             let hostname=data_list['hostname'];
             let now_page = data_list['page'];
             let max_size = data_list['max_size'];
@@ -153,11 +174,17 @@ function process_detail(data,process_name1,now_page) {
                 now_page = max_size;
             }
             let process_table_data = data_list['data'];
-            let process_detail= '';
+            let process_detail_html= '';
             for (let j = 0, len = process_table_data.length; j < len; j++) {
-                let command = process_table_data[j]['command'].replace(/\"/, "")
-                process_detail += '<tr>' +
-                    '<td class="port_add">' + process_table_data[j]['host_name'] + '<p>(' + process_table_data[j]['host_ip'] + ')</p></td>' +
+                let server_img;
+                if (process_table_data[j]['os'].toLowerCase().indexOf("windows") !== -1){
+                    server_img='<img src="/static/images/os_windows_on.png" style="width: 20px"/>';
+                }else{
+                    server_img='<img src="/static/images/os_linux_on.png" style="width: 20px"/>';
+                }
+                let command = process_table_data[j]['command'].replace(/\"/, "");
+                process_detail_html += '<tr>' +
+                    '<td class="port_add">'+server_img + process_table_data[j]['host_name'] + '<p>(' + process_table_data[j]['host_ip'] + ')</p></td>' +
 
                     '<td title="' + process_table_data[j]['name'] + '">' + process_table_data[j]['name'] + '</td>' +
                     '<td>' + process_table_data[j]['pid'] + '</td>' +
@@ -167,18 +194,27 @@ function process_detail(data,process_name1,now_page) {
                     '<td>' + process_table_data[j]['user'] + '</td>' +
                     '<td>' + process_table_data[j]['level'] + '</td>';
             }
+            let str_data=JSON.stringify(data).replace(/"/g,'&quot;');
+
+            let next_page='<a href="javascript:void(0);" onclick="process_detail(\''+str_data+'\',\'' +process_name1+'\',\''+ (now_page + 1)+'\')">下一页</a>';
+            if (parseInt(now_page)+1===parseInt(max_size))
+            {
+                next_page='<a href="javascript:void(0);" onclick="process_detail(\''+str_data+'\',\'' +process_name1+'\',\''+ (now_page + 1)+'\')"></a>';
+            }
             let pagecontent = '<ul role="menubar" aria-disabled="false" aria-label="Pagination" class="pagination b-pagination pagination-md justify-content-center">' +
-                '<a href="javascript:void(0);" onclick="process_detail('+JSON.stringify(data).replace(/"/g,'&quot;')+','+process_name1+','+ (now_page - 1)+')">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp' +
+                '<a href="javascript:void(0);" onclick="process_detail(\''+str_data+'\',\'' +process_name1+'\',\''+ (now_page - 1)+'\')">上一页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp' +
                 '<a href="javascript:void(0);">' + (now_page+1) + "/" + max_size + '</a>' +
                 '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp' +
-                '<a href="javascript:void(0);" onclick="process_detail('+JSON.stringify(data).replace(/"/g,'&quot;')+',' +process_name1+','+ (now_page + 1)+')">下一页</a>' +
-                '<input id = "process_jump" value="' + (now_page+1) + '" />' +
-                '<a href="javascript:void(0);" onclick="process_click_search_jump()">跳转</a>' +
+                next_page+
+                '<input id = "process_detial_jump" value="' + (now_page+1) + '" />' +
+                '<a href="javascript:void(0);" onclick="process_detial_search_jump(\''+str_data+'\',\'' +process_name1+'\',\''+ (0)+'\')">跳转</a>' +
                 '</ul>';
 
-            let process_info = $('#'+process_name1).next();
+
+
+            let process_info = $("#"+process_name1).next();
             process_info.find('.paging2').html(pagecontent);
-            process_info.find('tbody').html(process_detail);
+            process_info.find('tbody').html(process_detail_html);
         }});
 
 }
@@ -187,7 +223,20 @@ function process_click_search_jump() {
 
     let page= $("#process_jump").val();
 
+
     process_click_search(parseInt(page-1))
+
+}
+function process_detial_search_jump(data,process_name1,now_page) {
+
+    let page= $("#process_detial_jump").val();
+
+    if (typeof data === "string") {
+        data=JSON.parse(data);
+    }
+    data['page']=now_page;
+
+    process_detail(data,process_name1,parseInt(page-1))
 
 }
 function process_reset() {
@@ -200,7 +249,32 @@ function process_reset() {
     process_click_search(0);
 }
 
-$(document).on('click','#process_table>tbody>tr:nth-child(2n+1)',function () {
+$(document).off('click','#process_table>tbody>tr:nth-child(2n+1)').on('click','#process_table>tbody>tr:nth-child(2n+1)',function () {
     $(this).next().slideToggle(300);
     $(this).find('.slide_mark').toggleClass('iconRotate');
+    let data = {};
+    let process_msg = $("#process_msg").val();
+    let process_host = $("#process_host").val();
+    let process_name = $("#process_name").val();
+    let process_command = $("#process_command").val();
+    let process_user = $("#process_user").val();
+    let process_level = $("#process_level").val();
+
+    if (process_msg === undefined) {process_msg = ""}
+    if (process_host === undefined) {process_host = ""}
+    if (process_name === undefined) {process_name = ""}
+    if (process_command === undefined) {process_command = ""}
+    if (process_user === undefined) {process_user = ""}
+    if (process_level === undefined) {process_level = ""}
+
+    data['process_msg'] = process_msg;
+    data['process_host'] = process_host;
+    data['process_name'] = $(this).attr("process_id");
+    data['process_command'] = process_command;
+    data['process_user'] = process_user;
+    data['process_level'] = process_level;
+    // console.log($(this).attr("id"));
+    //
+    data['page'] = 0;
+    process_detail(data,$(this).attr("id"),0);
 });
