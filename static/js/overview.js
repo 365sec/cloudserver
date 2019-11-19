@@ -54,7 +54,6 @@ function query_attack_source(show_continuous) {
         },
         //dataType: "json",
         success: function (data_list) {
-
             if(show_continuous) {
                 // 攻击IP排行
                 attack_source_charts(data_list['attrack_source_dic']);
@@ -112,7 +111,6 @@ function query_attack_times() {
         },
         //dataType: "json",
         success: function (data_list) {
-
             attrack_time_charts(data_list['attrack_time_dic'],'attrack_time_dic_div');
         }
     });

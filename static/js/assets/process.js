@@ -49,6 +49,7 @@ function process_click_search(page) {
         async:false,
         //dataType: "json",
         success: function (data_list) {
+            console.log(data_list)
             hostname=data_list['hostname'];
             process_list=data_list['process_list'];
             now_page=data_list['page'];

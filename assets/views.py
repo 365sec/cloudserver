@@ -18,8 +18,6 @@ from assets.models import TAssetsActiveNetwork
 from assets.models import TAssetsProcess
 from assets.models import TAssetsMonitor
 
-
-
 # strftime("%Y-%m-%d %H:%M:%S")
 from t.models import THostAgents
 
@@ -38,13 +36,13 @@ def app_query(request):
 
 # 资产查询活动网络信息
 def assets_query_network(request):
-    #获得agent_id 跟主机名称 ip 的dir
-    hostname_dir={}
-    for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip","extranet_ip","os"):
-        if x[2]=="" or x[2] == None:
-            hostname_dir[str(x[0])]=[x[1],x[3],x[4]]
+    # 获得agent_id 跟主机名称 ip 的dir
+    hostname_dir = {}
+    for x in THostAgents.objects.all().values_list("agent_id", "host_name", "internal_ip", "extranet_ip", "os"):
+        if x[2] == "" or x[2] == None:
+            hostname_dir[str(x[0])] = [x[1], x[3], x[4]]
         else:
-            hostname_dir[str(x[0])]=[x[1],x[2],x[4]]
+            hostname_dir[str(x[0])] = [x[1], x[2], x[4]]
 
     obj = TAssetsActiveNetwork.objects.all()
 
@@ -55,16 +53,16 @@ def assets_query_network(request):
         page = 0
     num = 10  # 每页显示数目
     # max_size = math.ceil(obj.count() / num)    # 最大分页数
-    max_size = int( math.ceil(float(len(obj))  / num))    # 最大分页数
+    max_size = int(math.ceil(float(len(obj)) / num))  # 最大分页数
     if max_size == 0:
         max_size = 1
     if page > max_size - 1:
         page = max_size - 1
     y = []
     for x in obj[page * num:(page + 1) * num]:
-        temp=model_to_dict(x)
-        temp['host_name']=hostname_dir[temp['agent_id']][0]
-        temp['host_ip']=hostname_dir[temp['agent_id']][1]
+        temp = model_to_dict(x)
+        temp['host_name'] = hostname_dir[temp['agent_id']][0]
+        temp['host_ip'] = hostname_dir[temp['agent_id']][1]
         y.append(temp)
 
     data = {}
@@ -76,15 +74,12 @@ def assets_query_network(request):
     return HttpResponse(json.dumps(data), content_type='application/json')
 
 
-
-
-
 def assets_monitor_info_last(request):
-    agent_id=request.POST.get("agent_id")
+    agent_id = request.POST.get("agent_id")
     info = TAssetsMonitor.objects.all().filter(agent_id=agent_id).last()
     # print(model_to_dict(info))
-    info=model_to_dict(info)
-    info['check_time']= info['check_time'].strftime("%Y-%m-%d %H:%M:%S")
+    info = model_to_dict(info)
+    info['check_time'] = info['check_time'].strftime("%Y-%m-%d %H:%M:%S")
     data = {}
     data['msg'] = "success"
     data['code'] = 200
@@ -94,24 +89,24 @@ def assets_monitor_info_last(request):
 
 
 def assets_monitor_info_query(request):
-    agent_id=request.POST.get("agent_id")
-    query_type=request.POST.get("type")
-    query_time=request.POST.get("time")
+    agent_id = request.POST.get("agent_id")
+    query_type = request.POST.get("type")
+    query_time = request.POST.get("time")
     now = datetime.datetime.now()
     data = {}
-    if query_type not in ["cpu","network","disk"]:
+    if query_type not in ["cpu", "network", "disk"]:
         data['msg'] = "error"
         data['code'] = 400
         return HttpResponse(json.dumps(data), content_type='application/json')
 
     info = TAssetsMonitor.objects.all().filter(agent_id=agent_id)
-    date=now + timedelta(days=-1)
-    info=info.filter(check_time__gte=date)
+    date = now + timedelta(days=-1)
+    info = info.filter(check_time__gte=date)
 
-    result_list=[]
+    result_list = []
     for temp in info:
-        y=model_to_dict(temp)
-        y['check_time']=y['check_time'].strftime("%Y-%m-%d %H:%M:%S")
+        y = model_to_dict(temp)
+        y['check_time'] = y['check_time'].strftime("%Y-%m-%d %H:%M:%S")
         result_list.append(y)
     # info['check_time']= info['check_time'].strftime("%Y-%m-%d %H:%M:%S")
 
@@ -121,6 +116,7 @@ def assets_monitor_info_query(request):
 
     return HttpResponse(json.dumps(data), content_type='application/json')
 
+
 def assets_process_query(request):
     obj = TAssetsProcess.objects.all()
     page = request.POST.get("page")
@@ -129,42 +125,42 @@ def assets_process_query(request):
     process_command = request.POST.get("process_command")
     process_user = request.POST.get("process_user")
     process_level = request.POST.get("process_level")
-    if process_host and  process_host!="":
-        obj=obj.filter(agent_id=process_host)
-    if process_name and  process_name!="":
-        obj=obj.filter(name=process_name)
-    if process_command and  process_command!="":
-        obj=obj.filter(command__icontains=process_command)
-    if process_user and  process_user!="":
-        obj=obj.filter(user__icontains=process_user)
-    if process_level and  process_level!="":
-        obj=obj.filter(level=process_level)
+    if process_host and process_host != "":
+        obj = obj.filter(agent_id=process_host)
+    if process_name and process_name != "":
+        obj = obj.filter(name=process_name)
+    if process_command and process_command != "":
+        obj = obj.filter(command__icontains=process_command)
+    if process_user and process_user != "":
+        obj = obj.filter(user__icontains=process_user)
+    if process_level and process_level != "":
+        obj = obj.filter(level=process_level)
 
     page = int(page) if page else 0
     if page < 0:
         page = 0
     num = 10  # 每页显示数目
-    max_size = int( math.ceil(float(len(obj))  / num))    # 最大分页数
+    max_size = int(math.ceil(float(len(obj)) / num))  # 最大分页数
     if max_size == 0:
         max_size = 1
     if page > max_size - 1:
         page = max_size - 1
 
-    #获得agent_id 跟主机名称 ip 的dir
-    hostname_dir={}
-    for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip","extranet_ip","os"):
-        if x[2]=="" or x[2] == None:
-            hostname_dir[str(x[0])]=[x[1],x[3],x[4]]
+    # 获得agent_id 跟主机名称 ip 的dir
+    hostname_dir = {}
+    for x in THostAgents.objects.all().values_list("agent_id", "host_name", "internal_ip", "extranet_ip", "os"):
+        if x[2] == "" or x[2] == None:
+            hostname_dir[str(x[0])] = [x[1], x[3], x[4]]
         else:
-            hostname_dir[str(x[0])]=[x[1],x[2],x[4]]
+            hostname_dir[str(x[0])] = [x[1], x[2], x[4]]
     y = []
     # print(hostname_dir)
     for x in obj[page * num:(page + 1) * num]:
         temp = model_to_dict(x)
         temp['level'] = "管理员" if temp['level'] == 1 else ""
-        temp['host_name']=hostname_dir[temp['agent_id']][0]
-        temp['host_ip']=hostname_dir[temp['agent_id']][1]
-        temp['os']=hostname_dir[temp['agent_id']][2]
+        temp['host_name'] = hostname_dir[temp['agent_id']][0]
+        temp['host_ip'] = hostname_dir[temp['agent_id']][1]
+        temp['os'] = hostname_dir[temp['agent_id']][2]
         # print(temp)
         y.append(temp)
     data = {}
@@ -186,20 +182,20 @@ def assets_process_query_num(request):
     process_command = request.POST.get("process_command")
     process_user = request.POST.get("process_user")
     process_level = request.POST.get("process_level")
-    if process_host and  process_host!="":
-        obj=obj.filter(agent_id=process_host)
-    if process_name and  process_name!="":
-        obj=obj.filter(name__icontains=process_name)
-    if process_command and  process_command!="":
-        obj=obj.filter(command__icontains=process_command)
-    if process_user and  process_user!="":
-        obj=obj.filter(user__icontains=process_user)
-    if process_level and  process_level!="":
-        obj=obj.filter(level=process_level)
+    if process_host and process_host != "":
+        obj = obj.filter(agent_id=process_host)
+    if process_name and process_name != "":
+        obj = obj.filter(name__icontains=process_name)
+    if process_command and process_command != "":
+        obj = obj.filter(command__icontains=process_command)
+    if process_user and process_user != "":
+        obj = obj.filter(user__icontains=process_user)
+    if process_level and process_level != "":
+        obj = obj.filter(level=process_level)
     # process_list=[]
     # process_list=obj.values_list("name").annotate(number=Count("name")).order_by("-number")
-    sql='SELECT name,  COUNT(DISTINCT name,agent_id) as num FROM t_assets_process GROUP BY name '
-    process_list=obj.values_list("name").annotate(number=Count("agent_id",distinct=True))
+    # sql = 'SELECT name,  COUNT(DISTINCT name,agent_id) as num FROM t_assets_process GROUP BY name '
+    process_list = obj.values_list("name").annotate(number=Count("agent_id", distinct=True))
     # print (aaa.query)
     # print (aaa)
     # cursor=connection.cursor()
@@ -207,27 +203,27 @@ def assets_process_query_num(request):
     # raw_all=cursor.fetchall()
     # print (raw_all)
     # aaa=aaa.annotate(number=Count("agent_id")).distinct()
-    process_list=list(process_list)
+    process_list = list(process_list)
     process_list = sorted(process_list, key=lambda item: item[1], reverse=True)
-    # print(process_list)
+    # print(len(process_list))
     page = int(page) if page else 0
     if page < 0:
         page = 0
     num = 10  # 每页显示数目
 
-    max_size = int( math.ceil(float(len(obj))  / num))     # 最大分页数
+    max_size = int(math.ceil(float(len(process_list)) / num))  # 最大分页数
     if max_size == 0:
         max_size = 1
     if page > max_size - 1:
         page = max_size - 1
 
-    #获得agent_id 跟主机名称 ip 的dir
-    hostname_dir={}
-    for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip","extranet_ip","os"):
-        if x[2]=="" or x[2] == None:
-            hostname_dir[str(x[0])]=[x[1],x[3],x[4]]
+    # 获得agent_id 跟主机名称 ip 的dir
+    hostname_dir = {}
+    for x in THostAgents.objects.all().values_list("agent_id", "host_name", "internal_ip", "extranet_ip", "os"):
+        if x[2] == "" or x[2] == None:
+            hostname_dir[str(x[0])] = [x[1], x[3], x[4]]
         else:
-            hostname_dir[str(x[0])]=[x[1],x[2],x[4]]
+            hostname_dir[str(x[0])] = [x[1], x[2], x[4]]
     y = []
     # print(hostname_dir)
     for x in process_list[page * num:(page + 1) * num]:
@@ -243,6 +239,7 @@ def assets_process_query_num(request):
 
     return HttpResponse(json.dumps(data), content_type='application/json')
 
+
 def assets_port_query(request):
     obj = TAssetsPort.objects.all()
     page = request.POST.get("page")
@@ -250,37 +247,37 @@ def assets_port_query(request):
     port_local_port = request.POST.get("port_local_port")
     port_proname = request.POST.get("port_proname")
 
-    if port_host and  port_host!="":
-        obj=obj.filter(agent_id=port_host)
-    if port_local_port and  port_local_port!="":
-        obj=obj.filter(local_port=port_local_port)
-    if port_proname and  port_proname!="":
-        obj=obj.filter(proname__icontains=port_proname)
+    if port_host and port_host != "":
+        obj = obj.filter(agent_id=port_host)
+    if port_local_port and port_local_port != "":
+        obj = obj.filter(local_port=port_local_port)
+    if port_proname and port_proname != "":
+        obj = obj.filter(proname__icontains=port_proname)
 
     page = int(page) if page else 0
     if page < 0:
         page = 0
     num = 10  # 每页显示数目
 
-    max_size = int( math.ceil(float(len(obj))  / num))     # 最大分页数
+    max_size = int(math.ceil(float(len(obj)) / num))  # 最大分页数
     if max_size == 0:
         max_size = 1
     if page > max_size - 1:
         page = max_size - 1
 
-    #获得agent_id 跟主机名称 ip 的dir
-    hostname_dir={}
-    for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip","extranet_ip","os"):
-        if x[2]=="" or x[2] == None:
-            hostname_dir[str(x[0])]=[x[1],x[3],x[4]]
+    # 获得agent_id 跟主机名称 ip 的dir
+    hostname_dir = {}
+    for x in THostAgents.objects.all().values_list("agent_id", "host_name", "internal_ip", "extranet_ip", "os"):
+        if x[2] == "" or x[2] == None:
+            hostname_dir[str(x[0])] = [x[1], x[3], x[4]]
         else:
-            hostname_dir[str(x[0])]=[x[1],x[2],x[4]]
+            hostname_dir[str(x[0])] = [x[1], x[2], x[4]]
     y = []
     for x in obj[page * num:(page + 1) * num]:
         temp = model_to_dict(x)
-        temp['host_name']=hostname_dir[temp['agent_id']][0]
-        temp['host_ip']=hostname_dir[temp['agent_id']][1]
-        temp['process_name']=temp['proname']
+        temp['host_name'] = hostname_dir[temp['agent_id']][0]
+        temp['host_ip'] = hostname_dir[temp['agent_id']][1]
+        temp['process_name'] = temp['proname']
         y.append(temp)
     data = {}
     data['data'] = y
@@ -296,28 +293,28 @@ def assets_port_query(request):
 def assets_port_chart(request):
     obj = TAssetsPort.objects.all()
 
-    #获得agent_id 跟主机名称 ip 的dir
-    hostname_dir={}
-    for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip","extranet_ip","os"):
-        if x[2]=="" or x[2] == None:
-            hostname_dir[str(x[0])]=[x[1],x[3],x[4]]
+    # 获得agent_id 跟主机名称 ip 的dir
+    hostname_dir = {}
+    for x in THostAgents.objects.all().values_list("agent_id", "host_name", "internal_ip", "extranet_ip", "os"):
+        if x[2] == "" or x[2] == None:
+            hostname_dir[str(x[0])] = [x[1], x[3], x[4]]
         else:
-            hostname_dir[str(x[0])]=[x[1],x[2],x[4]]
+            hostname_dir[str(x[0])] = [x[1], x[2], x[4]]
 
-    port_num=obj.values_list("local_port").annotate(number=Count("local_port")).order_by("-number")
-    agent_port_num=obj.values_list("agent_id").annotate(number=Count("agent_id")).order_by("-number")
+    port_num = obj.values_list("local_port").annotate(number=Count("local_port")).order_by("-number")
+    agent_port_num = obj.values_list("agent_id").annotate(number=Count("agent_id")).order_by("-number")
 
-    agent_port_num_list=[]
+    agent_port_num_list = []
     for x in list(agent_port_num)[0:10]:
-        x=list(x)
-        x[0]=hostname_dir[x[0]][0]
+        x = list(x)
+        x[0] = hostname_dir[x[0]][0]
         agent_port_num_list.append(x)
     data = {}
     data['data'] = {}
     data['code'] = 200
     data['msg'] = "success"
-    data['data']['port_num']=list(port_num[0:10])
-    data['data']['agent_port_num']=agent_port_num_list
+    data['data']['port_num'] = list(port_num[0:10])
+    data['data']['agent_port_num'] = agent_port_num_list
     # data['page'] = page
     # data['max_size'] = max_size
     # data['hostname'] = hostname_dir
