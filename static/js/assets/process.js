@@ -10,7 +10,8 @@ function process_click(page) {
             $("#div_container").html($(res));
             $(this).addClass("active router-link-active").siblings().removeClass("active router-link-active");
 
-            process_click_search(page)
+            process_click_search(page);
+            $(".container1").css('background-color', '#f0f2f5');
         }
     });
 }
@@ -146,10 +147,6 @@ function process_click_search(page) {
             }
             
             $('.paging').html(pagecontent);
-
-
-
-
 }
 function process_detail(data,process_name1,now_page) {
     // console.log(process_name1);
