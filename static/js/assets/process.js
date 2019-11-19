@@ -184,7 +184,7 @@ function process_detail(data,process_name1,now_page) {
                 }
                 let command = process_table_data[j]['command'].replace(/\"/, "");
                 process_detail_html += '<tr>' +
-                    '<td class="port_add">'+server_img + process_table_data[j]['host_name'] + '<p>(' + process_table_data[j]['host_ip'] + ')</p></td>' +
+                    '<td class="port_add">'+server_img + process_table_data[j]['host_name'] + '<p>' + process_table_data[j]['host_ip'] + '</p></td>' +
 
                     '<td title="' + process_table_data[j]['name'] + '">' + process_table_data[j]['name'] + '</td>' +
                     '<td>' + process_table_data[j]['pid'] + '</td>' +
