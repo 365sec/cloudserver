@@ -51,11 +51,12 @@ urlpatterns = [
     ############################ 资产清点URL ###############################
     url(r'^assets/app_query$', assets_view.app_query),
     url(r'^assets/query_network$', assets_view.assets_query_network),
-    url(r'^assets/query_monitor_info_last$', assets_view.assets_monitor_info_last),
+    url(r'^assets/query_monitor_info_last$', assets_view.assets_monitor_info_last),#监控信息
     url(r'^assets/query_monitor_info_query$', assets_view.assets_monitor_info_query),
     url(r'^assets/query_process$', assets_view.assets_process_query),
-    url(r'^assets/query_process_num$', assets_view.assets_process_query_num),
+    url(r'^assets/query_process_num$', assets_view.assets_process_query_num),#查询每个进程有多少个主机拥有
     url(r'^assets/query_port$', assets_view.assets_port_query),
+    url(r'^assets/query_port_chart$', assets_view.assets_port_chart),
 
     #######################################################################
     url(r'^download$', link.download),

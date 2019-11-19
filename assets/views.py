@@ -40,11 +40,11 @@ def app_query(request):
 def assets_query_network(request):
     #获得agent_id 跟主机名称 ip 的dir
     hostname_dir={}
-    for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip","extranet_ip"):
+    for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip","extranet_ip","os"):
         if x[2]=="" or x[2] == None:
-            hostname_dir[str(x[0])]=[x[1],x[3]]
+            hostname_dir[str(x[0])]=[x[1],x[3],x[4]]
         else:
-            hostname_dir[str(x[0])]=[x[1],x[2]]
+            hostname_dir[str(x[0])]=[x[1],x[2],x[4]]
 
     obj = TAssetsActiveNetwork.objects.all()
 
@@ -223,11 +223,11 @@ def assets_process_query_num(request):
 
     #获得agent_id 跟主机名称 ip 的dir
     hostname_dir={}
-    for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip","extranet_ip"):
+    for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip","extranet_ip","os"):
         if x[2]=="" or x[2] == None:
-            hostname_dir[str(x[0])]=[x[1],x[3]]
+            hostname_dir[str(x[0])]=[x[1],x[3],x[4]]
         else:
-            hostname_dir[str(x[0])]=[x[1],x[2]]
+            hostname_dir[str(x[0])]=[x[1],x[2],x[4]]
     y = []
     # print(hostname_dir)
     for x in process_list[page * num:(page + 1) * num]:
@@ -270,11 +270,11 @@ def assets_port_query(request):
 
     #获得agent_id 跟主机名称 ip 的dir
     hostname_dir={}
-    for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip","extranet_ip"):
+    for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip","extranet_ip","os"):
         if x[2]=="" or x[2] == None:
-            hostname_dir[str(x[0])]=[x[1],x[3]]
+            hostname_dir[str(x[0])]=[x[1],x[3],x[4]]
         else:
-            hostname_dir[str(x[0])]=[x[1],x[2]]
+            hostname_dir[str(x[0])]=[x[1],x[2],x[4]]
     y = []
     for x in obj[page * num:(page + 1) * num]:
         temp = model_to_dict(x)
@@ -296,12 +296,28 @@ def assets_port_query(request):
 def assets_port_chart(request):
     obj = TAssetsPort.objects.all()
 
-    port_num=obj.annotate(count="local_port")
-    print(port_num)
+    #获得agent_id 跟主机名称 ip 的dir
+    hostname_dir={}
+    for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip","extranet_ip","os"):
+        if x[2]=="" or x[2] == None:
+            hostname_dir[str(x[0])]=[x[1],x[3],x[4]]
+        else:
+            hostname_dir[str(x[0])]=[x[1],x[2],x[4]]
+
+    port_num=obj.values_list("local_port").annotate(number=Count("local_port")).order_by("-number")
+    agent_port_num=obj.values_list("agent_id").annotate(number=Count("agent_id")).order_by("-number")
+
+    agent_port_num_list=[]
+    for x in list(agent_port_num)[0:10]:
+        x=list(x)
+        x[0]=hostname_dir[x[0]][0]
+        agent_port_num_list.append(x)
     data = {}
     data['data'] = {}
     data['code'] = 200
     data['msg'] = "success"
+    data['data']['port_num']=list(port_num[0:10])
+    data['data']['agent_port_num']=agent_port_num_list
     # data['page'] = page
     # data['max_size'] = max_size
     # data['hostname'] = hostname_dir

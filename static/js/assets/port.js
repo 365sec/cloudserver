@@ -10,6 +10,7 @@ function port_click(page) {
             $("#div_container").html($(res));
             $(this).addClass("active router-link-active").siblings().removeClass("active router-link-active");
 
+            port_chart();
             port_click_search(page)
         }
     });
@@ -38,7 +39,7 @@ function port_click_search(page) {
         data: data,
         //dataType: "json",
         success: function (data_list) {
-            console.log(data_list);
+            // console.log(data_list);
             let hostname=data_list['hostname'];
             let now_page = data_list['page'];
             let max_size = data_list['max_size'];
@@ -121,4 +122,21 @@ function port_reset() {
     $("#port_proname").val("");
 
     port_click_search(0);
+}
+
+/*
+* port图表
+* */
+function port_chart() {
+    console.log('port_chart');
+    $.ajax({
+        url: "assets/query_port_chart",
+        type: 'GET',
+        // data: data,
+        //dataType: "json",
+        success: function (data_list) {
+
+            console.log(data_list)
+
+        }})
 }
