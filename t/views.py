@@ -1603,12 +1603,13 @@ def baseline(request):
                     try:
                         y['name']=baseline_dir[str(y['id'])]['check_item_name']
                         y['suggest']=baseline_dir[str(y['id'])]['check_suggest']
-                        print baseline_dir[str(y['id'])]['check_item_level']
+                        # print baseline_dir[str(y['id'])]['check_item_level']
                         system_check=system_check+baseline_dir[str(y['id'])]['check_item_level']
                         if not y['suggest']:
                             y['suggest']="暂无"
-                    except Exception, e:
-                        print e
+                    except Exception as e:
+                        print (e)
+
 
             score=score-account_security_count-web_file_count-system_check
             if score<0:
@@ -1617,7 +1618,6 @@ def baseline(request):
             result.save()
     data['online']=online
     data['score']=score
-
     return HttpResponse(json.dumps(data,ensure_ascii=False,encoding='utf-8'), content_type='application/json')
 
 def baseline_check(request):
@@ -1640,6 +1640,7 @@ def baseline_check(request):
 
 def baseline_status(request):
     id=request.POST.get("agent_id")
+
     result = TBaselineCheck.objects.all().get(agent_id=id)
     data = {}
     data['success']=result.check_status

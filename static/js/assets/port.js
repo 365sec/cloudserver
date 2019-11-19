@@ -19,40 +19,34 @@ function port_click(page) {
 
 function port_click_search(page) {
     let data = {};
-    let port_msg = $("#port_msg").val();
+
     let port_host = $("#port_host").val();
-    let port_name = $("#port_name").val();
-    let port_command = $("#port_command").val();
-    let port_user = $("#port_user").val();
-    let port_level = $("#port_level").val();
+    let port_proname = $("#port_proname").val();
+    let port_local_port = $("#port_local_port").val();
 
-    if (port_msg === undefined) {port_msg = ""}
+
     if (port_host === undefined) {port_host = ""}
-    if (port_name === undefined) {port_name = ""}
-    if (port_command === undefined) {port_command = ""}
-    if (port_user === undefined) {port_user = ""}
-    if (port_level === undefined) {port_level = ""}
+    if (port_proname === undefined) {port_proname = ""}
+    if (port_local_port === undefined) {port_local_port = ""}
 
-    data['port_msg'] = port_msg;
+
     data['port_host'] = port_host;
-    data['port_name'] = port_name;
-    data['port_command'] = port_command;
-    data['port_user'] = port_user;
-    data['port_level'] = port_level;
+    data['port_proname'] = port_proname;
+    data['port_local_port'] = port_local_port;
     data['page'] = page;
     let hostname= []; //主机列表
     let port_list = []; //进程列表
     let now_page = 0;
     let max_size;
     $.ajax({
-        url: "assets/query_process_num",
+        url: "assets/query_port_num",
         type: 'POST',
         data: data,
         async:false,
         //dataType: "json",
         success: function (data_list) {
             hostname=data_list['hostname'];
-            port_list=data_list['process_list'];
+            port_list=data_list['port_list'];
             now_page=data_list['page'];
             max_size=data_list['max_size'];
 
@@ -78,28 +72,21 @@ function port_click_search(page) {
         html_select += '<option value="' + agent_id + '" >' + hostname[agent_id][0]+"("+hostname[agent_id][1] +")"+ '</option>'
     }
     html_select += '</select></div>';
-    html_select += '<input id="port_name" placeholder="进程名称" value="' + port_name + '" />';
-    html_select += '<input id="port_command" placeholder="启动命令" value="' + port_command + '" />';
-    html_select += '<input id="port_user" placeholder="启动用户" value="' + port_user + '" /></div>';
 
-    html_select += '<div class="search_button">';
-    html_select += '<select id="port_level" class="form-btn" style="width: 140px">';
-    html_select += '<option value="" >' + "--是否管理员--" + '</option>';
-    html_select += '<option value="1" >' + '管理员'+ '</option>';
-    html_select += '<option value="0" >' + '非管理员'+ '</option>';
-    html_select += '</select></div>';
+    html_select += '<input id="port_local_port" placeholder="本地端口" value="' + port_local_port + '" />';
+    // html_select += '<input id="port_user" placeholder="协议类型" value="' + port_user + '" /></div>';
+    html_select += '<input id="port_proname" placeholder="进程名称" value="' + port_proname + '" />';
+
     html_select += '<div  class="btn" onclick="port_click_search(0)" >查询</div>';
     html_select += '<div  class="btn" onclick="port_reset()" >重置</div>';
     html_select += '</div>';
     html_select += '</div>';
     select_div.html(html_select);
     // $("#server_attack_time").val(attack_time);
-    $("#port_msg").val(port_msg);
+
     $("#port_host").val(port_host);
-    $("#port_name").val(port_name);
-    $("#port_command").val(port_command);
-    $("#port_user").val(port_user);
-    $("#port_level").val(port_level);
+    $("#port_proname").val(port_proname);
+    $("#port_local_port").val(port_local_port);
     //----------------------------------------------------------
     let next_page='<a href="javascript:void(0);" onclick="port_click_search(' + (now_page + 1) + ')">下一页</a>';
     if (parseInt(now_page)+1===parseInt(max_size))
@@ -120,7 +107,7 @@ function port_click_search(page) {
         base_id=hex_md5(base_id);
         let port_table = '';
         port_table += '<tr id="'+ base_id+'" port_id="'+ port_list[i][0]+'">' +
-            '<td width="60%" >进程：<span>'+port_list[i][0]+'</span></td>' +
+            '<td width="60%" >端口：<span>'+port_list[i][0]+'</span></td>' +
             '<td width="40%">主机数：<span>'+port_list[i][1]+'</span></td>' +
             '<td width="45px" style="text-align: center"><i class="iconfont slide_mark">&#xe64a;</i></td>' +
             '</tr>' +
@@ -130,12 +117,12 @@ function port_click_search(page) {
             '<thead>' +
             '<tr>' +
             '<th width="15%">主机</th>' +
-            '<th width="20%">进程名</th>' +
-            '<th width="6%">进程ID</th>' +
-            '<th width="22%">进程路径</th>' +
-            '<th width="22%">启动命令</th>' +
-            '<th width="10%">用户</th>' +
-            '<th width="12%">是否管理员</th>' +
+            '<th width="20%">本地地址</th>' +
+            '<th width="6%">本地端口</th>' +
+            '<th width="22%">协议类型</th>' +
+            '<th width="22%">进程ID</th>' +
+            '<th width="10%">进程名</th>' +
+            '<th width="12%">进程路径</th>' +
             '</tr>' +
             '</thead>' +
             '<tbody>' +
@@ -157,7 +144,7 @@ function port_detail(data,port_name1,now_page) {
     }
     data['page']=now_page;
     $.ajax({
-        url: "assets/query_process",
+        url: "assets/query_port",
         type: 'POST',
         data: data,
         //dataType: "json",
@@ -181,17 +168,18 @@ function port_detail(data,port_name1,now_page) {
                 }else{
                     server_img='<img src="/static/images/os_linux_on.png" style="width: 20px"/>';
                 }
-                let command = port_table_data[j]['command'].replace(/\"/, "");
+                let local_port = port_table_data[j]['local_port'];
                 port_detail_html += '<tr>' +
                     '<td class="port_add">'+server_img + port_table_data[j]['host_name'] + '<p>' + port_table_data[j]['host_ip'] + '</p></td>' +
 
-                    '<td title="' + port_table_data[j]['name'] + '">' + port_table_data[j]['name'] + '</td>' +
-                    '<td>' + port_table_data[j]['pid'] + '</td>' +
-                    '<td title="' + port_table_data[j]['path'] + '">' + port_table_data[j]['path'] + '</td>' +
+                    '<td title="' + port_table_data[j]['local_addr'] + '">' + port_table_data[j]['local_addr'] + '</td>' +
+                    '<td title="' + port_table_data[j]['local_port'] + '">' + port_table_data[j]['local_port'] + '</td>' +
+                    '<td>' + port_table_data[j]['name'] + '</td>' +
+                    '<td title="' + port_table_data[j]['pid'] + '">' + port_table_data[j]['pid'] + '</td>' +
 
-                    '<td title="' + command + '">' + port_table_data[j]['command'] + '</td>' +
-                    '<td>' + port_table_data[j]['user'] + '</td>' +
-                    '<td>' + port_table_data[j]['level'] + '</td>';
+                    // '<td title="' + local_port + '">' + port_table_data[j]['local_port'] + '</td>' +
+                    '<td title="' + port_table_data[j]['proname'] + '" >' + port_table_data[j]['proname'] + '</td>' +
+                    '<td title="' + port_table_data[j]['path'] + '">' + port_table_data[j]['path'] + '</td>';
             }
             let str_data=JSON.stringify(data).replace(/"/g,'&quot;');
 
@@ -208,7 +196,6 @@ function port_detail(data,port_name1,now_page) {
                 '<input id = "port_detial_jump" value="' + (now_page+1) + '" />' +
                 '<a href="javascript:void(0);" onclick="port_detial_search_jump(\''+str_data+'\',\'' +port_name1+'\',\''+ (0)+'\')">跳转</a>' +
                 '</ul>';
-
 
 
             let port_info = $("#"+port_name1).next();
@@ -239,12 +226,10 @@ function port_detial_search_jump(data,port_name1,now_page) {
 
 }
 function port_reset() {
-    $("#port_msg").val("");
     $("#port_host").val("");
-    $("#port_name").val("");
-    $("#port_command").val("");
-    $("#port_user").val("");
-    $("#port_level").val("");
+    $("#port_proname").val("");
+    $("#port_local_port").val("");
+
     port_click_search(0);
 }
 
@@ -252,29 +237,26 @@ $(document).off('click','#port_table>tbody>tr:nth-child(2n+1)').on('click','#por
     $(this).next().slideToggle(300);
     $(this).find('.slide_mark').toggleClass('iconRotate');
     let data = {};
-    let port_msg = $("#port_msg").val();
     let port_host = $("#port_host").val();
-    let port_name = $("#port_name").val();
-    let port_command = $("#port_command").val();
-    let port_user = $("#port_user").val();
-    let port_level = $("#port_level").val();
+    let port_proname = $("#port_proname").val();
+    let port_local_port = $("#port_local_port").val();
 
-    if (port_msg === undefined) {port_msg = ""}
+
     if (port_host === undefined) {port_host = ""}
-    if (port_name === undefined) {port_name = ""}
-    if (port_command === undefined) {port_command = ""}
-    if (port_user === undefined) {port_user = ""}
-    if (port_level === undefined) {port_level = ""}
+    if (port_proname === undefined) {port_proname = ""}
+    if (port_local_port === undefined) {port_local_port = ""}
 
-    data['port_msg'] = port_msg;
+
+
     data['port_host'] = port_host;
-    data['port_name'] = $(this).attr("port_id");
-    data['port_command'] = port_command;
-    data['port_user'] = port_user;
-    data['port_level'] = port_level;
-    // console.log($(this).attr("id"));
+    data['port_proname'] = port_proname;
+    data['port_local_port'] = $(this).attr("port_id");
+
     //
     data['page'] = 0;
+    // console.log(port_local_port )
+    // console.log(port_proname )
+    // console.log($(this).attr("port_id"))
     port_detail(data,$(this).attr("id"),0);
 });
 

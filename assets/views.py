@@ -38,7 +38,15 @@ def app_query(request):
 
 # 资产查询活动网络信息
 def assets_query_network(request):
-    #获得agent_id 跟主机名称 ip 的dir
+
+    page = request.POST.get("page")
+    netconnecting_host =request.POST.get("netconnecting_host")
+    netconnecting_name =request.POST.get("netconnecting_name")
+    netconnecting_port =request.POST.get("netconnecting_port")
+    netconnecting_remote_addr =request.POST.get("netconnecting_remote_addr")
+    netconnecting_remote_port =request.POST.get("netconnecting_remote_port")
+
+#获得agent_id 跟主机名称 ip 的dir
     hostname_dir={}
     for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip","extranet_ip","os"):
         if x[2]=="" or x[2] == None:
@@ -47,10 +55,14 @@ def assets_query_network(request):
             hostname_dir[str(x[0])]=[x[1],x[2],x[4]]
 
     obj = TAssetsActiveNetwork.objects.all()
+    obj=obj.filter(agent_id=netconnecting_host) if netconnecting_host and netconnecting_host!="" else obj
+    obj=obj.filter(proname__icontains=netconnecting_name) if netconnecting_name and netconnecting_name!="" else obj
+    obj=obj.filter(local_port=netconnecting_port) if netconnecting_port and netconnecting_port!="" else obj
+    obj=obj.filter(remote_addr=netconnecting_remote_addr) if netconnecting_remote_addr and netconnecting_remote_addr!="" else obj
+    obj=obj.filter(remote_port=netconnecting_remote_port) if netconnecting_remote_port and netconnecting_remote_port!="" else obj
 
-    page = request.POST.get("page")
+
     page = int(page) if page else 0
-
     if page < 0:
         page = 0
     num = 10  # 每页显示数目
@@ -70,6 +82,7 @@ def assets_query_network(request):
 
     data = {}
     data['data'] = y
+    data['hostname'] = hostname_dir
     data['msg'] = "success"
     data['page'] = page
     data['max_size'] = max_size
@@ -82,10 +95,11 @@ def assets_query_network(request):
 
 def assets_monitor_info_last(request):
     agent_id=request.POST.get("agent_id")
-    info = TAssetsMonitor.objects.all().filter(agent_id=agent_id).last()
-    # print(model_to_dict(info))
-    info=model_to_dict(info)
-    info['check_time']= info['check_time'].strftime("%Y-%m-%d %H:%M:%S")
+    # info = TAssetsMonitor.objects.all().filter(agent_id=agent_id).last()
+    # # print(model_to_dict(info))
+    # info=model_to_dict(info)
+    info={}
+    # info['check_time']= info['check_time'].strftime("%Y-%m-%d %H:%M:%S")
     data = {}
     data['msg'] = "success"
     data['code'] = 200
@@ -199,7 +213,7 @@ def assets_process_query_num(request):
         obj=obj.filter(level=process_level)
     # process_list=[]
     # process_list=obj.values_list("name").annotate(number=Count("name")).order_by("-number")
-    sql='SELECT name,  COUNT(DISTINCT name,agent_id) as num FROM t_assets_process GROUP BY name '
+    # sql='SELECT name,  COUNT(DISTINCT name,agent_id) as num FROM t_assets_process GROUP BY name '
     process_list=obj.values_list("name").annotate(number=Count("agent_id",distinct=True))
     # print (aaa.query)
     # print (aaa)
@@ -250,7 +264,7 @@ def assets_port_query(request):
     port_host = request.POST.get("port_host")
     port_local_port = request.POST.get("port_local_port")
     port_proname = request.POST.get("port_proname")
-
+    # print(request.POST)
     if port_host and  port_host!="":
         obj=obj.filter(agent_id=port_host)
     if port_local_port and  port_local_port!="":
@@ -263,7 +277,7 @@ def assets_port_query(request):
         page = 0
     num = 10  # 每页显示数目
 
-    max_size = int( math.ceil(float(len(obj))  / num))     # 最大分页数
+    max_size = int( math.ceil(float(len(obj)) / num))     # 最大分页数
     if max_size == 0:
         max_size = 1
     if page > max_size - 1:
@@ -295,6 +309,68 @@ def assets_port_query(request):
     return HttpResponse(json.dumps(data), content_type='application/json')
 
 
+def assets_port_query_num(request):
+    obj = TAssetsPort.objects.all()
+    page = request.POST.get("page")
+    port_host = request.POST.get("port_host")
+    port_proname = request.POST.get("port_proname")
+    port_local_port = request.POST.get("port_local_port")
+    # print(request.POST)
+
+    if port_host and  port_host!="":
+        obj=obj.filter(agent_id=port_host)
+    if port_proname and  port_proname!="":
+        obj=obj.filter(proname__icontains=port_proname)
+    if port_local_port and  port_local_port!="":
+        obj=obj.filter(local_port=port_local_port)
+
+    # process_list=[]
+    # process_list=obj.values_list("name").annotate(number=Count("name")).order_by("-number")
+    # sql='SELECT name,  COUNT(DISTINCT name,agent_id) as num FROM t_assets_process GROUP BY name '
+    port_list=obj.values_list("local_port").annotate(number=Count("agent_id",distinct=True))
+    # print (aaa.query)
+    # print (aaa)
+    # cursor=connection.cursor()
+    # cursor.execute(sql)
+    # raw_all=cursor.fetchall()
+    # print (raw_all)
+    # aaa=aaa.annotate(number=Count("agent_id")).distinct()
+    port_list=list(port_list)
+    port_list = sorted(port_list, key=lambda item: item[1], reverse=True)
+    # print(process_list)
+    page = int(page) if page else 0
+    if page < 0:
+        page = 0
+    num = 15  # 每页显示数目
+
+    max_size = int( math.ceil(float(len(port_list))  / num))     # 最大分页数
+    if max_size == 0:
+        max_size = 1
+    if page > max_size - 1:
+        page = max_size - 1
+
+    #获得agent_id 跟主机名称 ip 的dir
+    hostname_dir={}
+    for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip","extranet_ip","os"):
+        if x[2]=="" or x[2] == None:
+            hostname_dir[str(x[0])]=[x[1],x[3],x[4]]
+        else:
+            hostname_dir[str(x[0])]=[x[1],x[2],x[4]]
+    y = []
+    # print(hostname_dir)
+    for x in port_list[page * num:(page + 1) * num]:
+        y.append(x)
+    data = {}
+    # data['data'] = y
+    data['port_list'] = y
+    data['code'] = 200
+    data['msg'] = "success"
+    data['page'] = page
+    data['max_size'] = max_size
+    data['hostname'] = hostname_dir
+
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
 def assets_port_chart(request):
     obj = TAssetsPort.objects.all()
 
@@ -325,3 +401,4 @@ def assets_port_chart(request):
     # data['hostname'] = hostname_dir
 
     return HttpResponse(json.dumps(data), content_type='application/json')
+

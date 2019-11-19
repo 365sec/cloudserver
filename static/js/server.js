@@ -22,7 +22,7 @@ function server_click(page) {
                 },
                 //dataType: "json",
                 success: function (data_list) {
-                    console.log(data_list);
+
                     if(data_list.hasOwnProperty('auth')){
                         window.location.href = '/login'
                     }
@@ -628,7 +628,6 @@ function server_checking(data){
         },
         //dataType: "json",
         success: function (data_list) {
-            // console.log(data_list);
             if (data_list['online']!==1) {
                 $("#start_server_check").hide();
             }
@@ -926,7 +925,7 @@ function server_website_list(now_page){
         success: function (data_list) {
             data = data_list['agents'];
             max_size=data_list['max_size'];
-            console.log(data_list);
+            // console.log(data_list);
         }});
     if (now_page == null || now_page < 1) {
         now_page = 1;
@@ -1018,7 +1017,6 @@ function black_white_list(agent_id) {
         // dataType: "json",
         async: false,
         success: function (data_list) {
-
             let black_list_data = data_list['black_list'];
             let white_list_data = data_list['white_list'];
             b_w_list['black_list'] = data_list['black_list'];
@@ -1464,7 +1462,6 @@ function config_show(agent_id) {
         async: false,
         dataType: "json",
         success: function (data_list) {
-            // console.log(data_list);
             httpProtectConfig = data_list['httpProtectConfig'];
             algorithm_config = data_list['algorithm_config'];
             globalConfig = data_list['globalConfig'];

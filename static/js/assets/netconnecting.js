@@ -24,13 +24,30 @@ function netconnecting_click(page) {
 
 function netconnecting_click_search(page) {
     let data = {};
-    let netconnecting_msg = $("#netconnecting_msg").val();
+    // let netconnecting_msg = $("#netconnecting_msg").val();
+    let netconnecting_host = $("#netconnecting_host").val();
+    let netconnecting_name = $("#netconnecting_name").val();
+    let netconnecting_port = $("#netconnecting_port").val();
+    let netconnecting_remote_addr = $("#netconnecting_remote_addr").val();
+    let netconnecting_remote_port = $("#netconnecting_remote_port").val();
 
-    if (netconnecting_msg === undefined) {netconnecting_msg = ""}
+    // if (netconnecting_msg === undefined) {netconnecting_msg = ""}
+    if (netconnecting_host === undefined) {netconnecting_host = ""}
+    if (netconnecting_name === undefined) {netconnecting_name = ""}
+    if (netconnecting_port === undefined) {netconnecting_port = ""}
+    if (netconnecting_remote_addr === undefined) {netconnecting_remote_addr = ""}
+    if (netconnecting_remote_port === undefined) {netconnecting_remote_port = ""}
 
-    data['netconnecting_msg'] = netconnecting_msg;
+    // data['netconnecting_msg'] = netconnecting_msg;
 
+    data['netconnecting_host'] = netconnecting_host;
+    data['netconnecting_name'] = netconnecting_name;
+    data['netconnecting_port'] = netconnecting_port;
+    data['netconnecting_remote_addr'] = netconnecting_remote_addr;
+    data['netconnecting_remote_port'] = netconnecting_remote_port;
     data['page'] = page;
+
+
     $.ajax({
         url: "assets/query_network",
         type: 'POST',
@@ -40,6 +57,7 @@ function netconnecting_click_search(page) {
             console.log(data_list);
             let now_page = data_list['page'];
             let max_size = data_list['max_size'];
+            let hostname=data_list['hostname'];
             if (now_page == null ) {
                 now_page = 0;
             }
@@ -51,15 +69,34 @@ function netconnecting_click_search(page) {
             let html_select = "";
             html_select = '<div>';
             html_select += '<div id="" class="search_btngroup">';
-            html_select += '<div class="search_button" ><span class="btnvalue"  >关键词: </span>';
-            html_select += '<input id="netconnecting_msg" value="' + netconnecting_msg + '" /></div>';
-            html_select += '<div  class="btn" onclick="netconnecting_click_search(1)" >查询</div>';
+            // html_select += '<div class="search_button" ><span class="btnvalue"  >关键词: </span>';
+
+            html_select += '<div class="search_button">';
+            html_select += '<select id="netconnecting_host" class="form-btn" style="width: 140px">';
+            html_select += '<option value="" >' + "--请选择主机名称--" + '</option>';
+            for (agent_id in hostname) {
+                html_select += '<option value="' + agent_id + '" >' + hostname[agent_id][0]+"("+hostname[agent_id][1] +")"+ '</option>'
+            }
+            html_select += '</select></div>';
+            html_select += '<input id="netconnecting_port" placeholder="本地端口" value="' + netconnecting_port + '" />';
+            html_select += '<input id="netconnecting_remote_addr" placeholder="远程地址" value="' + netconnecting_remote_addr + '" />';
+            html_select += '<input id="netconnecting_remote_port" placeholder="远程端口" value="' + netconnecting_remote_port + '" />';
+            html_select += '<input id="netconnecting_name" placeholder="进程名称" value="' + netconnecting_name + '" />';
+
+            // html_select += '<input id="netconnecting_msg" value="' + netconnecting_msg + '" /></div>';
+            html_select += '<div  class="btn" onclick="netconnecting_click_search(0)" >查询</div>';
             html_select += '<div  class="btn" onclick="netconnecting_reset()" >重置</div>';
             html_select += '</div>';
             html_select += '</div>';
             select_div.html(html_select);
             // $("#server_attack_time").val(attack_time);
-            $("#netconnecting_msg").val(netconnecting_msg);
+
+            // $("#netconnecting_msg").val(netconnecting_msg);
+            $("#netconnecting_host").val(netconnecting_host);
+            $("#netconnecting_name").val(netconnecting_name);
+            $("#netconnecting_port").val(netconnecting_port);
+            $("#netconnecting_remote_addr").val(netconnecting_remote_addr);
+            $("#netconnecting_remote_port").val(netconnecting_remote_port);
             //----------------------------------------------------------
             let netconnecting_table_data = data_list['data'];
             let netconnecting_table = '';
@@ -101,10 +138,17 @@ function netconnecting_click_search(page) {
 function netconnecting_click_search_jump() {
 
     let page= $("#netconnecting_jump").val();
-    netconnecting_click_search(parseInt(page))
+    netconnecting_click_search(parseInt(page)-1)
 
 }
 function netconnecting_reset() {
+
+
     $("#netconnecting_msg").val("");
-    netconnecting_click_search(1);
+    $("#netconnecting_host").val("");
+    $("#netconnecting_name").val("");
+    $("#netconnecting_port").val("");
+    $("#netconnecting_remote_addr").val("");
+    $("#netconnecting_remote_port").val("");
+    netconnecting_click_search(0);
 }

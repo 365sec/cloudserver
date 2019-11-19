@@ -56,6 +56,7 @@ urlpatterns = [
     url(r'^assets/query_process$', assets_view.assets_process_query),
     url(r'^assets/query_process_num$', assets_view.assets_process_query_num),#查询每个进程有多少个主机拥有
     url(r'^assets/query_port$', assets_view.assets_port_query),
+    url(r'^assets/query_port_num$', assets_view.assets_port_query_num),
     url(r'^assets/query_port_chart$', assets_view.assets_port_chart),
 
     #######################################################################
