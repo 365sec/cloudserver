@@ -118,8 +118,8 @@ function process_click_search(page) {
                 base_id=hex_md5(base_id);
                 let process_table = '';
                 process_table += '<tr id="'+ base_id+'" process_id="'+ process_list[i][0]+'">' +
-                    '<td>进程：<span>'+process_list[i][0]+'</span></td>' +
-                    '<td>主机数：<span>'+process_list[i][1]+'</span></td>' +
+                    '<td width="60%" >进程：<span>'+process_list[i][0]+'</span></td>' +
+                    '<td width="40%">主机数：<span>'+process_list[i][1]+'</span></td>' +
                     '<td width="45px" style="text-align: center"><i class="iconfont slide_mark">&#xe64a;</i></td>' +
                     '</tr>' +
                     '<tr style="display: none">' +
@@ -127,13 +127,13 @@ function process_click_search(page) {
                     '<table class="table table-striped table_fixed w100">' +
                     '<thead>' +
                     '<tr>' +
-                    '<th width="14%">主机</th>' +
+                    '<th width="15%">主机</th>' +
                     '<th width="20%">进程名</th>' +
                     '<th width="6%">进程ID</th>' +
                     '<th width="22%">进程路径</th>' +
                     '<th width="22%">启动命令</th>' +
                     '<th width="10%">用户</th>' +
-                    '<th width="6%">权限</th>' +
+                    '<th width="12%">是否管理员</th>' +
                     '</tr>' +
                     '</thead>' +
                     '<tbody>' +

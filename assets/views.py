@@ -65,6 +65,7 @@ def assets_query_network(request):
         temp=model_to_dict(x)
         temp['host_name']=hostname_dir[temp['agent_id']][0]
         temp['host_ip']=hostname_dir[temp['agent_id']][1]
+        temp['os'] = hostname_dir[temp['agent_id']][2]
         y.append(temp)
 
     data = {}
@@ -143,7 +144,7 @@ def assets_process_query(request):
     page = int(page) if page else 0
     if page < 0:
         page = 0
-    num = 10  # 每页显示数目
+    num = 15  # 每页显示数目
     max_size = int( math.ceil(float(len(obj))  / num))    # 最大分页数
     if max_size == 0:
         max_size = 1
@@ -161,7 +162,7 @@ def assets_process_query(request):
     # print(hostname_dir)
     for x in obj[page * num:(page + 1) * num]:
         temp = model_to_dict(x)
-        temp['level'] = "管理员" if temp['level'] == 1 else ""
+        temp['level'] = "是" if temp['level'] == 1 else "否"
         temp['host_name']=hostname_dir[temp['agent_id']][0]
         temp['host_ip']=hostname_dir[temp['agent_id']][1]
         temp['os']=hostname_dir[temp['agent_id']][2]
@@ -213,9 +214,9 @@ def assets_process_query_num(request):
     page = int(page) if page else 0
     if page < 0:
         page = 0
-    num = 10  # 每页显示数目
+    num = 15  # 每页显示数目
 
-    max_size = int( math.ceil(float(len(obj))  / num))     # 最大分页数
+    max_size = int( math.ceil(float(len(process_list))  / num))     # 最大分页数
     if max_size == 0:
         max_size = 1
     if page > max_size - 1:
@@ -281,6 +282,7 @@ def assets_port_query(request):
         temp['host_name']=hostname_dir[temp['agent_id']][0]
         temp['host_ip']=hostname_dir[temp['agent_id']][1]
         temp['process_name']=temp['proname']
+        temp['os'] = hostname_dir[temp['agent_id']][2]
         y.append(temp)
     data = {}
     data['data'] = y

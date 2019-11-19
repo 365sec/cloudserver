@@ -83,8 +83,14 @@ function port_click_search(page) {
             let port_table_data = data_list['data'];
             let port_table = '';
             for(let j=0,len = port_table_data.length;j<len;j++) {
+                let server_img;
+                if (port_table_data[j]['os'].toLowerCase().indexOf("windows") !== -1){
+                    server_img='<img src="/static/images/os_windows_on.png" style="width: 20px"/>';
+                }else{
+                    server_img='<img src="/static/images/os_linux_on.png" style="width: 20px"/>';
+                }
                 port_table += '<tr>' +
-                    '<td class="port_add">' + port_table_data[j]['host_name']+'<p >('+ port_table_data[j]['host_ip']+ ')</p></td>' +
+                    '<td class="port_add">'+server_img + port_table_data[j]['host_name'] + '<p>' + port_table_data[j]['host_ip'] + '</p></td>' +
                     '<td>' + port_table_data[j]['local_addr'] + '</td>'+
                     '<td>' + port_table_data[j]['local_port'] + '</td>'+
                     '<td>' + port_table_data[j]['name'] + '</td>' +
