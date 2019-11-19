@@ -1,0 +1,147 @@
+<div class="manage_detailDiv">
+    <h1 class="page-title"></h1>
+    <div class = "card" >
+        <div class="right_content_content" style="min-height:220px;">
+            <p class="pull-left" style="font-size:18px;padding-left:16px;">网站信息</p>
+            <p class="pull-right" style="padding-right:16px;">今日为当前网站拦截攻击&nbsp;&nbsp;<span class="text-warning" id="web_id_nowcount" style="font-size:16px;">0</span>&nbsp;&nbsp;次，累计&nbsp;&nbsp;<span class="text-warning" id="web_id_allcount" style="font-size:16px;">0</span>&nbsp;&nbsp;次</p>
+            <div class="spclear"></div>
+            <div class="pull-left" style="text-align:center;width:210px;margin-top:18px;">
+                <div style="position:relative;">
+                    <img src="/static/img/website.png" style="width:150px;">
+                </div>
+                <div style="margin-top:8px;" id="machine_name_view"><span style="color:#3366ff;font-size:16px;word-break:break-all;word-wrap: break-word;"></span></div>
+
+            </div>
+            <div class="pull-left">
+                <table id="promotionTable" class="table server_detail_table" style="width:600px;margin-top:40px;">
+
+                    <tbody><tr>
+                        <td class="text-muted">IP：</td>
+                        <td id="web_manager_ip" ></td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">标签：</td>
+                        <td id="web_manager_remark" ></td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">所属服务器：</td>
+                        <td id="web_manager_hostname" ></td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">实例：</td>
+                        <td id="web_manager_server" ></td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">开发语言：</td>
+                        <td id="web_manager_language" ></td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">在线状态：</td>
+                        <td id="web_manager_status" ></td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted">上次心跳时间：</td>
+                        <td id="web_manager_lastbeat"></td>
+                    </tr>
+
+                    </tbody></table>
+            </div>
+
+        </div>
+        <ul id="server_detail_panel" class="custom_nav nav nav-tabs ul-tabs">
+            <li class="tab-oblique active"><a class="tab-col" data-toggle="tab" href="#security_analysis" aria-expanded="true"><i class="iconfont">&#xe662;</i><span> 安全分析</span></a></li>
+            <li class="tab-oblique"><a class="tab-col" data-toggle="tab" href="#event_statistics"><i class="iconfont">&#xe73c;</i><span> 事件处理</span></a></li>
+        </ul>
+        <div id="server_detail_panel_content_wrapper" class="right_content_content" style="margin-top:0px;">
+            <div class="tab-content">
+                <div id="security_analysis" class="tab-pane fade active in">
+                    <div class="pull-left" style="width:65%;padding:6px;">
+                        <div>
+                            <p class="pull-left" style="font-size:15px;line-height:36px;margin-left:12px;">服务器攻击趋势</p>
+                            <div id="server_detail_tab1_duration" class="duration_select_wrapper pull-right" role="group">
+                                <button type="button" class="tab current web_detail_tab" data-type="tday">今</button>
+                                <button type="button" href="#" class="tab web_detail_tab" data-type="yday">昨</button>
+                                <button type="button" href="#" class="tab web_detail_tab" data-type="week">周</button>
+                            </div>
+                            <div class="spclear"></div>
+                        </div>
+                        <div id="chart_attack_trend_web" style="height: 350px; width: 100%;"></div>
+
+                    </div>
+                    <div class="pull-right" style="width:33%;height:400px;position:relative;margin-top: 20px">
+                        <table class="chart-table-title">
+                            <thead >
+                                <tr>
+                                    <th width="60%">攻击类型</th>
+                                    <th>攻击次数</th>
+                                </tr>
+                            </thead></table>
+                        <div class="chart-table" style="height:350px;position:relative;overflow-y: scroll">
+                            <table class='table' id='ana_attack'>
+                            </table>
+                        </div>
+                    </div >
+                    <div class="spclear"></div>
+                    <div id="tab1_bottom" style="margin-top:20px;padding-top:12px;border-top:1px solid #ccc;height: 350px;">
+                        <p style="text-align:center;font-size:15px;margin:10px 0 0 0;">服务器被攻击类型分析及被攻击网站列表</p>
+                        <div class="pull-left" style="width:49%;height: 100%;">
+                            <div id="chart_attack_kind_web" style="height: 350px; width: 100%;">
+                            </div>
+                        </div>
+                        <div class="pull-right" style="width:49%;height:350px;position:relative;margin-top: 20px">
+                            <table class="chart-table-title">
+                                <thead >
+                                <tr>
+                                    <th style="width: 60%">被攻击网站名称</th>
+                                    <th>攻击次数</th>
+                                </tr>
+                                </thead></table>
+                            <div class="chart-table" style="height:300px;position:relative;overflow-y: scroll">
+                                <table class='table' id='web_attack'>
+                                </table>
+                            </div>
+                        </div >
+                        <div class="spclear"></div>
+                    </div>
+                </div>
+                <div id="event_statistics" class="tab-pane fade">
+                    <div id="right_content_main">
+                        <div id="right_content_main_header">
+                            <div class="btnGroup">
+                                <div id="table_select_div">
+                                    <div>
+                                        <div id="web_table_select_div" class="search_btngroup">
+{#                                            <input type="text" class="form-control" name="keyword" id="event_keyword" placeholder="IP关键字或类型" value="">#}
+{#<!--                                            条件查询-->#}
+{#                                            <div id="queryBtn" class="btn" onclick="event_treat_web(1)">&nbsp;查询</div>#}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <table id="alarm_event_list_table" class="table table-bordered" style="table-layout:fixed;">
+                                <thead>
+                                    <tr>
+                                        <th>攻击时间</th>
+                                        <th style="width: 16%">事件类型</th>
+                                        <th style="width: 34%">事件摘要</th>
+                                        <th >风险等级</th>
+                                        <th >操作</th>
+                                        <th >状态</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div class="page">
+
+                            </div>
+                    </div>
+
+                    </div>
+
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

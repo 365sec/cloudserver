@@ -1,0 +1,72 @@
+<div id="count_div" class="count_div" style="height: auto">
+    <div class="search_btngroup" style="margin-top: 24px">
+        <div class = 'datasel'>
+            <span class="btnvalue">日期选择: </span>
+            <input type="text" id="daterange-btn" name="daterange" class="daterange-text">
+            <label for="daterange-btn" class="datesel_icon"><i class=" fa fa-calendar"></i></label>
+        </div>
+
+        <button  class="btn" onclick="report_btn()" >生成报告</button>
+    </div>
+    <div class="report_title">
+        <h1>安全分析报告</h1>
+        <div style="display: none;">分析目标：</div>
+        <div  id="now_time" ></div>
+        <div class="print btn" href="javascript:void(0)" onclick="print_report()">打印报告</div>
+        <div class="download btn" id="download" href="javascript:void(0)" onclick="download_report()">下载文档</div>
+    </div>
+    <div class="report_content">
+        <div class="w-100">
+            <div class="title">
+                <span class="special">攻击类型排行</span>
+            </div>
+            <div id="attack_type_part" class="bar_size"></div>
+        </div>
+        <div class="w-100">
+            <div class="title">
+                <span class="special">被攻击域名</span>
+            </div>
+            <div id="attack_target_part" class="bar_size"></div>
+        </div>
+
+        <div class="w-100">
+            <div class="title">
+                <span class="special">被攻击IP</span>
+            </div>
+            <div id="attack_server_ip_part" class="bar_size"></div>
+        </div>
+        <div class="w-100">
+            <div class="title">
+                <span class="special">被攻击服务器类型 </span>
+            </div>
+            <div id="attack_server_part" class="bar_size"></div>
+        </div>
+        <div class="w-100 row" style="padding-top: 25px">
+            <div class="col-6">
+                <div class="title">
+                    <span class="special">危险等级分布</span>
+                </div>
+                <div id="attack_level_part" class="bar_size"></div>
+            </div>
+            <div class="col-5 offset-1">
+                <div class="title">
+                    <span class="special">扫描器统计信息</span>
+                </div>
+                <div id="attack_scan_part" class="bar_size" style="height: 430px"></div>
+            </div>
+        </div>
+        <div class="w-100">
+            <div class="title">
+                <span class="special">外部威胁趋势 </span>
+            </div>
+            <div id="attack_time_dic_part" class="bar_size"></div>
+        </div>
+        <div class="w-100">
+            <div class="title">
+                <span class="special">攻击源</span>
+            </div>
+            <div id="attack_source_part" ></div>
+        </div>
+    </div>
+
+</div>

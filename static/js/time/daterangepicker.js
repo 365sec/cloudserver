@@ -18,7 +18,7 @@
         //isomorphic issue
         var jQuery = (typeof window != 'undefined') ? window.jQuery : undefined;
         if (!jQuery) {
-            jQuery = require('static/js/jquery');
+            jQuery = require('static/js/plugins/jquery');
             if (!jQuery.fn) jQuery.fn = {};
         }
         var moment = (typeof window != 'undefined' && typeof window.moment != 'undefined') ? window.moment : require('static/js/time/moment');

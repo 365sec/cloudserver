@@ -1,591 +1,218 @@
 <!DOCTYPE html>
-<!-- saved from url=(0024)http://127.0.0.1:8000/#/ -->
 <html lang="en">
 
 <head>
+    <title>网站综合防御平台</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <script src="/static/js/jquery-3.2.1.min.js"></script>
-    <script src="/static/js/base64.js"></script>
-    <link rel="stylesheet" href="/static/css/index.css">
-    <script src="/static/js/echarts.common.min.js"></script>
     <link href="/static/css/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    {#        <link href="/static/css/gfonts/main.css" rel="stylesheet">#}
     <link href="/static/css/plugins/charts-c3/plugin.css" rel="stylesheet">
-    {#    <style type="text/css">.vue-loading[data-v-55c8f413]{margin:auto}</style>#}
+    <link href="/static/css/plugins/jquery-ui.css" rel="stylesheet">
 
-    {#    <link rel=icon href=./favicon.ico type=image/x-icon>#}
-    {#    <link rel="shortcut icon" type=image/x-icon href=./favicon.ico>#}
-    <title>网站自适应防御平台</title>
-
-    <link href=/static/css/app.f0ed56399b7c53536fe0a115734a4d50.css rel=stylesheet>
-    <link href=/static/css/app-b16f1d665ca03251b414.css rel=stylesheet>
+{#    <link href=/static/css/orl/app.f0ed56399b7c53536fe0a115734a4d50.css rel=stylesheet>#}
+{#    <link href=/static/css/orl/app-b16f1d665ca03251b414.css rel=stylesheet>#}
+    <link href="/static/css/plugins/bootstrap.min.css" rel="stylesheet">
     <link href=/static/css/main.css rel=stylesheet>
-    <script type="text/javascript" src="/static/js/manifest.2ae2e69a05c33dfc65f8.js"></script>
-    <script type="text/javascript" src="/static/js/vendor.4b92a4793e5e56db432c.js"></script>
-    <script type="text/javascript" src="/static/js/app.f73cd6dc69f535a33ae7.js"></script>
-    <link href=/static/css/daterangepicker.css rel=stylesheet>
-    <script src="/static/js/time/bootstrap.js"></script>
+    <link href=/static/css/time/daterangepicker.css rel=stylesheet>
+    <script src="/static/js/plugins/jquery-3.2.1.min.js"></script>
+    <script src="/static/js/plugins/base64.js"></script>
+<!--    <script src="/static/js/plugins/echarts.common.min.js"></script>-->
+    <script src="/static/js/plugins/html2canvas.min.js"></script>
+    <script src="/static/js/plugins/jsPdf.debug.js"></script>
+    <script src="/static/js/plugins/md5.js"></script>
+{#    <script src="/static/js/orl/manifest.2ae2e69a05c33dfc65f8.js"></script>#}
+{#    <script src="/static/js/orl/vendor.4b92a4793e5e56db432c.js"></script>#}
+{#    <script src="/static/js/orl/app.f73cd6dc69f535a33ae7.js"></script>#}
+    <script src="/static/js/plugins/bootstrap.min.js"></script>
     <script src="/static/js/time/moment.js"></script>
     <script src="/static/js/time/daterangepicker.js"></script>
-    <script src="/static/js/echarts.js"></script>
-
-    <!--<script src="/static/js/echarts.common.min.js"></script>-->
+    <script src="/static/js/plugins/echarts.min.js"></script>
     <script src="/static/js/map/china.js"></script>
     <script src="/static/js/map/world.js"></script>
-    <!--<script src="/static/js/map/echarts.min.js"></script>-->
     <script src="/static/js/index.js"></script>
-    <style type="text/css">
-        .vue-loading[data-v-55c8f413] {
-            margin: auto
-        }
-    </style>
-    <style>
-        .mt-md-5,
-        .my-md-5 {
-            margin-top: 0rem !important;
-        }
+    <script src="/static/js/overview.js"></script>
+    <script src="/static/js/attack.js"></script>
+{#    <script src="/static/js/agent.js"></script>#}
+    <script src="/static/js/server.js"></script>
+    <script src="/static/js/website.js"></script>
+    <script src="/static/js/user.js"></script>
+    <script src="/static/js/assets/netconnecting.js"></script>
+    <script src="/static/js/assets/app.js"></script>
+    <script src="/static/js/assets/process.js"></script>
+    <script src="/static/js/assets/port.js"></script>
+    <script src="/static/js/countreport.js"></script>
+    <script src="/static/js/download.js"></script>
+<style>
 
-    </style>
-
+</style>
+{#    <script src="/static/js/plugins/jquery-ui.js"></script>#}
 </head>
+<body >
 
-<body class="">
-<div id="app"></div>
-
-<div id="main" class="page">
-    <div style="min-height: calc(100vh);position: relative;">
-        <div class='header-top'>
-            <div>
-                <div class="logodiv dip-inbl">
-                    <img width="130" height="40" src="/static/img/LOGO.png">
+<div id="main" >
+    <div class = "s-side-scrollhidden">
+        <div class="s-side side_open tran">
+        <div class="logodiv dip-inbl tran">
+        </div>
+        <ul class="nano-content">
+            <li class="s-firstItem">
+                <div class="d-firstNav s-firstNav">
+                    <a href="javascript:void(0)" class="nav-link active" data-value="overview">
+                        <i class="iconfont">&#xe7b7;</i>
+                        <span>&nbsp;&nbsp;安全总览</span>
+                    </a>
                 </div>
-                <div id="headerMenuCollapse" class="header dip-inbl">
-                    <div class="container">
-                        <div class="row align-items-center">
-                            <div class="col-lg order-lg-first">
-                                <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
-                                    <li class="nav-item">
-                                        <a href="javascript:void(0)" class="nav-link active" data-value="overview">
-                                            <i class="iconfont">&#xe7b7;</i>安全总览
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="javascript:void(0)" class="nav-link" data-value="attack">
-                                            <i class="iconfont">&#xe73b;</i>攻击事件</a>
-                                    </li>
-                                    {#										<li class="nav-item dropdown">#}
-                                    {#											<a href="http://127.0.0.1:8000/#" class="nav-link"><i class="fe fe-check-square"></i>安全基线</a>#}
-                                    {#										</li>#}
-                                    <li class="nav-item">
-                                        <a href="javascript:void(0)" class="nav-link" data-value="agent">
-                                            <i class="iconfont">&#xe88b;</i>探针管理</a>
-                                    </li>
-                                    {#										<li class="nav-item">#}
-                                    {#											<a href="http://127.0.0.1:8000/#" class="nav-link"><i class="fe fe-zap"></i>插件管理</a>#}
-                                    {#										</li>#}
-                                    <li class="nav-item">
-                                        <a href="javascript:void(0)" class="nav-link" data-value="download">
-                                            <i class="iconfont">&#xeb12;</i>探针下载</a>
-                                    </li>
-                                    {#										<li class="nav-item">#}
-                                    {#											<a href="http://127.0.0.1:8000/#" class="nav-link"><i class="fe fe-user-check"></i>操作审计</a>#}
-                                    {#										</li>#}
-                                    {#										<li class="nav-item dropdown">#}
-                                    {#											<a href="http://127.0.0.1:8000/#" class="nav-link"><i class="fe fe-settings"></i>系统设置</a>#}
-                                    {#										</li>#}
-                                    <!--li class="nav-item"><a href="https://rasp.baidu.com/doc" target="_blank" class="nav-link"><i class="fe fe-file-text"></i>帮助文档</a></li-->
-                                </ul>
-                            </div>
+            </li>
+            <li class="s-firstItem">
+                <div class="s-firstNav d-firstNav">
+                    <a href="javascript:void(0)" class="nav-link" data-value="asset">
+                        <i class="iconfont">&#xe606;</i>
+                        <span>&nbsp;&nbsp;资产清点
+                            <i class="iconfont slide_mark slide_down">&#xe64a;</i></span>
+                    </a>
+                </div>
+                <ul class="d-firstDrop s-firstDrop">
+
+                    <li>
+                        <div class="d-secondNav s-secondNav">
+                            <a href="javascript:void(0)" data-value="process" class="nav-link-sec"><i class="iconfont">&#xe602;</i>进程资产</a>
                         </div>
-                    </div>
+                    </li>
+                    <li>
+                        <div class="d-secondNav s-secondNav">
+                            <a href="javascript:void(0)" data-value="port" class="nav-link-sec"><i class="iconfont">&#xe602;</i>端口资产</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="d-secondNav s-secondNav">
+                            <a href="javascript:void(0)" data-value="netconnecting" class="nav-link-sec"><i class="iconfont">&#xe602;</i>网络连接资产</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="d-secondNav s-secondNav">
+                            <a href="javascript:void(0)" data-value="app" class="nav-link-sec"><i class="iconfont">&#xe602;</i>软件应用</a>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            <li class="s-firstItem">
+                <div  class="d-firstNav s-firstNav">
+                    <a href="javascript:void(0)" class="nav-link" data-value="attack">
+                        <i class="iconfont">&#xe73b;</i>
+                        <span>&nbsp;&nbsp;攻击事件</span>
+                    </a>
                 </div>
-                <div class="header dip-inbl headertop-right">
+            </li>
+            <li class="s-firstItem">
+                <div class="d-firstNav s-firstNav">
+                    <a href="javascript:void(0)" class="nav-link" data-value="agent">
+                        <i class="iconfont">&#xe88b;</i>
+                        <span>&nbsp;&nbsp;探针管理
+                            <i class="iconfont slide_mark slide_down">&#xe64a;</i></span>
+                    </a>
+                </div>
+                <ul class="d-firstDrop s-firstDrop">
+                    <li>
+                        <div class="d-secondNav s-secondNav">
+
+                            <a href="javascript:void(0)" data-value="server" class="nav-link-sec"><i class="iconfont">&#xe602;</i>服务器管理</a>
+                        </div>
+{#                        <ul class="d-secondDrop s-secondDrop">#}
+{#                            <li class="s-thirdItem">#}
+{#                                <div>#}
+{#                                    <a href="#"  class="nav-link-thd">未分组</a>#}
+{#                                </div>#}
+{#                            </li>#}
+{#                        </ul>#}
+                    </li>
+                    <li>
+                        <div class="d-secondNav s-secondNav">
+                            <a href="javascript:void(0)" data-value="website" class="nav-link-sec"><i class="iconfont">&#xe602;</i>网站管理</a>
+                        </div>
+{#                        <ul class="d-secondDrop s-secondDrop">#}
+{#                            <li class="s-thirdItem">#}
+{#                                <div>#}
+{#                                    <a href="#"  class="nav-link-thd">未分组</a></div>#}
+{#                            </li>#}
+{#                        </ul>#}
+                    </li>
+                </ul>
+            </li>
+            <!--li  class="s-firstItem">
+                <div class="d-firstNav s-firstNav">
+                    <a href="javascript:void(0)" class="nav-link" data-value="countDiv" target="_blank">
+                        <i class="iconfont">&#xe604;</i>
+                        <span>&nbsp;&nbsp;统计信息</span>
+                    </a>
+                </div>
+            </li-->
+            <li  class="s-firstItem">
+                <div  class="d-firstNav s-firstNav">
+                    <a href="javascript:void(0)" class="nav-link" data-value="user">
+                        <i class="iconfont">&#xe650;</i>
+                        <span>&nbsp;&nbsp;用户管理</span>
+                    </a>
+                </div>
+            </li>
+            <li  class="s-firstItem">
+                <div  class="d-firstNav s-firstNav">
+                    <a href="javascript:void(0)" class="nav-link" data-value="download">
+                        <i class="iconfont">&#xeb12;</i>
+                        <span>&nbsp;&nbsp;探针下载</span>
+                    </a>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+    </div>
+   <div id="main_right">
+        <div class='header-top'>
+                <div class="menu_button"><i class="iconfont">&#xe666;</i></div>
+                <div class="dip-inbl headertop-right">
                     <div class="top-info-wrap">
                         <ul class="top-info-list clearfix">
-                        <li>欢迎：{{ login_username }}</li>
-                        <li><a title="退出" href="/logout"><i class="iconfont" title="退出登录">&#xeb13;</i></a></li>
+                            <li>欢迎：{{ login_username }}</li>
+                            <li><a title="退出" href="/logout"><i class="iconfont" >&#xeb13;</i><span class="" style="font-size:14px;">&nbsp;退出</span></a></li>
 
                         </ul>
                     </div>
                 </div>
-
+        </div>
+        <div class="setup" >
+            <div>
+            <div class="container1" id="div_container">
+                </div>
+            <footer class="footer">
+                <div class="container">
+                    <div class="align-items-center flex-row-reverse">
+                        <div class="col-auto ml-lg-auto">
+                        </div>
+                        <div class="col-12 col-lg-auto mt-3 mt-lg-0 text-center">
+                            Copyright © 2019
+                            <a href="http://www.365sec.com/" target="_blank">江苏国瑞信安科技有限公司</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
             </div>
         </div>
-        <div class="my-3 my-md-5 setup" >
-            <div class="container1" id="div_container" style = "background: #fff;">
-                <div id="overviewDiv" class="overviewDiv">
-                    <div class="row" >
-                        <div class="col-3" style="height: 100%">
-                            <div class="content h50" style="height: 60%">
-                                <div class="title">
-                                    <span class="special">攻击类型排行</span>
-                                </div>
-                                <div id="attack_type_dic_div" class="chart-con"></div>
-                            </div>
-                            <div class="content h50" style="height: 40%">
-                                <div class="title">
-                                    <span class="special">外部威胁趋势</span>
-                                </div>
-                                <div id="attrack_time_dic_div" class="chart-con"></div>
-
-                                </div>
-                        </div>
-
-                        <div class="col-6" style="height: 100%">
-                             <div class="content" style="height: 60%;">
-                                <div class="title">
-                                    <span class="special">全球分布</span>
-                                </div>
-                                 <div style="height: 100%">
-                                     <div style="padding: 10px">
-                                         <button type="button" class="map-tab current" id="map-tab-China">中国地图</button><!--
-                                         --><button type="button" class="map-tab" id="map-tab-world">世界地图</button>
-
-                                     </div>
-                                    <div id="chart_map" class="chart-con"></div>
-                                 </div>
-                            </div>
-                            <div class="content" style="height: 40%;">
-                                <div class="title">
-                                    <span class="special">最近告警内容</span>
-                                </div>
-                                <div id="attrack_recent_warning_dic_div" class="chart-con" style="overflow-y: scroll;"></div>
-                            </div>
-                        </div>
-                        <div class="col-3" style="height: 100%">
-                            <div class="content" style="height: 60%;">
-                                <div class="title">
-                                    <span class="special">攻击IP排行</span>
-                                </div>
-                                <div id="attrack_source_dic_div" class="chart-con"></div>
-                            </div>
-                            <div class="content" style="height: 40%;">
-                                <div class="title">
-                                    <span class="special">危险等级分布</span>
-                                </div>
-                                <div id="attrack_threat_level_dic_div" class="chart-con"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--<div class="row">-->
-                        <!--<div class="col-4 chart-bo">-->
-                            <!--<div id="attack_type_dic_div" class="chart-con"></div>-->
-                            <!--<div class="title">-->
-                                <!--<span class="special">攻击类型排行</span>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="col-4 chart-bo">-->
-                            <!--<div id="attrack_source_dic_div" class="chart-con"></div>-->
-                            <!--<div class="title">-->
-                                <!--<span class="special">攻击IP排行</span>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="col-4 chart-bo">-->
-                            <!--<div id="attrack_ua_dic_div" class="chart-con"></div>-->
-                            <!--<div class="title">-->
-                                <!--<span class="special">User-Agent排行</span>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="row">-->
-                        <!--<div class="col-6 chart-bo">-->
-                            <!--<div id="attrack_time_dic_div" class="chart-con"></div>-->
-                            <!--<div class="title">-->
-                                <!--<span class="special">外部威胁趋势</span>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="col-6 chart-bo">-->
-                            <!--<div id="attrack_recent_warning_dic_div" class="chart-con">-->
-                                <!--&lt;!&ndash;<h4>最近告警内容</h4>&ndash;&gt;-->
-                            <!--</div>-->
-                            <!--<div class="title">-->
-                                <!--<span class="special">最近告警内容</span>-->
-                            <!--</div>-->
-
-                        <!--</div>-->
-
-                    <!--</div>-->
-
-
-                </div>
-                <div class="attackDiv">
-                    <h1 class="page-title"><i class="iconfont">&#xe73b;</i>攻击事件</h1>
-                    <div class = "card">
-                    <div id="time" class="col-md-2 col-md-offset-2 demo">
-                        <div class="btnGroup">
-
-                        </div>
-                        <div>
-                            <span class="datech">日期选择: </span>
-                            <input type="text" id="attack_time" class="form-control">
-                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                        </div>
-
-                    </div>
-                    <div id='table_div'></div>
-
-                    </div>
-                </div>
-                <div class="agentDiv">
-                    <div class = "card">
-
-                        <div id='table-agent'></div>
-
-                    </div>
-                </div>
-                <div class="tanzhen">
-                    <h5 class="padding-20">请选择探针类型</h5>
-                    <div>
-                        <div class="lang-selector">
-                            <a href="javascript:void(0)" onclick="java_click()" class="agentsImg agentsjava"></a>
-                        </div>
-                        <div class="lang-selector">
-                            <a href="javascript:void(0)" onclick="iis_click()" class="agentsImg agentsdotnet"></a>
-                        </div>
-
-                    </div>
-                    <div>
-                        <!--    java探针     -->
-                        <div class="bottom1 javaDiv">
-                            <h3 class="padding-20">安装&nbsp; <b>JAVA</b> &nbsp;探针</h3>
-                            <div class="javaa">
-                                <p class="p1"><span class="title"><b>开始安装之前，检查你的环境，确保以下条件：</b></span></p>
-                                <p><span>1. 检查Agent_Server端所在系统与Agent端所在系统之间网络环境可以相互连接。<!-- /react-text --></span></p>
-                                <p><span>2. 检查Agent端所在环境是否在我们的支持列表中。<!-- /react-text --></span></p>
-                            </div>
-                            <fieldset>
-                                <legend><span>1</span> 获取授权编号
-                                </legend>
-                                <div class="form-section">
-
-                                    <!--code class="code-copy code2" >
-                                    <span class="clipboard">
-                                        <span class="copy-btn" data-clipboard-target="#license">
-                                            <a data-tip="复制" class="icon copy-button" href="javascript:;"></a>
-                                        </span>
-                                    </span>
-                                    </code-->
-                                    <p class="note">
-                                        您的授权编号(Agent ID)通过添加主机后生成，请将agent_id以及agent_server地址<span
-                                            style="color:#F00" id="agent_server_addr1"></span>写入到rasp.properties中。
-                                    </p>
-                                </div>
-                            </fieldset>
-                            <fieldset>
-                                <legend><span>2</span> 下载探针
-                                </legend>
-                                <div class="form-section">
-                                    <p>提供的探针版本</p>
-                                    <div class="tab-nav">
-                                        <div class="widget-content">
-                                            <div class="pure-g">
-                                                <div class="pure-u-1-2 div6">
-                                                    <div class="box">
-                                                        下载：
-                                                        <a id="java_a_download_url" href="#" class="btn btn-primary"
-                                                           style="color: white">JAVA Agent</a>
-                                                    </div>
-
-                                                    <div class="box"><span>wget: </span><code class="code-copy">
-                                                        <div id="java_wget_download_url">12132</div>
-                                                        <span class="clipboard"><span class="hide"
-                                                                                      id="JAVA_v2url_linux"></span><span
-                                                                class="copy-btn"
-                                                                data-clipboard-target="#JAVA_v2url_linux"><a
-                                                                data-tip="复制" class="icon copy-button"
-                                                                href="javascript:;"></a></span></span></code></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <fieldset>
-                                <legend><span>3</span> 安装探针
-                                </legend>
-                                <div class="form-section">
-                                    <div class="div3">
-                                        <p>
-                                            1.运行探针
-                                        </p>
-                                        <div class="div5">
-                                            <p>
-                                                <!-- react-text: 171 -->&nbsp;&nbsp; 切换到安装包所在目录，解压安装包到应用服务器目录下，如下：
-                                                <span class="note-attention"></span></p><code class="code3">
-                                            <span class="span1">java</span><!-- react-text: 176 -->
-                                            <!-- /react-text -->
-                                            <span class="span2">-jar RaspInstall.jar -install &lt;path/to/server_home&gt;</span></code>
-                                        </div>
-                                    </div>
-                                    <p>
-                                        2.重启 Tomcat/JBoss/Jetty/SpringBoot 应用服务器
-                                    </p>
-
-                                </div>
-                            </fieldset>
-
-                        </div>
-
-                        <!--    iis探针     -->
-                        <div class="bottom1 IISDiv"><h3 class="padding-20">安装&nbsp; <b>IIS</b> &nbsp;探针</h3>
-                            <div class="javaa">
-                                <p class="p1"><span class="title"><b>开始安装之前，检查你的环境，确保以下条件：</b></span></p>
-                                <p><span>1. 检查Agent_Server端所在系统与Agent端所在系统之间网络环境可以相互连接。<!-- /react-text --></span></p>
-                                <p><span>2. 检查Agent端所在环境是否在我们的支持列表中目前只支持IIS 7.0~10.0之间的版本。<!-- /react-text --></span>
-                                </p>
-                            </div>
-                            <fieldset>
-                                <legend><span>1</span> 获取授权编号
-                                </legend>
-                                <div class="form-section">
-                                    <!--code class="code-copy code2">
-                                        <div id="iis_guid">
-                                        </div><span class="clipboard">
-                                        <span class="hide" id="license"></span>
-                                        <span class="copy-btn" data-clipboard-target="#license">
-                                            <a data-tip="复制" class="icon copy-button" href="javascript:;"></a>
-                                        </span>
-                                        </span>
-                                    </code-->
-                                    <p class="note">
-                                        您的授权编号(Agent ID)通过添加主机后生成，请将agent_id以及agent_server地址<span
-                                            style="color:#F00" id="agent_server_addr2"></span>写入到appsensor.ini中。
-                                    </p>
-                                </div>
-                            </fieldset>
-                            <fieldset>
-                                <legend><span>2</span> 下载探针
-                                </legend>
-                                <div class="form-section">
-                                    <p>提供的探针版本</p>
-                                    <div class="tab-nav">
-                                        <div class="widget-content">
-                                            <div class="pure-g">
-                                                <div class="pure-u-1-2 div6">
-                                                    <div class="box">
-                                                        下载：
-                                                        <a id="iis_a_download_url" href="#" class="btn btn-primary"
-                                                           style="color: white">IIS Agent</a>
-                                                    </div>
-                                                    <div class="box"><span>wget: </span><code class="code-copy">
-                                                        <div id="iis_wget_download_url">#</div>
-                                                        <span class="clipboard"><span class="hide"
-                                                                                      id="JAVA_v2url_linux">https://xxxxxxxxxxx</span><span
-                                                                class="copy-btn"
-                                                                data-clipboard-target="#JAVA_v2url_linux"><a
-                                                                data-tip="复制" class="icon copy-button"
-                                                                href="javascript:;"></a></span></span></code></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-                            <fieldset>
-                                <legend><span>3</span> 安装探针
-                                </legend>
-                                <div class="form-section">
-                                    <div class="div3">
-                                        <p>
-                                            1.安装vc环境
-                                        </p>
-                                        <div class="div5">
-                                            <p>
-                                                <!-- react-text: 171 -->&nbsp;&nbsp;
-                                                切换到安装包所在目录，安装vc_redist.x86.exe及vc_redist.x64.exe
-                                        </div>
-                                        <p>
-                                            2.安装IIS探针
-                                        </p>
-                                        <div class="div5">
-                                            <p>
-                                                &nbsp;
-                                                以管理员权限执行install.bat脚本。
-                                            </p>
-                                            <!--code class="code3"><span class="span1">java</span-->
-                                            <!-- /react-text -->
-                                            <!-- span class="span2">-jar oneapm.jar install</span></code -->
-                                        </div>
-                                    </div>
-                            </fieldset>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 模态框（Modal） -->
-        <footer class="footer">
-            <div class="container">
-                <div class="align-items-center flex-row-reverse">
-                    <div class="col-auto ml-lg-auto">
-                    </div>
-                    <div class="col-12 col-lg-auto mt-3 mt-lg-0 text-center">
-                        Copyright © 2019
-                        <a href="http://www.365sec.com/" target="_blank">江苏国瑞信安科技有限公司</a>
-                    </div>
-                </div>
-            </div>
-        </footer>
     </div>
 </div>
 
-<div id="model_div">
-
-
-</div>
-
-
-<div id="agent_model_div">
-
-
-</div>
-
-                    </div>
-                    <div class="tab-pane fade" id="globalConfig">
-                        <div>
-                            <textarea style="min-height: 300px;min-width: 600px  ;display: none"
-                                      id="input_global_config"> </textarea> <br>
-                        </div>
-                        <div id="globalConfig_body">
-
-                        </div>
-
-                    </div>
-                </div>
-            </div><!-- /.modal-content -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
-                </button>
-                <div class="agent_manage_submit">
-
-                </div>
-
-            </div>
-        </div><!-- /.modal -->
-    </div>
-
-    <script>
-        // $().readOnly()
-
-        /* $("select#status").change(function(){
-             console.log($(this).val());
-         });*/
-
-
-        window.onload = overview_click;
-        setInterval(function () {
-            if($(".overviewDiv").css('display') != 'none'){
-             overviewFlash();
-             }
-         },5000);
-
-        //overview_click();
-
-
-</script>
-
-
-<div class="__transltor">
-    <div class="__transltor_button" style="left: 709px; top: 346px;"></div>
-    <!---->
-    <!---->
-</div>
-
-<script type="text/javascript">
-    var beginTimeStore = '';
-    var endTimeStore = '';
-    $('#attack_time').daterangepicker({
-        "timePicker": true,
-        "timePicker24Hour": true,
-        "linkedCalendars": false,
-        "autoUpdateInput": false,
-        "locale": {
-            format: 'YYYY-MM-DD',
-            separator: ' ~ ',
-            applyLabel: "应用",
-            cancelLabel: "取消",
-            resetLabel: "重置",
-        }
-    }, function (start, end, label) {
-        beginTimeStore = start;
-        endTimeStore = end;
-        console.log(this.startDate.format(this.locale.format));
-        console.log(this.endDate.format(this.locale.format));
-        if (!this.startDate) {
-            this.element.val('');
-        } else {
-            this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
-        }
-    });
-
-
-    $(".row .col-4 > div").css({
-        "width": $(".row .col-4 > div").width(),
-        "height": $(".row .col-4 > div").height()
-    });
-    $("#attrack_time_dic_div").css({"width": $("#attrack_time_dic_div").width(), "height": "276px"});
-
-</script>
-{#弹框新样式#}
-<script>
-    $(document).on("click", ".myTab li", function () {
-        $(this).addClass("active").siblings().removeClass("active")
-    });
-
-    $(document).on("click", ".btn-group button", function () {
-        $(this).addClass("active").siblings().removeClass("active");
-    })
-
-</script>
-</div>
+<div id="model_div"></div>
+<div id="agent_model_div"></div>
 <div class="shade" style="visibility: hidden;">
     <div class="layout" style="visibility: hidden; animation: action_scale 0.3s ease 0s 1 normal forwards running;">
-        <div class="layout-title">备注信息：</div>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-        <form action="post">
-            <div id="remarkid">Agent ID <span style="color:#F00" id="agent-id">{{ agent_id }}</span></div>
-            <br/>
-            <div contenteditable="true" id="remarkmsg"></div>
-            <div class='layout-btn'>
-                <div class="btn layout-close" onclick="formSubmit()">保存</div>
-                <div class="btn layout-close" onclick="javascript:void(0)">关闭</div>
-            </div>
-        </form>
+
     </div>
 </div>
+
 </body>
+
 <script>
+    window.onload = overview_click;
 
-    <!--首页地图切换-->
-    $(document).on('click', '#map-tab-world', function () {
-        var myChart = echarts.init(document.getElementById('chart_map'));
-        map_flag = 0;
-        myChart.setOption({
-            geo: {
-                map: 'world'
-            }
-        });
-    });
-    $(document).on('click', '#map-tab-China', function () {
-        var myChart = echarts.init(document.getElementById('chart_map'));
-        map_flag = 1;
-        myChart.setOption({
-            geo: {
-                map: 'china'
-            }
-        });
-    });
-
-    <!--首页地图切换-->
-
-
-    function formReset() {
-        document.getElementById("remarkmsg").reset()
-    }
-
-    //设置弹框动画
+    //设置弹框动画 start
     var boo = 0;
     var canUse = document.getElementsByTagName("body")[0].style;
     if (typeof canUse.animation != "undefined" || typeof canUse.WebkitAnimation != "undefined") {
@@ -596,7 +223,6 @@
         /*不支持动画*/
     }
     ;
-
     function actionIn(obj, actionName, time, speed) {
         $(obj).css({
             visibility: "visible"
@@ -606,49 +232,7 @@
             "animation-fill-mode": "forwards"
         });
     };
-
-    //初始化echarts盒子宽高
-    function chartDiv_init(obj) {
-        $(obj).css('width', $(obj).width());
-        $(obj).css('height', $(obj).height());
-    }
-
-    $(function () {
-        tabs($(".map-tab"));
-        //初始化echarts盒子宽高
-        chartDiv_init('attack_type_dic_div');
-        chartDiv_init('chart_map');
-        chartDiv_init('attrack_source_dic_div');
-        chartDiv_init('attrack_time_dic_div');
-        chartDiv_init('attrack_recent_warning_dic_div');
-        chartDiv_init('attrack_threat_level_dic_div');
-
-
-            //关闭弹窗
-        $(document).on('click',".layout .close,.layout .layout-close",function (e) {
-                    actionIn(".layout", 'action_scale_out', .3, "");
-                    $(".shade").css({
-                        visibility: "hidden"
-                    });
-                    event.stopPropagation(); //阻止事件向上冒泡
-
-            });
-            //打开弹窗
-        $(document).on("click", ".agentDiv .card .btngroup .btn", function() {
-   			actionIn(".layout", 'action_scale', .3, "");
-   			$(".shade").css({
-   				visibility: "visible"
-   			});
-   			event.stopPropagation(); //阻止事件向上冒泡
-   			});
-   		});
-        var tabs = function(tab){
-            tab.click(function(){
-                var indx = tab.index(this);
-                tab.removeClass('current');
-                $(this).addClass('current');
-            })
-        }
+    //设置弹框动画 end
 
 </script>
 </html>
