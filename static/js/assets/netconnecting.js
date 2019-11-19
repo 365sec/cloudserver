@@ -64,15 +64,21 @@ function netconnecting_click_search(page) {
             let netconnecting_table_data = data_list['data'];
             let netconnecting_table = '';
             for(let j=0,len = netconnecting_table_data.length;j<len;j++) {
+                let server_img;
+                if (netconnecting_table_data[j]['os'].toLowerCase().indexOf("windows") !== -1){
+                    server_img='<img src="/static/images/os_windows_on.png" style="width: 20px"/>';
+                }else{
+                    server_img='<img src="/static/images/os_linux_on.png" style="width: 20px"/>';
+                }
                 netconnecting_table += '<tr>' +
-                    '<td>' + netconnecting_table_data[j]['host_name'] + '</td>' +
+                    '<td class="port_add">'+server_img + netconnecting_table_data[j]['host_name'] + '<p>' + netconnecting_table_data[j]['host_ip'] + '</p></td>' +
                     '<td>' + netconnecting_table_data[j]['local_addr'] + '</td>' +
                     '<td>' + netconnecting_table_data[j]['local_port'] + '</td>' +
                     '<td>' + netconnecting_table_data[j]['remote_addr'] + '</td>' +
                     '<td>' + netconnecting_table_data[j]['remote_port'] + '</td>' +
                     '<td>' + netconnecting_table_data[j]['name'] + '</td>' +
-                    '<td>' + netconnecting_table_data[j]['pid'] + '</td>' +
                     '<td>' + netconnecting_table_data[j]['proname'] + '</td>' +
+                    '<td>' + netconnecting_table_data[j]['pid'] + '</td>' +
                     '<td>' + netconnecting_table_data[j]['path'] + '</td>';
             }
 
