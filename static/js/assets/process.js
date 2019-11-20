@@ -72,7 +72,7 @@ function process_click_search(page) {
             html_select += '<div class="search_button" >';
 
             html_select += '<div class="search_button">';
-            html_select += '<select id="process_host" class="form-btn" style="width: 140px">';
+            html_select += '<select id="process_host" class="form-btn" style="width: 200px">';
             html_select += '<option value="" >' + "--请选择主机名称--" + '</option>';
             for (agent_id in hostname) {
                 html_select += '<option value="' + agent_id + '" >' + hostname[agent_id][0]+"("+hostname[agent_id][1] +")"+ '</option>'

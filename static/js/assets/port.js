@@ -66,7 +66,7 @@ function port_click_search(page) {
     html_select += '<div class="search_button" >';
 
     html_select += '<div class="search_button">';
-    html_select += '<select id="port_host" class="form-btn" style="width: 140px">';
+    html_select += '<select id="port_host" class="form-btn" style="width: 200px">';
     html_select += '<option value="" >' + "--请选择主机名称--" + '</option>';
     for (agent_id in hostname) {
         html_select += '<option value="' + agent_id + '" >' + hostname[agent_id][0]+"("+hostname[agent_id][1] +")"+ '</option>'
@@ -117,12 +117,12 @@ function port_click_search(page) {
             '<thead>' +
             '<tr>' +
             '<th width="15%">主机</th>' +
-            '<th width="20%">本地地址</th>' +
-            '<th width="6%">本地端口</th>' +
-            '<th width="22%">协议类型</th>' +
-            '<th width="22%">进程ID</th>' +
-            '<th width="10%">进程名</th>' +
-            '<th width="12%">进程路径</th>' +
+            '<th width="15%">本地地址</th>' +
+            '<th width="10%">本地端口</th>' +
+            '<th width="10%">协议类型</th>' +
+            '<th width="10%">进程ID</th>' +
+            '<th width="15%">进程名</th>' +
+            '<th width="25%">进程路径</th>' +
             '</tr>' +
             '</thead>' +
             '<tbody>' +
@@ -294,7 +294,7 @@ function agent_port_num_echart(div,data) {
             {
                 name: '数量',
                 type: 'pie',
-                radius : ['40%','70%'],
+                radius : ['50%','70%'],
                 center: ['50%', '55%'],
                 data:datares,
                 itemStyle: {
