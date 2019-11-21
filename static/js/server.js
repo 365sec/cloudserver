@@ -201,7 +201,7 @@ $(document).off("click", ".detail-a-server").on("click", ".detail-a-server", fun
             agent_server_id=data['agent_id'];
 
             //上面显示的监控简略信息
-            get_monitor_info_last();
+            get_monitor_info_last(data['agent_id']);
 
             // 安全分析
             chart_attack_trend_server(data['agent_id']);
@@ -237,11 +237,11 @@ $(document).off("click", ".detail-a-server").on("click", ".detail-a-server", fun
 
 });
 /*获得最后一次监控*/
-function get_monitor_info_last() {
+function get_monitor_info_last(id) {
     $.ajax({
         url: '/assets/query_monitor_info_last',
         type: 'POST',
-        data:{"agent_id":agent_server_id},
+        data:{"agent_id":id},
         success: function (data) {
             data=data['data'];
             console.log(data);
@@ -289,7 +289,7 @@ function get_progress_bar_html(used, total,info) {
         <div class="progress-bar progress-bar-${level}" role="progressbar"
         aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
          style="width: ${progress}%;">
-         <small class='pull-left' style="color: #0a0c0d" >${info}${progress}%</small>
+         <small class='pull-left' style="color: #0a0c0d;white-space: nowrap;padding-left: 16px;" >${info}${progress}%</small>
         </div>
     </div>
 `;

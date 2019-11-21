@@ -170,7 +170,7 @@ function port_detail(data,port_name1,now_page) {
                 }
                 let local_port = port_table_data[j]['local_port'];
                 port_detail_html += '<tr>' +
-                    '<td class="port_add">'+server_img + port_table_data[j]['host_name'] + '<p>' + port_table_data[j]['host_ip'] + '</p></td>' +
+                    '<td class="port_add">'+server_img + '<div>'+port_table_data[j]['host_name'] + '<p>' + port_table_data[j]['host_ip'] + '</p></div></td>' +
 
                     '<td title="' + port_table_data[j]['local_addr'] + '">' + port_table_data[j]['local_addr'] + '</td>' +
                     '<td title="' + port_table_data[j]['local_port'] + '">' + port_table_data[j]['local_port'] + '</td>' +

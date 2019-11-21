@@ -108,7 +108,7 @@ function netconnecting_click_search(page) {
                     server_img='<img src="/static/images/os_linux_on.png" style="width: 20px"/>';
                 }
                 netconnecting_table += '<tr>' +
-                    '<td class="port_add">'+server_img + netconnecting_table_data[j]['host_name'] + '<p>' + netconnecting_table_data[j]['host_ip'] + '</p></td>' +
+                    '<td class="port_add">'+server_img + '<div>'+ netconnecting_table_data[j]['host_name'] + '<p>' + netconnecting_table_data[j]['host_ip'] + '</p></div></td>' +
                     '<td>' + netconnecting_table_data[j]['local_addr'] + '</td>' +
                     '<td>' + netconnecting_table_data[j]['local_port'] + '</td>' +
                     '<td>' + netconnecting_table_data[j]['remote_addr'] + '</td>' +

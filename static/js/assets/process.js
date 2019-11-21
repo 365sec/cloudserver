@@ -131,11 +131,11 @@ function process_click_search(page) {
                     '<tr>' +
                     '<th width="15%">主机</th>' +
                     '<th width="20%">进程名</th>' +
-                    '<th width="6%">进程ID</th>' +
-                    '<th width="22%">进程路径</th>' +
-                    '<th width="22%">启动命令</th>' +
-                    '<th width="10%">用户</th>' +
-                    '<th width="12%">是否管理员</th>' +
+                    '<th width="8%">进程ID</th>' +
+                    '<th width="20%">进程路径</th>' +
+                    '<th width="20%">启动命令</th>' +
+                    '<th width="8%">用户</th>' +
+                    '<th width="10%">是否管理员</th>' +
                     '</tr>' +
                     '</thead>' +
                     '<tbody>' +
@@ -182,7 +182,7 @@ function process_detail(data,process_name1,now_page) {
                 }
                 let command = process_table_data[j]['command'].replace(/\"/, "");
                 process_detail_html += '<tr>' +
-                    '<td class="port_add">'+server_img + process_table_data[j]['host_name'] + '<p>' + process_table_data[j]['host_ip'] + '</p></td>' +
+                    '<td class="port_add">'+server_img + '<div><p>' + process_table_data[j]['host_name'] + '</p><p>' + process_table_data[j]['host_ip'] + '</p></div></td>' +
 
                     '<td title="' + process_table_data[j]['name'] + '">' + process_table_data[j]['name'] + '</td>' +
                     '<td>' + process_table_data[j]['pid'] + '</td>' +
