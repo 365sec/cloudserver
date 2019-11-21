@@ -343,7 +343,7 @@ function piechart(data,div) {
             }
         });
     }
-    console.log(opt);
+    // console.log(opt);
     lineHide(opt);
 
     piechart.setOption(option);

@@ -149,7 +149,7 @@ function port_detail(data,port_name1,now_page) {
         data: data,
         //dataType: "json",
         success: function (data_list) {
-            console.log(data_list);
+            // console.log(data_list);
             let hostname=data_list['hostname'];
             let now_page = data_list['page'];
             let max_size = data_list['max_size'];
@@ -272,7 +272,7 @@ function port_chart() {
         //dataType: "json",
         success: function (data_list) {
 
-            console.log(data_list["data"]['agent_port_num'])
+            // console.log(data_list["data"]['agent_port_num'])
             agent_port_num_echart('agent_port_num_div',data_list['data']['agent_port_num'])
             agent_port_num_echart('port_num_div',data_list['data']['port_num'])
 

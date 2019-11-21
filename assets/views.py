@@ -95,11 +95,13 @@ def assets_query_network(request):
 
 def assets_monitor_info_last(request):
     agent_id=request.POST.get("agent_id")
-    # info = TAssetsMonitor.objects.all().filter(agent_id=agent_id).last()
-    # # print(model_to_dict(info))
-    # info=model_to_dict(info)
-    info={}
-    # info['check_time']= info['check_time'].strftime("%Y-%m-%d %H:%M:%S")
+    info = TAssetsMonitor.objects.all().filter(agent_id=agent_id).last()
+    # print(info)
+    # print(model_to_dict(info))
+    info=model_to_dict(info)
+    # print (info['check_time'])
+    info['check_time']= info['check_time'].strftime("%Y-%m-%d %H:%M:%S")
+    info['disk_used']= json.loads(info['disk_used'])
     data = {}
     data['msg'] = "success"
     data['code'] = 200
