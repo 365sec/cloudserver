@@ -62,7 +62,7 @@ class TAssetsProcess(models.Model):
 class TAssetsMonitor(models.Model):
     agent_id = models.CharField(primary_key=True, max_length=255)
     cpu_used = models.CharField(blank=True, null=True, max_length=255)
-    cpu_num = models.IntegerField(blank=True, null=True)
+    # cpu_num = models.IntegerField(blank=True, null=True)
     memory_total = models.CharField(blank=True, null=True, max_length=255)
     memory_used = models.CharField(blank=True, null=True, max_length=255)
     network_in = models.CharField(blank=True, null=True, max_length=255)

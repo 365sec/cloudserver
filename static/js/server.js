@@ -199,6 +199,10 @@ $(document).off("click", ".detail-a-server").on("click", ".detail-a-server", fun
                 $("#system_logo_img").attr("src", '/static/img/server-group-detail-pc-logo-linux.png');
             }
             agent_server_id=data['agent_id'];
+
+            //上面显示的监控简略信息
+            get_monitor_info_last();
+
             // 安全分析
             chart_attack_trend_server(data['agent_id']);
 
@@ -224,21 +228,73 @@ $(document).off("click", ".detail-a-server").on("click", ".detail-a-server", fun
 
             //监控详情
             assets_detail(data['agent_id']);
+
         }
     });
 
 
+
+
+});
+/*获得最后一次监控*/
+function get_monitor_info_last() {
     $.ajax({
         url: '/assets/query_monitor_info_last',
         type: 'POST',
         data:{"agent_id":agent_server_id},
         success: function (data) {
-            console.log(data)
+            data=data['data'];
+            console.log(data);
+            $("#server_cpu_used").html("").append(get_progress_bar_html( data['cpu_used'],100,""));
+            $("#server_memory_used").html("").append(get_progress_bar_html( data['memory_used'],data['memory_total'],""));
+            // $("#server_disk_used").html("").append(data['extranet_ip']);
+            let disk_html="";
+            for (x in data['disk_used'])
+            {
+                let disk_char=data['disk_used'][x]['disk_char'];
+                let disk_free_space= parseFloat(data['disk_used'][x]['disk_free_space']);
+                let disk_total_space=parseFloat(data['disk_used'][x]['disk_total_space']);
+                let info;
+                info="盘符"+disk_char+" ";
+                info+="剩余空间量"+disk_free_space+"GB ";
+                info+="总量"+disk_total_space+"GB ";
+                info+="使用率 ";
+                disk_html+=get_progress_bar_html((disk_total_space -disk_free_space),disk_total_space,info)
+
+            }
+            $("#server_disk_used").html("").append(disk_html)
         }
     });
+}
 
-
-});
+function get_progress_bar_html(used, total,info) {
+    let progress = (parseFloat(used)/parseFloat(total))*100;
+    progress=progress.toFixed(2);
+    let html;
+    let level;
+    if (progress > 80) {
+        level='danger';
+    }
+    else if (progress > 60) {
+        level='warning';
+    }
+    else if (progress > 40) {
+        level='info';
+    }
+    else if (progress > 0) {
+        level='success';
+    }
+    html=`
+    <div class="progress">
+        <div class="progress-bar progress-bar-${level}" role="progressbar"
+        aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+         style="width: ${progress}%;">
+         <small class='pull-left' style="color: #0a0c0d" >${info}${progress}%</small>
+        </div>
+    </div>
+`;
+    return html;
+}
 // 安全分析
 function click_chart_attack_trend_server(data){
     $(document).off('click','#security_analysis_link').on('click','#security_analysis_link',function () {
