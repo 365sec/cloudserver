@@ -1981,3 +1981,34 @@ function server_table_list_del_submit(idlist,onlinelist) {
     $("#server_table_list_del_modal").modal("hide");
 
 }
+$(document).on('mouseover','.detail-a-server',function (event) {
+    var target = $(this).parents('tr');
+    var id = target.find('td:first').text();
+    get_monitor_info_last(id);
+    var box = $(".promptBox");
+    var boxheight = box.outerHeight();
+    var bodyheight = $(document).height();
+    var x,y;
+    box.css('display','block');
+    var ev=ev||event;
+    console.log($(document).height())
+    if(event.clientY>  bodyheight - boxheight - 50){
+        y = bodyheight - boxheight- 50;
+    }else{
+        y=event.clientY+8;
+    }
+    x=event.clientX+50;
+    box.css('left',x);
+    box.css('top',y);
+
+    $(this).mousemove(function () {
+        var ev=ev||event;
+        box.css('left',event.clientX+50);
+    })
+    $(this).mouseleave(function () {
+            $(".promptBox").css('display','none');
+            $('#server_cpu_used').text('');
+            $('#server_memory_used').text('');
+            $('#server_disk_used').text('');
+    })
+});

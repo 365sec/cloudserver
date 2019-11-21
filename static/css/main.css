@@ -2678,3 +2678,15 @@ text-align:center;
 .progress-bar-success {
     background-color: hsla(120, 39%, 65%, 1);
 }
+.promptBox{
+    width: 600px;
+    border-radius: 4px;
+    background: #fff;
+    border: 1px solid #eeeeee;
+    position: fixed;
+    display: none;
+    top: 0;
+    right: 0;
+    z-index: 999;
+    transition: all .5s ;
+}
