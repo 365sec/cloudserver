@@ -80,6 +80,9 @@ b {
     border-top: none;
     vertical-align: middle;
 }
+.table>tbody>tr>.text-muted{
+    vertical-align: top;
+}
 .detail-td a {
     width: 50px;
     overflow: hidden;
@@ -2273,7 +2276,6 @@ text-align:center;
 }
 
 .web_tip_text{
-    width: 200px;
     height: 24px;
     line-height: inherit;
     padding: 0;
@@ -2636,7 +2638,14 @@ text-align:center;
 .table td.port_add{
     line-height: initial;
 }
-.table td.port_add p{
+.table td.port_add img{
+    vertical-align: unset;
+}
+.table td.port_add>div{
+    display: inline-block;
+    /*width: calc(100% - 28px);*/
+}
+.table td.port_add>div>p:last-child{
     font-size: 12px;
     line-height: initial;
     margin: 0;
@@ -2662,4 +2671,22 @@ text-align:center;
 }
 .h100{
     height: 100%;
+}
+.progress-bar-danger {
+    background-color: #e76965;
+}
+.progress-bar-success {
+    background-color: hsla(120, 39%, 65%, 1);
+}
+.promptBox{
+    width: 600px;
+    border-radius: 4px;
+    background: #fff;
+    border: 1px solid #eeeeee;
+    position: fixed;
+    display: none;
+    top: 0;
+    right: 0;
+    z-index: 999;
+    transition: all .5s ;
 }
