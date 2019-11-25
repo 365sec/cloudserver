@@ -81,7 +81,7 @@ function netconnecting_click_search(page) {
             html_select += '<input id="netconnecting_port" placeholder="本地端口" value="' + netconnecting_port + '" />';
             html_select += '<input id="netconnecting_remote_addr" placeholder="远程地址" value="' + netconnecting_remote_addr + '" />';
             html_select += '<input id="netconnecting_remote_port" placeholder="远程端口" value="' + netconnecting_remote_port + '" />';
-            html_select += '<input id="netconnecting_name" placeholder="进程名称" value="' + netconnecting_name + '" />';
+            html_select += '<input id="netconnecting_name"  placeholder="进程名称" value="' + netconnecting_name + '" />';
 
             // html_select += '<input id="netconnecting_msg" value="' + netconnecting_msg + '" /></div>';
             html_select += '<div  class="btn" onclick="netconnecting_click_search(0)" >查询</div>';
@@ -116,7 +116,7 @@ function netconnecting_click_search(page) {
                     '<td>' + netconnecting_table_data[j]['name'] + '</td>' +
                     '<td>' + netconnecting_table_data[j]['proname'] + '</td>' +
                     '<td>' + netconnecting_table_data[j]['pid'] + '</td>' +
-                    '<td>' + netconnecting_table_data[j]['path'] + '</td>';
+                    '<td title="' + netconnecting_table_data[j]['path'] + '">' + netconnecting_table_data[j]['path'] + '</td>';
             }
 
             let page = '<ul role="menubar" aria-disabled="false" aria-label="Pagination" class="pagination b-pagination pagination-md justify-content-center">' +

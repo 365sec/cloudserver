@@ -96,6 +96,12 @@ def assets_query_network(request):
 def assets_monitor_info_last(request):
     agent_id=request.POST.get("agent_id")
     info = TAssetsMonitor.objects.all().filter(agent_id=agent_id).last()
+    if not info:
+        data = {}
+        data['msg'] = "error"
+        data['code'] = 404
+        data['data'] = {}
+        return HttpResponse(json.dumps(data), content_type='application/json')
     # print(info)
     # print(model_to_dict(info))
     info=model_to_dict(info)

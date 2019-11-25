@@ -1,8 +1,11 @@
+
+var monitor_list={};
 function server_click(page) {
     /*
     * 服务器管理被点击
     * */
     //let page=1;
+    monitor_list={};
     $.ajax( {
         url: '/manage',
         dataType:"html",
@@ -173,6 +176,8 @@ function server_click(page) {
 
 //详情
 var agent_server_id;
+
+
 $(document).off("click", ".detail-a-server").on("click", ".detail-a-server", function () {
     let data1 = $(this).attr("data-name");
     let b=new Base64();
@@ -236,35 +241,72 @@ $(document).off("click", ".detail-a-server").on("click", ".detail-a-server", fun
 
 
 });
+
+
 /*获得最后一次监控*/
 function get_monitor_info_last(id) {
-    $.ajax({
-        url: '/assets/query_monitor_info_last',
-        type: 'POST',
-        data:{"agent_id":id},
-        success: function (data) {
-            data=data['data'];
-            console.log(data);
-            $("#server_cpu_used").html("").append(get_progress_bar_html( data['cpu_used'],100,""));
-            $("#server_memory_used").html("").append(get_progress_bar_html( data['memory_used'],data['memory_total'],""));
-            // $("#server_disk_used").html("").append(data['extranet_ip']);
-            let disk_html="";
-            for (x in data['disk_used'])
-            {
-                let disk_char=data['disk_used'][x]['disk_char'];
-                let disk_free_space= parseFloat(data['disk_used'][x]['disk_free_space']);
-                let disk_total_space=parseFloat(data['disk_used'][x]['disk_total_space']);
-                let info;
-                info="盘符"+disk_char+" ";
-                info+="剩余空间量"+disk_free_space+"GB ";
-                info+="总量"+disk_total_space+"GB ";
-                info+="使用率 ";
-                disk_html+=get_progress_bar_html((disk_total_space -disk_free_space),disk_total_space,info)
+    let ret = 1;
+    let data;
+    // console.log(monitor_list.hasOwnProperty(id));
+    // console.log(monitor_list);
+    // console.log(monitor_list[id]);
+
+    if ( monitor_list.hasOwnProperty(id))
+    {
+
+        if (monitor_list[id]['code']===404)
+        {
+            ret = 0;
+        }else {
+            data=monitor_list[id]['data']
+        }
+
+
+    }
+    else {
+        $.ajax({
+            url: '/assets/query_monitor_info_last',
+            type: 'POST',
+            data:{"agent_id":id},
+            async :false,
+            success: function (data_all) {
+                data=data_all['data'];
+                monitor_list[id]={};
+                if (data_all['code'] === 404) {
+                    ret=0;
+                    monitor_list[id]['code']=404;
+                    monitor_list[id]['data']=data;
+                    return ;
+                }
+                monitor_list[id]['code']=200;
+                monitor_list[id]['data']=data;
 
             }
-            $("#server_disk_used").html("").append(disk_html)
-        }
-    });
+        });
+    }
+    if (ret === 0) {
+        return 0;
+    }
+
+    $("#server_cpu_used").html("").append(get_progress_bar_html( data['cpu_used'],100,""));
+    $("#server_memory_used").html("").append(get_progress_bar_html( data['memory_used'],data['memory_total'],""));
+    // $("#server_disk_used").html("").append(data['extranet_ip']);
+    let disk_html="";
+    for (x in data['disk_used'])
+    {
+        let disk_char=data['disk_used'][x]['disk_char'];
+        let disk_free_space= parseFloat(data['disk_used'][x]['disk_free_space']);
+        let disk_total_space=parseFloat(data['disk_used'][x]['disk_total_space']);
+        let info;
+        info="盘符"+disk_char+" ";
+        info+="剩余空间量"+disk_free_space+"GB ";
+        info+="总量"+disk_total_space+"GB ";
+        info+="使用率 ";
+        disk_html+=get_progress_bar_html((disk_total_space -disk_free_space),disk_total_space,info)
+
+    }
+    $("#server_disk_used").html("").append(disk_html);
+    return ret;
 }
 
 function get_progress_bar_html(used, total,info) {
@@ -285,7 +327,7 @@ function get_progress_bar_html(used, total,info) {
         level='success';
     }
     html=`
-    <div class="progress">
+    <div class="progress progress-striped">
         <div class="progress-bar progress-bar-${level}" role="progressbar"
         aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
          style="width: ${progress}%;">
@@ -1984,14 +2026,17 @@ function server_table_list_del_submit(idlist,onlinelist) {
 $(document).on('mouseover','.detail-a-server',function (event) {
     var target = $(this).parents('tr');
     var id = target.find('td:first').text();
-    get_monitor_info_last(id);
+    let ret= get_monitor_info_last(id);
+    if (ret === 0) {
+        return;
+    }
     var box = $(".promptBox");
     var boxheight = box.outerHeight();
     var bodyheight = $(document).height();
     var x,y;
     box.css('display','block');
     var ev=ev||event;
-    console.log($(document).height())
+    // console.log($(document).height())
     if(event.clientY>  bodyheight - boxheight - 50){
         y = bodyheight - boxheight- 50;
     }else{
@@ -2004,7 +2049,7 @@ $(document).on('mouseover','.detail-a-server',function (event) {
     $(this).mousemove(function () {
         var ev=ev||event;
         box.css('left',event.clientX+50);
-    })
+    });
     $(this).mouseleave(function () {
             $(".promptBox").css('display','none');
             $('#server_cpu_used').text('');
