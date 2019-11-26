@@ -9,7 +9,7 @@ function process_click(page) {
         success: function (res) {
             $("#div_container").html($(res));
             $(this).addClass("active router-link-active").siblings().removeClass("active router-link-active");
-
+            process_chart();
             process_click_search(page);
             $(".container1").css('background-color', '#f0f2f5');
         }
@@ -276,3 +276,94 @@ $(document).off('click','#process_table>tbody>tr:nth-child(2n+1)').on('click','#
     data['page'] = 0;
     process_detail(data,$(this).attr("id"),0);
 });
+
+function process_chart() {
+    console.log('process_chart');
+    $.ajax({
+        url: "assets/query_process_chart",
+        type: 'GET',
+        // data: data,
+        //dataType: "json",
+        success: function (data_list) {
+
+            console.log(data_list["data"]);
+            agent_process_num_echart('agent_process_num_div',data_list['data']['agent_process_num']);
+            agent_process_num_echart('process_num_div',data_list['data']['process_num'])
+
+        }})
+}
+
+function agent_process_num_echart(div,data) {
+    var chart = echarts.init(document.getElementById(div));
+    var datares = [];
+
+    for (x in data) {
+        datares.push({'name':data[x][0],'value':data[x][1]})
+    }
+    var option = {
+        tooltip : {
+            trigger: 'item',
+            formatter: "{b} : {c} ({d}%)"
+        },
+        series : [
+            {
+                name: '数量',
+                type: 'pie',
+                radius : ['50%','70%'],
+                center: ['50%', '55%'],
+                data:datares,
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+
+    chart.setOption(option);
+}
+function agent_process_num_echart_bar(div,data) {
+    var chart = echarts.init(document.getElementById(div));
+    var datares = [];
+    let x_data=[];
+    let y_data=[];
+    for (x in data) {
+        datares.push({'name':data[x][0],'value':data[x][1]})
+        x_data.push(data[x][0])
+        y_data.push(data[x][1])
+    }
+    var option = {
+        tooltip : {
+            trigger: 'item',
+            formatter: "{b} : {c} ({d}%)"
+        },
+        xAxis: {
+            type: 'category',
+            data: x_data
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series : [
+            {
+                name: '数量',
+                type: 'bar',
+                radius : ['50%','70%'],
+                center: ['50%', '55%'],
+                data:y_data,
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+
+    chart.setOption(option);
+}

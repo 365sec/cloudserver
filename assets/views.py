@@ -5,6 +5,8 @@ import datetime
 import math
 import json
 import re
+
+import geoip2
 from django.utils.timezone import now, timedelta
 from django.db.models.aggregates import Count
 from django.db import connection
@@ -17,6 +19,40 @@ from assets.models import TAssetsPort
 from assets.models import TAssetsActiveNetwork
 from assets.models import TAssetsProcess
 from assets.models import TAssetsMonitor
+
+
+
+def ip_to_address(ip):
+    # 将ip转换成对应的中文地点
+
+    str = ip.split(".")[0]
+    y = ''
+    if str == "172" or str == "192" or str == "10":
+        y = "局域网"
+    elif str == "127" or str == "" or str == "::1":
+        y = ""
+    else:
+        result = []
+        try:
+            gi = geoip2.database.Reader('data/geoip/GeoLite2-City.mmdb', locales=['zh-CN'])
+            response = gi.city(ip)
+        except Exception as e:
+            pass
+        try:
+            result.append(response.country.names['zh-CN'])
+        except Exception as e:
+            pass
+        try:
+            result.append(response.subdivisions.most_specific.names['zh-CN'])
+        except Exception as e:
+            pass
+        try:
+            result.append(response.city.names['zh-CN'])
+        except Exception as e:
+            pass
+
+        y = '-'.join(result)
+    return y
 
 
 
@@ -78,6 +114,15 @@ def assets_query_network(request):
         temp['host_name']=hostname_dir[temp['agent_id']][0]
         temp['host_ip']=hostname_dir[temp['agent_id']][1]
         temp['os'] = hostname_dir[temp['agent_id']][2]
+        try :
+            addr=ip_to_address(temp['remote_addr'])
+
+            if addr:
+                temp['remote_addr']=temp['remote_addr']+"("+addr+")"
+
+        except Exception as e:
+            print(e)
+        # print(common.ip_to_address(temp['remote_addr']))
         y.append(temp)
 
     data = {}
@@ -86,11 +131,33 @@ def assets_query_network(request):
     data['msg'] = "success"
     data['page'] = page
     data['max_size'] = max_size
-
+    # assets_query_network_chart(request)
     return HttpResponse(json.dumps(data), content_type='application/json')
 
 
+def assets_query_network_chart(request):
 
+    # port_num=obj.values_list("local_port").annotate(number=Count("local_port")).order_by("-number")
+    #获得agent_id 跟主机名称 ip 的dir
+    hostname_dir={}
+    for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip","extranet_ip"):
+        if x[2]=="" or x[2] == None:
+            hostname_dir[str(x[0])]=[x[1],x[3]]
+        else:
+            hostname_dir[str(x[0])]=[x[1],x[2]]
+
+    obj = TAssetsActiveNetwork.objects.all().values_list("remote_addr","remote_port").annotate(number=Count("remote_addr")).order_by("-number")
+
+    for x in obj:
+        print(x)
+    y = []
+
+    data = {}
+    data['data'] = y
+
+    data['msg'] = "success"
+
+    return HttpResponse(json.dumps(data), content_type='application/json')
 
 
 def assets_monitor_info_last(request):
@@ -266,6 +333,35 @@ def assets_process_query_num(request):
 
     return HttpResponse(json.dumps(data), content_type='application/json')
 
+def assets_process_chart(request):
+    obj = TAssetsProcess.objects.all()
+
+    #获得agent_id 跟主机名称 ip 的dir
+    hostname_dir={}
+    for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip","extranet_ip","os"):
+        if x[2]=="" or x[2] == None:
+            hostname_dir[str(x[0])]=[x[1],x[3],x[4]]
+        else:
+            hostname_dir[str(x[0])]=[x[1],x[2],x[4]]
+
+    process_num=obj.values_list("name").annotate(number=Count("name")).order_by("-number")
+    agent_process_num=obj.values_list("agent_id").annotate(number=Count("agent_id")).order_by("-number")
+
+    agent_process_num_list=[]
+    for x in list(agent_process_num)[0:10]:
+        x=list(x)
+        x[0]=hostname_dir[x[0]][0]+"("+hostname_dir[x[0]][1]+")"
+        agent_process_num_list.append(x)
+    data = {}
+    data['data'] = {}
+    data['code'] = 200
+    data['msg'] = "success"
+    data['data']['process_num']=list(process_num[0:10])
+    data['data']['agent_process_num']=agent_process_num_list
+
+
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
 def assets_port_query(request):
     obj = TAssetsPort.objects.all()
     page = request.POST.get("page")
@@ -396,7 +492,7 @@ def assets_port_chart(request):
     agent_port_num_list=[]
     for x in list(agent_port_num)[0:10]:
         x=list(x)
-        x[0]=hostname_dir[x[0]][0]
+        x[0]=hostname_dir[x[0]][0]+"("+hostname_dir[x[0]][1]+")"
         agent_port_num_list.append(x)
     data = {}
     data['data'] = {}

@@ -339,7 +339,7 @@ def web_agent_query(request):
             y = json.dumps(y)
             # print (y)
             TAgents_list.append(y)
-        except Exception, e:
+        except Exception as e:
             print (e)
     data = {
         "agents": TAgents_list,

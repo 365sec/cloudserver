@@ -231,8 +231,8 @@ $(document).off("click", ".detail-a-server").on("click", ".detail-a-server", fun
             // 防御策略
             click_config_show(data['agent_id']);
 
-            //监控详情
-            assets_detail(data['agent_id']);
+            // //监控详情
+            // assets_detail(data['agent_id']);
 
         }
     });
@@ -311,6 +311,10 @@ function get_monitor_info_last(id) {
 
 function get_progress_bar_html(used, total,info) {
     let progress = (parseFloat(used)/parseFloat(total))*100;
+
+    if (total === 0.00) {
+        progress=0
+    }
     progress=progress.toFixed(2);
     let html;
     let level;

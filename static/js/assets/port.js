@@ -273,7 +273,7 @@ function port_chart() {
         success: function (data_list) {
 
             // console.log(data_list["data"]['agent_port_num'])
-            agent_port_num_echart('agent_port_num_div',data_list['data']['agent_port_num'])
+            agent_port_num_echart('agent_port_num_div',data_list['data']['agent_port_num']);
             agent_port_num_echart('port_num_div',data_list['data']['port_num'])
 
         }})
