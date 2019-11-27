@@ -111,7 +111,8 @@ function query_attack_times() {
         },
         //dataType: "json",
         success: function (data_list) {
-            attrack_time_charts(data_list['attrack_time_dic'],'attrack_time_dic_div');
+            // attrack_time_charts(data_list['attrack_time_dic'],'attrack_time_dic_div');
+            attrack_time_charts_line(data_list['attrack_time_dic'],'attrack_time_dic_div');
         }
     });
 
@@ -335,22 +336,6 @@ function attrack_time_charts(data,div) {
     });
 
     option = {
-        // Make gradient line here
-        // color: "#C23531",
-        // visualMap: [{
-        //     show: false,
-        //     type: 'continuous',
-        //     seriesIndex: 0,
-        //     min: 0,
-        //     max: 400
-        // }, {
-        //     show: false,
-        //     type: 'continuous',
-        //     seriesIndex: 1,
-        //     dimension: 0,
-        //     min: 0,
-        //     max: dateList.length - 1
-        // }],
 
         tooltip: {
             trigger: 'axis'
@@ -377,6 +362,57 @@ function attrack_time_charts(data,div) {
         series: [{
             type: 'bar',
             showSymbol: false,
+            name: "事件总数",
+            data: valueList,
+            itemStyle: {
+                normal: {
+                    color: '#2D7BA4',
+                }
+            }
+        }]
+    };
+
+    mycharts_attrack_time.setOption(option)
+}
+
+//外部威胁趋势
+function attrack_time_charts_line(data,div) {
+    /*
+    * 近期攻击时间  每个时间被攻击的次数*/
+    data.reverse();
+    if(!document.getElementById(div)){
+        return false;
+    }
+    if (mycharts_attrack_time != null
+        && mycharts_attrack_time != ""
+        && mycharts_attrack_time != undefined) {
+        mycharts_attrack_time.dispose();
+    }
+    mycharts_attrack_time = echarts.init(document.getElementById(div));
+
+    var dateList = data.map(function (item) {
+        return item[0];
+    });
+    var valueList = data.map(function (item) {
+        return item[1];
+    });
+
+    option = {
+
+        tooltip: {
+            trigger: 'axis'
+        },
+        //color: ['#3398db', "#2FC25B", "#FACC14", "#223273", "#8543E0", "#13C2C2", "#3436C7", "#F04864"],
+        xAxis: [{
+            data: dateList,
+        }],
+        yAxis: {
+            type: 'value'
+        },
+
+        series: [{
+            type: 'line',
+           // showSymbol: false,
             name: "事件总数",
             data: valueList,
             itemStyle: {

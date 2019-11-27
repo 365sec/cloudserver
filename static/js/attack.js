@@ -343,7 +343,7 @@ function reset() {
 
 function attack_jump() {
     let jump_page = $("#attack_jump").val();
-    attack_click(jump_page);
+    attack_click_search(jump_page);
 }
 
 $(document).on("change", "select#attack_type_select", function () {

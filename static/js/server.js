@@ -136,9 +136,9 @@ function server_click(page) {
                         html += '<td>' + data[x]['internal_ip'] + '</td>';
                         html += '<td>' + data[x]['extranet_ip'] + '</td>';
                         if (data[x]['online'] === '在线') {
-                            html += '<td><img src = "/static/images/online.png" style="width: 12px;">' + data[x]['online'] + '</td>';
+                            html += '<td><img src = "/static/images/online.png" style="width: 12px;"><span>' + data[x]['online'] + '</span></td>';
                         } else {
-                            html += '<td><img src = "/static/images/offline.png" style="width: 12px;">' + data[x]['online'] + '</td>';
+                            html += '<td><img src = "/static/images/offline.png" style="width: 12px;"><span>' + data[x]['online'] + '</span></td>';
                         }
                         html += '<td>' + data[x]['own_user'] + '</td>';
                         html += '<td>' +
@@ -245,6 +245,10 @@ $(document).off("click", ".detail-a-server").on("click", ".detail-a-server", fun
 
 /*获得最后一次监控*/
 function get_monitor_info_last(id) {
+    // if (is_online===0)
+    // {
+    //     return 0;
+    // }
     let ret = 1;
     let data;
     // console.log(monitor_list.hasOwnProperty(id));
@@ -278,6 +282,7 @@ function get_monitor_info_last(id) {
                     monitor_list[id]['data']=data;
                     return ;
                 }
+
                 monitor_list[id]['code']=200;
                 monitor_list[id]['data']=data;
 
@@ -285,8 +290,14 @@ function get_monitor_info_last(id) {
         });
     }
     if (ret === 0) {
+        // console.log("ret==0");
+        // $("#promotionTable_right").css('display','none');
+        $("#promotionTable_right").hide();
         return 0;
     }
+    // $("#promotionTable_right").css('display','block');
+    $("#promotionTable_right").show();
+    // let myTable= document.getElementById("promotionTable_right");
 
     $("#server_cpu_used").html("").append(get_progress_bar_html( data['cpu_used'],100,""));
     $("#server_memory_used").html("").append(get_progress_bar_html( data['memory_used'],data['memory_total'],""));
@@ -2030,6 +2041,12 @@ function server_table_list_del_submit(idlist,onlinelist) {
 $(document).on('mouseover','.detail-a-server',function (event) {
     var target = $(this).parents('tr');
     var id = target.find('td:first').text();
+    // let online=target.find('td:nth-child(7)>span').text();
+    let online=target.find('td').eq(6).find('span').text();
+
+    if (online !== "在线") {
+        return;
+    }
     let ret= get_monitor_info_last(id);
     if (ret === 0) {
         return;
