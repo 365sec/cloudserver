@@ -85,55 +85,55 @@
         </ul>
         <div id="server_detail_panel_content_wrapper" class="right_content_content" style="margin-top:0px;">
             <div class="tab-content">
-                <div id="security_analysis" class="tab-pane fade active in">
-                    <div class="pull-left" style="width:65%;padding:6px;">
-                        <div>
-                            <p class="pull-left" style="font-size:15px;line-height:36px;margin-left:12px;">服务器攻击趋势</p>
+                <div id="security_analysis" class="tab-pane fade active in  clearfix">
+                    <div class="pull-left" style="width:60%;">
+                        <div class="clearfix">
+                            <p class="pull-left">服务器攻击趋势</p>
                             <div id="server_detail_tab1_duration" class="duration_select_wrapper pull-right" role="group">
                                 <button type="button" class="tab current server_detail_tab" data-type="tday">今</button>
                                 <button type="button" href="#" class="tab server_detail_tab" data-type="yday">昨</button>
                                 <button type="button" href="#" class="tab server_detail_tab" data-type="week">周</button>
                             </div>
-                            <div class="spclear"></div>
                         </div>
-                        <div id="chart_attack_trend" style="height: 350px; width: 100%;"></div>
+                        <div id="chart_attack_trend" class="chart-canvas"></div>
+                    </div>
+                    <div class="pull-left" style="width:40%;">
+                        <p>服务器被攻击类型分析</p>
+                        <div id="chart_attack_kind" class="chart-canvas">
+                        </div>
+                    </div>
+                    <div class="pull-left" style="width:50%;">
+                        <p>攻击类型攻击次数</p>
+                        <div id="chart_attack_type" class="chart-canvas"> </div>
 
-                    </div>
-                    <div class="pull-right" style="width:33%;height:400px;position:relative;margin-top: 20px">
-                        <table class="chart-table-title">
-                            <thead >
-                                <tr>
-                                    <th width="60%">事件类型</th>
-                                    <th>次数</th>
-                                </tr>
-                            </thead></table>
-                        <div class="chart-table" style="height:350px;position:relative;overflow-y: scroll">
-                            <table class='table' id='ana_attack'>
-                            </table>
-                        </div>
+                        <!--
+<table class="chart-table-title">-->
+<!--                            <thead >-->
+<!--                            <tr>-->
+<!--                                <th width="60%">事件类型</th>-->
+<!--                                <th>次数</th>-->
+<!--                            </tr>-->
+<!--                            </thead></table>-->
+<!--                        <div class="chart-table" style="height:350px;position:relative;overflow-y: scroll">-->
+<!--                            <table class='table' id='ana_attack'>-->
+<!--                            </table>-->
+<!--                        </div>-->
                     </div >
-                    <div class="spclear"></div>
-                    <div id="tab1_bottom" style="margin-top:20px;padding-top:12px;border-top:1px solid #ccc;height: 350px;">
-                        <p style="text-align:center;font-size:15px;margin:10px 0 0 0;">服务器被攻击类型分析及被攻击网站列表</p>
-                        <div class="pull-left" style="width:49%;height: 100%;">
-                            <div id="chart_attack_kind" style="height: 300px; width: 100%;">
-                            </div>
-                        </div>
-                        <div class="pull-right" style="width:49%;height:300px;position:relative;margin-top: 20px">
-                            <table class=" chart-table-title">
-                                <thead >
-                                <tr>
-                                    <th style="width: 60%">被攻击网站名称</th>
-                                    <th>攻击次数</th>
-                                </tr>
-                                </thead></table>
-                            <div class="chart-table" style="height:300px;position:relative;overflow-y: scroll">
-                                <table class='table' id='web_attack'>
-                                </table>
-                            </div>
+                    <div class="pull-left" style="width:50%;">
+                        <p>被攻击网站列表</p>
+                        <div id="chart_attack_list" class="chart-canvas"> </div>
+                        <!--                        <table class=" chart-table-title">-->
+<!--                                <thead >-->
+<!--                                <tr>-->
+<!--                                    <th style="width: 60%">被攻击网站名称</th>-->
+<!--                                    <th>攻击次数</th>-->
+<!--                                </tr>-->
+<!--                                </thead></table>-->
+<!--                            <div class="chart-table" style="height:300px;position:relative;overflow-y: scroll">-->
+<!--                                <table class='table' id='web_attack'>-->
+<!--                                </table>-->
+<!--                            </div>-->
                         </div >
-                        <div class="spclear"></div>
-                    </div>
                 </div>
                 <div id="event_statistics" class="tab-pane fade">
                     <div id="right_content_main">
@@ -669,7 +669,7 @@
                     </div>
                     <div id="agent_manage_submit"></div>
                 </div>
-                <div id="asset_detail_show" class="tab-pane fade active in">
+                <div id="asset_detail_show" class="tab-pane fade">
                     <div class="pull-left" style="width:65%;padding:6px;">
 
                     </div>

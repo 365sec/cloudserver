@@ -221,27 +221,55 @@ function chart_attack_trend_web(app_id) {
     let tday = temp_tday;
     let yday = temp_yday;
     let week = temp_week;
-    linechart(tday, 'chart_attack_trend_web');
+    lineChartServer(tday, 'chart_attack_trend_web');
 
-    let attack = data['level_num'];
-    piechart(attack, 'chart_attack_kind_web');
-
-    // 攻击类型攻击次数
-    let ana_attack = '';
-
-    for (x in data['type_num']) {
-        ana_attack += '<tr><td width="60%">' + data['type_num'][x][0] + '</td>';
-        ana_attack += '<td>' + data['type_num'][x][1] + '</td></tr>';
+    // 服务器被攻击类型分析
+    let attack = [];
+    for (let x in data['level_num'])
+    {
+        if (data['level_num'][x][1] !== 0)
+        {
+            attack.push(data['level_num'][x])
+        }
     }
-    $('#ana_attack').html(ana_attack);
+    pieChartServer(attack,'chart_attack_kind_web');
+    // 攻击类型攻击次数
+    let ana_attack = [];
+    for (let x in data['type_num'])
+    {
+        if (data['type_num'][x][1] !== 0)
+        {
+            ana_attack.push(data['type_num'][x])
+        }
+    }
+    barChartServer(ana_attack,'chart_attack_type_web');
+    // let ana_attack = '';
+    //
+    // for (x in data['type_num']) {
+    //     ana_attack += '<tr><td width="60%">' + data['type_num'][x][0] + '</td>';
+    //     ana_attack += '<td>' + data['type_num'][x][1] + '</td></tr>';
+    // }
+    // $('#ana_attack').html(ana_attack);
 
     // 被攻击网站列表
-    let web_attack = '';
-    for (x in data['web_num']) {
-        web_attack += '<tr><td style="width: 60%">' + data['web_num'][x][0] + '</td>';
-        web_attack += '<td>' + data['web_num'][x][1] + '</td></tr>';
+    let web_attack = [];
+    for (let x in data['web_num'])
+    {
+        if (data['web_num'][x][1] !== 0)
+        {
+            web_attack.push(data['web_num'][x])
+        }
     }
-    $('#web_attack').html(web_attack);
+    barChartServer(web_attack,'chart_attack_list_web');
+    // let web_attack = '';
+    // for (x in data['web_num']) {
+    //     web_attack += '<tr><td style="width: 60%">' + data['web_num'][x][0] + '</td>';
+    //     web_attack += '<td>' + data['web_num'][x][1] + '</td></tr>';
+    // }
+    // $('#web_attack').html(web_attack);
+
+
+//安全分析服务器攻击趋势tab切换
     $(document).on('click', '.web_detail_tab', function () {
 
         let value = $(this).attr('data-type');
@@ -263,9 +291,6 @@ function chart_attack_trend_web(app_id) {
         linechart.setOption(option);
     });
 }
-
-//安全分析服务器攻击趋势tab切换
-
 
 // 事件处理
 function event_treat_web(now_page, app_id) {

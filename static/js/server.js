@@ -402,7 +402,7 @@ function chart_attack_trend_server(agent_id){
     let tday = temp_tday;
     let yday =temp_yday;
     let week = temp_week;
-    linechart(tday,'chart_attack_trend');
+    lineChartServer(tday,'chart_attack_trend');
 
     // 服务器被攻击类型分析
     let attack = [];
@@ -413,25 +413,36 @@ function chart_attack_trend_server(agent_id){
             attack.push(data['level_num'][x])
         }
     }
-    piechart(attack,'chart_attack_kind');
+    pieChartServer(attack,'chart_attack_kind');
 
     // 攻击类型攻击次数
     // 事件类型	次数
-    let ana_attack = '';
-    for(x in data['type_num']){
-        ana_attack +='<tr><td width="60%">'+data['type_num'][x][0]+'</td>';
-        ana_attack +='<td>'+data['type_num'][x][1]+'</td></tr>';
+    let ana_attack = [];
+    for (let x in data['type_num'])
+    {
+        if (data['type_num'][x][1] !== 0)
+        {
+            ana_attack.push(data['type_num'][x])
+        }
     }
-    $('#ana_attack').html(ana_attack);
-
+    barChartServer(ana_attack,'chart_attack_type');
     // 被攻击网站列表
-    let web_attack = '';
-    for(x in data['web_num']){
-
-        web_attack +='<tr><td style="width: 60%">'+data['web_num'][x][0]+'</td>';
-        web_attack +='<td>'+data['web_num'][x][1]+'</td></tr>';
+    // let web_attack = '';
+    // for(x in data['web_num']){
+    //
+    //     web_attack +='<tr><td style="width: 60%">'+data['web_num'][x][0]+'</td>';
+    //     web_attack +='<td>'+data['web_num'][x][1]+'</td></tr>';
+    // }
+    // $('#chart_attack_list').html(web_attack);
+    let web_attack = [];
+    for (let x in data['web_num'])
+    {
+        if (data['web_num'][x][1] !== 0)
+        {
+            web_attack.push(data['web_num'][x])
+        }
     }
-    $('#web_attack').html(web_attack);
+    barChartServer(web_attack,'chart_attack_list');
     // 安全分析服务器攻击趋势tab切换
     $(document).off('click','.server_detail_tab').on('click','.server_detail_tab',function () {
         let value = $(this).attr('data-type');

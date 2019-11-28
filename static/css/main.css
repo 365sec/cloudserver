@@ -2690,3 +2690,18 @@ text-align:center;
     z-index: 999;
     transition: all .5s ;
 }
+#security_analysis>.pull-left{
+    height: 350px;
+    padding: 12px;
+}
+#security_analysis>.pull-left .chart-canvas{
+    width: 100%;
+    height: calc(100% - 36px);
+    border: 1px solid #ddd;
+}
+#security_analysis>.pull-left p{
+    line-height: 36px;
+    margin: 0;
+    margin-left: 12px;
+    font-size:15px;
+}
