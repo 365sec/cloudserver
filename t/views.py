@@ -1298,7 +1298,7 @@ def query_attack_warn(request):
     data = {}
     web_attack = TWebEvent.objects.filter(event_id__gt=999)
     web_attack = web_attack.values("agent_id","event_id","event_time","plugin_message","attack_source")
-    log_attack = TLogAnalysisd.objects.values("agent_id","event_id","event_time","unused","dstip").filter(event_id=2010)
+    log_attack = TLogAnalysisd.objects.values("agent_id","event_id","event_time","comment","dstip").filter(event_id=2010)
 
     filter_condition = {}
     if not request.session['superuser']:
@@ -1326,7 +1326,7 @@ def query_attack_warn(request):
             x['plugin_message'] = x['plugin_message'].replace('"', '&quot;')
 
         else:
-            x['plugin_message']="SSH远程暴力登录"
+            x['plugin_message']=""
         if hasattr(x,u'dstip'):
             x['attack_source']=x['dstip']
 
