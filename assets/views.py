@@ -352,8 +352,10 @@ def assets_process_chart(request):
             hostname_dir[str(x[0])]=[x[1],x[2],x[4]]
 
     process_num=obj.values_list("name").annotate(number=Count("name")).order_by("-number")
-    agent_process_num=obj.values_list("agent_id").annotate(number=Count("agent_id")).order_by("-number")
+    agent_process_num=obj.values_list("agent_id").annotate(number=Count("name",distinct=True)).order_by("-number")
 
+    # print(process_num.query)
+    # print(agent_process_num.query)
     agent_process_num_list=[]
     for x in list(agent_process_num)[0:10]:
         x=list(x)
@@ -494,8 +496,11 @@ def assets_port_chart(request):
             hostname_dir[str(x[0])]=[x[1],x[2],x[4]]
 
     port_num=obj.values_list("local_port").annotate(number=Count("local_port")).order_by("-number")
-    agent_port_num=obj.values_list("agent_id").annotate(number=Count("agent_id")).order_by("-number")
-
+    agent_port_num=obj.values_list("agent_id").annotate(number=Count("local_port",distinct=True)).order_by("-number")
+    # process_list=obj.values_list("name").annotate(number=Count("agent_id",distinct=True))
+    # print(agent_port_num.query)
+    # for x in agent_port_num:
+    #     print(x)
     agent_port_num_list=[]
     for x in list(agent_port_num)[0:10]:
         x=list(x)

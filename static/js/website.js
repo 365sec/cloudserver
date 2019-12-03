@@ -167,15 +167,21 @@ $(document).on("click", ".detail-a-website", function () {
             $("#web_manager_status").html("").append(data['online']);
             $("#web_manager_lastbeat").html("").append(data['last_heartbeat']);
             // 安全分析
-
+            web_click_chart_attack_trend_server(data['app_id']);
             chart_attack_trend_web(data['app_id']);
             // 事件处理
+            web_click_event_treat_server(data['app_id']);
             event_treat_web(1, data['app_id']);
 
         }
     });
 });
 
+function web_click_chart_attack_trend_server(app_id){
+    $(document).off('click','#web_security_analysis_link').on('click','#web_security_analysis_link',function () {
+        chart_attack_trend_web(app_id);
+    })
+}
 // 安全分析
 function chart_attack_trend_web(app_id) {
     // chart_attack_trend 服务器攻击趋势
@@ -290,6 +296,13 @@ function chart_attack_trend_web(app_id) {
         option.series[0].data = data;
         linechart.setOption(option);
     });
+}
+
+// 事件处理
+function web_click_event_treat_server(app_id){
+    $(document).off('click','#web_event_statistics_link').on('click','#web_event_statistics_link',function () {
+        event_treat_web(1,app_id);
+    })
 }
 
 // 事件处理
@@ -419,7 +432,7 @@ function event_treat_web(now_page, app_id) {
                 '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp' +
                 '<a href="javascript:void(0);" onclick="event_treat_web(' + (now_page + 1) + ",'" + app_id + '\')">下一页</a>' +
                 '<input id = "event_treat_web_jump" value="' + now_page + '" />' +
-                '<a href="javascript:void(0);" onclick="event_treat_web_jump()">跳转</a>' +
+                '<a href="javascript:void(0);" onclick="event_treat_web_jump(\''+app_id+'\')">跳转</a>' +
                 '</ul>';
             $('.page').html(page);
 
@@ -437,9 +450,9 @@ function web_reset(page,app_id) {
 }
 
 
-function event_treat_web_jump() {
+function event_treat_web_jump(app_id) {
     let page = $("#event_treat_web_jump").val();
-    event_treat_web(parseInt(page));
+    event_treat_web(parseInt(page),app_id);
 }
 
 //事件处理弹窗

@@ -76,6 +76,7 @@ urlpatterns = [
     url(r'^website_manage_detail$', link.website_manage_detail),
     url(r'^manage$', link.manage),
     url(r'^user$', link.user),
+    url(r'^update$', link.update),
 
     url(r'^_book/doc', link.doc),
     ############################ 资产清点link ###############################

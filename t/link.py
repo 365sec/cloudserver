@@ -10,6 +10,7 @@ from common.data import CONF
 from common.common import file_iterator
 from t.models import THostAgents
 
+
 """
 
 def agent_click(request):
@@ -96,7 +97,14 @@ def manage(request):
 def user(request):
     return render(request, 'user.html', {})
 
+def update(request):
+    version = request.GET.get("version")
+    file=open('E:\\update_server\\2.0.0_2.0.1.zip','rb')
+    response =StreamingHttpResponse(file)
+    response['Content-Type']='application/octet-stream'
+    response['Content-Disposition']='attachment;filename="package.zip"'
 
+    return response
 
 
 def doc(request):
