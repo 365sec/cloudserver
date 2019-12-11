@@ -113,6 +113,7 @@ function netconnecting_click_search(page) {
                     '<td>' + netconnecting_table_data[j]['local_port'] + '</td>' +
                     '<td>' + netconnecting_table_data[j]['remote_addr'] + '</td>' +
                     '<td>' + netconnecting_table_data[j]['remote_port'] + '</td>' +
+                    '<td>' + netconnecting_table_data[j]['remote_location'] + '</td>' +
                     '<td>' + netconnecting_table_data[j]['name'] + '</td>' +
                     '<td>' + netconnecting_table_data[j]['proname'] + '</td>' +
                     '<td>' + netconnecting_table_data[j]['pid'] + '</td>' +

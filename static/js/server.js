@@ -309,10 +309,10 @@ function get_monitor_info_last(id) {
         let disk_free_space= parseFloat(data['disk_used'][x]['disk_free_space']);
         let disk_total_space=parseFloat(data['disk_used'][x]['disk_total_space']);
         let info;
-        info="盘符"+disk_char+" ";
-        info+="剩余空间量"+disk_free_space+"GB ";
+        info=disk_char+" | ";
+        info+="已使用"+(disk_total_space-disk_free_space)+"GB / ";
         info+="总量"+disk_total_space+"GB ";
-        info+="使用率 ";
+        //info+="使用率 ";
         disk_html+=get_progress_bar_html((disk_total_space -disk_free_space),disk_total_space,info)
 
     }
@@ -342,7 +342,7 @@ function get_progress_bar_html(used, total,info) {
         level='success';
     }
     html=`
-    <div class="progress progress-striped">
+    <div class="progress">
         <div class="progress-bar progress-bar-${level}" role="progressbar"
         aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
          style="width: ${progress}%;">
@@ -1069,15 +1069,17 @@ function server_website_list(now_page){
         let data1 = b.encode(JSON.stringify(server_website_list_data[j]));
         // html += '<td><a class="detail-a-website" href="javascript:void(0)" data-name="' + data1 + '" >' + data[x]['register_ip'] + '</a> </td>';
         server_website_list += '<tr>' +
-            ' <td style="width: 46px;padding: 14px;">' +
-            '    <div class="server_website_list_checkbox">' +
-            '    <input class="regular_checkbox" id="' + server_website_list_data[j]['app_id'] + '" type="checkbox" name="server_website_list_checkall">' +
-            '    <label for="' + server_website_list_data[j]['app_id'] + '"></label>' +
-            '    </div>' +
-            ' </td>' +
+            // ' <td style="width: 46px;padding: 14px;">' +
+            // '    <div class="server_website_list_checkbox">' +
+            // '    <input class="regular_checkbox" id="' + server_website_list_data[j]['app_id'] + '" type="checkbox" name="server_website_list_checkall">' +
+            // '    <label for="' + server_website_list_data[j]['app_id'] + '"></label>' +
+            // '    </div>' +
+            // ' </td>' +
             '<td><a class="detail-a-website" href="javascript:void(0)" data-name="' + data1 + '"   >' + server_website_list_data[j]['register_ip'] + '</a></td>' +
+            '<td>' + server_website_list_data[j]['server_type'] +'-'+server_website_list_data[j]['server_version']+ '</td>' +
+            '<td>' + server_website_list_data[j]['language'] + '</td>' +
+            '<td>' + server_website_list_data[j]['version'] + '</td>' +
             '<td>' + server_website_list_data[j]['remark'] + '</td>' +
-            '<td>' + server_website_list_data[j]['owner'] + '</td>' +
             '<td>' + server_website_list_data[j]['last_heartbeat'] + '</td>';
     }
         let page = '<ul role="menubar" aria-disabled="false" aria-label="Pagination" class="pagination b-pagination pagination-md justify-content-center">'+

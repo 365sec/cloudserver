@@ -411,8 +411,8 @@ def attack_event_query(request):
     if attack_msg != "" and attack_msg != None:
         # filter_condition['plugin_message__icontains']=attack_msg
         tfile_msg_filter = Q(event_name__icontains=attack_msg) | Q(full_log__icontains=attack_msg)
-        tlog_msg_filter = Q(event_name__icontains=attack_msg) | Q(comment__icontains=attack_msg)
-        tweb_msg_filter = Q(event_name__icontains=attack_msg) | Q(plugin_message__icontains=attack_msg)
+        tlog_msg_filter = Q(event_name__icontains=attack_msg) | Q(comment__icontains=attack_msg) | Q(srcip__icontains=attack_msg)
+        tweb_msg_filter = Q(event_name__icontains=attack_msg) | Q(plugin_message__icontains=attack_msg) | Q(attack_source__icontains=attack_msg)
         tfile_obj = tfile_obj.filter(tfile_msg_filter)
         tlog_obj = tlog_obj.filter(tlog_msg_filter)
         tweb_obj = tweb_obj.filter(tweb_msg_filter)

@@ -118,7 +118,10 @@ def assets_query_network(request):
             addr=ip_to_address(temp['remote_addr'])
 
             if addr:
-                temp['remote_addr']=temp['remote_addr']+"("+addr+")"
+                #temp['remote_addr']=temp['remote_addr']
+                temp['remote_location'] = addr
+            else:
+                temp['remote_location'] = ''
 
         except Exception as e:
             print(e)

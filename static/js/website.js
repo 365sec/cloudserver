@@ -45,12 +45,13 @@ function website_click(page) {
                     html += '<tr>';
                     // html += '<th>AGENT_ID</th>';
                     html += '<th>IP</th>';
-                    html += '<th>标签</th>';
+
                     html += '<th>所属服务器</th>';
                     html += '<th>实例</th>';
                     html += '<th>开发语言</th>';
                     html += '<th>版本号</th>';
                     html += '<th>在线状态</th>';
+                    html += '<th>标签</th>';
                     html += '<th>上次心跳时间</th>';
                     html += '</tr>';
                     html += '</thead>';
@@ -64,14 +65,14 @@ function website_click(page) {
 
                         html += '<td><a class="detail-a-website" href="javascript:void(0)" data-name="' + data1 + '" >' + data[x]['register_ip'] + '</a> </td>';
                         // html += '<td>' + data[x]['register_ip'] + '</td>';
-                        html += '<td style="width: 200px">' +
-                            '<input class="web_tip_text" placeholder="点击编辑" data-type="web"   data-id="' + data[x]['app_id'] + '" value="' + data[x]['remark'] + '"/>' +
-                            '</td>';
                         html += '<td>' + data[x]['hostname'] + '</td>';
                         html += '<td>' + data[x]['server_type'] + '-' + data[x]['server_version'] + '</td>';
                         html += '<td>' + data[x]['language'] + '</td>';
                         html += '<td>' + data[x]['version'] + '</td>';
                         html += '<td>' + data[x]['online'] + '</td>';
+                        html += '<td style="width: 200px">' +
+                            '<input class="web_tip_text" placeholder="点击编辑" data-type="web"   data-id="' + data[x]['app_id'] + '" value="' + data[x]['remark'] + '"/>' +
+                            '</td>';
                         html += '<td>' + data[x]['last_heartbeat'] + '</td>';
                         // html += '<td>' + data[x]['server_type'] + '</td>';
                         html += '</tr>';

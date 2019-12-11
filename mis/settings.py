@@ -67,8 +67,20 @@ DATABASES = {
         'CONN_MAX_AGE':6
     }
 }
+'''
 
-
+DATABASES = {
+    'default': {
+        'ENGINE':'django_mysqlpool.backends.mysqlpool',
+        'NAME':'gov_defence',
+        'USER':'grxa',
+        'PASSWORD':'GRXA@1410g20db',
+        'HOST':'172.16.31.135',
+        'PORT':'3306',
+        'CONN_MAX_AGE':6
+    }
+}
+'''
 
 
 
