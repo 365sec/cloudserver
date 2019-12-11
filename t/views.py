@@ -30,10 +30,17 @@ from t.models import TWebEvent
 from t.models import TFileIntegrity
 from t.models import TLogAnalysisd
 from t.models import TBaselineKnowledge
-
 from t.models import TEventKnowledge
 from t.models import TConfig
 from t.models import TUsers
+
+from assets.models import TAssetsProcess
+from assets.models import TAssetsMonitor
+from assets.models import TAssetsPort
+from assets.models import TAssetsActiveNetwork
+
+
+
 from t.auth import auth
 from t.login import get_agent_id
 from t.login import refresh_agent_id
@@ -148,21 +155,44 @@ def agent_del(request):
     agent_id_list=agent_id_list.split(",")
     for agent_id in agent_id_list:
         web_event= TWebEvent.objects.filter(agent_id=agent_id)
-        web_event.delete()
+        if web_event:
+            web_event.delete()
         log_obj= TLogAnalysisd.objects.filter(agent_id=agent_id)
-        log_obj.delete()
+        if log_obj:
+            log_obj.delete()
         file_obj= TFileIntegrity.objects.filter(agent_id=agent_id)
-        file_obj.delete()
-
+        if file_obj:
+            file_obj.delete()
         web_agent= TWebAgents.objects.filter(agent_id=agent_id)
-        web_agent.delete()
+        if web_agent:
+            web_agent.delete()
         host_agent= THostAgents.objects.filter(agent_id=agent_id)
-        host_agent.delete()
+        if host_agent:
+            host_agent.delete()
 
         tconfig=TConfig.objects.filter(agent_id=agent_id)
-        tconfig.delete()
+        if tconfig:
+            tconfig.delete()
         tbaseline=TBaselineCheck.objects.filter(agent_id=agent_id)
-        tbaseline.delete()
+        if tbaseline:
+            tbaseline.delete()
+        #资产清点模块删除
+        tAssetsProcess=TAssetsProcess.objects.filter(agent_id=agent_id)
+        if tAssetsProcess:
+            tAssetsProcess.delete()
+        tAssetsMonitor=TAssetsMonitor.objects.filter(agent_id=agent_id)
+        if tAssetsMonitor:
+            tAssetsMonitor.delete()
+        tAssetsPort=TAssetsPort.objects.filter(agent_id=agent_id)
+        if tAssetsPort:
+            tAssetsPort.delete()
+        tAssetsActiveNetwork=TAssetsActiveNetwork.objects.filter(agent_id=agent_id)
+        if tAssetsActiveNetwork:
+            tAssetsActiveNetwork.delete()
+        # TAssetsProcess
+        # TAssetsMonitor
+        # TAssetsPort
+        # TAssetsActiveNetwork
 
     data={"msg":"删除成功"}
 
@@ -304,7 +334,7 @@ def web_agent_query(request):
         result = TWebAgents.objects.all().filter(**filter_condition).order_by("-online")
 
     # 每页显示多少个数据
-    # for x in result:
+    # for x in  :
     #     print (x)
     page_size = 15
     # 最大分页数
@@ -319,6 +349,8 @@ def web_agent_query(request):
             y = model_to_dict(x)
             hostname = THostAgents.objects.all().filter(agent_id=y['agent_id']).first()
             if  not hostname:
+                print (y['agent_id'])
+                print ("not hostname")
                 continue
             if hasattr(hostname,"internal_ip"):
                 y['register_ip'] = hostname.internal_ip

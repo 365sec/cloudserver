@@ -12,6 +12,10 @@ from assets import  assets_link
 from assets import views as assets_view
 
 urlpatterns = [
+
+    url(r'^static/(?P<path>.*)$', static.serve,
+        {'document_root': settings.STATIC_ROOT}, name='static'),
+
     url(r'^data_count$', views.view_report),# 统计信息界面展示
     # url(r'^agent/query/$', views.agent_query),#查询agent事件
     url(r'^server_agent/query/$', views.server_agent_query),# 查询服务agent
@@ -49,7 +53,7 @@ urlpatterns = [
     url(r'^logout$', login.loginout),
     url(r'^index$', login.index),
     ############################ 资产清点URL ###############################
-    url(r'^assets/app_query$', assets_view.app_query),
+
     url(r'^assets/query_network$', assets_view.assets_query_network),
     url(r'^assets/query_monitor_info_last$', assets_view.assets_monitor_info_last),#监控信息
     url(r'^assets/query_monitor_info_query$', assets_view.assets_monitor_info_query),
@@ -76,7 +80,7 @@ urlpatterns = [
     url(r'^website_manage_detail$', link.website_manage_detail),
     url(r'^manage$', link.manage),
     url(r'^user$', link.user),
-    url(r'^update$', link.update),
+
 
     url(r'^_book/doc', link.doc),
     ############################ 资产清点link ###############################
@@ -87,8 +91,7 @@ urlpatterns = [
 
     #######################################################################
     url(r'^//', login.index),
-    url(r'^static/(?P<path>.*)$', static.serve,
-        {'document_root': settings.STATIC_ROOT}, name='static'),
+
     url(r'', login.index),
 
 
