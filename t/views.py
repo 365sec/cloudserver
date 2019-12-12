@@ -236,6 +236,7 @@ def server_agent_query(request):
     if page > max_size:
         page = max_size
     TAgents_list = []
+    monitor_list=[]
     for x in result[(page - 1) * page_size:(page) * page_size]:
         y = model_to_dict(x)
 
@@ -249,15 +250,36 @@ def server_agent_query(request):
         # y['sensor_type_id'] = SENSOR_TYPE.get(y['sensor_type_id'], '')
         y['online'] = '在线' if y['online'] else '离线'
         y['disabled'] = '是' if y['disabled'] else '否'
-
+        if  y['online'] == '在线':
+            monitor_list.append(y['agent_id'])
         for k, v in y.items():
             if not y[k]:
                 y[k] = ''
         y = json.dumps(y)
-
         TAgents_list.append(y)
+
+    Q_filter=Q()
+    for value in monitor_list:
+        Q_filter|=Q(**{"{}__iregex".format("agent_id"): value})
+    info = TAssetsMonitor.objects.filter(Q_filter)
+    monitor_dir={}
+    TAgents_list_new=[]
+    for x in info:
+        y=model_to_dict(x)
+        monitor_dir[y['agent_id']]={
+            "memory_used":y['memory_used'],
+            "memory_total":y['memory_total'],
+            "cpu_used":y['cpu_used'],
+                                    }
+    for x in TAgents_list:
+        x =json.loads(x)
+        if x['online']=="在线":
+            x['monitor']=monitor_dir.get(x['agent_id'],"")
+        x=json.dumps(x)
+        TAgents_list_new.append(x)
+
     data = {
-        "agents": TAgents_list,
+        "agents": TAgents_list_new,
         "max_size": max_size,
         "page": page,
         "last_online": last_online,
