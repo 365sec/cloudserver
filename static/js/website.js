@@ -127,12 +127,18 @@ $(document).on('keydown', '.web_tip_text', function () {
         $(this).blur();
     }
 });
-$(document).on('change ', '.web_tip_text', function () {
+$(document).on('change', '.web_tip_text', function () {
     let remark = $(this).val();
     let id = $(this).attr('data-id');
     let data_type = $(this).attr('data-type');
     // 操作
     var pattern = /^[A-Za-z0-9\u4e00-\u9fa5]+$/gi;
+    if(remark){
+        $(this).removeClass('empty');
+    }else{
+        $(this).addClass('empty');
+
+    }
     if (remark!==""&&!pattern.test(remark))
     {
         alert("请输入数字、字母、或者汉字");

@@ -126,7 +126,7 @@ function process_click_search(page) {
                     '</tr>' +
                     '<tr style="display: none">' +
                     '<td colspan="3" >' +
-                    '<table class="table table-striped table_fixed w100">' +
+                    '<table class="table table-striped table-bordered table_fixed w100">' +
                     '<thead>' +
                     '<tr>' +
                     '<th width="15%">主机</th>' +

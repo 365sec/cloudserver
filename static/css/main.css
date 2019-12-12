@@ -695,7 +695,7 @@ td {
     font-size: 13px;
     border: none;
     height: 45px;
-    line-height: 25px;
+    /*line-height: 25px;*/
     padding-top: 10px;
     /*border-bottom: 1px solid #dee2e6;*/
     border: 1px solid #ddd;
@@ -2282,13 +2282,29 @@ text-align:center;
     margin: 0;
     font-size: 13px;
     box-sizing: border-box;
-    border: none;
     background-color: inherit;
+    max-width: 130px;
+    border: 1px solid #00a5e3;
+    text-align: center;
+    color: #00a5e3;
 }
-.web_tip_text:focus{
+.web_tip_text.empty{
     border: 1px solid #aaa;
+    color: #aaa;
+}
+.web_tip_text::-webkit-input-placeholder{
+    color: #00a5e3;
+}
+.web_tip_text.empty::-webkit-input-placeholder{
+    color: #aaa;
+}
+.web_tip_text.empty:focus,.web_tip_text.empty:focus::-webkit-input-placeholder{
+    color: #00a5e3;
+}
+.web_tip_text:focus,.web_tip_text.empty:focus{
+    border: 1px solid #00a5e3;
     border-radius: 4px;
-
+    box-shadow: 0 0 4px #00a5e3;
 }
 #attack_body .ip{
     background: #5bc0de;
@@ -2704,4 +2720,43 @@ text-align:center;
     margin: 0;
     margin-left: 12px;
     font-size:15px;
+}
+.table .table.server_detail_table.promotionTable{
+    background: inherit;
+}
+.table .table.server_detail_table.promotionTable tbody tr{
+    background: inherit;
+}
+.table .table.server_detail_table.promotionTable tbody td{
+    padding: 0 8px;
+}
+.promotionTable .progress{
+    margin: 0;
+    height: 15px;
+}
+.table-bordered td.servername{
+    position: relative;
+}
+.table-bordered td.servername>img{
+     transform: translateY(-50%);
+     position: absolute;
+     top: 50%;
+ }
+.table-bordered td.servername>div{
+    width: calc(100% - 25px);
+    margin-left: auto;
+}
+.circle-border>p{
+    margin: 0;
+}
+.circle-border>p>span{
+    width: 17px;
+    height: 17px;
+    margin: 0 5px;
+    color: #444;
+    display: inline-block;
+    border: 1px solid #777;
+    border-radius: 50%;
+    font-size: 12px;
+    text-align: center;
 }
