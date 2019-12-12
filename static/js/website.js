@@ -23,7 +23,7 @@ function website_click(page) {
                 },
                 //dataType: "json",
                 success: function (data_list) {
-                    console.log(data_list);
+                    // console.log(data_list);
                     if(data_list.hasOwnProperty('auth')){
                         window.location.href = '/login'
                         // redirect('/login');
@@ -57,7 +57,6 @@ function website_click(page) {
                     html += '</tr>';
                     html += '</thead>';
                     html += '<tbody>';
-                    console.log(data)
                     for (x in data) {
 
                         html += '<tr>';
