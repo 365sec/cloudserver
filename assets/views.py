@@ -77,11 +77,15 @@ def assets_query_network(request):
     hostname_dir={}
     rows_to_search=[]
     for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip","extranet_ip","os"):
-        if x[2]=="" or x[2] == None:
-            hostname_dir[str(x[0])]=[x[1],x[3],x[4]]
-        else:
-            hostname_dir[str(x[0])]=[x[1],x[2],x[4]]
-        rows_to_search.append(x[0])
+        try:
+            if x[2]=="" or x[2] == None:
+                hostname_dir[str(x[0])]=[x[1],x[3],x[4]]
+            else:
+                hostname_dir[str(x[0])]=[x[1],x[2],x[4]]
+            rows_to_search.append(x[0])
+        except Exception as e:
+            print(e)
+            print("没有找到 host_agent",str(x[0]))
     Q_filter=Q()
     for value in rows_to_search:
         Q_filter|=Q(**{"{}__iregex".format("agent_id"): value})
@@ -141,11 +145,15 @@ def assets_query_network_chart(request):
     hostname_dir={}
     rows_to_search=[]
     for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip","extranet_ip","os"):
-        if x[2]=="" or x[2] == None:
-            hostname_dir[str(x[0])]=[x[1],x[3],x[4]]
-        else:
-            hostname_dir[str(x[0])]=[x[1],x[2],x[4]]
-        rows_to_search.append(x[0])
+        try:
+            if x[2]=="" or x[2] == None:
+                hostname_dir[str(x[0])]=[x[1],x[3],x[4]]
+            else:
+                hostname_dir[str(x[0])]=[x[1],x[2],x[4]]
+            rows_to_search.append(x[0])
+        except Exception as e:
+            print(e)
+            print("没有找到 host_agent",str(x[0]))
     Q_filter=Q()
     for value in rows_to_search:
         Q_filter|=Q(**{"{}__iregex".format("agent_id"): value})
@@ -229,11 +237,15 @@ def assets_process_query(request):
     hostname_dir={}
     rows_to_search=[]
     for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip","extranet_ip","os"):
-        if x[2]=="" or x[2] == None:
-            hostname_dir[str(x[0])]=[x[1],x[3],x[4]]
-        else:
-            hostname_dir[str(x[0])]=[x[1],x[2],x[4]]
-        rows_to_search.append(x[0])
+        try:
+            if x[2]=="" or x[2] == None:
+                hostname_dir[str(x[0])]=[x[1],x[3],x[4]]
+            else:
+                hostname_dir[str(x[0])]=[x[1],x[2],x[4]]
+            rows_to_search.append(x[0])
+        except Exception as e:
+            print(e)
+            print("没有找到 host_agent",str(x[0]))
     Q_filter=Q()
     for value in rows_to_search:
         Q_filter|=Q(**{"{}__iregex".format("agent_id"): value})
@@ -294,11 +306,15 @@ def assets_process_query_num(request):
     hostname_dir={}
     rows_to_search=[]
     for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip","extranet_ip","os"):
-        if x[2]=="" or x[2] == None:
-            hostname_dir[str(x[0])]=[x[1],x[3],x[4]]
-        else:
-            hostname_dir[str(x[0])]=[x[1],x[2],x[4]]
-        rows_to_search.append(x[0])
+        try:
+            if x[2]=="" or x[2] == None:
+                hostname_dir[str(x[0])]=[x[1],x[3],x[4]]
+            else:
+                hostname_dir[str(x[0])]=[x[1],x[2],x[4]]
+            rows_to_search.append(x[0])
+        except Exception as e:
+            print(e)
+            print("没有找到 host_agent",str(x[0]))
     Q_filter=Q()
     for value in rows_to_search:
         Q_filter|=Q(**{"{}__iregex".format("agent_id"): value})
@@ -367,11 +383,15 @@ def assets_process_chart(request):
     hostname_dir={}
     rows_to_search=[]
     for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip","extranet_ip","os"):
-        if x[2]=="" or x[2] == None:
-            hostname_dir[str(x[0])]=[x[1],x[3],x[4]]
-        else:
-            hostname_dir[str(x[0])]=[x[1],x[2],x[4]]
-        rows_to_search.append(x[0])
+        try:
+            if x[2]=="" or x[2] == None:
+                hostname_dir[str(x[0])]=[x[1],x[3],x[4]]
+            else:
+                hostname_dir[str(x[0])]=[x[1],x[2],x[4]]
+            rows_to_search.append(x[0])
+        except Exception as e:
+            print(e)
+            print("没有找到 host_agent",str(x[0]))
     Q_filter=Q()
     for value in rows_to_search:
         Q_filter|=Q(**{"{}__iregex".format("agent_id"): value})
@@ -405,11 +425,15 @@ def assets_port_query(request):
     Q_filter = Q()
     rows_to_search=[]
     for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip","extranet_ip","os"):
-        if x[2]=="" or x[2] == None:
-            hostname_dir[str(x[0])]=[x[1],x[3],x[4]]
-        else:
-            hostname_dir[str(x[0])]=[x[1],x[2],x[4]]
-        rows_to_search.append(x[0])
+        try:
+            if x[2]=="" or x[2] == None:
+                hostname_dir[str(x[0])]=[x[1],x[3],x[4]]
+            else:
+                hostname_dir[str(x[0])]=[x[1],x[2],x[4]]
+            rows_to_search.append(x[0])
+        except Exception as e:
+            print(e)
+            print("没有找到 host_agent",str(x[0]))
     for value in rows_to_search:
         Q_filter|=Q(**{"{}__iregex".format("agent_id"): value})
     obj = TAssetsPort.objects.all()#.filter(Q_filter)
@@ -466,11 +490,15 @@ def assets_port_query_num(request):
     hostname_dir={}
     rows_to_search=[]
     for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip","extranet_ip","os"):
-        if x[2]=="" or x[2] == None:
-            hostname_dir[str(x[0])]=[x[1],x[3],x[4]]
-        else:
-            hostname_dir[str(x[0])]=[x[1],x[2],x[4]]
-        rows_to_search.append(x[0])
+        try:
+            if x[2]=="" or x[2] == None:
+                hostname_dir[str(x[0])]=[x[1],x[3],x[4]]
+            else:
+                hostname_dir[str(x[0])]=[x[1],x[2],x[4]]
+            rows_to_search.append(x[0])
+        except Exception as e:
+            print(e)
+            print("没有找到 host_agent",str(x[0]))
     Q_filter=Q()
     for value in rows_to_search:
         Q_filter|=Q(**{"{}__iregex".format("agent_id"): value})
@@ -532,16 +560,19 @@ def assets_port_query_num(request):
 
 def assets_port_chart(request):
 
-
     #获得agent_id 跟主机名称 ip 的dir
     hostname_dir={}
     rows_to_search=[]
     for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip","extranet_ip","os"):
-        if x[2]=="" or x[2] == None:
-            hostname_dir[str(x[0])]=[x[1],x[3],x[4]]
-        else:
-            hostname_dir[str(x[0])]=[x[1],x[2],x[4]]
-        rows_to_search.append(x[0])
+        try:
+            if x[2]=="" or x[2] == None:
+                hostname_dir[str(x[0])]=[x[1],x[3],x[4]]
+            else:
+                hostname_dir[str(x[0])]=[x[1],x[2],x[4]]
+            rows_to_search.append(x[0])
+        except Exception as e:
+            print(e)
+            print("没有找到 host_agent",str(x[0]))
     Q_filter=Q()
     for value in rows_to_search:
         Q_filter|=Q(**{"{}__iregex".format("agent_id"): value})
