@@ -36,6 +36,7 @@ function website_click(page) {
                     let div_container = $(".manageDiv");
                     let div_container2 = $(".table-manage");
                     div_container.text("");
+
                     let html = '<h1 class="page-title" ><i class="iconfont">&#xe73b;</i>网站管理</h1>';
                     html += '<div class="card">';
                     // html += '<div class = "btngroup"><div  class="btn" onclick="javascript:void(0)" >添加主机</div></div>';
@@ -56,7 +57,9 @@ function website_click(page) {
                     html += '</tr>';
                     html += '</thead>';
                     html += '<tbody>';
+                    console.log(data)
                     for (x in data) {
+
                         html += '<tr>';
                         data[x] = JSON.parse(data[x]);
                         let agent_id = data[x]['agent_id'];
@@ -70,9 +73,20 @@ function website_click(page) {
                         html += '<td>' + data[x]['language'] + '</td>';
                         html += '<td>' + data[x]['version'] + '</td>';
                         html += '<td>' + data[x]['online'] + '</td>';
-                        html += '<td style="width: 200px">' +
-                            '<input class="web_tip_text" placeholder="点击编辑" data-type="web"   data-id="' + data[x]['app_id'] + '" value="' + data[x]['remark'] + '"/>' +
-                            '</td>';
+                        // html += '<td style="width: 200px">' +
+                        //     '<input class="web_tip_text" placeholder="点击编辑" data-type="web"   data-id="' + data[x]['app_id'] + '" value="' + data[x]['remark'] + '"/>' +
+                        //     '</td>';
+                        let tag = '';
+                        if(data[x]['remark']){
+                            tag += '<td>' +
+                                '<input class="web_tip_text" placeholder="点击编辑" data-type="server" data-id="'+data[x]['agent_id']+'" value="' + data[x]['remark'] + '"/>'+
+                                '</td>';
+                        }else{
+                            tag += '<td>' +
+                                '<input class="web_tip_text empty" placeholder="点击编辑" data-type="server" data-id="'+data[x]['agent_id']+'" value="' + data[x]['remark'] + '"/>'+
+                                '</td>';
+                        };
+                        html += tag;
                         html += '<td>' + data[x]['last_heartbeat'] + '</td>';
                         // html += '<td>' + data[x]['server_type'] + '</td>';
                         html += '</tr>';
