@@ -30,7 +30,7 @@ function server_click(page) {
                         window.location.href = '/login'
                     }
                     data = data_list['agents'];
-                    console.log(data_list)
+                    // console.log(data_list)
                     let last_online=data_list['last_online'];
                     let now_page = data_list['page'];
                     let max_size = data_list['max_size'];
@@ -252,7 +252,9 @@ $(document).off("click", ".detail-a-server").on("click", ".detail-a-server", fun
 
             agent_server_id=data['agent_id'];
 
+
             //上面显示的监控简略信息
+
             get_monitor_info_last(data['agent_id']);
 
             // 安全分析
@@ -285,6 +287,10 @@ $(document).off("click", ".detail-a-server").on("click", ".detail-a-server", fun
     });
 
 
+    intervalId = setInterval(function () {
+        get_monitor_info_last(data['agent_id']);
+        // clearInterval(intervalId);
+    }, 5000);
 
 
 });
@@ -301,7 +307,7 @@ function get_monitor_info_last(id) {
     // console.log(monitor_list.hasOwnProperty(id));
     // console.log(monitor_list);
     // console.log(monitor_list[id]);
-
+    monitor_list={};
     if ( monitor_list.hasOwnProperty(id))
     {
 

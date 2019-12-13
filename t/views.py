@@ -273,8 +273,8 @@ def server_agent_query(request):
                                     }
     for x in TAgents_list:
         x =json.loads(x)
-        if x['online']=="在线":
-            x['monitor']=monitor_dir.get(x['agent_id'],"")
+        # if x['online']=="在线":
+        x['monitor']=monitor_dir.get(x['agent_id'],"")
         x=json.dumps(x)
         TAgents_list_new.append(x)
 
