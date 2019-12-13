@@ -7,61 +7,58 @@
                 <p class="pull-right" style="padding-right:16px;">今日为当前服务器拦截攻击&nbsp;&nbsp;<span class="text-warning" id="server_id_nowcount" style="font-size:16px;">0</span>&nbsp;&nbsp;次，累计&nbsp;&nbsp;<span class="text-warning" id="server_id_allcount" style="font-size:16px;">0</span>&nbsp;&nbsp;次</p>
             </div>
             <div style="position: relative">
-            <div class="pull-left" style="text-align:center;width:10%;margin-top:18px;">
-                <div style="position:relative;">
-                    <img src="/static/img/server-group-detail-pc-logo.png" style="width:84px;">
-                    <img id="system_logo_img" src="/static/img/server-group-detail-pc-logo-windows.png" style="width:20px;position:absolute;top:0px; left:78px;">
+            <div class="pull-left" style="width:55%;">
+                <div style="text-align:center;margin-top:18px;float: left;width: 125px">
+                    <div style="position:relative; ">
+                        <img src="/static/img/server-group-detail-pc-logo.png" style="width:84px;">
+                        <img id="system_logo_img" src="/static/img/server-group-detail-pc-logo-windows.png" style="width:20px;position:absolute;top:0px; left:78px;">
+                    </div>
+                    <div style="margin-top:20px;" id="machine_name_view"><span style="color:#3366ff;font-size:16px;word-break:break-all;word-wrap: break-word;"></span></div>
                 </div>
+                <table id="promotionTable" class="table server_detail_table" style="width:calc(100% - 125px);margin-top:10px;float: left">
 
-                <div style="margin-top:20px;" id="machine_name_view"><span style="color:#3366ff;font-size:16px;word-break:break-all;word-wrap: break-word;"></span></div>
+                <tbody>
+                <tr>
+                    <td class="text-muted">CPU：</td>
+                    <td id="server_manager_cpu" ></td>
+                </tr>
+                <tr>
+                    <td class="text-muted">内存：</td>
+                    <td id="server_manager_memory" ></td>
+                </tr>
+                <tr>
+                    <td class="text-muted">操作系统：</td>
+                    <td id="server_manager_os" ></td>
+                </tr>
+                <tr>
+                    <td class="text-muted">内网IP：</td>
+                    <td id="server_manager_iip"></td>
+                </tr>
+                <tr>
+                    <td class="text-muted">外网IP：</td>
+                    <td id="server_manager_eip" ></td>
+                </tr>
+                </tbody>
+            </table>
             </div>
-            <table id="promotionTable" class="table server_detail_table" style="width:45%;margin-top:10px;float: left">
 
-                    <tbody>
-                    <tr>
-                        <td class="text-muted">CPU：</td>
-                        <td id="server_manager_cpu" ></td>
-                    </tr>
-                    <tr>
-                        <td class="text-muted">内存：</td>
-                        <td id="server_manager_memory" ></td>
-                    </tr>
-                    <tr>
-                        <td class="text-muted">操作系统：</td>
-                        <td id="server_manager_os" ></td>
-                    </tr>
-                    <tr>
-                        <td class="text-muted">内网IP：</td>
-                        <td id="server_manager_iip"></td>
-                    </tr>
-                    <tr>
-                        <td class="text-muted">外网IP：</td>
-                        <td id="server_manager_eip" ></td>
-                    </tr>
-                    </tbody>
-                </table>
-            <table id="promotionTable_right" class="table server_detail_table" style="width:45%;margin-top:10px;float: left">
+                <div class="promotionTable_right"  style="width:45%;margin-top:10px;float: left">
+                    <div  id="server_cpu_used" data-tip="CPU使用率">CPU使用率</div>
+                    <div  id="server_memory_used" data-tip="内存使用率">内存使用率</div>
+                </div>
+                <table class="table server_detail_table promotionTable_right" style="width:calc(100% - 125px);margin-top:10px;float: left;margin-left: 125px">
+                        <tbody>
+                        <tr>
+                            <td class="text-muted">硬盘使用率：</td>
+                            <td id="server_disk_used" ></td>
+                        </tr>
+    {#                    <tr>#}
+    {#                        <td class="text-muted">详情：</td>#}
+    {#                        <td id="assets_detail" ><a href="#asset_detail_show">详情</a></td>#}
+    {#                    </tr>#}
 
-                    <tbody>
-                    <tr>
-                        <td class="text-muted">CPU使用率：</td>
-                        <td id="server_cpu_used" ></td>
-                    </tr>
-                    <tr>
-                        <td class="text-muted">内存使用率：</td>
-                        <td id="server_memory_used" ></td>
-                    </tr>
-                    <tr>
-                        <td class="text-muted">硬盘使用率：</td>
-                        <td id="server_disk_used" ></td>
-                    </tr>
-{#                    <tr>#}
-{#                        <td class="text-muted">详情：</td>#}
-{#                        <td id="assets_detail" ><a href="#asset_detail_show">详情</a></td>#}
-{#                    </tr>#}
-
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
 
             </div>
             </div>

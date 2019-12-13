@@ -249,6 +249,7 @@ $(document).off("click", ".detail-a-server").on("click", ".detail-a-server", fun
             }else{
                 $("#system_logo_img").attr("src", '/static/img/server-group-detail-pc-logo-linux.png');
             }
+
             agent_server_id=data['agent_id'];
 
             //上面显示的监控简略信息
@@ -338,17 +339,19 @@ function get_monitor_info_last(id) {
     if (ret === 0) {
         // console.log("ret==0");
         // $("#promotionTable_right").css('display','none');
-        $("#promotionTable_right").hide();
+        $(".promotionTable_right").hide();
         return 0;
     }
     // $("#promotionTable_right").css('display','block');
-    $("#promotionTable_right").show();
+    $(".promotionTable_right").show();
     // let myTable= document.getElementById("promotionTable_right");
-
-    $("#server_cpu_used").html("").append(get_progress_bar_html( data['cpu_used'],100,""));
-    $("#server_memory_used").html("").append(get_progress_bar_html( data['memory_used'],data['memory_total'],""));
+    // $("#server_cpu_used").html("").append(get_progress_bar_html( data['cpu_used'],100,""));
+    // $("#server_memory_used").html("").append(get_progress_bar_html( data['memory_used'],data['memory_total'],""));
     // $("#server_disk_used").html("").append(data['extranet_ip']);
-    if($("server_disk_used")){
+    progressEchart('server_cpu_used',data['cpu_used'],100,'cpu使用率');
+    progressEchart('server_memory_used',data['memory_used'],data['memory_total'],'内存使用率');
+
+    if($("#server_disk_used")){
         let disk_html="";
         for (x in data['disk_used'])
         {
@@ -360,7 +363,7 @@ function get_monitor_info_last(id) {
             info+="已使用"+(disk_total_space-disk_free_space)+"GB / ";
             info+="总量"+disk_total_space+"GB ";
             //info+="使用率 ";
-            disk_html+=get_progress_bar_html((disk_total_space -disk_free_space),disk_total_space,info)
+            disk_html+=get_progress_bar_detail_html((disk_total_space -disk_free_space),disk_total_space,info)
 
         }
         $("#server_disk_used").html("").append(disk_html);
@@ -368,7 +371,42 @@ function get_monitor_info_last(id) {
 
     return ret;
 }
+// 详情cpu内存使用率
+function get_progress_bar_detail_html(used, total,info) {
+    let progress = (parseFloat(used)/parseFloat(total))*100;
 
+    if (total === 0.00) {
+        progress=0
+    }
+    progress=progress.toFixed(2);
+    let html;
+    let level;
+    if (progress > 80) {
+        level='danger';
+    }
+    else if (progress > 60) {
+        level='warning';
+    }
+    else if (progress > 40) {
+        level='info';
+    }
+    else if (progress > 0) {
+        level='success';
+    }
+    html=`
+    <div class="progress_detail">
+         <small style="color: #0a0c0d;white-space: nowrap;" >${info}${progress}%</small>
+         <div class="progress">
+            <div class="progress-bar progress-bar-${level}" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: ${progress}%;">
+         
+            </div>
+        </div>
+    </div>
+`;
+    return html;
+}
+
+// 表格内cpu内存使用率
 function get_progress_bar_html(used, total,info) {
     let progress = (parseFloat(used)/parseFloat(total))*100;
 
@@ -395,7 +433,7 @@ function get_progress_bar_html(used, total,info) {
         <div class="progress-bar progress-bar-${level}" role="progressbar"
         aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
          style="width: ${progress}%;">
-         <small class='pull-left' style="color: #0a0c0d;white-space: nowrap;padding-left: 16px;" >${info}${progress}%</small>
+         <small class='pull-left' style="color: #0a0c0d;white-space: nowrap;padding-left: 8px;margin-top: -2px;" >${info}${progress}%</small>
         </div>
     </div>
 `;
@@ -2141,3 +2179,93 @@ function server_table_list_del_submit(idlist,onlinelist) {
 //             $('#server_disk_used').text('');
 //     })
 // });
+//cpu内存使用率echarts图
+function progressEchart(div,used,total,text){
+    var canvas = document.getElementById(div);
+    var echart = echarts.init(canvas);
+    // var text = canvas.getAttribute("data-tip");
+    var text = text;
+    var data = used;
+    var data_total = total;
+    var percent = (data/data_total*100).toFixed(2);
+    var color ='';
+    if(percent>80){
+        color= '#d9534f';
+    }else if(percent>60){
+        color= '#f0ad4e';
+    }else if(percent>40){
+        color= '#5bc0de';
+    }else if(percent>0){
+        color= '#5cb85c';
+    }
+
+    option = {
+        backgroundColor:'#fff',
+        series: {
+            type: 'pie',
+            clockWise: false,
+            radius: ["50%", "65%"],
+            hoverAnimation: false,
+            center: ['50%', '50%'],
+            data: [{
+                value: data,
+                label: {
+                    normal: {
+                        rich: {
+                            a: {
+                                color: color,
+                                align: 'center',
+                                fontSize:20,
+                                fontWeight: "bold",
+                            },
+                            b: {
+                                color: '#aaa',
+                                align: 'center',
+                                fontSize: 14
+                            },
+                            c: {
+                                color: color,
+                                fontSize: 10,
+                                fontWeight: "bold"
+                            }
+                        },
+                        formatter: function(params){
+                            return "{a|"+percent+"}"+" {c|%}"+"\n\n{b|"+text+"}";
+                        },
+                        position: 'center',
+                        show: true,
+                        textStyle: {
+                            fontSize: '14',
+                            fontWeight: 'normal',
+                            color: '#fff'
+                        }
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: color
+                    }
+                }
+            },
+                {
+                    value: data_total - data,
+                    name: 'invisible',
+                    itemStyle: {
+                        normal: {
+                            color: '#eee',
+                        },
+                        emphasis:{
+                            color: '#eee',
+                        }
+                    },
+                    label:{
+                        show:false
+                    },
+                    labelLine:{
+                        show:false
+                    }
+                },]
+        }
+    };
+    echart.setOption(option)
+}
