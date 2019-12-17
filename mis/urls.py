@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'^server_agent/query/$', views.server_agent_query),# 查询服务agent
     url(r'^server_agent/del/$', views.agent_del),# 删除服务agent
     url(r'^web_agent/query/$', views.web_agent_query),    #查询网络agent
+    url(r'^attack/init/$', views.attack_event_init),   #过滤agent事件
     url(r'^attack/query/$', views.attack_event_query),   #过滤agent事件
     url(r'^attack/query_detail_data/$', views.query_detail_data),#根据ID查询相应表的单条数据
     url(r'^attack/query_source/$', views.attack_query_source),#追踪溯源查询

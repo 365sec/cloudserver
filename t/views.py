@@ -403,27 +403,65 @@ def web_agent_query(request):
     return HttpResponse(json.dumps(data), content_type='application/json')
 
 
+class AttackInit:
+    event_div_arr = []
+    event_dic={}
+    not_allow_search_list=[]
+    hostname_dir={}
+    filter_condition = {}
+    max_lenth=None
+    flag=False
+
+attack_init=AttackInit()
 @auth
-def attack_event_query(request):
+def attack_event_init(request):
+    data={}
+    attack_event_init_func()
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
+def attack_event_init_func():
     #获得下拉框列表
     event_div_arr = []
     event_dic = {}
     for x in TEventKnowledge.objects.filter(allow_search=1).order_by("event_id"):
         event_div_arr.append(x.event_name)
         event_dic[x.event_name] = x.event_id
+    attack_init.event_div_arr=event_div_arr
+    attack_init.event_dic=event_dic
     #获得不被允许查询列表
     not_allow_search=TEventKnowledge.objects.filter(~Q(allow_search=1)).values("event_id")
     not_allow_search_list=[]
     for x in not_allow_search:
         not_allow_search_list.append(x['event_id'])
-    #获得agent_id 跟主机名称 ip 的dir
+    attack_init.not_allow_search_list=not_allow_search_list
+
     hostname_dir={}
     for x in THostAgents.objects.all().values_list("agent_id","host_name","internal_ip","extranet_ip"):
         if x[2]=="" or x[2] == None:
             hostname_dir[str(x[0])]=[x[1],x[3]]
         else:
             hostname_dir[str(x[0])]=[x[1],x[2]]
+
+    attack_init.hostname_dir=hostname_dir
+
+    attack_init.flag=True
+
+@auth
+def attack_event_query(request):
+
+    start_fun = datetime.now()
+    if not attack_init.flag:
+        attack_event_init_func()
+    #获得下拉框列表
+    event_div_arr=attack_init.event_div_arr
+    event_dic=attack_init.event_dic
+    #获得不被允许查询列表
+    not_allow_search_list=attack_init.not_allow_search_list
+    #获得agent_id 跟主机名称 ip 的dir
+    hostname_dir=attack_init.hostname_dir
     #attack/query
+    end_fun=datetime.now()
+
     # 当前页码数
     page = request.POST.get("page")
     page = int(page)
@@ -434,7 +472,7 @@ def attack_event_query(request):
         result = THostAgents.objects.filter(own_user=username)
         agent_ids = [x.agent_id for x in result]
         filter_condition['agent_id__in'] = agent_ids
-
+    # filter_condition=attack_init.filter_condition
     tweb_obj = TWebEvent.objects.all()
     tfile_obj = TFileIntegrity.objects.all()
     tlog_obj = TLogAnalysisd.objects.all()
@@ -460,7 +498,6 @@ def attack_event_query(request):
         tweb_obj = tweb_obj.filter(event_id=event_dic[attack_type])
 
     # 关于报警消息的过滤
-    msg_filter = None
     attack_msg = request.POST.get("attack_msg")
     if attack_msg != "" and attack_msg != None:
         # filter_condition['plugin_message__icontains']=attack_msg
@@ -490,17 +527,12 @@ def attack_event_query(request):
         if attack_level != 3:
             tfile_obj = tfile_obj.filter(event_issue_id=0)
 
-    # if msg_filter:
-    #     result = TAttackEvent.objects.filter(msg_filter, **filter_condition).order_by('-event_time')
-    # else:
-    #     result = TAttackEvent.objects.filter(**filter_condition).order_by('-event_time')
-
     # 过滤不被允许查询的结果
     for x in not_allow_search_list:
         tlog_obj=tlog_obj.filter(~Q(event_id=x))
         tfile_obj=tfile_obj.filter(~Q(event_id=x))
         tweb_obj=tweb_obj.filter(~Q(event_id=x))
-
+    end_fun=datetime.now()
     # 每张表需要查询的数据
     tweb = tweb_obj.values_list("agent_id", "event_time", "event_name", "plugin_message", "attack_source", "server_ip",
                                 "event_issue_id", "event_id","event_category","threat_level","status",'intercept_state')
@@ -508,15 +540,20 @@ def attack_event_query(request):
                                   "event_issue_id", "event_id","event_category","unused","status","unused")
     tlog = tlog_obj.values_list("agent_id", "event_time", "event_name", "comment", "srcip", "dstip", "event_issue_id",
                                 "event_id","event_category","threat_level","status","unused")
-    # 三张表联合查询
-    qchain = tweb.union(tlog, tfile,all=True)
-    result = qchain.order_by("-event_time")
 
-    max_lenth = result.count()
+    # 三张表联合查询
+    result = tweb.union(tlog, tfile,all=True).order_by("-event_time")
+    # result = qchain.order_by("-event_time")
+    end_fun=datetime.now()
+    if not attack_init.max_lenth:
+        max_lenth=result.count()
+        attack_init.max_lenth=max_lenth
+    max_lenth = attack_init.max_lenth
     # 每页显示多少个数据
     page_size = 15
     # 最大分页数
-    max_size = (result.count() + page_size - 1) / page_size
+    max_size = (max_lenth + page_size - 1) / page_size
+
     if max_size == 0:
         max_size = 1
     if page > max_size:
@@ -524,7 +561,10 @@ def attack_event_query(request):
     attack_list = []
     if page < 1:
         page = 1
-    for x in result[(page - 1) * page_size:(page) * page_size]:
+
+    end_fun=datetime.now()
+    result =result[(page - 1) * page_size:(page) * page_size]
+    for x in result:
         x = list(x)
         for z in range(len(x)):
             if x[int(z)] == None:
@@ -539,7 +579,6 @@ def attack_event_query(request):
         y['server_ip'] = x[5]
         y['event_issue_id'] = x[6]
         try:
-            # y['hostname'] = THostAgents.objects.all().filter(agent_id=x[0]).values_list("host_name").first()[0]
             y['hostname'] = hostname_dir[x[0]][0]
             y['host_ip'] = hostname_dir[x[0]][1]
         except Exception as e:
@@ -558,6 +597,7 @@ def attack_event_query(request):
             x[11]="log"
         y['intercept_state']=INTERCEPT_STATUS[x[11]]
         attack_list.append(y)
+    end_fun=datetime.now()
 
     data = {
         "attack": attack_list,
@@ -568,8 +608,9 @@ def attack_event_query(request):
         "attack_hostname": hostname_dir,
     }
 
-    data = json.dumps(data)
-    return HttpResponse(data, content_type='application/json')
+
+
+    return HttpResponse(json.dumps(data), content_type='application/json')
 
 
 @auth
@@ -674,6 +715,7 @@ def query_web_agent_by_agent_id(request):
         agent_ids = [x.agent_id for x in result]
         filter_condition['agent_id__in'] = agent_ids
         result = TWebAgents.objects.all().filter(**filter_condition).order_by("-online")
+
     if  agent_id:
         # 每页显示多少个数据
         result=result.filter(agent_id=agent_id)
