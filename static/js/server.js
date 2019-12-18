@@ -575,7 +575,13 @@ function chart_attack_trend_server(agent_id){
 // 事件处理
 function click_event_treat_server(){
     $(document).off('click','#event_statistics_link').on('click','#event_statistics_link',function () {
-        event_treat_server(1);
+        $.ajax({
+            url: "/attack/init/",
+            type: 'GET',
+            success: function (data_list) {
+                event_treat_server(1);
+            }});
+
     })
 }
 function event_treat_server(now_page){
