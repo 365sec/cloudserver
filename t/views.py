@@ -1431,7 +1431,7 @@ def query_attack_type(request):
     attrack_times1=list(web_attrack_times1)+list(log_attrack_times)+web_attack_times_vul
     attrack_times1 = sorted(attrack_times1, key=lambda item: item[1], reverse=True)
     attack_type1 = {}
-    for x in attrack_times1:
+    for x in attrack_times1[0:10]:
         #name = attack_type[str(x[0])]
         attack_type1[x[0]] = x[1]
         if len(attack_type1) >= num:
