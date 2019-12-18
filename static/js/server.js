@@ -16,205 +16,10 @@ function server_click(page) {
         success: function(res){
             let secvalue = $(this).children().attr("data-secvalue");
             $("#div_container").html($(res));
-            if (page == null || page < 1) {
-                page = 1;
-            }
+
+            server_click_info(1);
             $(this).addClass("active router-link-active").siblings().removeClass("active router-link-active");
-            $.ajax({
-                url: "/server_agent/query/",
-                type: 'POST',
-                data: {
-                    "page": page
-                },
-                //dataType: "json",
-                success: function (data_list) {
 
-                    if(data_list.hasOwnProperty('auth')){
-                        window.location.href = '/login'
-                    }
-                    data = data_list['agents'];
-                    // console.log(data_list)
-                    let last_online=data_list['last_online'];
-                    let now_page = data_list['page'];
-                    let max_size = data_list['max_size'];
-                    // data = data.replace(/}{/g, "}****{").split("****");
-                    let div_container = $(".manageDiv");
-                    let div_container2 = $(".table-manage");
-                    div_container.text("");
-                    let html = '<h1 class="page-title" ><i class="iconfont">&#xe73b;</i>服务器管理</h1>';
-
-                    html += '<div class="card">';
-                    /* html += '<div class = "btngroup"><div  class="btn" onclick="javascript:void(0)" data-toggle="modal" data-target="#add_host">添加主机</div></div>';*/
-                    html += '<div class="card-body">';
-                    html += '<div class="server_header">'
-                    html += '<div>' +
-                            '<div class="orbitron">'+last_online['last_1m']+'</div>' +
-                            '<p>最近1分钟内在线主机</p>' +
-                            '<div class="server_header_border red"></div>' +
-                            '</div>' +
-                            '<div>' +
-                            '<div class="orbitron">'+last_online['last_10m']+'</div>' +
-                            '<p>最近10分钟内在线主机</p>' +
-                            '<div class="server_header_border yellow"></div>' +
-                            '</div>' +
-                            '<div>' +
-                            '<div class="orbitron">'+last_online['last_30m']+'</div>' +
-                            '<p>最近30分钟内在线主机</p>' +
-                            '<div class="server_header_border green"></div>' +
-                            '</div>' +
-                            '</div >' +
-                        '<div class="btnGroup">' +
-                        '   <div class="table_select_div server_table_select_div">' +
-                        '       <div class="btn btn_disabled" id="server_table_list_del">删除</div>' +
-                        '   </div>' +
-                        '</div>';
-                    html += '<table class="table table-bordered table-striped table-hover table-content">';
-                    html += '<thead>';
-                    html += '<tr>' +
-                        '<th style="width: 46px;padding: 14px;">\n' +
-                        '  <div class="server_list_checkbox"><input class="regular_checkbox check_all" id="server_table_list" type="checkbox"> <label for="server_table_list"></label> </div>' +
-                        '</th>';
-                    // html += '<th>AGENT_ID</th>';
-                    html += '<th style="min-width: 140px">服务器名称</th>';
-                    html += '<th>操作系统</th>';
-                    html += '<th style="min-width: 150px;">IP地址</th>';
-                    // html += '<th style="min-width: 115px">IP地址</th>';
-                    // html += '<th style="min-width: 115px">外网IP</th>';
-                    html += '<th>服务器状态</th>';
-                    html += '<th>所属用户</th>';
-                    html += '<th style="max-width: 100px">标记</th>';
-                    html += '<th style="min-width: 200px">详情</th>';
-                    html += '<th style="min-width: 44px">风险评分</th>';
-                    html += '</tr>';
-                    html += '</thead>';
-                    html += '<tbody>';
-                    html += '</tbody>';
-                    html += '</table>';
-                    html += '</div>';
-                    html += '<ul role="menubar" aria-disabled="false" aria-label="Pagination" class="pagination b-pagination pagination-md justify-content-center">';
-                    html += '<a href="javascript:void(0);" onclick="server_click(' + (now_page - 1) + ')">上一页</a>';
-                    html += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
-                    html += '<a href="javascript:void(0);">' + now_page + "/" + max_size + '</a>';
-                    html += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
-                    html += '<a href="javascript:void(0);" onclick="server_click(' + (now_page + 1) + ')">下一页</a>';
-                    //html += '<input id = "agent_jump" value="'+now_page+'" />';
-                    //  html += '<a href="javascript:void(0);" onclick="agent_jump()">跳转</a>';
-                    html += '</ul>';
-                    div_container.append(html);
-                    // 生成每行内容
-                    for (x in data) {
-
-
-                        let server_img;
-                        data[x] = JSON.parse(data[x]);
-                        if (data[x]['score']==='-1'||data[x]['score']==='None')
-                        {
-                            data[x]['score']=''
-                        }
-                        if (data[x]['online']==="在线")
-                        {
-                            if (data[x]['os'].toLowerCase().indexOf("windows") !== -1){
-                                server_img='<img src="/static/images/os_windows_on.png" style="width: 20px;"/>';
-                            }else{
-                                server_img='<img src="/static/images/os_linux_on.png" style="width: 20px;"/>';
-                            }
-                        }
-                        else
-                        {
-                            if (data[x]['os'].toLowerCase().indexOf("windows") !== -1){
-                                server_img='<img src="/static/images/os_windows_off.png" style="width: 20px"/>';
-                            }else{
-                                server_img='<img src="/static/images/os_linux_off.png" style="width: 20px"/>';
-                            }
-                        }
-
-                        let ip = '';
-                        ip += '<td class="circle-border"><p><span >内</span>' + data[x]['internal_ip']+'</p>';
-                        ip += '<p><span>外</span>'+ data[x]['extranet_ip'] + '</p></td>';
-
-                        let agent_id = data[x]['agent_id'];
-                        let b = new Base64();
-                        let data1 = b.encode(JSON.stringify(data[x]));
-                        let score=`${data[x]['score']} `;
-                        if (data[x]['score'] > 80) {
-                            //  score=`<td><span class="server_score green">${data[x]['score']}</span></td>`
-                            score=`<td><span style="color: #2D952D"><strong>${data[x]['score']}</strong></span></td>`
-                        }else if (data[x]['score'] > 60)
-                        {
-
-                            // score=`<td><span class="server_score blue">${data[x]['score']}</span></td>`
-                            score=`<td><span style="color:#2B62C3"><strong>${data[x]['score']}</strong></span></td>`
-                        }else if (data[x]['score'] > 40){
-                            // score=`<td><span class="server_score orange">${data[x]['score']}</span></td>`
-                            score=`<td><span style="color: #EB8400"><strong>${data[x]['score']}</strong></span></td>`
-                        }else {
-                            //score=`<td><span class="server_score red">${data[x]['score']}</span></td>`
-                            score=`<td><span style="color: red"><strong>${data[x]['score']}</strong></span></td>`
-                        }
-
-                        let info = '<td>' +
-                            '       <table class="table server_detail_table promotionTable">' +
-                            '        <tbody>' +
-                            '        ' ;
-                        if(data[x]['monitor']){
-                            info+=  '     <tr>' +
-                                    '            <td class="text-muted">CPU使用率：</td>' +
-                                    '            <td class="server_cpu_used" >'+get_progress_bar_html(data[x]['monitor']['cpu_used'],100,"")+'</td>' +
-                                    '        </tr>' +
-                            '        <tr>' +
-                                '            <td class="text-muted">内存使用率：</td>' +
-                                '            <td class="server_memory_used" >' + get_progress_bar_html(data[x]['monitor']['memory_used'], data[x]['monitor']['memory_total'], "") + '</td>' +
-                                '        </tr>';
-                        }else{
-                            info+=  '     <tr>' +
-                                '            <td class="text-muted">CPU使用率：</td>' +
-                                '            <td class="server_cpu_used" >'+get_progress_bar_html(0,100,"")+'</td>' +
-                                '        </tr>' +
-                                '        <tr>' +
-                                '            <td class="text-muted">内存使用率：</td>' +
-                                '            <td class="server_memory_used" >' + get_progress_bar_html(0, 100, "") + '</td>' +
-                                '        </tr>';
-                        }
-                        info+=  '</tbody>' +
-                            '</table>' +
-                            '</td>';
-
-                        let tag = '';
-                        if(data[x]['remark']){
-                            tag += '<td>' +
-                                '<input class="web_tip_text" placeholder="点击编辑" data-type="server" data-id="'+data[x]['agent_id']+'" value="' + data[x]['remark'] + '"/>'+
-                                '</td>';
-                        }else{
-                            tag += '<td>' +
-                                '<input class="web_tip_text empty" placeholder="点击编辑" data-type="server" data-id="'+data[x]['agent_id']+'" value="' + data[x]['remark'] + '"/>'+
-                                '</td>';
-                        }
-                        let pretr = '<tr>';
-                        pretr += '<td style="display: none">' + agent_id + '</td>';
-                        pretr += '<td style="width: 46px;padding: 14px;">\n' +
-                            '      <div class="server_list_checkbox"><input class="regular_checkbox check_single server_table_list" name="server_table_list" type="checkbox" online="'+data[x]['online']+'" id="'+agent_id+'"> <label for="'+agent_id+'"></label> </div>' +
-                            '</td><td class="servername">' +
-                            server_img +
-                            '<div><a class="detail-a-server" href="javascript:void(0)" data-name="' + data1 + '"   >' + data[x]['host_name'] + '</a></div> </td>';
-                        pretr += '<td>' + data[x]['os'] + '</td>';
-                        pretr +=  ip;
-                        // pretr += '<td>' + data[x]['internal_ip'] + '</td>';
-                        // pretr += '<td>' + data[x]['extranet_ip'] + '</td>';
-                        if (data[x]['online'] === '在线') {
-                            pretr += '<td><img src = "/static/images/online.png" style="width: 12px;"><span>' + data[x]['online'] + '</span></td>';
-                        } else {
-                            pretr += '<td><img src = "/static/images/offline.png" style="width: 12px;"><span>' + data[x]['online'] + '</span></td>';
-                        }
-                        pretr += '<td>' + data[x]['own_user'] + '</td>';
-                        pretr +=  tag;
-                        pretr +=  info;
-                        pretr +=  score;
-                        pretr += '</tr>';
-                        div_container.find('.table-content>tbody').append(pretr);
-
-                    }
-                }
-            });
             $(".container1").css('background-color', '#f0f2f5');
             // 添加主机模态框
             //add_host_modal();
@@ -224,6 +29,208 @@ function server_click(page) {
 }
 
 
+
+function server_click_info(page) {
+
+    if (page == null || page < 1) {
+        page = 1;
+    }
+    $.ajax({
+        url: "/server_agent/query/",
+        type: 'POST',
+        data: {
+            "page": page
+        },
+        //dataType: "json",
+        success: function (data_list) {
+
+            if(data_list.hasOwnProperty('auth')){
+                window.location.href = '/login'
+            }
+            data = data_list['agents'];
+            // console.log(data_list)
+            let last_online=data_list['last_online'];
+            let now_page = data_list['page'];
+            let max_size = data_list['max_size'];
+            // data = data.replace(/}{/g, "}****{").split("****");
+            let div_container = $(".manageDiv");
+            let div_container2 = $(".table-manage");
+            div_container.text("");
+            let html = '<h1 class="page-title" ><i class="iconfont">&#xe73b;</i>服务器管理</h1>';
+
+            html += '<div class="card">';
+            /* html += '<div class = "btngroup"><div  class="btn" onclick="javascript:void(0)" data-toggle="modal" data-target="#add_host">添加主机</div></div>';*/
+            html += '<div class="card-body">';
+            html += '<div class="server_header">'
+            html += '<div>' +
+                '<div class="orbitron">'+last_online['last_1m']+'</div>' +
+                '<p>最近1分钟内在线主机</p>' +
+                '<div class="server_header_border red"></div>' +
+                '</div>' +
+                '<div>' +
+                '<div class="orbitron">'+last_online['last_10m']+'</div>' +
+                '<p>最近10分钟内在线主机</p>' +
+                '<div class="server_header_border yellow"></div>' +
+                '</div>' +
+                '<div>' +
+                '<div class="orbitron">'+last_online['last_30m']+'</div>' +
+                '<p>最近30分钟内在线主机</p>' +
+                '<div class="server_header_border green"></div>' +
+                '</div>' +
+                '</div >' +
+                '<div class="btnGroup">' +
+                '   <div class="table_select_div server_table_select_div">' +
+                '       <div class="btn btn_disabled" id="server_table_list_del">删除</div>' +
+                '   </div>' +
+                '</div>';
+            html += '<table class="table table-bordered table-striped table-hover table-content">';
+            html += '<thead>';
+            html += '<tr>' +
+                '<th style="width: 46px;padding: 14px;">\n' +
+                '  <div class="server_list_checkbox"><input class="regular_checkbox check_all" id="server_table_list" type="checkbox"> <label for="server_table_list"></label> </div>' +
+                '</th>';
+            // html += '<th>AGENT_ID</th>';
+            html += '<th style="min-width: 140px">服务器名称</th>';
+            html += '<th>操作系统</th>';
+            html += '<th style="min-width: 150px;">IP地址</th>';
+            // html += '<th style="min-width: 115px">IP地址</th>';
+            // html += '<th style="min-width: 115px">外网IP</th>';
+            html += '<th>服务器状态</th>';
+            html += '<th>所属用户</th>';
+            html += '<th style="max-width: 100px">标记</th>';
+            html += '<th style="min-width: 200px">详情</th>';
+            html += '<th style="min-width: 44px">风险评分</th>';
+            html += '</tr>';
+            html += '</thead>';
+            html += '<tbody>';
+            html += '</tbody>';
+            html += '</table>';
+            html += '</div>';
+            html += '<ul role="menubar" aria-disabled="false" aria-label="Pagination" class="pagination b-pagination pagination-md justify-content-center">';
+            html += '<a href="javascript:void(0);" onclick="server_click_info(' + (now_page - 1) + ')">上一页</a>';
+            html += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
+            html += '<a href="javascript:void(0);">' + now_page + "/" + max_size + '</a>';
+            html += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
+            html += '<a href="javascript:void(0);" onclick="server_click_info(' + (now_page + 1) + ')">下一页</a>';
+            //html += '<input id = "agent_jump" value="'+now_page+'" />';
+            //  html += '<a href="javascript:void(0);" onclick="agent_jump()">跳转</a>';
+            html += '</ul>';
+            div_container.append(html);
+            // 生成每行内容
+            for (x in data) {
+
+
+                let server_img;
+                data[x] = JSON.parse(data[x]);
+                if (data[x]['score']==='-1'||data[x]['score']==='None')
+                {
+                    data[x]['score']=''
+                }
+                if (data[x]['online']==="在线")
+                {
+                    if (data[x]['os'].toLowerCase().indexOf("windows") !== -1){
+                        server_img='<img src="/static/images/os_windows_on.png" style="width: 20px;"/>';
+                    }else{
+                        server_img='<img src="/static/images/os_linux_on.png" style="width: 20px;"/>';
+                    }
+                }
+                else
+                {
+                    if (data[x]['os'].toLowerCase().indexOf("windows") !== -1){
+                        server_img='<img src="/static/images/os_windows_off.png" style="width: 20px"/>';
+                    }else{
+                        server_img='<img src="/static/images/os_linux_off.png" style="width: 20px"/>';
+                    }
+                }
+
+                let ip = '';
+                ip += '<td class="circle-border"><p><span >内</span>' + data[x]['internal_ip']+'</p>';
+                ip += '<p><span>外</span>'+ data[x]['extranet_ip'] + '</p></td>';
+
+                let agent_id = data[x]['agent_id'];
+                let b = new Base64();
+                let data1 = b.encode(JSON.stringify(data[x]));
+                let score=`${data[x]['score']} `;
+                if (data[x]['score'] > 80) {
+                    //  score=`<td><span class="server_score green">${data[x]['score']}</span></td>`
+                    score=`<td><span style="color: #2D952D"><strong>${data[x]['score']}</strong></span></td>`
+                }else if (data[x]['score'] > 60)
+                {
+
+                    // score=`<td><span class="server_score blue">${data[x]['score']}</span></td>`
+                    score=`<td><span style="color:#2B62C3"><strong>${data[x]['score']}</strong></span></td>`
+                }else if (data[x]['score'] > 40){
+                    // score=`<td><span class="server_score orange">${data[x]['score']}</span></td>`
+                    score=`<td><span style="color: #EB8400"><strong>${data[x]['score']}</strong></span></td>`
+                }else {
+                    //score=`<td><span class="server_score red">${data[x]['score']}</span></td>`
+                    score=`<td><span style="color: red"><strong>${data[x]['score']}</strong></span></td>`
+                }
+
+                let info = '<td>' +
+                    '       <table class="table server_detail_table promotionTable">' +
+                    '        <tbody>' +
+                    '        ' ;
+                if(data[x]['monitor']){
+                    info+=  '     <tr>' +
+                        '            <td class="text-muted">CPU使用率：</td>' +
+                        '            <td class="server_cpu_used" >'+get_progress_bar_html(data[x]['monitor']['cpu_used'],100,"")+'</td>' +
+                        '        </tr>' +
+                        '        <tr>' +
+                        '            <td class="text-muted">内存使用率：</td>' +
+                        '            <td class="server_memory_used" >' + get_progress_bar_html(data[x]['monitor']['memory_used'], data[x]['monitor']['memory_total'], "") + '</td>' +
+                        '        </tr>';
+                }else{
+                    info+=  '     <tr>' +
+                        '            <td class="text-muted">CPU使用率：</td>' +
+                        '            <td class="server_cpu_used" >'+get_progress_bar_html(0,100,"")+'</td>' +
+                        '        </tr>' +
+                        '        <tr>' +
+                        '            <td class="text-muted">内存使用率：</td>' +
+                        '            <td class="server_memory_used" >' + get_progress_bar_html(0, 100, "") + '</td>' +
+                        '        </tr>';
+                }
+                info+=  '</tbody>' +
+                    '</table>' +
+                    '</td>';
+
+                let tag = '';
+                if(data[x]['remark']){
+                    tag += '<td>' +
+                        '<input class="web_tip_text" placeholder="点击编辑" data-type="server" data-id="'+data[x]['agent_id']+'" value="' + data[x]['remark'] + '"/>'+
+                        '</td>';
+                }else{
+                    tag += '<td>' +
+                        '<input class="web_tip_text empty" placeholder="点击编辑" data-type="server" data-id="'+data[x]['agent_id']+'" value="' + data[x]['remark'] + '"/>'+
+                        '</td>';
+                }
+                let pretr = '<tr>';
+                pretr += '<td style="display: none">' + agent_id + '</td>';
+                pretr += '<td style="width: 46px;padding: 14px;">\n' +
+                    '      <div class="server_list_checkbox"><input class="regular_checkbox check_single server_table_list" name="server_table_list" type="checkbox" online="'+data[x]['online']+'" id="'+agent_id+'"> <label for="'+agent_id+'"></label> </div>' +
+                    '</td><td class="servername">' +
+                    server_img +
+                    '<div><a class="detail-a-server" href="javascript:void(0)" data-name="' + data1 + '"   >' + data[x]['host_name'] + '</a></div> </td>';
+                pretr += '<td>' + data[x]['os'] + '</td>';
+                pretr +=  ip;
+                // pretr += '<td>' + data[x]['internal_ip'] + '</td>';
+                // pretr += '<td>' + data[x]['extranet_ip'] + '</td>';
+                if (data[x]['online'] === '在线') {
+                    pretr += '<td><img src = "/static/images/online.png" style="width: 12px;"><span>' + data[x]['online'] + '</span></td>';
+                } else {
+                    pretr += '<td><img src = "/static/images/offline.png" style="width: 12px;"><span>' + data[x]['online'] + '</span></td>';
+                }
+                pretr += '<td>' + data[x]['own_user'] + '</td>';
+                pretr +=  tag;
+                pretr +=  info;
+                pretr +=  score;
+                pretr += '</tr>';
+                div_container.find('.table-content>tbody').append(pretr);
+
+            }
+        }
+    });
+}
 
 //详情
 var agent_server_id;
@@ -2141,7 +2148,7 @@ function server_table_list_del_submit(idlist,onlinelist) {
             "agent_id":idlist
             },
       success: function (data) {
-          server_click(1)
+          server_click_info(1)
 
         }
     }

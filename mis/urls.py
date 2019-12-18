@@ -53,6 +53,15 @@ urlpatterns = [
     url(r'^login$', login.login),
     url(r'^logout$', login.loginout),
     url(r'^index$', login.index),
+    ############################ 分组URL ##################################
+    url(r'^group_add/$', views.group_add),# 组增加
+    url(r'^group_del/$', views.group_del),# 组删除
+    url(r'^group_query/$', views.group_query),# 组查询
+    url(r'^group_update/$', views.group_update),# 组更新
+    url(r'^agent_update_group/$', views.agent_update_group),# agent更新组名
+
+
+
     ############################ 资产清点URL ###############################
 
     url(r'^assets/query_network$', assets_view.assets_query_network),

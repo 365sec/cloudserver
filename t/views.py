@@ -33,12 +33,13 @@ from t.models import TBaselineKnowledge
 from t.models import TEventKnowledge
 from t.models import TConfig
 from t.models import TUsers
+from t.models import TAgentGroup
 
 from assets.models import TAssetsProcess
 from assets.models import TAssetsMonitor
 from assets.models import TAssetsPort
 from assets.models import TAssetsActiveNetwork
-
+from django.db import transaction
 
 
 from t.auth import auth
@@ -150,56 +151,111 @@ def add_host(request):
 #     return HttpResponse(json.dumps(data), content_type='application/json')
 
 @auth
+@transaction.atomic
 def agent_del(request):
     agent_id_list = request.POST.get("agent_id")
     agent_id_list=agent_id_list.split(",")
-    for agent_id in agent_id_list:
-        web_event= TWebEvent.objects.filter(agent_id=agent_id)
-        if web_event:
-            web_event.delete()
-        log_obj= TLogAnalysisd.objects.filter(agent_id=agent_id)
-        if log_obj:
-            log_obj.delete()
-        file_obj= TFileIntegrity.objects.filter(agent_id=agent_id)
-        if file_obj:
-            file_obj.delete()
-        web_agent= TWebAgents.objects.filter(agent_id=agent_id)
-        if web_agent:
-            web_agent.delete()
-        host_agent= THostAgents.objects.filter(agent_id=agent_id)
-        if host_agent:
-            host_agent.delete()
 
-        tconfig=TConfig.objects.filter(agent_id=agent_id)
-        if tconfig:
-            tconfig.delete()
-        tbaseline=TBaselineCheck.objects.filter(agent_id=agent_id)
-        if tbaseline:
-            tbaseline.delete()
+    for agent_id in agent_id_list:
+        print(agent_id)
+        web_event= TWebEvent.objects.filter(agent_id=agent_id).delete()
+        log_obj= TLogAnalysisd.objects.filter(agent_id=agent_id).delete()
+        file_obj= TFileIntegrity.objects.filter(agent_id=agent_id).delete()
+        web_agent= TWebAgents.objects.filter(agent_id=agent_id).delete()
+        host_agent= THostAgents.objects.filter(agent_id=agent_id).delete()
+        tconfig=TConfig.objects.filter(agent_id=agent_id).delete()
+        tbaseline=TBaselineCheck.objects.filter(agent_id=agent_id).delete()
         #资产清点模块删除
-        tAssetsProcess=TAssetsProcess.objects.filter(agent_id=agent_id)
-        if tAssetsProcess:
-            tAssetsProcess.delete()
-        tAssetsMonitor=TAssetsMonitor.objects.filter(agent_id=agent_id)
-        if tAssetsMonitor:
-            tAssetsMonitor.delete()
-        tAssetsPort=TAssetsPort.objects.filter(agent_id=agent_id)
-        if tAssetsPort:
-            tAssetsPort.delete()
-        tAssetsActiveNetwork=TAssetsActiveNetwork.objects.filter(agent_id=agent_id)
-        if tAssetsActiveNetwork:
-            tAssetsActiveNetwork.delete()
-        # TAssetsProcess
-        # TAssetsMonitor
-        # TAssetsPort
-        # TAssetsActiveNetwork
+        tAssetsProcess=TAssetsProcess.objects.filter(agent_id=agent_id).delete()
+        tAssetsMonitor=TAssetsMonitor.objects.filter(agent_id=agent_id).delete()
+        tAssetsPort=TAssetsPort.objects.filter(agent_id=agent_id).delete()
+        tAssetsActiveNetwork=TAssetsActiveNetwork.objects.filter(agent_id=agent_id).delete()
 
     data={"msg":"删除成功"}
 
     return HttpResponse(json.dumps(data), content_type='application/json')
 
+def group_add(request):
+    group_name=request.GET.get("group_name")
+    data={"code":500,"msg":"组名为空"}
+    if group_name:
+        result=TAgentGroup.objects.get_or_create(group_name=group_name)
+        if result:
+            data['code']=200
+            data['msg']="创建成功"
+        else:
+            data['code']=500
+            data['msg']="创建失败，已经有相同名称的组"
+
+
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
+@transaction.atomic
+def group_del(request):
+    group_id=request.GET.get("group_id")
+    data={"code":500,"msg":""}
+    if group_id:
+        result=TAgentGroup.objects.filter(group_id=group_id)
+        result = result.delete()
+        agents = THostAgents.objects.filter(group_id=group_id).update(group_id="")
+        if result:
+            data['code']=200
+            data['msg']="删除成功"
+        else:
+            data['code']=500
+            data['msg']="删除失败"
+
+    return HttpResponse(json.dumps(data), content_type='application/json')
+def group_query(request):
+    data={"code":200,"msg":""}
+    group_id=request.GET.get("group_id")
+    if group_id:
+        result=TAgentGroup.objects.filter(group_id=group_id)
+    else:
+        result=TAgentGroup.objects.all().order_by("group_id")
+    temp=[]
+    for x in result:
+        y=model_to_dict(x)
+        temp.append(y)
+    data['data']=temp
+
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
+def group_update(request):
+    data={"code":500,"msg":""}
+    group_id=request.GET.get("group_id")
+    group_name=request.GET.get("group_name")
+    if group_id:
+        try:
+            result=TAgentGroup.objects.filter(group_id=group_id).update(group_name=group_name)
+            if result:
+                data={"code":200,"msg":"组名更新成功"}
+            else:
+                data={"code":200,"msg":"组名更新失败"}
+        except Exception as e:
+            print (e)
+            data={"code":500,"msg":"更新失败，已有相同的组名"}
+    return HttpResponse(json.dumps(data), content_type='application/json')
+def agent_update_group(request):
+    agent_id=request.GET.get("agent_id")
+    group_id=request.GET.get("group_id")
+    if agent_id :
+        result=THostAgents.objects.filter(agent_id=agent_id).update(group_id=group_id)
+        if result:
+            data={"code":200,"msg":"操作成功"}
+        else:
+            data={"code":500,"msg":"操作失败"}
+    else:
+        data={"code":500,"msg":"agent_id 为空"}
+
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
+
 @auth
 def server_agent_query(request):
+    # group_update(request)
+
+
     '''
     查询服务端的 agent
     :param request:
