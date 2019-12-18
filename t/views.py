@@ -472,6 +472,7 @@ attack_init=AttackInit()
 @auth
 def attack_event_init(request):
     data={}
+    attack_init.max_lenth=0
     attack_event_init_func()
     return HttpResponse(json.dumps(data), content_type='application/json')
 
@@ -499,7 +500,6 @@ def attack_event_init_func():
             hostname_dir[str(x[0])]=[x[1],x[2]]
 
     attack_init.hostname_dir=hostname_dir
-
     attack_init.flag=True
 
 @auth
@@ -600,7 +600,6 @@ def attack_event_query(request):
     # 三张表联合查询
     result = tweb.union(tlog, tfile,all=True).order_by("-event_time")
     # result = qchain.order_by("-event_time")
-    end_fun=datetime.now()
     if not attack_init.max_lenth:
         max_lenth=result.count()
         attack_init.max_lenth=max_lenth
