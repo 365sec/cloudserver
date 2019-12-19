@@ -98,8 +98,8 @@ function server_click_info(page) {
             html += '<th>服务器状态</th>';
             html += '<th>所属用户</th>';
             html += '<th style="max-width: 100px">标记</th>';
-            html += '<th style="min-width: 200px">详情</th>';
-            html += '<th style="min-width: 44px">风险评分</th>';
+            html += '<th style="min-width: 200px">性能</th>';
+            html += '<th style="min-width: 44px">安全评分</th>';
             html += '</tr>';
             html += '</thead>';
             html += '<tbody>';
