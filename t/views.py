@@ -600,10 +600,11 @@ def attack_event_query(request):
     # 三张表联合查询
     result = tweb.union(tlog, tfile,all=True).order_by("-event_time")
     # result = qchain.order_by("-event_time")
-    if not attack_init.max_lenth:
-        max_lenth=result.count()
-        attack_init.max_lenth=max_lenth
-    max_lenth = attack_init.max_lenth
+    max_lenth=result.count()
+    # if not attack_init.max_lenth:
+    #     max_lenth=result.count()
+    #     attack_init.max_lenth=max_lenth
+    # max_lenth = attack_init.max_lenth
     # 每页显示多少个数据
     page_size = 15
     # 最大分页数
