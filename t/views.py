@@ -33,7 +33,7 @@ from t.models import TBaselineKnowledge
 from t.models import TEventKnowledge
 from t.models import TConfig
 from t.models import TUsers
-from t.models import TAgentGroup
+# from t.models import TAgentGroup
 
 from assets.models import TAssetsProcess
 from assets.models import TAssetsMonitor
@@ -175,80 +175,80 @@ def agent_del(request):
 
     return HttpResponse(json.dumps(data), content_type='application/json')
 
-def group_add(request):
-    group_name=request.GET.get("group_name")
-    data={"code":500,"msg":"组名为空"}
-    if group_name:
-        result=TAgentGroup.objects.get_or_create(group_name=group_name)
-        if result:
-            data['code']=200
-            data['msg']="创建成功"
-        else:
-            data['code']=500
-            data['msg']="创建失败，已经有相同名称的组"
-
-
-    return HttpResponse(json.dumps(data), content_type='application/json')
-
-@transaction.atomic
-def group_del(request):
-    group_id=request.GET.get("group_id")
-    data={"code":500,"msg":""}
-    if group_id:
-        result=TAgentGroup.objects.filter(group_id=group_id)
-        result = result.delete()
-        agents = THostAgents.objects.filter(group_id=group_id).update(group_id="")
-        if result:
-            data['code']=200
-            data['msg']="删除成功"
-        else:
-            data['code']=500
-            data['msg']="删除失败"
-
-    return HttpResponse(json.dumps(data), content_type='application/json')
-def group_query(request):
-    data={"code":200,"msg":""}
-    group_id=request.GET.get("group_id")
-    if group_id:
-        result=TAgentGroup.objects.filter(group_id=group_id)
-    else:
-        result=TAgentGroup.objects.all().order_by("group_id")
-    temp=[]
-    for x in result:
-        y=model_to_dict(x)
-        temp.append(y)
-    data['data']=temp
-
-    return HttpResponse(json.dumps(data), content_type='application/json')
-
-def group_update(request):
-    data={"code":500,"msg":""}
-    group_id=request.GET.get("group_id")
-    group_name=request.GET.get("group_name")
-    if group_id:
-        try:
-            result=TAgentGroup.objects.filter(group_id=group_id).update(group_name=group_name)
-            if result:
-                data={"code":200,"msg":"组名更新成功"}
-            else:
-                data={"code":200,"msg":"组名更新失败"}
-        except Exception as e:
-            print (e)
-            data={"code":500,"msg":"更新失败，已有相同的组名"}
-    return HttpResponse(json.dumps(data), content_type='application/json')
-def agent_update_group(request):
-    agent_id=request.GET.get("agent_id")
-    group_id=request.GET.get("group_id")
-    if agent_id :
-        result=THostAgents.objects.filter(agent_id=agent_id).update(group_id=group_id)
-        if result:
-            data={"code":200,"msg":"操作成功"}
-        else:
-            data={"code":500,"msg":"操作失败"}
-    else:
-        data={"code":500,"msg":"agent_id 为空"}
-
-    return HttpResponse(json.dumps(data), content_type='application/json')
+# def group_add(request):
+#     group_name=request.GET.get("group_name")
+#     data={"code":500,"msg":"组名为空"}
+#     if group_name:
+#         result=TAgentGroup.objects.get_or_create(group_name=group_name)
+#         if result:
+#             data['code']=200
+#             data['msg']="创建成功"
+#         else:
+#             data['code']=500
+#             data['msg']="创建失败，已经有相同名称的组"
+#
+#
+#     return HttpResponse(json.dumps(data), content_type='application/json')
+#
+# @transaction.atomic
+# def group_del(request):
+#     group_id=request.GET.get("group_id")
+#     data={"code":500,"msg":""}
+#     if group_id:
+#         result=TAgentGroup.objects.filter(group_id=group_id)
+#         result = result.delete()
+#         agents = THostAgents.objects.filter(group_id=group_id).update(group_id="")
+#         if result:
+#             data['code']=200
+#             data['msg']="删除成功"
+#         else:
+#             data['code']=500
+#             data['msg']="删除失败"
+#
+#     return HttpResponse(json.dumps(data), content_type='application/json')
+# def group_query(request):
+#     data={"code":200,"msg":""}
+#     group_id=request.GET.get("group_id")
+#     if group_id:
+#         result=TAgentGroup.objects.filter(group_id=group_id)
+#     else:
+#         result=TAgentGroup.objects.all().order_by("group_id")
+#     temp=[]
+#     for x in result:
+#         y=model_to_dict(x)
+#         temp.append(y)
+#     data['data']=temp
+#
+#     return HttpResponse(json.dumps(data), content_type='application/json')
+#
+# def group_update(request):
+#     data={"code":500,"msg":""}
+#     group_id=request.GET.get("group_id")
+#     group_name=request.GET.get("group_name")
+#     if group_id:
+#         try:
+#             result=TAgentGroup.objects.filter(group_id=group_id).update(group_name=group_name)
+#             if result:
+#                 data={"code":200,"msg":"组名更新成功"}
+#             else:
+#                 data={"code":200,"msg":"组名更新失败"}
+#         except Exception as e:
+#             print (e)
+#             data={"code":500,"msg":"更新失败，已有相同的组名"}
+#     return HttpResponse(json.dumps(data), content_type='application/json')
+# def agent_update_group(request):
+#     agent_id=request.GET.get("agent_id")
+#     group_id=request.GET.get("group_id")
+#     if agent_id :
+#         result=THostAgents.objects.filter(agent_id=agent_id).update(group_id=group_id)
+#         if result:
+#             data={"code":200,"msg":"操作成功"}
+#         else:
+#             data={"code":500,"msg":"操作失败"}
+#     else:
+#         data={"code":500,"msg":"agent_id 为空"}
+#
+#     return HttpResponse(json.dumps(data), content_type='application/json')
 
 
 @auth
@@ -600,10 +600,11 @@ def attack_event_query(request):
     # 三张表联合查询
     result = tweb.union(tlog, tfile,all=True).order_by("-event_time")
     # result = qchain.order_by("-event_time")
-    if not attack_init.max_lenth:
-        max_lenth=result.count()
-        attack_init.max_lenth=max_lenth
-    max_lenth = attack_init.max_lenth
+    max_lenth=result.count()
+    # if not attack_init.max_lenth:
+    #     max_lenth=result.count()
+    #     attack_init.max_lenth=max_lenth
+    # max_lenth = attack_init.max_lenth
     # 每页显示多少个数据
     page_size = 15
     # 最大分页数

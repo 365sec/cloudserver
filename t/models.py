@@ -86,12 +86,12 @@ class TEventKnowledge(models.Model):
 
 
 
-class TAgentGroup(models.Model):
-    group_id = models.IntegerField(primary_key=True,db_column="group_id")
-    group_name = models.CharField(max_length=100, blank=True, null=True)
-    class Meta:
-        managed = False
-        db_table = 't_agent_group'
+# class TAgentGroup(models.Model):
+#     group_id = models.IntegerField(primary_key=True,db_column="group_id")
+#     group_name = models.CharField(max_length=100, blank=True, null=True)
+#     class Meta:
+#         managed = False
+#         db_table = 't_agent_group'
 
 class THostAgents(models.Model):
     agent_id = models.CharField(primary_key=True, max_length=100)
@@ -109,7 +109,7 @@ class THostAgents(models.Model):
     own_user = models.CharField(max_length=255, blank=True, null=True)
     disabled = models.IntegerField(blank=True, null=True)
     # group_id = models.IntegerField(blank=True, null=True)
-    group=models.ForeignKey(TAgentGroup,db_column="group_id")
+    # group=models.ForeignKey(TAgentGroup,db_column="group_id")
     class Meta:
         managed = False
         db_table = 't_host_agents'
