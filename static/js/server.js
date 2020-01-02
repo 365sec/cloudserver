@@ -3,7 +3,7 @@ var monitor_list={};
 function server_click(page) {
 
     //清理定时器
-    clearInterval(intervalId);
+    // clearInterval(intervalId);
     /*
     * 服务器管理被点击
     * */
@@ -234,10 +234,10 @@ function server_click_info(page) {
 
 //详情
 var agent_server_id;
+// var intervalId;
 var intervalId;
 
 $(document).off("click", ".detail-a-server").on("click", ".detail-a-server", function () {
-    clearInterval(intervalId);
     let data1 = $(this).attr("data-name");
     let b=new Base64();
     let data=JSON.parse(b.decode(data1));
@@ -264,7 +264,7 @@ $(document).off("click", ".detail-a-server").on("click", ".detail-a-server", fun
             }
 
             agent_server_id=data['agent_id'];
-
+            clearInterval(intervalId);
             intervalId = setInterval(function () {
                 if(!$('.manage_detailDiv').length){
                     clearInterval(intervalId);
@@ -272,7 +272,6 @@ $(document).off("click", ".detail-a-server").on("click", ".detail-a-server", fun
                 }
                 get_monitor_info_last(data['agent_id']);
             }, 5000);
-
             //上面显示的监控简略信息
 
             get_monitor_info_last(data['agent_id']);

@@ -273,40 +273,40 @@ function port_chart() {
         success: function (data_list) {
 
             // console.log(data_list["data"]['agent_port_num'])
-            agent_port_num_echart('agent_port_num_div',data_list['data']['agent_port_num']);
-            agent_port_num_echart('port_num_div',data_list['data']['port_num'])
+            agent_process_num_echart_pie('agent_port_num_div',data_list['data']['agent_port_num']);
+            agent_process_num_echart_bar('port_num_div',data_list['data']['port_num'])
 
         }})
 }
-function agent_port_num_echart(div,data) {
-    var chart = echarts.init(document.getElementById(div));
-    var datares = [];
-
-    for (x in data) {
-        datares.push({'name':data[x][0],'value':data[x][1]})
-    }
-    var option = {
-        tooltip : {
-            trigger: 'item',
-            formatter: "{b} : {c} ({d}%)"
-        },
-        series : [
-            {
-                name: '数量',
-                type: 'pie',
-                radius : ['50%','70%'],
-                center: ['50%', '55%'],
-                data:datares,
-                itemStyle: {
-                    emphasis: {
-                        shadowBlur: 10,
-                        shadowOffsetX: 0,
-                        shadowColor: 'rgba(0, 0, 0, 0.5)'
-                    }
-                }
-            }
-        ]
-    };
-
-    chart.setOption(option);
-}
+// function agent_port_num_echart(div,data) {
+//     var chart = echarts.init(document.getElementById(div));
+//     var datares = [];
+//
+//     for (x in data) {
+//         datares.push({'name':data[x][0],'value':data[x][1]})
+//     }
+//     var option = {
+//         tooltip : {
+//             trigger: 'item',
+//             formatter: "{b} : {c} ({d}%)"
+//         },
+//         series : [
+//             {
+//                 name: '数量',
+//                 type: 'pie',
+//                 radius : ['50%','70%'],
+//                 center: ['50%', '55%'],
+//                 data:datares,
+//                 itemStyle: {
+//                     emphasis: {
+//                         shadowBlur: 10,
+//                         shadowOffsetX: 0,
+//                         shadowColor: 'rgba(0, 0, 0, 0.5)'
+//                     }
+//                 }
+//             }
+//         ]
+//     };
+//
+//     chart.setOption(option);
+// }

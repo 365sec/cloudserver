@@ -2681,6 +2681,7 @@ text-align:center;
     margin: 0 20px;
 }
 .portDiv_chart .content{
+    position: relative;
     width: calc(50% - 12px);
     float: left;
     padding: 20px;
@@ -2690,6 +2691,15 @@ text-align:center;
 .portDiv_chart .content .chart-con{
     width: 100%;
     height: calc(100% - 24px);
+    z-index: 2;
+}
+.portDiv_chart .content .chart-con-shade {
+    position: absolute;
+    top: 24px;
+    right: 0;
+    bottom: 0;
+    width: 35%;
+    z-index: 3;
 }
 .w100{
     width: 100%;

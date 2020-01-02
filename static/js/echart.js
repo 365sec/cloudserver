@@ -195,3 +195,165 @@ function lineChartServer(data,div) {
 
     linechart.setOption(option)
 }
+//进程端口资产顶部饼状图
+function agent_process_num_echart_pie(div,data) {
+    var content = document.getElementById(div);
+    var height = content.clientHeight;
+    var width = content.clientWidth;
+    var shade_width = width*.75 - height*.41;
+    $('.chart-con-shade').css('width',shade_width);
+    var chart = echarts.init(content);
+    // var color = ["#8d7fec", "#5085f2","#e75fc3","#f87be2","#f2719a","#fca4bb","#f59a8f","#fdb301","#57e7ec","#cf9ef1"]
+    var datares = [];
+    for (x in data) {
+        datares.push({'name':data[x][0],'value':data[x][1]})
+    }
+    var option = {
+        legend: {
+            orient: 'vertical',
+            right: 0,
+            y: 'center'
+        },
+        series:[{
+            type: 'pie',
+            minAngle: 2,
+            clockwise: false,//逆时针
+            radius: ["60%", "85%"],
+            center: ["25%", "50%"],
+            label:{
+                show: false,
+                position: 'center',
+                formatter: function (param) {
+                    var title1 = param.data.name.split('(')[0];
+                    var title2 = param.data.name.split('(')[1];
+                    var content = param.data.value+'( '+param.percent+'% )';
+                    return '{title|'+title1+'\n'+title2+'}\n{value|'+content+'}';
+                },
+                emphasis: {
+                    show: true,
+                    rich:{
+                        title:{
+                            color: "#666",
+                            fontSize: 14,
+                            align: 'center',
+                            verticalAlign: 'middle',
+                            lineHeight: 20,
+                            padding: 8,
+                        },
+                        value:{
+                            color: "#004881",
+                            align: 'center',
+                            fontSize: 24,
+                            verticalAlign: 'middle',
+                        }
+                    }
+                }
+            },
+            itemStyle: { //图形样式
+                normal: {
+                    borderColor: '#ffffff',
+                    borderWidth: 6,
+                },
+            },
+            data: datares
+        }]
+    };
+
+    chart.setOption(option);
+    let index = 0; // 高亮索引
+    chart.dispatchAction({
+        type: "highlight",
+        seriesIndex: index,
+        dataIndex: index
+    });
+    chart.on("mouseover", function(param) {
+        if (param.dataIndex != index) {
+            chart.dispatchAction({
+                type: "downplay",
+                seriesIndex: 0,
+                dataIndex: index
+            });
+        }
+    });
+    chart.on("mouseout", function(param) {
+        index = param.dataIndex;
+        chart.dispatchAction({
+            type: "highlight",
+            seriesIndex: 0,
+            dataIndex: param.dataIndex
+        });
+    });
+}
+//进程端口资产顶部柱状图
+function agent_process_num_echart_bar(div,data) {
+    var chart = echarts.init(document.getElementById(div));
+    var datares = [];
+    let x_data=[];
+    for (x in data) {
+        datares.push({'name':data[x][0],'value':data[x][1]})
+        x_data.push(data[x][0])
+    }
+    var barcolor = ['#c23531','#2f4554', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3']
+    var option = {
+        tooltip: {
+            show: "true",
+            trigger: 'axis',
+            axisPointer: { // 坐标轴指示器，坐标轴触发有效
+                type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+            }
+        },
+        grid: {
+            left: '2%',
+            right: '5%',
+            bottom: '2%',
+            top: '2%',
+            containLabel: true
+        },
+        xAxis: [
+            {show: false,},
+            {show: false,}
+        ],
+        yAxis: {
+            type: 'category',
+            inverse: true,
+            show: true,
+            axisLine: {
+                show: false
+            },
+            splitLine: {
+                show: false
+            },
+            axisTick: {
+                show: false
+            },
+            data: x_data,
+        },
+        series: [
+            {
+                type: 'bar',
+                barWidth: 15,
+                itemStyle: {
+                    normal: {
+                        show: true,
+                        barBorderRadius: 20,
+                        label:{
+                            show: true,
+                            position: 'right',
+                            textStyle:{
+                                color: '#333',
+                            },
+
+                        },
+                        color: function(param) {
+                            return  barcolor[param.dataIndex];
+                        },
+                    },
+
+                },
+                data: datares
+            },
+
+        ]
+    }
+    chart.setOption(option);
+}
